@@ -1,0 +1,55 @@
+version: '3.3'
+
+services:
+  server:
+    container_name: server-service-shop
+    restart: always
+    build: ./server
+    # uncomment network_mode variable to be able to run docker in localhost +
+    # network_mode: host
+    ports:
+        - "4000:4000"
+    #volumes:
+    #  - /opt/<projectName>/logs/server:/usr/src/app/log
+    environment:
+      DB_USERNAME: ${DB_USERNAME}
+      DB_PASSWORD: ${DB_PASSWORD}
+      DB_NAME_TEST: ${DB_NAME_TEST}
+      DB_NAME_DEVELOPMENT: ${DB_NAME_DEVELOPMENT}
+      DB_NAME_PRODUCTION: ${DB_NAME_PRODUCTION}
+      DB_HOST: ${DB_HOST_DOCKER}
+      DB_DIALECT: ${DB_DIALECT}
+      DB_PORT: ${DB_PORT}
+      JWT_KEY: ${JWT_KEY}
+      DB_CONNECTION_LIMIT: ${DB_CONNECTION_LIMIT}
+      LOGIN_SECRET_KEY: ${LOGIN_SECRET_KEY}
+      API_URL: ${API_URL}
+      CLIENT_URL: ${CLIENT_URL}
+    networks:
+      - app-connect
+  ui:
+    container_name: client-service-shop
+    build: ./client
+    # uncomment network_mode variable to be able to run docker in localhost -
+    # network_mode: host
+    ports:
+      - "3000:3000"
+      # - "443:443"
+      # generate certs and move it in /etc/nginx/certs directory
+      # sudo openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout private.key -out certificate.crt
+    # volumes:
+    #  - /etc/nginx/certs:/etc/nginx/certs
+    environment:
+     - NODE_ENV=production
+    networks:
+      - app-connect
+    depends_on:
+    - server
+    links:
+      - server
+volumes:
+  db_data: {}
+
+networks:
+  app-connect:
+      driver: bridge
