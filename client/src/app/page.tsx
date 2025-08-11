@@ -2,6 +2,7 @@ import Image from 'next/image';
 
 export default function Home() {
   let a: any = 10;
+
   return (
     <div className='tw:bg-primary-100 tw:hover:bg-primary-300'>
       <main className='row-start-2 flex flex-col items-center gap-[32px] sm:items-start'>
