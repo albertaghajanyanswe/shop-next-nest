@@ -1,7 +1,7 @@
 import Image from 'next/image';
 
 export default function Home() {
-  let a = 10;
+  let a: any = 10;
 
   return (
     <div className='tw:bg-primary-100 tw:hover:bg-primary-300'>
