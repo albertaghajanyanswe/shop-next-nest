@@ -16,6 +16,17 @@ const eslintConfig = [
       'react/react-in-jsx-scope': 'off',
       'no-unused-vars': 'warn',
     },
+    ignores: [
+      '**/node_modules/**',
+      '**/dist/**',
+      '**/build/**',
+      '**/.next/**',
+      '**/coverage/**',
+      '**/out/**',
+      '**/public/**',
+      '**/.prettierrc.json',
+      '**/.eslint.config.mjs',
+    ],
   }),
 ];
 
