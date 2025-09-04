@@ -96,3 +96,26 @@ Nest is an MIT-licensed open source project. It can grow thanks to the sponsors 
 ## License
 
 Nest is [MIT licensed](https://github.com/nestjs/nest/blob/master/LICENSE).
+
+
+## BASIC setup instruction
+
+#### Install dependencies
+
+npm i --save @nestjs/config class-validator class-transformer @nestjs/jwt @nestjs/passport passport passport-jwt passport-google-oauth20 cookie-parser argon2 dayj
+s fs-extra @nestjs/serve-static app-root-path @prisma/client @a2seven/yoo-c
+heckout
+
+
+#### Install DEV dependencies
+
+npm i --save-dev @types/multer @types/fs-extra @types/passport-jwt @types/passport-google-oauth20 @types/cookie-parser
+
+##### Migrate DB
+npx prisma migrate dev --name add-basic-models
+
+npx prisma db  push
+
+
+##### Install prisma types
+npx prisma generate

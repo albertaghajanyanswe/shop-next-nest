@@ -15,6 +15,9 @@ const eslintConfig = [
     rules: {
       'react/react-in-jsx-scope': 'off',
       'no-unused-vars': 'warn',
+      'no-empty-object-type': 'off',
+      '@typescript-eslint/no-empty-object-type': 'off',
+      '@typescript-eslint/no-unused-vars': 'off',
     },
   }),
 ];

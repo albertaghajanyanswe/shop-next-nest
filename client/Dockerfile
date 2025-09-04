@@ -61,7 +61,7 @@ COPY --from=builder --chown=nextjs:nodejs /app/.next/static ./.next/static
 #COPY --from=build /app/ssl/private.pem /etc/nginx/certsprivate.key
 
 # uncomment this line to run in local
-COPY --from=build /app/nginx-local.conf /etc/nginx/conf.d/default.conf
+COPY --from=builder /app/nginx-local.conf /etc/nginx/conf.d/default.conf
 
 USER nextjs
 
