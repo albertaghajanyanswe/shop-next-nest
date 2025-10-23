@@ -1,5 +1,6 @@
 'use client';
 
+import { StoreNoteBlock } from '@/components/customComponents/StoreNoteBlock';
 import { ConfirmModal } from '@/components/modals/ConfirmModal';
 import { Button } from '@/components/ui/Button';
 import {
@@ -13,10 +14,12 @@ import {
 import { Input } from '@/components/ui/form-elements/Input';
 import { Heading } from '@/components/ui/Heading';
 import { Textarea } from '@/components/ui/Textarea';
+import { DASHBOARD_URL } from '@/config/url.config';
 import { useDeleteStore } from '@/hooks/queries/stores/useDeleteStore';
 import { useUpdateStore } from '@/hooks/queries/stores/useUpdateStore';
 import { IUpdateStore } from '@/shared/types/store.interface';
-import { Trash2 } from 'lucide-react';
+import { AlertTriangle, Trash2 } from 'lucide-react';
+import Link from 'next/link';
 import { SubmitHandler, useForm } from 'react-hook-form';
 
 export function Settings() {
@@ -40,7 +43,7 @@ export function Settings() {
 
   return (
     <div className='p-6'>
-      <div className='flex items-center justify-between'>
+      <div className='mb-8 flex items-center justify-between'>
         <Heading title='Settings' description='Manage your store settings.' />
         <ConfirmModal
           handleConfirm={() => deleteStore()}
@@ -49,7 +52,11 @@ export function Settings() {
           confirmText='Delete'
           cancelText='Cancel'
         >
-          <Button variant='primary' size='icon' disabled={isLoadingDelete}>
+          <Button
+            variant='primary'
+            size='icon'
+            disabled={isLoadingDelete || store?.isDefaultStore}
+          >
             <Trash2 className='size-4' />
           </Button>
         </ConfirmModal>
@@ -103,6 +110,8 @@ export function Settings() {
           </Button>
         </form>
       </Form>
+
+      {store?.isDefaultStore && <StoreNoteBlock />}
     </div>
   );
 }

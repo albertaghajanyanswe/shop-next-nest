@@ -44,6 +44,7 @@ const DEFAULT_VALUES: IProductInput = {
   categoryId: '',
   colorId: '',
   brandId: '',
+  state: EnumProductState.NEW,
 };
 export function ProductForm({ product, categories, colors, brands }: productFormProps) {
   const { createProduct, isLoadingCreate } = useCreateProduct();
@@ -82,7 +83,7 @@ export function ProductForm({ product, categories, colors, brands }: productForm
   };
   return (
     <div className='p-6'>
-      <div className='flex items-center justify-between'>
+      <div className='flex items-center justify-between mb-8'>
         <Heading title={title} description={description} />
         {product && (
           <ConfirmModal

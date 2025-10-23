@@ -1,6 +1,6 @@
 import { Metadata } from 'next';
 import { ProductEdit } from './ProductEdit';
-import { NO_INDEX_PAGE } from '@/meta/constants';
+import { NO_INDEX_PAGE } from '@/utils/constants';
 
 export const metadata: Metadata = {
   title: 'Edit Product',

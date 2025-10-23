@@ -18,7 +18,7 @@ export const useCreateProduct = () => {
     mutationKey: QUERY_KEYS.createProduct,
     mutationFn: (data: IProductInput) => productService.create(data, storeId),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: QUERY_KEYS.getStoreProducts });
+      queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.getStoreProducts, storeId] });
       toast.success('Product created successfully.');
       router.push(STORE_URL.products(storeId));
     },

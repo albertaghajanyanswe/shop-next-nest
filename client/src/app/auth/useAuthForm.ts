@@ -29,12 +29,11 @@ export function useAuthForm(isReg: boolean) {
       toast.success('Login success');
       router.replace(DASHBOARD_URL.home());
     },
-    onError: (error) => {
-      if (error.message) {
-        toast.error(error.message);
-      } else {
-        toast.error('Error while login');
-      }
+    onError: (error: any) => {
+      console.log('error = ', error);
+      toast.error(
+        error.response.data.message || error.message || 'Error while login'
+      );
     },
   });
 

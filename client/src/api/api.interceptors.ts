@@ -30,10 +30,10 @@ axiosWithAuth.interceptors.response.use(
     return config;
   },
   async (error) => {
-    console.log('\n\n 111 error', error);
     const originalRequest = error.config;
     if (
       (error.response.status === 401 ||
+        errorCatch(error) === 'Unauthorized' ||
         errorCatch(error) === 'jwt expired' ||
         errorCatch(error) === 'jwt must be provided') &&
       error.config &&
@@ -41,10 +41,10 @@ axiosWithAuth.interceptors.response.use(
     ) {
       originalRequest._isRetry = true;
       try {
+        console.log('interceptors - getNewTokens')
         await authService.getNewTokens();
         return axiosWithAuth.request(originalRequest);
       } catch (error) {
-        console.log('\n\n 222 error', error);
         if (
           errorCatch(error) === 'jwt expired' ||
           errorCatch(error) === 'Unauthorized' ||

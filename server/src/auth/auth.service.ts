@@ -7,10 +7,12 @@ import {
 import { JwtService } from '@nestjs/jwt';
 import { PrismaService } from 'src/prisma.service';
 import { UserService } from 'src/user/user.service';
-import { AuthDto } from './dto/auth.dto';
+import { RegisterDto, LoginDto } from './dto/auth.dto';
 import { Response } from 'express';
 import { ConfigService } from '@nestjs/config';
 import { verify } from 'argon2';
+import { StripeService } from 'src/stripe/stripe.service';
+import { EnvVariables } from 'src/utils/constants/variables';
 
 @Injectable()
 export class AuthService {
@@ -22,15 +24,16 @@ export class AuthService {
     private readonly userService: UserService,
     private readonly prismaService: PrismaService,
     private configService: ConfigService,
+    private readonly stripeService: StripeService,
   ) {}
 
-  async login(loginDto: AuthDto) {
+  async login(loginDto: LoginDto) {
     const user = await this.validateUser(loginDto);
     const tokens = this.issueTokens(user.id);
     return { user, ...tokens };
   }
 
-  async register(registerDto: AuthDto) {
+  async register(registerDto: RegisterDto) {
     const oldUser = await this.userService.getByEmail(registerDto.email);
     if (oldUser) {
       throw new BadRequestException('User already exists');
@@ -38,6 +41,17 @@ export class AuthService {
 
     const user = await this.userService.createUser(registerDto);
     const tokens = this.issueTokens(user.id);
+
+    await this.stripeService.createCustomer(user.id);
+    try {
+      await this.stripeService.createCheckoutSessionSubscription(
+        user.id,
+        'FREE',
+      );
+    } catch (e) {
+      console.log('error ', e);
+    }
+
     return { user, ...tokens };
   }
 
@@ -66,7 +80,7 @@ export class AuthService {
     return { accessToken, refreshToken };
   }
 
-  private async validateUser(dto: AuthDto) {
+  private async validateUser(dto: RegisterDto | LoginDto) {
     const user = await this.userService.getByEmail(dto.email);
     if (!user) {
       throw new NotFoundException('User not found');
@@ -90,6 +104,15 @@ export class AuthService {
         },
         include: { stores: true, favorites: true, orders: true },
       });
+      await this.prismaService.store.create({
+        data: {
+          title: 'Free Store',
+          description:
+            'IMPORTANT:Only this store and his products should be shown in free plan',
+          userId: user.id,
+          isDefaultStore: true,
+        },
+      });
     }
 
     const tokens = this.issueTokens(user.id);
@@ -101,7 +124,7 @@ export class AuthService {
     expiresIn.setDate(expiresIn.getDate() + this.EXPIRE_DAY_REFRESH_TOKEN);
     res.cookie(this.REFRESH_TOKEN_NAME, refreshToken, {
       httpOnly: true,
-      domain: this.configService.get<string>('SERVER_DOMAIN'),
+      domain: this.configService.get<string>(EnvVariables.SERVER_DOMAIN),
       secure: true,
       expires: expiresIn,
       sameSite: process.env.NODE_ENV === 'production' ? 'lax' : 'none',
@@ -111,7 +134,7 @@ export class AuthService {
   removeRefreshTokenToResponse(res: Response) {
     res.cookie(this.REFRESH_TOKEN_NAME, '', {
       httpOnly: true,
-      domain: this.configService.get<string>('SERVER_DOMAIN'),
+      domain: this.configService.get<string>(EnvVariables.SERVER_DOMAIN),
       expires: new Date(0),
       secure: true,
       sameSite: process.env.NODE_ENV === 'production' ? 'lax' : 'none',

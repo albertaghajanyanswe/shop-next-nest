@@ -33,6 +33,11 @@ export interface IPaymentResponse {
   confirmation: IConfirmation
 }
 
+export interface IStripePaymentResponse {
+  sellerStripeId: string
+  url: string
+}
+
 export enum EnumOrderStatus {
   PENDING = 'PENDING',
   PAYED = 'PAYED',

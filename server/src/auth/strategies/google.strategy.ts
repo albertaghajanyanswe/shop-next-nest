@@ -2,12 +2,13 @@ import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { PassportStrategy } from '@nestjs/passport';
 import { Strategy, Profile, VerifyCallback } from 'passport-google-oauth20';
+import { EnvVariables } from 'src/utils/constants/variables';
 
 @Injectable()
 export class GoogleStrategy extends PassportStrategy(Strategy, 'google') {
   constructor(private configService: ConfigService) {
-    const clientID = configService.get<string>('GOOGLE_CLIENT_ID');
-    const clientSecret = configService.get<string>('GOOGLE_CLIENT_SECRET');
+    const clientID = configService.get<string>(EnvVariables.GOOGLE_CLIENT_ID);
+    const clientSecret = configService.get<string>(EnvVariables.GOOGLE_CLIENT_SECRET);
     if (!clientID) {
       throw new Error('GOOGLE_CLIENT_ID is not defined in environment variables');
     }
@@ -19,7 +20,7 @@ export class GoogleStrategy extends PassportStrategy(Strategy, 'google') {
       clientID,
       clientSecret,
       callbackURL:
-        configService.get<string>('SERVER_URL') + '/auth/google/callback',
+        configService.get<string>(EnvVariables.SERVER_URL) + '/auth/google/callback',
       scope: ['profile', 'email'],
     });
   }

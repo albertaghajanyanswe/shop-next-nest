@@ -1,13 +1,14 @@
 import { ConfigService } from '@nestjs/config';
 import { JwtModuleOptions } from '@nestjs/jwt';
+import { EnvVariables } from 'src/utils/constants/variables';
 
 export const getJwtConfig = async (
   configService: ConfigService,
 ): Promise<JwtModuleOptions> => {
   return {
-    secret: configService.get<string>('JWT_SECRET'),
+    secret: configService.get<string>(EnvVariables.JWT_SECRET),
     signOptions: {
-      expiresIn: configService.get<string>('JWT_EXPIRES_IN'),
+      expiresIn: configService.get<string>(EnvVariables.JWT_EXPIRES_IN),
     },
   };
 }

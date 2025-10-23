@@ -103,7 +103,6 @@ export class ProductService {
       },
     });
 
-    console.log('\n\n product', product.totalViews);
     return product;
   }
 
@@ -139,7 +138,7 @@ export class ProductService {
         },
       },
     });
-    console.log('\n\n mostPopularProducts', mostPopularProducts);
+
     if (!mostPopularProducts.length) {
       return this.prisma.product.findMany({
         orderBy: {
@@ -213,7 +212,18 @@ export class ProductService {
     const product = await this.getByIdHelper(id);
     return this.prisma.product.update({
       where: { id },
-      data: { ...dto, oldPrice: product.price },
+      data: {
+        title: dto.title,
+        description: dto.description,
+        price: dto.price,
+        images: dto.images,
+        categoryId: dto.categoryId,
+        colorId: dto.colorId,
+        brandId: dto.brandId,
+        oldPrice: product.price,
+        // isPublished: dto.isPublished,
+        // isBlocked: dto.isBlocked,
+      },
     });
   }
 

@@ -37,4 +37,11 @@ export const QUERY_KEYS = {
   deleteReview: ['delete-review'],
   createReview: ['create-review'],
   checkout: ['checkout'],
+  upgradePlan: ['upgrade-plan'],
+  cancelUpgrade: ['cancel-upgrade'],
+  getSubscriptions: ['get-subscriptions'],
+  getManagementLink: ['get-management-link'],
+  getPlans: ['get-plans'],
+  connectAccount: ['create-connect-account-stripe'],
+  payStripe: ['pay-stripe'],
 };

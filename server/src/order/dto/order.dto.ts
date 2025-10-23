@@ -36,4 +36,19 @@ export class OrderItemDto {
 
   @IsString({ message: 'Store ID should be string' })
   storeId: number;
+
+  @IsOptional()
+  @IsString({ message: 'Name should be string' })
+  name?: string;
+
+  @IsOptional()
+  @IsString({ message: 'Description should be string' })
+  description?: string;
+
+  @IsOptional()
+  @IsString({ message: 'Image should be string' })
+  image?: string;
+
+  @IsString({ message: 'User ID should be string' })
+  userId: string;
 }

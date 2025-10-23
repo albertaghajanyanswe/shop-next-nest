@@ -12,19 +12,22 @@ import {
   ValidationPipe,
 } from '@nestjs/common';
 import { AuthService } from './auth.service';
-import { AuthDto } from './dto/auth.dto';
+import { RegisterDto, LoginDto, LoginResponseDto, RegisterResponseDto } from './dto/auth.dto';
 import type { Request, Response } from 'express';
 import { AuthGuard } from '@nestjs/passport';
+import { ApiOkResponse, ApiOperation } from '@nestjs/swagger';
 
 @Controller('auth')
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
 
+  @ApiOperation({ summary: 'User login' })
+  @ApiOkResponse({ type: LoginResponseDto })
   @UsePipes(new ValidationPipe())
   @HttpCode(200)
   @Post('login')
   async login(
-    @Body() loginDto: AuthDto,
+    @Body() loginDto: LoginDto,
     @Res({ passthrough: true }) res: Response,
   ) {
     const { refreshToken, ...response } =
@@ -35,11 +38,13 @@ export class AuthController {
     return response;
   }
 
+  @ApiOperation({ summary: 'User registration' })
+  @ApiOkResponse({ type: RegisterResponseDto })
   @UsePipes(new ValidationPipe())
   @HttpCode(200)
   @Post('register')
   async register(
-    @Body() registerDto: AuthDto,
+    @Body() registerDto: RegisterDto,
     @Res({ passthrough: true }) res: Response,
   ) {
     const { refreshToken, ...response } =

@@ -20,7 +20,7 @@ export class OrderController {
   @HttpCode(200)
   @Post('place')
   @Auth()
-  async checkout(@Body() dto: OrderDto, @CurrentUser('id') userId: string) {
+  async checkoutYookassa(@Body() dto: OrderDto, @CurrentUser('id') userId: string) {
     return this.orderService.createPayment(dto, userId);
   }
 
@@ -29,5 +29,13 @@ export class OrderController {
   @Auth()
   async updateStatus(@Body() dto: PaymentStatusDto) {
     return this.orderService.updateStatus(dto);
+  }
+
+  @UsePipes(new ValidationPipe())
+  @HttpCode(200)
+  @Post('pay')
+  @Auth()
+  async checkoutStripe(@Body() dto: OrderDto, @CurrentUser('id') userId: string) {
+    return this.orderService.pay(dto, userId);
   }
 }

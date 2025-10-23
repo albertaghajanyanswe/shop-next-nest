@@ -1,4 +1,8 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { PrismaService } from 'src/prisma.service';
 import { CreateStoreDto } from './dto/create-store.dto';
 import { UpdateStoreDto } from './dto/update-store.dto';
@@ -20,6 +24,14 @@ export class StoreService {
   }
 
   async create(userId: string, dto: CreateStoreDto) {
+    if (dto.isDefaultStore) {
+      const existingDefaultStore = await this.prisma.store.findFirst({
+        where: { userId, isDefaultStore: true },
+      });
+      if (existingDefaultStore) {
+        throw new BadRequestException('Default store already exists');
+      }
+    }
     return this.prisma.store.create({
       data: {
         title: dto.title,
@@ -30,10 +42,19 @@ export class StoreService {
 
   async update(storeId: string, userId: string, dto: UpdateStoreDto) {
     const store = await this.getById(storeId, userId);
+    if (
+      dto.isDefaultStore !== undefined &&
+      dto.isDefaultStore !== store.isDefaultStore
+    ) {
+      throw new BadRequestException('Could not update default store');
+    }
     return this.prisma.store.update({
       where: { id: store.id },
       data: {
-        ...dto,
+        title: dto.title,
+        description: dto.description,
+        // isPublished: dto.isPublished,
+        // isBlocked: dto.isBlocked,
       },
     });
   }
@@ -41,6 +62,9 @@ export class StoreService {
   async delete(storeId: string, userId: string) {
     const store = await this.getById(storeId, userId);
 
+    if (store.isDefaultStore) {
+      throw new BadRequestException('Could not delete default store');
+    }
     return this.prisma.store.delete({
       where: { id: store.id },
     });

@@ -13,11 +13,11 @@ export function useDeleteProduct() {
   const productId = params.productId;
   const queryClient = useQueryClient();
 
-  const { mutate: deleteProduct, isPending: isLoadingDelete } = useMutation({
+  const mutation = useMutation({
     mutationKey: QUERY_KEYS.deleteProduct,
-    mutationFn: () => productService.delete(productId),
+    mutationFn: (prodId?: string) => productService.delete(prodId ?? productId),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: QUERY_KEYS.getStoreProducts });
+      queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.getStoreProducts, storeId] });
       toast.success('Product deleted successfully.');
       router.push(STORE_URL.products(storeId));
     },
@@ -25,6 +25,8 @@ export function useDeleteProduct() {
       toast.error('Failed to delete product.');
     },
   });
+  const deleteProduct = (prodId?: string) => mutation.mutate(prodId);
+  const isLoadingDelete = mutation.isPending;
 
   return useMemo(
     () => ({ deleteProduct, isLoadingDelete }),

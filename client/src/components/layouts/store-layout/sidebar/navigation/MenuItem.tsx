@@ -6,9 +6,10 @@ import { cn } from '@/lib/utils';
 
 interface MenuItemProps {
   route: IMenuItem;
+  showOnlyIcon?: boolean;
 }
 
-export function MenuItem({ route }: MenuItemProps) {
+export function MenuItem({ route, showOnlyIcon }: MenuItemProps) {
   const pathName = usePathname();
   const isActive = pathName === route.link;
   return (
@@ -21,7 +22,7 @@ export function MenuItem({ route }: MenuItemProps) {
       )}
     >
       <route.icon className='size-5' />
-      <span>{route.value}</span>
+      {!showOnlyIcon && <span>{route.value}</span>}
     </Link>
   );
 }

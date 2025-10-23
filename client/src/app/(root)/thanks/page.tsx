@@ -1,6 +1,6 @@
 import { Button } from '@/components/ui/Button';
 import { PUBLIC_URL } from '@/config/url.config';
-import { NO_INDEX_PAGE } from '@/meta/constants';
+import { NO_INDEX_PAGE } from '@/utils/constants';
 import { ArrowRight } from 'lucide-react';
 import { Metadata } from 'next';
 import Link from 'next/link';

@@ -74,6 +74,9 @@ export function ProductCard({ product }: ProductCardProps) {
       <h3 className='mt-4 line-clamp-1 font-semibold text-gray-700'>
         {product.title}
       </h3>
+      <p className='text-muted-foreground line-clamp-2 text-xs'>
+        {product.description}
+      </p>
       <Link
         href={PUBLIC_URL.category(product.category.id)}
         className='mt-1 text-sm text-gray-500'
@@ -81,8 +84,10 @@ export function ProductCard({ product }: ProductCardProps) {
         {product.category.title}
       </Link>
       <div className='mt-1 text-sm text-gray-900'>
-        {product.oldPrice && (
-          <span className='line-through mr-2 text-gray-500'>{formatPrice(product.oldPrice)}</span>
+        {product.oldPrice && product.oldPrice !== product.price && (
+          <span className='mr-2 text-gray-500 line-through'>
+            {formatPrice(product.oldPrice)}
+          </span>
         )}
         <span className='font-bold'>{formatPrice(product.price)}</span>
       </div>

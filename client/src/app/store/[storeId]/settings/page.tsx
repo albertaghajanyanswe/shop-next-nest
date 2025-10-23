@@ -1,6 +1,6 @@
-import { NO_INDEX_PAGE } from "@/meta/constants";
-import { Metadata } from "next";
-import { Settings } from "./Settings";
+import { NO_INDEX_PAGE } from '@/utils/constants';
+import { Metadata } from 'next';
+import { Settings } from './Settings';
 
 export const metadata: Metadata = {
   title: 'Store Settings',

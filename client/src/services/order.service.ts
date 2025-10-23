@@ -2,13 +2,17 @@ import { axiosWithAuth } from "@/api/api.interceptors"
 import { API_URL } from "@/config/api.config"
 import { EnumOrderStatus, IPaymentResponse } from "@/shared/types/order.interface"
 
-type TypeData = {
+export type TypeData = {
   status?: EnumOrderStatus
   orderItems: {
     quantity: number
     price: number
     productId: string
     storeId: string
+    name: string
+    description: string
+    image: string
+    userId: string
   }[]
 }
 

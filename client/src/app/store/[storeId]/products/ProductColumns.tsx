@@ -7,12 +7,16 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/DropdownMenu';
 import { PUBLIC_URL, STORE_URL } from '@/config/url.config';
+import { useCreateProduct } from '@/hooks/queries/products/useCreateProduct';
+import { useDeleteProduct } from '@/hooks/queries/products/useDeleteProduct';
 import { ColumnDef } from '@tanstack/react-table';
 import {
   ArrowUpDown,
+  CopyPlus,
   ExternalLink,
   MoreHorizontal,
   Pencil,
+  Trash2,
 } from 'lucide-react';
 import Link from 'next/link';
 
@@ -23,6 +27,18 @@ export interface IProductColumn {
   category: string;
   color: string;
   storeId: string;
+
+  // additional optional properties present on row.original used elsewhere
+  categoryId?: string;
+  brandId?: string;
+  colorId?: string;
+  images?: string[];
+  description?: string;
+  brand?: any;
+  reviews?: any[];
+  state?: string;
+  userId?: string;
+  originalPrice?: number;
 }
 
 export const productColumns: ColumnDef<IProductColumn>[] = [
@@ -100,6 +116,10 @@ export const productColumns: ColumnDef<IProductColumn>[] = [
     accessorKey: 'actions',
     header: 'Actions',
     cell: ({ row }) => {
+      console.log('ROW = ', row);
+      const { createProduct, isLoadingCreate } = useCreateProduct();
+      const { deleteProduct, isLoadingDelete } = useDeleteProduct();
+
       return (
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
@@ -126,6 +146,44 @@ export const productColumns: ColumnDef<IProductColumn>[] = [
                 Edit product
               </DropdownMenuItem>
             </Link>
+            <Button
+              variant='ghost'
+              className='h-8 w-full p-0 text-sm font-normal'
+              style={{ placeContent: 'start' }}
+              disabled={isLoadingCreate}
+              onClick={() =>
+                createProduct({
+                  title: row.original.title,
+                  price: Number(row.original.originalPrice),
+                  // ensure required fields exist by using existing values or safe defaults
+                  description: row.original.description ?? '',
+                  categoryId: row.original.categoryId,
+                  brandId: row.original.brandId,
+                  colorId: row.original.colorId ?? '',
+                  storeId: row.original.storeId,
+                  images: row.original.images ?? [],
+                  userId: row.original.userId ?? '',
+                } as any)
+              }
+            >
+              <DropdownMenuItem className='place-content-start'>
+                <CopyPlus className='mr-2 size-4' />
+                Duplicate
+              </DropdownMenuItem>
+            </Button>
+
+            <Button
+              variant='ghost'
+              className='h-8 w-full p-0 text-sm font-normal'
+              style={{ placeContent: 'start' }}
+              disabled={isLoadingDelete}
+              onClick={() => deleteProduct(row.original.id)}
+            >
+              <DropdownMenuItem className='place-content-start'>
+                <Trash2 className='mr-2 size-4' />
+                Delete
+              </DropdownMenuItem>
+            </Button>
           </DropdownMenuContent>
         </DropdownMenu>
       );

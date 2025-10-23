@@ -1,4 +1,4 @@
-import { NO_INDEX_PAGE } from '@/meta/constants';
+import { NO_INDEX_PAGE } from '@/utils/constants';
 import { Metadata } from 'next';
 import Store from './Store';
 

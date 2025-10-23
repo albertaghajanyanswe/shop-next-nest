@@ -26,7 +26,7 @@ import {
 import { cn } from '@/lib/utils';
 import type { ComponentProps } from 'react';
 import { Logo } from '../logo/Logo';
-import { SITE_NAME } from '@/meta/constants';
+import { SITE_NAME } from '@/utils/constants';
 import { SearchInput } from '../searchInput/SearchInput';
 import { DASHBOARD_URL, PUBLIC_URL, STORE_URL } from '@/config/url.config';
 import Link from 'next/link';
@@ -182,7 +182,10 @@ export const HeaderMenu = React.forwardRef<HTMLElement, HeaderMenuProps>(
                 </NavigationMenuItem>
               ) : (
                 <CreateStoreModal>
-                  <div role='button' className='hover:bg-accent hover:text-accent-foreground w-full cursor-pointer rounded-md px-4 py-2 text-sm font-medium'>
+                  <div
+                    role='button'
+                    className='hover:bg-accent hover:text-accent-foreground w-full cursor-pointer rounded-md px-4 py-2 text-sm font-medium'
+                  >
                     Create store
                   </div>
                 </CreateStoreModal>

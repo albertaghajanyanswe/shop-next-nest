@@ -1,5 +1,5 @@
 import { Metadata } from 'next';
-import { NO_INDEX_PAGE } from '@/meta/constants';
+import { NO_INDEX_PAGE } from '@/utils/constants';
 import { Reviews } from './Reviews';
 
 export const metadata: Metadata = {

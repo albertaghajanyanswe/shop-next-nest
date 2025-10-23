@@ -23,6 +23,7 @@ export interface IProduct {
   color: IColor;
   storeId: string;
   state: EnumProductState;
+  userId: string;
 }
 
 export interface IProductInput

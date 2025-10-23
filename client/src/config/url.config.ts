@@ -16,6 +16,10 @@ export const DASHBOARD_URL = {
 
   home: () => DASHBOARD_URL.root(`/`),
   favorites: () => DASHBOARD_URL.root(`/favorites`),
+  orders: () => DASHBOARD_URL.root(`/orders`),
+  subscriptions: () => DASHBOARD_URL.root(`/subscriptions`),
+  profile: () => DASHBOARD_URL.root(`/profile`),
+  settings: () => DASHBOARD_URL.root(`/settings`),
 }
 
 export const STORE_URL = {

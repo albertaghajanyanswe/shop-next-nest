@@ -4,11 +4,12 @@ import { AuthController } from './auth.controller';
 import { UserModule } from 'src/user/user.module';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { JwtModule } from '@nestjs/jwt';
-import { getJwtConfig } from 'src/config/jwt.config';
 import { PrismaService } from 'src/prisma.service';
 import { UserService } from 'src/user/user.service';
 import { GoogleStrategy } from './strategies/google.strategy';
 import { JwtStrategy } from './strategies/jwt.strategy';
+import { StripeService } from 'src/stripe/stripe.service';
+import { getJwtConfig } from 'src/config';
 
 @Module({
   imports: [
@@ -17,10 +18,17 @@ import { JwtStrategy } from './strategies/jwt.strategy';
     JwtModule.registerAsync({
       imports: [ConfigModule],
       inject: [ConfigService],
-      useFactory: getJwtConfig
-    })
+      useFactory: getJwtConfig,
+    }),
   ],
   controllers: [AuthController],
-  providers: [AuthService, PrismaService, UserService, JwtStrategy, GoogleStrategy],
+  providers: [
+    AuthService,
+    PrismaService,
+    UserService,
+    JwtStrategy,
+    GoogleStrategy,
+    StripeService,
+  ],
 })
 export class AuthModule {}

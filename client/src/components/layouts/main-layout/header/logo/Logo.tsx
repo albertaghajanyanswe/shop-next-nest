@@ -1,5 +1,5 @@
 import { PUBLIC_URL } from '@/config/url.config';
-import { SITE_NAME } from '@/meta/constants';
+import { SITE_NAME } from '@/utils/constants';
 import Image from 'next/image';
 import Link from 'next/link';
 
@@ -7,7 +7,7 @@ export function Logo() {
   return (
     <Link
       href={PUBLIC_URL.home()}
-      className='flex items-center gap-x-3 transition-opacity hover:opacity-75'
+      className='flex items-center gap-x-1 transition-opacity hover:opacity-75'
     >
       <Image
         src='/images/myStore_logo.svg'

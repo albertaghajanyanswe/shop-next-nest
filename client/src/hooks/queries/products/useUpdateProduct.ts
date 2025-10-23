@@ -8,16 +8,19 @@ import { QUERY_KEYS } from '@/shared/constants';
 import { IProductInput } from '@/shared/types/product.interface';
 
 export const useUpdateProduct = () => {
-  const params = useParams<{ productId: string }>();
+  const params = useParams<{ productId: string; storeId: string }>();
+  console.log('PARAMS = ', params);
   const productId = params.productId;
-
+  const storeId = params.storeId;
   const queryClient = useQueryClient();
 
   const { mutate: updateProduct, isPending: isLoadingUpdate } = useMutation({
     mutationKey: QUERY_KEYS.updateProduct,
     mutationFn: (data: IProductInput) => productService.update(productId, data),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: QUERY_KEYS.getStoreProducts });
+      queryClient.invalidateQueries({
+        queryKey: [QUERY_KEYS.getStoreProducts, storeId],
+      });
       toast.success('Product updated successfully.');
     },
     onError: () => {

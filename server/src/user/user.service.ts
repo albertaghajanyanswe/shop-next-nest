@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from 'src/prisma.service';
 import { hash } from 'argon2';
-import { AuthDto } from 'src/auth/dto/auth.dto';
+import { RegisterDto } from 'src/auth/dto/auth.dto';
 
 @Injectable()
 export class UserService {
@@ -31,14 +31,24 @@ export class UserService {
     return user;
   }
 
-  async createUser(userDto: AuthDto) {
+  async createUser(registerDto: RegisterDto) {
     const user = await this.prismaService.user.create({
       data: {
-        name: userDto.name,
-        email: userDto.email,
-        password: await hash(userDto.password),
+        name: registerDto.name,
+        email: registerDto.email,
+        password: await hash(registerDto.password),
       },
       include: { stores: true, favorites: true, orders: true },
+    });
+
+    await this.prismaService.store.create({
+      data: {
+        title: 'Free Store',
+        description:
+          'IMPORTANT: Only this store and his products should be shown in free plan',
+        userId: user.id,
+        isDefaultStore: true,
+      },
     });
     return user;
   }

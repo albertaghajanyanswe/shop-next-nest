@@ -25,6 +25,12 @@ export function Products() {
         category: product.category.title,
         color: product.color.value,
         storeId: product.store.id,
+        categoryId: product.category.id,
+        brandId: product.brand.id,
+        colorId: product.color.id,
+        images: product.images,
+        originalPrice: product.price,
+        description: product.description,
       }))
     : [];
   return (

@@ -21,6 +21,10 @@ export const useCheckout = () => {
           price: item.product.price,
           productId: item.product.id,
           storeId: item.product.storeId,
+          name: item.product.title,
+          description: item.product.description,
+          image: item.product.images[0],
+          userId: item.product.userId,
         })),
       });
     },
