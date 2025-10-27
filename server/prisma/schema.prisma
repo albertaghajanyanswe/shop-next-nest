@@ -27,6 +27,11 @@ model User {
   orders    Order[]
   products  Product[] @relation("UserProducts")
 
+  subscription Subscription[]
+  billingInfo  BillingInfo?
+
+  stripeAccountId String? @map("stripe_account_id")
+
   @@map("user")
 }
 
@@ -38,7 +43,7 @@ model Store {
   title       String
   description String?
 
-  user   User?   @relation(fields: [userId], references: [id])
+  user   User?   @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId String? @map("user_id")
 
   products   Product[]
@@ -47,7 +52,11 @@ model Store {
   reviews    Review[]
   orderItems OrderItem[]
   brands     Brand[]
-  image String?
+  image      String?
+
+  isDefaultStore Boolean @default(false)
+  isPublished    Boolean @default(true)
+  isBlocked      Boolean @default(false)
 
   @@map("store")
 }
@@ -71,7 +80,7 @@ model Product {
   totalViews Int @default(0)
   totalLikes Int @default(0)
 
-  store   Store?  @relation(fields: [storeId], references: [id])
+  store   Store?  @relation(fields: [storeId], references: [id], onDelete: Cascade)
   storeId String? @map("store_id")
 
   category   Category? @relation(fields: [categoryId], references: [id])
@@ -87,6 +96,9 @@ model Product {
 
   brand   Brand? @relation(fields: [brandId], references: [id])
   brandId String @map("brand_id")
+
+  isPublished Boolean @default(true)
+  isBlocked   Boolean @default(false)
 
   @@map("product")
 }
@@ -151,13 +163,13 @@ model Review {
   text   String
   rating Int
 
-  user   User?   @relation(fields: [userId], references: [id])
+  user   User?   @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId String? @map("user_id")
 
-  product   Product? @relation(fields: [productId], references: [id])
+  product   Product? @relation(fields: [productId], references: [id], onDelete: Cascade)
   productId String?  @map("product_id")
 
-  store   Store?  @relation(fields: [storeId], references: [id])
+  store   Store?  @relation(fields: [storeId], references: [id], onDelete: Cascade)
   storeId String? @map("store_id")
 
   @@map("review")
@@ -173,7 +185,7 @@ model Order {
   orderItems OrderItem[]
   totalPrice Float
 
-  user   User?   @relation(fields: [userId], references: [id])
+  user   User?   @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId String? @map("user_id")
 
   @@map("order")
@@ -187,7 +199,7 @@ model OrderItem {
   quantity Int
   price    Float
 
-  order   Order?  @relation(fields: [orderId], references: [id])
+  order   Order?  @relation(fields: [orderId], references: [id], onDelete: Cascade)
   orderId String? @map("order_id")
 
   product   Product? @relation(fields: [productId], references: [id])
@@ -199,6 +211,69 @@ model OrderItem {
   @@map("order_item")
 }
 
+model Subscription {
+  id        String   @id @default(cuid())
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  stripeSubscriptionId String? @map("stripe_subscription_id")
+
+  plan   Plan                 @relation(fields: [planId], references: [planId])
+  planId EnumSubscriptionType @map("plan_id")
+
+  nextPlan   Plan?                 @relation("NextPlan", fields: [nextPlanId], references: [planId])
+  nextPlanId EnumSubscriptionType? @map("next_plan_id")
+
+  status          EnumSubscriptionStatus
+  nextBillingDate DateTime?              @map("next_billing_date")
+  trialEndAt      DateTime?              @map("trial_end_at")
+
+  period       BillingCycle
+  storeLimit   Int?         @map("store_limit")
+  productLimit Int?         @map("product_limit")
+  customerId   String?      @map("customer_id")
+  user         User         @relation(fields: [userId], references: [id])
+  userId       String       @map("user_id")
+
+  cancelledAt     DateTime? @map("cancelled_at")
+  cancelledReason Json?     @map("cancelled_reason")
+  pausedAt        DateTime? @map("paused_at")
+
+  @@map("subscription")
+}
+
+model Plan {
+  id       String               @id @default(cuid())
+  planId   EnumSubscriptionType @unique @map("plan_id")
+  stripeProductId String               @map("stripe_product_id")
+  stripePriceId String?              @map("stripe_price_id")
+
+  storeLimit        Int?           @map("store_limit")
+  productLimit      Int?           @map("product_limit")
+  price             Float
+  period            BillingCycle
+  subscriptions     Subscription[]
+  nextSubscriptions Subscription[] @relation("NextPlan")
+
+  @@map("plan")
+}
+
+model BillingInfo {
+  id        String   @id @default(cuid())
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  user   User   @relation(fields: [userId], references: [id])
+  userId String @unique @map("user_id")
+
+  serviceId String @map("service_id")
+
+  stripeCustomerId           String? @map("stripe_customer_id")
+  stripeDefaultPaymentMethod String? @map("stripe_default_payment_method")
+
+  @@map("billing_info")
+}
+
 enum EnumOrderStatus {
   PENDING
   PAYED
@@ -207,4 +282,29 @@ enum EnumOrderStatus {
 enum EnumProductState {
   NEW
   USED
+}
+
+enum BillingCycle {
+  MONTHLY
+  ANNUAL
+}
+
+enum EnumSubscriptionType {
+  FREE
+  ADVANCED
+  ADVANCED_ANNUAL
+  PREMIUM
+  PREMIUM_ANNUAL
+}
+
+enum EnumSubscriptionStatus {
+  ACTIVE
+  CANCELLED
+  EXPIRED
+  PENDING
+  PENDING_DOWNGRADE
+  UPGRADING
+  OVERDUE
+  PAUSED
+  TRIALING
 }

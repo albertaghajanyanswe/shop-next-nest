@@ -97,7 +97,6 @@ Nest is an MIT-licensed open source project. It can grow thanks to the sponsors 
 
 Nest is [MIT licensed](https://github.com/nestjs/nest/blob/master/LICENSE).
 
-
 ## BASIC setup instruction
 
 #### Install dependencies
@@ -106,16 +105,46 @@ npm i --save @nestjs/config class-validator class-transformer @nestjs/jwt @nestj
 s fs-extra @nestjs/serve-static app-root-path @prisma/client @a2seven/yoo-c
 heckout
 
-
 #### Install DEV dependencies
 
 npm i --save-dev @types/multer @types/fs-extra @types/passport-jwt @types/passport-google-oauth20 @types/cookie-parser
 
 ##### Migrate DB
+
 npx prisma migrate dev --name add-basic-models
 
-npx prisma db  push
-
+npx prisma db push
 
 ##### Install prisma types
+
 npx prisma generate
+
+##### Stripe
+
+stripe login
+
+stripe listen --forward-to localhost:4000/api/stripe/webhook
+
+stripe trigger checkout.session.completed
+
+###### Subscriptions
+
+- Create product
+
+```js
+const advanced = await this.stripe.products.create({
+  name: 'Advanced Plan',
+  description: 'Advanced plan with more features',
+})
+```
+
+- Create price
+
+```js
+const price = await this.stripe.prices.create({
+  unit_amount: plan.price * 100,
+  currency: 'usd',
+  recurring: { interval: plan.period === 'MONTHLY' ? 'month' : 'year' },
+  product: plan.stripeId, // its product id - advanced.id
+});
+```
