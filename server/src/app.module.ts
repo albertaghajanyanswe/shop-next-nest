@@ -13,7 +13,7 @@ import { ReviewModule } from './review/review.module';
 import { BrandModule } from './brand/brand.module';
 import { SubscriptionModule } from './subscription/subscription.module';
 import { PlanModule } from './plan/plan.module';
-import { StripeModule } from './stripe/stripe.module';
+import { StripeModule } from './payment/provider/stripe/stripe.module';
 import { PaymentModule } from './payment/payment.module';
 import { BillingInfoModule } from './billing-info/billing-info.module';
 @Module({

@@ -11,7 +11,7 @@ import { RegisterDto, LoginDto } from './dto/auth.dto';
 import { Response } from 'express';
 import { ConfigService } from '@nestjs/config';
 import { verify } from 'argon2';
-import { StripeService } from 'src/stripe/stripe.service';
+import { StripeService } from 'src/payment/provider/stripe/stripe.service';
 import { EnvVariables } from 'src/utils/constants/variables';
 
 @Injectable()
@@ -45,7 +45,7 @@ export class AuthService {
     await this.stripeService.createCustomer(user.id);
     try {
       await this.stripeService.createCheckoutSessionSubscription(
-        user.id,
+        user,
         'FREE',
       );
     } catch (e) {

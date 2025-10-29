@@ -8,7 +8,7 @@ import { PrismaService } from 'src/prisma.service';
 import { UserService } from 'src/user/user.service';
 import { GoogleStrategy } from './strategies/google.strategy';
 import { JwtStrategy } from './strategies/jwt.strategy';
-import { StripeService } from 'src/stripe/stripe.service';
+import { StripeService } from 'src/payment/provider/stripe/stripe.service';
 import { getJwtConfig } from 'src/config';
 
 @Module({

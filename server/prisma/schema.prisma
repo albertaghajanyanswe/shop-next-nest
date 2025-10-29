@@ -27,8 +27,9 @@ model User {
   orders    Order[]
   products  Product[] @relation("UserProducts")
 
-  subscription Subscription[]
   billingInfo  BillingInfo?
+
+  subscription Subscription?
 
   stripeAccountId String? @map("stripe_account_id")
 
@@ -175,18 +176,174 @@ model Review {
   @@map("review")
 }
 
-model Order {
-  id        String   @id @default(cuid())
+// model Order {
+//   id        String   @id @default(cuid())
+//   createdAt DateTime @default(now()) @map("created_at")
+//   updatedAt DateTime @updatedAt @map("updated_at")
+
+//   status TransactionStatus @default(PENDING)
+
+//   orderItems OrderItem[]
+//   totalPrice Float
+
+//   user   User?   @relation(fields: [userId], references: [id], onDelete: Cascade)
+//   userId String? @map("user_id")
+
+//   @@map("order")
+// }
+
+// model OrderItem {
+//   id        String   @id @default(cuid())
+//   createdAt DateTime @default(now()) @map("created_at")
+//   updatedAt DateTime @updatedAt @map("updated_at")
+
+//   quantity Int
+//   price    Float
+
+//   order   Order?  @relation(fields: [orderId], references: [id], onDelete: Cascade)
+//   orderId String? @map("order_id")
+
+//   product   Product? @relation(fields: [productId], references: [id])
+//   productId String?  @map("product_id")
+
+//   store   Store?  @relation(fields: [storeId], references: [id])
+//   storeId String? @map("store_id")
+
+//   @@map("order_item")
+// }
+
+// model Subscription {
+//   id        String   @id @default(cuid())
+//   createdAt DateTime @default(now()) @map("created_at")
+//   updatedAt DateTime @updatedAt @map("updated_at")
+
+//   stripeSubscriptionId String? @map("stripe_subscription_id")
+
+//   plan   Plan                 @relation(fields: [planId], references: [planId])
+//   planId EnumSubscriptionType @map("plan_id")
+
+//   nextPlan   Plan?                 @relation("NextPlan", fields: [nextPlanId], references: [planId])
+//   nextPlanId EnumSubscriptionType? @map("next_plan_id")
+
+//   status          EnumSubscriptionStatus
+//   nextBillingDate DateTime?              @map("next_billing_date")
+//   trialEndAt      DateTime?              @map("trial_end_at")
+
+//   period       BillingPeriod
+//   storeLimit   Int?         @map("store_limit")
+//   productLimit Int?         @map("product_limit")
+//   customerId   String?      @map("customer_id")
+//   user         User         @relation(fields: [userId], references: [id])
+//   userId       String       @map("user_id")
+
+//   cancelledAt     DateTime? @map("cancelled_at")
+//   cancelledReason Json?     @map("cancelled_reason")
+//   pausedAt        DateTime? @map("paused_at")
+
+//   @@map("subscription")
+// }
+
+// model Plan {
+//   id       String               @id @default(cuid())
+//   planId   EnumSubscriptionType @unique @map("plan_id")
+//   stripeProductId String               @map("stripe_product_id")
+//   stripePriceId String?              @map("stripe_price_id")
+
+//   storeLimit        Int?           @map("store_limit")
+//   productLimit      Int?           @map("product_limit")
+//   price             Float
+//   period            BillingPeriod
+//   subscriptions     Subscription[]
+//   nextSubscriptions Subscription[] @relation("NextPlan")
+
+//   @@map("plan")
+// }
+
+model Plan {
+  id       String               @id @default(cuid())
+
+  planId   EnumSubscriptionType @unique @map("plan_id")
+  description String
+
+  price             Float
+  period            BillingPeriod
+  storeLimit        Int?           @map("store_limit")
+  productLimit      Int?           @map("product_limit")
+  isPopular Boolean @default(false) @map("is_popular")
+
+  stripeProductId String               @map("stripe_product_id")
+  stripePriceId String?              @map("stripe_price_id")
+
+  features String[]
+
+  subscriptions     Subscription[]
+  nextSubscriptions Subscription[] @relation("NextPlan")
+
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
 
-  status EnumOrderStatus @default(PENDING)
+  @@map("plan")
+}
+
+model Subscription {
+  id        String   @id @default(cuid())
+
+  stripeSubscriptionId String? @map("stripe_subscription_id")
+
+  status EnumSubscriptionStatus @default(PENDING)
+  startDate DateTime @default(now()) @map("start_date")
+  endDate   DateTime? @map("end_date")
+  nextBillingDate DateTime?              @map("next_billing_date")
+  trialEndAt      DateTime?              @map("trial_end_at")
+  period       BillingPeriod
+  storeLimit   Int?         @map("store_limit")
+  productLimit Int?         @map("product_limit")
+  customerId   String?      @map("customer_id")
+
+  orders Order[]
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId String @unique @map("user_id")
+
+  plan   Plan                 @relation(fields: [planId], references: [planId])
+  planId EnumSubscriptionType @map("plan_id")
+
+  nextPlan   Plan?                 @relation("NextPlan", fields: [nextPlanId], references: [planId])
+  nextPlanId EnumSubscriptionType? @map("next_plan_id")
+
+  cancelledAt     DateTime? @map("cancelled_at")
+  cancelledReason Json?     @map("cancelled_reason")
+  pausedAt        DateTime? @map("paused_at")
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@map("subscription")
+}
+
+model Order {
+  id        String   @id @default(cuid())
+
+  totalPrice      Float
+
+  provider    PaymentProvider
+  status      EnumOrderStatus @default(PENDING)
+
+  externalId  String? @map("external_id")
+  providerMeta Json?  @map("provider_meta")
+
+  billingPeriod BillingPeriod? @map("billing_period")
+
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId String @map("user_id")
+
+  subscription   Subscription? @relation(fields: [subscriptionId], references: [id], onDelete: Cascade)
+  subscriptionId String?      @map("subscription_id")
 
   orderItems OrderItem[]
-  totalPrice Float
 
-  user   User?   @relation(fields: [userId], references: [id], onDelete: Cascade)
-  userId String? @map("user_id")
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
 
   @@map("order")
 }
@@ -211,53 +368,6 @@ model OrderItem {
   @@map("order_item")
 }
 
-model Subscription {
-  id        String   @id @default(cuid())
-  createdAt DateTime @default(now()) @map("created_at")
-  updatedAt DateTime @updatedAt @map("updated_at")
-
-  stripeSubscriptionId String? @map("stripe_subscription_id")
-
-  plan   Plan                 @relation(fields: [planId], references: [planId])
-  planId EnumSubscriptionType @map("plan_id")
-
-  nextPlan   Plan?                 @relation("NextPlan", fields: [nextPlanId], references: [planId])
-  nextPlanId EnumSubscriptionType? @map("next_plan_id")
-
-  status          EnumSubscriptionStatus
-  nextBillingDate DateTime?              @map("next_billing_date")
-  trialEndAt      DateTime?              @map("trial_end_at")
-
-  period       BillingCycle
-  storeLimit   Int?         @map("store_limit")
-  productLimit Int?         @map("product_limit")
-  customerId   String?      @map("customer_id")
-  user         User         @relation(fields: [userId], references: [id])
-  userId       String       @map("user_id")
-
-  cancelledAt     DateTime? @map("cancelled_at")
-  cancelledReason Json?     @map("cancelled_reason")
-  pausedAt        DateTime? @map("paused_at")
-
-  @@map("subscription")
-}
-
-model Plan {
-  id       String               @id @default(cuid())
-  planId   EnumSubscriptionType @unique @map("plan_id")
-  stripeProductId String               @map("stripe_product_id")
-  stripePriceId String?              @map("stripe_price_id")
-
-  storeLimit        Int?           @map("store_limit")
-  productLimit      Int?           @map("product_limit")
-  price             Float
-  period            BillingCycle
-  subscriptions     Subscription[]
-  nextSubscriptions Subscription[] @relation("NextPlan")
-
-  @@map("plan")
-}
-
 model BillingInfo {
   id        String   @id @default(cuid())
   createdAt DateTime @default(now()) @map("created_at")
@@ -274,19 +384,16 @@ model BillingInfo {
   @@map("billing_info")
 }
 
-enum EnumOrderStatus {
-  PENDING
-  PAYED
-}
-
 enum EnumProductState {
   NEW
   USED
 }
 
-enum BillingCycle {
+enum BillingPeriod {
   MONTHLY
-  ANNUAL
+  YEARLY
+
+  @@map("billing_period")
 }
 
 enum EnumSubscriptionType {
@@ -307,4 +414,30 @@ enum EnumSubscriptionStatus {
   OVERDUE
   PAUSED
   TRIALING
+
+  @@map("subscription_status")
+}
+
+enum PaymentProvider {
+  STRIPE
+  YOOKASSA
+
+  @@map("payment_provider")
+}
+
+enum EnumOrderStatus {
+  PENDING
+  SUCCEEDED
+  FAILED
+  CANCELLED
+  REFUNDED
+
+  @@map("order_status")
+}
+
+enum CurrencyEnum {
+  USD
+  EUR
+  RUB
+  @@map("currency_enum")
 }
