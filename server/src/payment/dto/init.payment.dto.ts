@@ -9,3 +9,8 @@ export class InitSubscriptionPaymentRequest {
   @IsEnum(PaymentProvider)
   public provider: PaymentProvider;
 }
+
+export class CancelSubscriptionRequest {
+  @IsEnum(PaymentProvider)
+  public provider: PaymentProvider;
+}

@@ -1,9 +1,26 @@
-import { Body, Controller, Get, Post } from '@nestjs/common';
+import {
+  BadRequestException,
+  Body,
+  Controller,
+  Get,
+  HttpCode,
+  Post,
+  Res,
+  UnauthorizedException,
+  UsePipes,
+  ValidationPipe,
+} from '@nestjs/common';
 import { PaymentService } from './payment.service';
 import { CurrentUser } from 'src/user/decorators/user.decorator';
 import { Auth } from 'src/auth/decorators/auth.decorator';
 import { ApiOkResponse, ApiOperation } from '@nestjs/swagger';
-import { InitSubscriptionPaymentRequest, PaymentHistoryResponse } from './dto';
+import {
+  CancelSubscriptionRequest,
+  InitSubscriptionPaymentRequest,
+  PaymentHistoryResponse,
+} from './dto';
+import { OrderDto } from 'src/order/dto/order.dto';
+import type { User } from '@prisma/client';
 
 @Controller('payment')
 export class PaymentController {
@@ -16,16 +33,70 @@ export class PaymentController {
   @ApiOkResponse({ type: [PaymentHistoryResponse] })
   @Auth()
   @Get()
-  public async getHistory(@CurrentUser('id') userId: string) {
-    return await this.paymentService.getHistory(userId);
+  public async getOrders(@CurrentUser('id') userId: string) {
+    return await this.paymentService.getOrders(userId);
   }
 
   @Auth()
-  @Post()
+  @Post('/sub-upgrade')
   public async initSubscription(
     @Body() dto: InitSubscriptionPaymentRequest,
     @CurrentUser() user,
   ) {
     return await this.paymentService.initSubscription(dto, user);
+  }
+
+  @Auth()
+  @Post('/stripe/sub-cancel-upgrade')
+  async cancelUpgrade(
+    @Body() dto: CancelSubscriptionRequest,
+    @CurrentUser('id') userId: string,
+    @Res() res,
+  ) {
+    try {
+      const url = await this.paymentService.cancelUpgrade(userId);
+      return res.json({ url });
+    } catch (err) {
+      throw new BadRequestException(
+        err?.message || 'Failed to cancel subscription',
+      );
+    }
+  }
+
+  @Auth()
+  @Get('/stripe/sub-get-management-link')
+  async getManagementLink(@CurrentUser('id') userId: string, @Res() res) {
+    return await this.paymentService.getManagementLink(userId, res);
+  }
+
+  @Auth()
+  @Get('/subscriptions')
+  async getSettings(@CurrentUser('id') userId: string) {
+    return await this.paymentService.getSubscriptions(userId);
+  }
+
+  @Auth()
+  @Get('/plans')
+  async getPlans(@CurrentUser('id') userId: string) {
+    return await this.paymentService.getPlans(userId);
+  }
+
+  @UsePipes(new ValidationPipe())
+  @HttpCode(200)
+  @Post('/buy-product')
+  @Auth()
+  async checkoutStripe(
+    @Body() dto: OrderDto,
+    @CurrentUser('id') userId: string,
+  ) {
+    return this.paymentService.pay(dto, userId);
+  }
+
+  @UsePipes(new ValidationPipe())
+  @HttpCode(200)
+  @Post('/stripe/create-connect-account')
+  @Auth()
+  async createConnectAccountStripe(@CurrentUser() user: User) {
+    return this.paymentService.createConnectAccountStripe(user);
   }
 }

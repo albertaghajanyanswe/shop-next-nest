@@ -5,10 +5,11 @@ import { YoomoneyModule } from './provider/yoomoney/yoomoney.module';
 import { PrismaService } from 'src/prisma.service';
 import { WebhookModule } from './webhook/webhook.module';
 import { StripeModule } from './provider/stripe/stripe.module';
+import { ConfigService } from '@nestjs/config';
 
 @Module({
   controllers: [PaymentController],
-  providers: [PaymentService, PrismaService],
+  providers: [PaymentService, PrismaService, ConfigService],
   imports: [ WebhookModule, YoomoneyModule, StripeModule],
 })
 export class PaymentModule {}
