@@ -29,7 +29,15 @@ export interface IProduct {
 export interface IProductInput
   extends Omit<
     IProduct,
-    'id' | 'review' | 'store' | 'category' | 'color' | 'oldPrice'
+    | 'id'
+    | 'reviews'
+    | 'store'
+    | 'category'
+    | 'color'
+    | 'oldPrice'
+    | 'storeId'
+    | 'brand'
+    | 'userId'
   > {
   categoryId: string;
   colorId: string;

@@ -5,7 +5,7 @@ import { ICreateStore } from '@/shared/types/store.interface';
 import toast from 'react-hot-toast';
 import { STORE_URL } from '@/config/url.config';
 import { useMemo } from 'react';
-import { QUERY_KEYS } from '@/shared/constants';
+import { QUERY_KEYS } from '@/shared/queryConstants';
 
 export function useCreateStore() {
   const router = useRouter();

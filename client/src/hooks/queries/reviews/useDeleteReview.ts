@@ -1,5 +1,5 @@
 import { reviewService } from '@/services/review.service';
-import { QUERY_KEYS } from '@/shared/constants';
+import { QUERY_KEYS } from '@/shared/queryConstants';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useMemo } from 'react';
 import toast from 'react-hot-toast';

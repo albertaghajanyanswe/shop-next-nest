@@ -1,7 +1,7 @@
 'use client';
 import { DASHBOARD_URL, PUBLIC_URL } from '@/config/url.config';
 import { authService } from '@/services/auth/auth.service';
-import { QUERY_KEYS } from '@/shared/constants';
+import { QUERY_KEYS } from '@/shared/queryConstants';
 import { IAuthForm } from '@/shared/types/auth.interface';
 import { useMutation } from '@tanstack/react-query';
 import { useRouter } from 'next/navigation';

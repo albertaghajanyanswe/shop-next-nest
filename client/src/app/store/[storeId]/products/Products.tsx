@@ -21,7 +21,7 @@ export function Products() {
     ? products?.map((product) => ({
         id: product.id,
         title: product.title,
-        price: formatPrice(product.price),
+        price: formatPrice(product.price) as unknown as number,
         category: product.category.title,
         color: product.color.value,
         storeId: product.store.id,

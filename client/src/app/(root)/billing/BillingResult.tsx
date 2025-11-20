@@ -2,7 +2,7 @@
 
 import { Catalog } from '@/components/ui/catalog/Catalog';
 import { productService } from '@/services/product.service';
-import { QUERY_KEYS } from '@/shared/constants';
+import { QUERY_KEYS } from '@/shared/queryConstants';
 import { IProduct } from '@/shared/types/product.interface';
 import { useQuery } from '@tanstack/react-query';
 import { useSearchParams } from 'next/navigation';
@@ -22,10 +22,26 @@ export default function BillingResult() {
   return (
     <div className='mt-[64px] flex h-full w-full items-center justify-center'>
       <div className='max-w-sm rounded-lg border border-gray-200 bg-white p-6 shadow-sm dark:border-gray-700 dark:bg-gray-800'>
-        {isSuccess && !isDowngrade && !isCancel && <h5 className='text-green-700 mb-4 text-2xl font-bold'>Operation Succeeded</h5>}
-        {isSuccess && isDowngrade && <h5 className='text-green-700 mb-4 text-2xl font-bold'>'Downgrade Succeeded</h5>}
-        {isSuccess && isCancel && <h5 className='text-green-700 mb-4 text-2xl font-bold'>Cancel Succeeded</h5>}
-        {!isSuccess && <h5 className='text-error mb-4 text-2xl font-bold'>Something went wrong</h5>}
+        {isSuccess && !isDowngrade && !isCancel && (
+          <h5 className='mb-4 text-2xl font-bold text-green-700'>
+            Operation Succeeded
+          </h5>
+        )}
+        {isSuccess && isDowngrade && (
+          <h5 className='mb-4 text-2xl font-bold text-green-700'>
+            'Downgrade Succeeded
+          </h5>
+        )}
+        {isSuccess && isCancel && (
+          <h5 className='mb-4 text-2xl font-bold text-green-700'>
+            Cancel Succeeded
+          </h5>
+        )}
+        {!isSuccess && (
+          <h5 className='text-error mb-4 text-2xl font-bold'>
+            Something went wrong
+          </h5>
+        )}
         {isSuccess && !isDowngrade && !isCancel && (
           <span className='text-muted-foreground mb-3 font-normal'>
             You have successfully subscribed to the plan <b>{planId}</b>. You
@@ -40,8 +56,8 @@ export default function BillingResult() {
         )}
         {isSuccess && isCancel && (
           <span className='text-muted-foreground mb-3 font-normal'>
-            You have successfully canceled your subscription. You can close
-            this window now.
+            You have successfully canceled your subscription. You can close this
+            window now.
           </span>
         )}
         {!isSuccess && 'Please try again later or contact support.'}

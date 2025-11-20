@@ -1,13 +1,15 @@
 import { Catalog } from '@/components/ui/catalog/Catalog';
 import { categoryService } from '@/services/category.service';
 import { productService } from '@/services/product.service';
-import { Metadata } from 'next';
+import type { Metadata } from 'next';
 
 export const revalidate = 60;
 
-async function getProducts(params: { id: string }) {
-  const products = await productService.getByCategoryId(params.id);
-  const category = await categoryService.getById(params.id);
+async function getProducts(categoryId: string) {
+  const [products, category] = await Promise.all([
+    productService.getByCategoryId(categoryId),
+    categoryService.getById(categoryId),
+  ]);
 
   return { products, category };
 }
@@ -15,9 +17,10 @@ async function getProducts(params: { id: string }) {
 export async function generateMetadata({
   params,
 }: {
-  params: { id: string };
+  params: Promise<{ id: string }>;
 }): Promise<Metadata> {
-  const { category, products } = await getProducts(params);
+  const { id } = await params;
+  const { category, products } = await getProducts(id);
 
   return {
     title: category.title,
@@ -40,9 +43,10 @@ export async function generateMetadata({
 export default async function CategoryPage({
   params,
 }: {
-  params: { id: string };
+  params: Promise<{ id: string }>;
 }) {
-  const { category, products } = await getProducts(params);
+  const { id } = await params;
+  const { category, products } = await getProducts(id);
 
   return (
     <div className='my-6'>

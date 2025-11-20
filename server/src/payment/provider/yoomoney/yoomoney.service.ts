@@ -68,7 +68,7 @@ export class YoomoneyService {
       paymentId,
       status,
       raw: dto,
-    }
+    };
   }
 
   public verifyWebhookIp(ip: string): boolean {
@@ -86,12 +86,34 @@ export class YoomoneyService {
     return false;
   }
 
-  async upgradeSubscription(
-    user: User,
-    plan: Plan,
-    order: Order,
-    billingPeriod: BillingPeriod,
-  ) {
+  async upgradeSubscription(user: User, plan: Plan) {
+    const order = await this.prisma.order.create({
+      data: {
+        totalPrice: plan.price,
+        provider: PaymentProvider.YOOKASSA,
+        user: {
+          connect: {
+            id: user.id,
+          },
+        },
+        // subscription: {
+        //   create: {
+        //     user: {
+        //       connect: {
+        //         id: user.id,
+        //       },
+        //     },
+        //     plan: {
+        //       connect: {
+        //         id: plan.id,
+        //       },
+        //     },
+        //     period: plan.period,
+        //   },
+        // },
+      },
+    });
+
     const payment = await checkout.createPayment({
       amount: {
         value: plan.price.toFixed(2),

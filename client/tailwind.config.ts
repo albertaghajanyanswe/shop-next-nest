@@ -1,10 +1,8 @@
 import type { Config } from 'tailwindcss';
 
 const config: Config = {
-  content: [
-    './src/**/*.{js,ts,jsx,tsx}',
-  ],
-  prefix: 'tw-',
+  content: ['./src/**/*.{js,ts,jsx,tsx}'],
+  // prefix: 'tw-',
   theme: {
     screens: {
       xs: '480px',

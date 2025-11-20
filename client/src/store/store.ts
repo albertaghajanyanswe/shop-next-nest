@@ -10,6 +10,7 @@ import {
   REGISTER,
   REHYDRATE,
 } from 'redux-persist';
+import { EnvVariables } from '@/shared/envVariables';
 
 const persistConfig = {
   key: 'shop-web',

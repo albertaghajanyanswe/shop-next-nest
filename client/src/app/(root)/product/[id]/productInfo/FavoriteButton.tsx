@@ -1,7 +1,7 @@
 import { Button } from '@/components/ui/Button';
 import { useProfile } from '@/hooks/useProfile';
 import { userService } from '@/services/user.service';
-import { QUERY_KEYS } from '@/shared/constants';
+import { QUERY_KEYS } from '@/shared/queryConstants';
 import { IProduct } from '@/shared/types/product.interface';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { AiFillHeart, AiOutlineHeart } from 'react-icons/ai';
@@ -11,7 +11,10 @@ interface FavoriteButtonProps {
   className?: string;
 }
 
-export default function FavoriteButton({ product, className = '' }: FavoriteButtonProps) {
+export default function FavoriteButton({
+  product,
+  className = '',
+}: FavoriteButtonProps) {
   const { user } = useProfile();
   const queryClient = useQueryClient();
   const { mutate: toggleFavorite, isPending } = useMutation({

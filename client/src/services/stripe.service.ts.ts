@@ -1,14 +1,17 @@
 import { axiosWithAuth } from '@/api/api.interceptors';
 import { API_URL } from '@/config/api.config';
 import { TypeData } from './order.service';
-import { IPaymentResponse, IStripePaymentResponse } from '@/shared/types/order.interface';
+import {
+  IPaymentResponse,
+  IStripePaymentResponse,
+} from '@/shared/types/order.interface';
 
 class StripeService {
   async upgradePlan(planId: string) {
     const { data: upgradedPlan } = await axiosWithAuth<{ planId: string }>({
-      url: API_URL.stripe(`/upgrade/${planId}`),
+      url: API_URL.payment(`/sub-upgrade`),
       method: 'POST',
-      data: { planId },
+      data: { planId, provider: 'STRIPE' }, // todo add provider enum
     });
 
     return upgradedPlan;
@@ -16,7 +19,7 @@ class StripeService {
 
   async cancelUpgrade() {
     const { data: cancelUpgrade } = await axiosWithAuth({
-      url: API_URL.stripe(`/cancel-upgrade`),
+      url: API_URL.payment(`/stripe/sub-cancel-upgrade`),
       method: 'POST',
       data: {},
     });
@@ -26,7 +29,7 @@ class StripeService {
 
   async getManagementLink() {
     const { data: managementLink } = await axiosWithAuth({
-      url: API_URL.stripe(`/get-management-link`),
+      url: API_URL.payment(`/stripe/sub-get-management-link`),
       method: 'GET',
     });
 
@@ -35,7 +38,7 @@ class StripeService {
 
   async getSubscriptions() {
     const { data: subscriptions } = await axiosWithAuth({
-      url: API_URL.stripe(`/get-subscriptions`),
+      url: API_URL.payment(`/subscriptions`),
       method: 'GET',
     });
 
@@ -44,7 +47,7 @@ class StripeService {
 
   async getPlans() {
     const { data: plans } = await axiosWithAuth({
-      url: API_URL.stripe(`/get-plans`),
+      url: API_URL.payment(`/plans`),
       method: 'GET',
     });
 
@@ -53,7 +56,7 @@ class StripeService {
 
   async createConnectAccountStripe() {
     const { data } = await axiosWithAuth<{ accountLink: string }>({
-      url: API_URL.stripe(`/create-connect-account`),
+      url: API_URL.payment(`/stripe/create-connect-account`),
       method: 'POST',
       data: {},
     });
@@ -63,7 +66,7 @@ class StripeService {
 
   async createStripeAccountLink(stripeAccountId: string) {
     const { data } = await axiosWithAuth<{ url: string }>({
-      url: API_URL.stripe(`/create-account-link`),
+      url: API_URL.payment(`/create-account-link`),
       method: 'POST',
       data: { stripeAccountId },
     });
@@ -73,10 +76,19 @@ class StripeService {
 
   async pay(data: TypeData) {
     return axiosWithAuth<IStripePaymentResponse>({
-      url: API_URL.stripe('/pay-stripe'),
+      url: API_URL.payment('/buy-product'),
       method: 'POST',
       data,
     });
+  }
+
+  async simulateStripeTestClockAdvance(numberOfDays: number) {
+    const { data } = await axiosWithAuth<{ message: string }>({
+      url: API_URL.payment(`/stripe/simulate-test-clock`),
+      method: 'POST',
+      data: { numberOfDays },
+    });
+    return data;
   }
 }
 

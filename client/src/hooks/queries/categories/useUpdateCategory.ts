@@ -3,7 +3,7 @@ import toast from 'react-hot-toast';
 import { useParams } from 'next/navigation';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { categoryService } from '@/services/category.service';
-import { QUERY_KEYS } from '@/shared/constants';
+import { QUERY_KEYS } from '@/shared/queryConstants';
 import { ICategoryInput } from '@/shared/types/category.interface';
 
 export const useUpdateCategory = () => {
@@ -14,7 +14,8 @@ export const useUpdateCategory = () => {
 
   const { mutate: updateCategory, isPending: isLoadingUpdate } = useMutation({
     mutationKey: QUERY_KEYS.updateCategory,
-    mutationFn: (data: ICategoryInput) => categoryService.update(categoryId, data),
+    mutationFn: (data: ICategoryInput) =>
+      categoryService.update(categoryId, data),
     onSuccess: () => {
       queryClient.invalidateQueries({
         queryKey: QUERY_KEYS.getStoreCategories,

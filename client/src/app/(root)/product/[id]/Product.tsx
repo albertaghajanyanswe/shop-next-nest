@@ -2,7 +2,7 @@
 
 import { Catalog } from '@/components/ui/catalog/Catalog';
 import { productService } from '@/services/product.service';
-import { QUERY_KEYS } from '@/shared/constants';
+import { QUERY_KEYS } from '@/shared/queryConstants';
 import { IProduct } from '@/shared/types/product.interface';
 import { useQuery } from '@tanstack/react-query';
 import ProductGallery from './product-gallery/ProductGallery';
@@ -30,7 +30,7 @@ export default function Product({
     <div>
       <div className='mx-auto max-w-7xl'>
         <div className='space-y-7 px-4 py-10 sm:px-6 lg:px-8'>
-          <div className='lg:grid lg:grid-cols-2 lg:items-center lg:gap-x-8'>
+          <div className='grid grid-cols-1 items-center gap-x-8 md:grid-cols-2'>
             <ProductGallery product={product} />
             <ProductInfo product={product} />
           </div>

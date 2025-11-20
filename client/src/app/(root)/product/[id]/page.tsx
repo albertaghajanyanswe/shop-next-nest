@@ -2,26 +2,35 @@ import { productService } from '@/services/product.service';
 import { Metadata } from 'next';
 import Product from './Product';
 import { notFound } from 'next/navigation';
+import { EnvVariables } from '@/shared/envVariables';
 
 export const revalidate = 60;
 
 export async function generateStaticParams() {
-  const products = await productService.getAll();
-  const paths = products.map((product) => {
-    return {
-      params: { id: product.id },
-    };
-  });
+  if (process.env.NODE_ENV === 'production') {
+    return [];
+  }
 
-  return paths;
+  const products = await productService.getAll();
+  const res = products ? products.map((product) => ({ id: product.id })) : [];
+  console.log('generateStaticParams = RES = ', res)
+  return res;
 }
 
-async function getProducts(params: { id: string }) {
+async function getProducts(id: string) {
   try {
-    const product = await productService.getById(params.id);
-    const similarProducts = await productService.getSimilar(params.id);
+
+    console.log('getProducts ID = ', id)
+    // const product = await productService.getById(id)
+    const [product, similarProducts] = await Promise.all([
+      productService.getById(id),
+      productService.getSimilar(id),
+    ]);
+
+    // console.log('product = ', product)
     return { product, similarProducts };
-  } catch {
+  } catch(err) {
+    console.log('ERROR ', err)
     return notFound();
   }
 }
@@ -29,9 +38,10 @@ async function getProducts(params: { id: string }) {
 export async function generateMetadata({
   params,
 }: {
-  params: { id: string };
+  params: Promise<{ id: string }>;
 }): Promise<Metadata> {
-  const { product } = await getProducts(params);
+  const { id } = await params;
+  const { product } = await getProducts(id);
 
   return {
     title: product.title,
@@ -52,15 +62,16 @@ export async function generateMetadata({
 export default async function ProductPage({
   params,
 }: {
-  params: { id: string };
+  params: Promise<{ id: string }>;
 }) {
-  const { product, similarProducts } = await getProducts(params);
+  const { id } = await params;
+  const { product, similarProducts } = await getProducts(id);
 
   return (
     <Product
       initialProduct={product}
       similarProducts={similarProducts}
-      id={params.id}
+      id={id}
     />
   );
 }

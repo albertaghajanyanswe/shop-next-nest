@@ -8,7 +8,7 @@ export const getJwtConfig = async (
   return {
     secret: configService.get<string>(EnvVariables.JWT_SECRET),
     signOptions: {
-      expiresIn: configService.get<string>(EnvVariables.JWT_EXPIRES_IN),
+      expiresIn: configService.get<string>(EnvVariables.JWT_EXPIRES_IN) as any ?? '7d',
     },
   };
 }

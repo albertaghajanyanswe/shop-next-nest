@@ -13,6 +13,7 @@ import {
 import { useEffect, useState } from 'react';
 import AddToCardButton from '@/app/(root)/product/[id]/productInfo/AddToCardButton';
 import FavoriteButton from '@/app/(root)/product/[id]/productInfo/FavoriteButton';
+import { generateImgPath } from '@/lib/imageUtils';
 
 interface ProductCardProps {
   product: IProduct;
@@ -46,7 +47,7 @@ export function ProductCard({ product }: ProductCardProps) {
             <CarouselItem key={image}>
               <Link href={PUBLIC_URL.product(product.id)}>
                 <Image
-                  src={image}
+                  src={generateImgPath(image)}
                   alt={product.title}
                   width={300}
                   height={300}

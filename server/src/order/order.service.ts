@@ -3,7 +3,7 @@ import { PrismaService } from 'src/prisma.service';
 import { ICapturePayment, YooCheckout } from '@a2seven/yoo-checkout';
 import { OrderDto } from './dto/order.dto';
 import { PaymentStatusDto } from './dto/payment-status.dto';
-import { EnumOrderStatus } from '@prisma/client';
+import { EnumOrderStatus, PaymentProvider } from '@prisma/client';
 
 const checkout = new YooCheckout({
   shopId: process.env['YOOKASSA_SHOP_ID'] as string,
@@ -48,6 +48,7 @@ export class OrderService {
               id: userId,
             },
           },
+          provider: PaymentProvider.STRIPE,
         },
       });
 
@@ -91,7 +92,7 @@ export class OrderService {
           id: orderId,
         },
         data: {
-          status: EnumOrderStatus.PAYED,
+          status: EnumOrderStatus.SUCCEEDED,
         },
       });
       return true;
@@ -134,6 +135,7 @@ export class OrderService {
               id: userId,
             },
           },
+          provider: PaymentProvider.STRIPE,
         },
       });
 
@@ -153,6 +155,50 @@ export class OrderService {
       });
 
       return payment;
+    } catch (error) {
+      console.log('error ', error);
+    }
+  }
+
+  async createOrder(dto: OrderDto, userId: string) {
+    console.log('\n\n createPayment userId ', userId);
+    console.log('createPayment dto ', dto);
+    try {
+      const orderItems = dto.orderItems.map((item) => ({
+        quantity: item.quantity,
+        price: item.price,
+        product: {
+          connect: {
+            id: item.productId,
+          },
+        },
+        store: {
+          connect: {
+            id: item.storeId,
+          },
+        },
+      }));
+
+      const totalPrice = dto.orderItems.reduce((acc, item) => {
+        return acc + item.price * item.quantity;
+      }, 0);
+      const order = await this.prisma.order.create({
+        data: {
+          status: dto.status,
+          orderItems: {
+            create: orderItems,
+          },
+          totalPrice,
+          user: {
+            connect: {
+              id: userId,
+            },
+          },
+          provider: PaymentProvider.STRIPE,
+        },
+      });
+
+      return order;
     } catch (error) {
       console.log('error ', error);
     }

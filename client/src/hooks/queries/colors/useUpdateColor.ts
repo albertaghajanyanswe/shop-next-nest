@@ -3,7 +3,7 @@ import toast from 'react-hot-toast';
 import { useParams } from 'next/navigation';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { colorService } from '@/services/color.service';
-import { QUERY_KEYS } from '@/shared/constants';
+import { QUERY_KEYS } from '@/shared/queryConstants';
 import { IColorInput } from '@/shared/types/color.interface';
 
 export const useUpdateColor = () => {

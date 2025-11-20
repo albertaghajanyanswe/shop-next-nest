@@ -2,7 +2,7 @@ import { useMemo } from 'react';
 import { useParams } from 'next/navigation';
 import { useQuery } from '@tanstack/react-query';
 import { categoryService } from '@/services/category.service';
-import { QUERY_KEYS } from '@/shared/constants';
+import { QUERY_KEYS } from '@/shared/queryConstants';
 
 export const useGetCategories = () => {
   const params = useParams<{ storeId: string }>();

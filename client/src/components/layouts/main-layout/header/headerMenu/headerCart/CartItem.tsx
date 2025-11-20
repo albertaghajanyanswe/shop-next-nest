@@ -5,6 +5,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { CartActions } from './CartActions';
 import { CartBuyAction } from './CartBuyAction';
+import { generateImgPath } from '@/lib/imageUtils';
 
 interface CartItemsProps {
   orderItem: ICartItem;
@@ -17,7 +18,7 @@ export function CartItem({ orderItem }: CartItemsProps) {
       <div className='mb-5 flex items-center'>
         <Link href={PUBLIC_URL.product(orderItem.product.id)} className='image'>
           <Image
-            src={orderItem.product.images[0]}
+            src={generateImgPath(orderItem.product.images[0])}
             alt={orderItem.product.title}
             className='fill h-28 w-28 overflow-hidden rounded-md object-contain'
             width={112}

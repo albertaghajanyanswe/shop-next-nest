@@ -1,0 +1,112 @@
+FROM node:20.11.1
+
+# Create app directory
+WORKDIR /usr/src/app
+# Install app dependencies
+COPY package.json ./
+COPY package-lock.json ./
+
+# CMD rm -rf node_modules
+# CMD ls -l
+
+ENV PATH /usr/src/app/node_modules/.bin:$PATH
+
+RUN npm ci --silent
+# Copy app source code
+COPY . .
+
+#Expose port and start application
+EXPOSE 4000
+
+## Launch the wait tool and then your application
+# RUN npm prune --production
+# CMD npm start
+CMD ["npm","run","start:dev"]
+
+
+
+FROM node:20.11.1
+
+# Установим bash, чтобы выполнять необходимые скрипты
+RUN apk add --no-cache bash
+
+# Create app directory
+WORKDIR /usr/src/app
+# Install app dependencies
+COPY package.json ./
+COPY package-lock.json ./
+
+# CMD rm -rf node_modules
+# CMD ls -l
+
+ENV PATH /usr/src/app/node_modules/.bin:$PATH
+
+RUN npm ci --silent
+# Copy app source code
+COPY . .
+
+# Generate Prisma client
+RUN npx prisma generate
+
+# Build app
+RUN npm run build
+
+#Expose port and start application
+EXPOSE 4000
+
+# Копируем скрипт ожидания и даем ему права на выполнение
+COPY wait-for-db.sh /app/wait-for-db.sh
+RUN chmod +x /app/wait-for-db.sh
+
+# Запуск скрипта ожидания базы данных перед стартом приложения
+CMD ["/bin/bash", "/app/wait-for-db.sh"]
+
+## Launch the wait tool and then your application
+# RUN npm prune --production
+# CMD npm start
+# CMD ["npm","run","start:dev"]
+
+
+
+
+
+
+
+
+
+
+
+
+
+FROM node:20.11.1
+
+# Устанавливаем bash и netcat
+RUN apt-get update && \
+    apt-get install -y bash netcat-openbsd && \
+    rm -rf /var/lib/apt/lists/*
+
+# Устанавливаем bash
+RUN apt-get update && apt-get install -y bash && rm -rf /var/lib/apt/lists/*
+
+# Рабочая директория
+WORKDIR /usr/src/app
+
+# Копируем только package.json и package-lock.json
+COPY package.json package-lock.json ./
+
+# Устанавливаем зависимости
+RUN npm ci --silent
+
+# Копируем весь исходный код
+COPY . .
+
+# Экспонируем порт
+EXPOSE 4000
+
+# Копируем скрипт ожидания базы
+COPY wait-for-db.sh /app/wait-for-db.sh
+RUN chmod +x /app/wait-for-db.sh
+
+# CMD ["/bin/bash", "/app/wait-for-db.sh"]
+CMD ["/bin/bash", "/app/wait-for-db.sh", "db", "sh", "-c", "npx prisma db push && npm run start:dev"]
+

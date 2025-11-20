@@ -1,5 +1,5 @@
 import { useQuery } from '@tanstack/react-query';
-import { QUERY_KEYS } from '@/shared/constants';
+import { QUERY_KEYS } from '@/shared/queryConstants';
 import { statisticsService } from '@/services/auth/statistics.service';
 import { useMemo } from 'react';
 import { useParams } from 'next/navigation';

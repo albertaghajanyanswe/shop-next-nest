@@ -1,10 +1,10 @@
-import { BillingPeriod, PaymentProvider } from '@prisma/client';
+import { BillingPeriod, EnumSubscriptionType, PaymentProvider } from '@prisma/client';
 import { IsEnum, IsNotEmpty, IsString } from 'class-validator';
 
 export class InitSubscriptionPaymentRequest {
-  @IsString()
+  @IsEnum(EnumSubscriptionType)
   @IsNotEmpty()
-  public planId: string;
+  public planId: EnumSubscriptionType;
 
   @IsEnum(PaymentProvider)
   public provider: PaymentProvider;

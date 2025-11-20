@@ -23,22 +23,26 @@ export default function ProductInfo({ product }: ProductInfoProps) {
         <hr className='my-4' />
         <p className='text-muted-foreground text-sm'>{product.description}</p>
         <hr className='my-4' />
+
         <div className='flex items-center gap-x-4'>
-          <h3 className='font-semibold'>Color:</h3>
-          <div
-            className='size-6 rounded-full'
-            style={{ backgroundColor: product.color.value }}
-          />
+          <h3 className='font-semibold'>Category:</h3>
+          <Link
+            href={PUBLIC_URL.category(product.category.id)}
+            className='text-sm font-semibold text-primary-500 underline'
+          >
+            {product.category.title}
+          </Link>
         </div>
 
         <div className='flex items-center gap-x-4'>
           <h3 className='font-semibold'>Color:</h3>
-          <Link
-            href={PUBLIC_URL.category(product.category.id)}
-            className='text-sm'
-          >
-            {product.category.title}
-          </Link>
+          <div className='flex flex-row items-center justify-center gap-x-2'>
+            <div
+              className='size-6 rounded-full'
+              style={{ backgroundColor: product.color.value }}
+            />
+            <p className='font-semibold text-sm text-neutral-700'>{product.color.name}</p>
+          </div>
         </div>
 
         <div className='flex items-center gap-x-4'>

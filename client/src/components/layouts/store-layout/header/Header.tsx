@@ -7,6 +7,7 @@ import { DASHBOARD_URL } from '@/config/url.config';
 import Image from 'next/image';
 import { Loader } from '@/components/ui/Loader';
 import { StoreSwitcher } from './StoreSwitcher';
+import { generateImgPath } from '@/lib/imageUtils';
 
 export function Header() {
   const { user, isLoading } = useProfile();
@@ -25,7 +26,7 @@ export function Header() {
                 className='flex items-center gap-x-2'
               >
                 <Image
-                  src={user.picture || '/server-uploads/no-user-image.png'}
+                  src={generateImgPath(user.picture) || `${generateImgPath('/server-uploads/no-user-image.png')}`}
                   alt={user.name}
                   width={42}
                   height={42}

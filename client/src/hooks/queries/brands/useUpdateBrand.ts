@@ -2,7 +2,7 @@ import { useMemo } from 'react';
 import toast from 'react-hot-toast';
 import { useParams } from 'next/navigation';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { QUERY_KEYS } from '@/shared/constants';
+import { QUERY_KEYS } from '@/shared/queryConstants';
 import { IBrandInput } from '@/shared/types/brand.interface';
 import { brandService } from '@/services/brandService';
 

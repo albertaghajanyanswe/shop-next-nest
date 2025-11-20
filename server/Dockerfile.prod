@@ -1,0 +1,32 @@
+FROM node:20.11.1
+
+WORKDIR /usr/src/app
+
+# Установите postgresql-client
+RUN apt-get update && apt-get install -y postgresql-client && rm -rf /var/lib/apt/lists/*
+
+# Копируем package.json и schema
+COPY package*.json ./
+COPY prisma ./prisma
+
+# Устанавливаем зависимости
+
+# Копируем весь код
+
+RUN npm ci --silent
+# Генерируем Prisma Client
+# RUN npx prisma generate
+
+COPY . .
+# Устанавливаем NestJS CLI
+RUN npm install -g @nestjs/cli
+
+COPY docker-entrypoint.sh /usr/local/bin/
+RUN chmod +x /usr/local/bin/docker-entrypoint.sh
+
+ENTRYPOINT ["docker-entrypoint.sh"]
+
+EXPOSE 4000
+EXPOSE 5555
+
+CMD ["npm", "run", "start:dev"]

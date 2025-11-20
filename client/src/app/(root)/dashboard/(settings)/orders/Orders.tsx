@@ -3,7 +3,7 @@
 import { PUBLIC_URL } from '@/config/url.config';
 import { saveTokenStorage } from '@/services/auth/auth-token.service';
 import { authService } from '@/services/auth/auth.service';
-import { QUERY_KEYS } from '@/shared/constants';
+import { QUERY_KEYS } from '@/shared/queryConstants';
 import { useMutation } from '@tanstack/react-query';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useEffect } from 'react';

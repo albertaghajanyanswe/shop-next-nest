@@ -1,5 +1,5 @@
 import { orderService } from '@/services/order.service';
-import { QUERY_KEYS } from '@/shared/constants';
+import { QUERY_KEYS } from '@/shared/queryConstants';
 import { useMutation } from '@tanstack/react-query';
 import { useActions } from './useActions';
 import { useRouter } from 'next/navigation';

@@ -3,7 +3,7 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useParams, useRouter } from 'next/navigation';
 import { STORE_URL } from '@/config/url.config';
 import { useMemo } from 'react';
-import { QUERY_KEYS } from '@/shared/constants';
+import { QUERY_KEYS } from '@/shared/queryConstants';
 import { colorService } from '@/services/color.service';
 
 export function useDeleteColor() {

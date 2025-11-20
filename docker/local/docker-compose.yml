@@ -1,0 +1,103 @@
+version: "3.3"
+
+services:
+  nginx:
+    image: nginx:alpine
+    container_name: shop-nginx
+    ports:
+      - "8080:80"
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf:ro
+      - ../../server/server-uploads:/usr/src/app/server-uploads
+
+    depends_on:
+      - server
+      - ui
+    networks:
+      - app-connect
+  db:
+    container_name: db
+    image: postgres:latest
+    restart: always
+    environment:
+      - POSTGRES_USER=${DB_USER}
+      - POSTGRES_PASSWORD=${DB_PASSWORD}
+      - POSTGRES_DB=${DB_DATABASE}
+      - PGDATA=/var/lib/postgresql/data/pgdata
+
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${DB_USER} -d ${DB_DATABASE}"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
+    ports:
+      - 5433:5432
+    volumes:
+      - db_data:/var/lib/postgresql/data
+    networks:
+      - app-connect
+
+  # prisma-studio:
+  #   container_name: prisma-studio
+  #   image: node:18-alpine
+  #   working_dir: /usr/src/app
+  #   volumes:
+  #     - ./:/usr/src/app
+  #   ports:
+  #     - "5556:5555"
+  #   environment:
+  #     - DATABASE_URL=postgresql://postgres:postgres@db:5432/mystore-dev
+  #     - NODE_ENV=development
+  #   depends_on:
+  #     - db
+  #   command: npx prisma studio
+  #   networks:
+  #     - app-connect
+
+  server:
+    container_name: shop-backend
+    restart: always
+    build:
+      context: ../../server
+      dockerfile: Dockerfile.local
+    volumes:
+      - ../../server:/usr/src/app
+      - /usr/src/app/node_modules
+      # - uploads:/usr/src/app/server-uploads
+      - ../../server/server-uploads:/usr/src/app/server-uploads
+    ports:
+      - "4000"
+      - "5555:5555"
+    env_file:
+      - ../../server/.env.local
+    depends_on:
+      - db
+    networks:
+      - app-connect
+  ui:
+    container_name: shop-client
+    build:
+      context: ../../client
+      dockerfile: Dockerfile.local
+    volumes:
+      - ../../client:/app:cached
+      - /app/node_modules
+      - /app/.next
+    ports:
+      - "3000"
+    environment:
+      - NODE_ENV=development
+      # - NEXT_PUBLIC_SERVER_URL=http://nginx
+    depends_on:
+      - server
+    networks:
+      - app-connect
+
+volumes:
+  db_data:
+  uploads:
+
+networks:
+  app-connect:
+    driver: bridge

@@ -1,5 +1,5 @@
 import { reviewService } from '@/services/review.service';
-import { QUERY_KEYS } from '@/shared/constants';
+import { QUERY_KEYS } from '@/shared/queryConstants';
 import { IReviewInput } from '@/shared/types/review.interface';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useParams } from 'next/navigation';
@@ -12,9 +12,12 @@ export const useCreateReview = (storeId: string) => {
 
   const { mutate: createReview, isPending: isLoadingCreate } = useMutation({
     mutationKey: QUERY_KEYS.createReview,
-    mutationFn: (data: IReviewInput) => reviewService.create(data, params.id, storeId),
+    mutationFn: (data: IReviewInput) =>
+      reviewService.create(data, params.id, storeId),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: QUERY_KEYS.productId(params.id) });
+      queryClient.invalidateQueries({
+        queryKey: QUERY_KEYS.productId(params.id),
+      });
       toast.success('Review created successfully');
     },
     onError: () => {

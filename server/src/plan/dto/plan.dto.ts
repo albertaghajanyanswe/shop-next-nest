@@ -51,6 +51,7 @@ export class PlanResponse {
       'Advanced analytics',
     ],
     isArray: true,
+    type: String
   })
   public features: string[];
 

@@ -1,5 +1,5 @@
 import { orderService } from '@/services/order.service';
-import { QUERY_KEYS } from '@/shared/constants';
+import { QUERY_KEYS } from '@/shared/queryConstants';
 import { useMutation } from '@tanstack/react-query';
 import { useActions } from './useActions';
 import { useRouter } from 'next/navigation';
@@ -18,16 +18,19 @@ export const useCheckoutStripe = () => {
     mutationKey: [QUERY_KEYS.payStripe],
     mutationFn: (orderItem: ICartItem) => {
       return stripeService.pay({
-        orderItems: [{
-          quantity: orderItem.quantity,
-          price: orderItem.product.price,
-          productId: orderItem.product.id,
-          storeId: orderItem.product.storeId,
-          name: orderItem.product.title,
-          description: orderItem.product.description,
-          image: orderItem.product.images[0],
-          userId: orderItem.product.userId,
-        }]})
+        orderItems: [
+          {
+            quantity: orderItem.quantity,
+            price: orderItem.product.price,
+            productId: orderItem.product.id,
+            storeId: orderItem.product.storeId,
+            name: orderItem.product.title,
+            description: orderItem.product.description,
+            image: orderItem.product.images[0],
+            userId: orderItem.product.userId,
+          },
+        ],
+      });
     },
     onSuccess: ({ data }) => {
       if (data?.url) {

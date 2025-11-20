@@ -3,6 +3,7 @@ import { ReviewModal } from '@/components/modals/ReviewModal';
 import { Button } from '@/components/ui/Button';
 import { useDeleteReview } from '@/hooks/queries/reviews/useDeleteReview';
 import { useProfile } from '@/hooks/useProfile';
+import { generateImgPath } from '@/lib/imageUtils';
 import { IProduct } from '@/shared/types/product.interface';
 import { Plus, Trash2 } from 'lucide-react';
 import Image from 'next/image';
@@ -36,7 +37,7 @@ export default function ProductReviews({ product }: ProductReviewsProps) {
               <div className='flex justify-between'>
                 <div className='flex items-center gap-x-4 font-medium'>
                   <Image
-                    src={review.user.picture || '/images/no-user-image.png'}
+                    src={generateImgPath(review.user.picture) || '/images/no-user-image.png'}
                     alt={review.user.name}
                     width={40}
                     height={40}

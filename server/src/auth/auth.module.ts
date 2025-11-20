@@ -10,6 +10,7 @@ import { GoogleStrategy } from './strategies/google.strategy';
 import { JwtStrategy } from './strategies/jwt.strategy';
 import { StripeService } from 'src/payment/provider/stripe/stripe.service';
 import { getJwtConfig } from 'src/config';
+import { SubscriptionService } from 'src/subscription/subscription.service';
 
 @Module({
   imports: [
@@ -29,6 +30,7 @@ import { getJwtConfig } from 'src/config';
     JwtStrategy,
     GoogleStrategy,
     StripeService,
+    SubscriptionService,
   ],
 })
 export class AuthModule {}

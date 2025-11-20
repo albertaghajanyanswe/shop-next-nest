@@ -4,7 +4,7 @@ import { useParams, useRouter } from 'next/navigation';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { STORE_URL } from '@/config/url.config';
 import { categoryService } from '@/services/category.service';
-import { QUERY_KEYS } from '@/shared/constants';
+import { QUERY_KEYS } from '@/shared/queryConstants';
 import { ICategoryInput } from '@/shared/types/category.interface';
 
 export const useCreateCategory = () => {

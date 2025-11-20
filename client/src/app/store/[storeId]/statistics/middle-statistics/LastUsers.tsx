@@ -1,4 +1,5 @@
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/Card';
+import { generateImgPath } from '@/lib/imageUtils';
 import { ILastUser } from '@/shared/types/statistics.interface';
 import { formatPrice } from '@/utils/string/formatPrice';
 import Image from 'next/image';
@@ -21,7 +22,7 @@ export function LastUsers({ data }: ILastUsersProps) {
             data.map((user) => (
               <div key={user.id} className='mt-2 flex items-center'>
                 <Image
-                  src={user.picture || '/images/no-user-image.png'}
+                  src={generateImgPath(user.picture) || '/images/no-user-image.png'}
                   alt={user.name}
                   width={40}
                   height={40}

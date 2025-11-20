@@ -1,5 +1,7 @@
 import {
+  Body,
   Controller,
+  Delete,
   HttpCode,
   Post,
   Query,
@@ -23,5 +25,12 @@ export class FileController {
     @Query('folder') folder?: string,
   ) {
     return this.fileService.saveFiles(files, folder);
+  }
+
+  @HttpCode(200)
+  @Auth()
+  @Delete()
+  async deleteFile(@Body('url') url: string) {
+    return this.fileService.deleteFile(url);
   }
 }

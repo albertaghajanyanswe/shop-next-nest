@@ -15,7 +15,7 @@ import { YookassaWebhookDto } from './dto';
 export class WebhookController {
   public constructor(private readonly webhookService: WebhookService) {}
 
-  @Post('yookassa')
+  @Post('/yookassa')
   @HttpCode(HttpStatus.OK)
   public async handleYoomoneyWebhook(
     @Body() dto: YookassaWebhookDto,
@@ -25,10 +25,10 @@ export class WebhookController {
     return await this.webhookService.handleYookassaWebhook(dto, ip);
   }
 
-  @Post('stripe')
+  @Post('/stripe')
   @HttpCode(HttpStatus.OK)
   public async handleStripeWebhook(@Req() req, @Headers() headers: any) {
-    console.log('\n\n\n STRIPE WEBHOOK');
+    // console.log('\n\n\n STRIPE WEBHOOK');
     return await this.webhookService.handleStripeWebhook(req, headers);
   }
 }

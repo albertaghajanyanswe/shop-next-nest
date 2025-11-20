@@ -25,7 +25,11 @@ import { useUpdateProduct } from '@/hooks/queries/products/useUpdateProduct';
 import { IBrand } from '@/shared/types/brand.interface';
 import { ICategory } from '@/shared/types/category.interface';
 import { IColor } from '@/shared/types/color.interface';
-import { EnumProductState, IProduct, IProductInput } from '@/shared/types/product.interface';
+import {
+  EnumProductState,
+  IProduct,
+  IProductInput,
+} from '@/shared/types/product.interface';
 import { Trash2 } from 'lucide-react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 
@@ -36,17 +40,22 @@ interface productFormProps {
   brands: IBrand[];
 }
 
-const DEFAULT_VALUES: IProductInput = {
-  title: '',
-  description: '',
-  images: [],
-  price: 0,
-  categoryId: '',
-  colorId: '',
-  brandId: '',
-  state: EnumProductState.NEW,
-};
-export function ProductForm({ product, categories, colors, brands }: productFormProps) {
+// const DEFAULT_VALUES: IProductInput = {
+//   title: '',
+//   description: '',
+//   images: [],
+//   price: 0,
+//   categoryId: '',
+//   colorId: '',
+//   brandId: '',
+//   state: EnumProductState.NEW,
+// };
+export function ProductForm({
+  product,
+  categories,
+  colors,
+  brands,
+}: productFormProps) {
   const { createProduct, isLoadingCreate } = useCreateProduct();
   const { updateProduct, isLoadingUpdate } = useUpdateProduct();
   const { deleteProduct, isLoadingDelete } = useDeleteProduct();
@@ -83,7 +92,7 @@ export function ProductForm({ product, categories, colors, brands }: productForm
   };
   return (
     <div className='p-6'>
-      <div className='flex items-center justify-between mb-8'>
+      <div className='mb-8 flex items-center justify-between'>
         <Heading title={title} description={description} />
         {product && (
           <ConfirmModal
@@ -104,7 +113,7 @@ export function ProductForm({ product, categories, colors, brands }: productForm
           onSubmit={form.handleSubmit(onSubmit)}
           className='h-full space-y-6'
         >
-          <FormField
+          {/* <FormField
             control={form.control}
             name='images'
             rules={{ required: 'Upload at least one image' }}
@@ -121,6 +130,27 @@ export function ProductForm({ product, categories, colors, brands }: productForm
                 <FormMessage />
               </FormItem>
             )}
+          /> */}
+          <FormField
+            control={form.control}
+            name='images'
+            rules={{ required: 'Upload at least one image' }}
+            render={({ field }) => {
+              console.log('FIELD = ', field)
+              return (
+                <FormItem className='mt-4'>
+                  <FormLabel>Images</FormLabel>
+                  <FormControl>
+                    <ImageUpload
+                      isDisabled={isLoading}
+                      onChange={field.onChange}
+                      value={field.value}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              );
+            }}
           />
           <div className='mt-4 grid gap-4 sm:grid-cols-2'>
             <FormField
@@ -261,7 +291,7 @@ export function ProductForm({ product, categories, colors, brands }: productForm
                 <Select
                   disabled={isLoading}
                   onValueChange={field.onChange}
-                  defaultValue={field.value}
+                  defaultValue={field.value as unknown as string}
                 >
                   <FormControl>
                     <SelectTrigger className='w-full'>

@@ -1,14 +1,20 @@
 import axios, { CreateAxiosDefaults } from 'axios';
-import { SERVER_URL } from '@/config/api.config';
+import { NEXT_PUBLIC_SERVER_URL } from '@/config/api.config';
 import { errorCatch, getContentType } from './api.helper';
 import {
   getAccessToken,
   removeFromStorage,
 } from '@/services/auth/auth-token.service';
 import { authService } from '@/services/auth/auth.service';
+import { EnvVariables } from '@/shared/envVariables';
+
+const API_BASE =
+  typeof window === 'undefined'
+    ? process.env.NEXT_PUBLIC_SERVER_SERVICE // внутри Server Components
+    : process.env.NEXT_PUBLIC_CLIENT_URL; // в браузере
 
 const options: CreateAxiosDefaults = {
-  baseURL: `${SERVER_URL}/api`,
+  baseURL: `${API_BASE}/api`,
   headers: getContentType(),
   withCredentials: true,
 };
@@ -41,7 +47,7 @@ axiosWithAuth.interceptors.response.use(
     ) {
       originalRequest._isRetry = true;
       try {
-        console.log('interceptors - getNewTokens')
+        console.log('interceptors - getNewTokens');
         await authService.getNewTokens();
         return axiosWithAuth.request(originalRequest);
       } catch (error) {

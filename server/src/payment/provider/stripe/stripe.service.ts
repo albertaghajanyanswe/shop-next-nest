@@ -10,6 +10,7 @@ import {
   EnumSubscriptionStatus,
   EnumSubscriptionType,
   Order,
+  PaymentProvider,
   Plan,
   Subscription,
   User,
@@ -23,6 +24,7 @@ import { OrderDto } from 'src/order/dto/order.dto';
 import { EnvVariables } from 'src/utils/constants/variables';
 import { CreatePlanType } from 'src/payment/dto';
 import { PaymentWebhookResult } from 'src/payment/interfaces';
+import { SubscriptionService } from 'src/subscription/subscription.service';
 
 @Injectable()
 export class StripeService {
@@ -31,11 +33,12 @@ export class StripeService {
     private readonly prisma: PrismaService,
     private configService: ConfigService,
     private userService: UserService,
+    private subscriptionService: SubscriptionService,
   ) {
     this.stripe = new Stripe(
       configService.get<string>(EnvVariables.STRIPE_SECRET_KEY) as string,
       // {
-      //   apiVersion: '2025-03-31.basil',
+      //   apiVersion: '2025-10-29.clover',
       // },
     );
   }
@@ -219,43 +222,26 @@ export class StripeService {
     return `${process.env.CLIENT_URL}/billing?success=true&downgrade=false&cancel=true`;
   }
 
-  public async upgradeSubscription1(
-    user: User,
-    plan: Plan,
-    order: Order,
-    billingPeriod: BillingPeriod,
-  ) {
-    const stripeProductId = plan.stripeProductId;
-    if (!stripeProductId) {
-      throw new BadRequestException('Invalid plan');
-    }
-
-    const session = 
-  }
-
-  async upgradeSubscription(
-    user: User,
-    plan: Plan,
-    order: Order,
-    billingPeriod: BillingPeriod,
-  ): Promise<string> {
+  async upgradeSubscription(user: User, plan: Plan): Promise<string> {
     try {
+      console.log('\n\n [Func] upgradeSubscription', user.id, plan.planId);
+
       const planId = plan.planId;
-      console.log('\n\n [Func] upgradeSubscription', user.id, planId);
       const sub = await this.prisma.subscription.findFirst({
         where: { userId: user.id, status: EnumSubscriptionStatus.ACTIVE },
       });
-      console.log('Active sub = ', sub);
       if (!sub) throw new BadRequestException('Subscription not found');
       if (sub.planId == planId) {
         throw new BadRequestException('Already have subscription');
       }
+
       if (sub.nextPlanId) {
         if (sub.nextPlanId == planId) {
           throw new BadRequestException('Already have subscription');
         }
         await this.cancelUpgrade(user.id);
       }
+
       const currPlan = await this.prisma.plan.findUnique({
         where: { planId },
       });
@@ -269,18 +255,17 @@ export class StripeService {
       });
 
       if (currPlan.price > (oldPlan?.price || 0)) {
-        const url = await this.createCheckoutSessionSubscription(
-          user,
-          planId,
-          order,
-        );
+        console.log('\n\n upgradeSubscription - UPGRADE');
+        const url = await this.createCheckoutSessionSubscription(user, plan);
         return url;
       } else {
+        console.log('\n\n upgradeSubscription - DOWNGRADE');
         try {
           await this.stripe.subscriptions.update(
             sub.stripeSubscriptionId as string,
             {
               cancel_at_period_end: true,
+              metadata: { next_plan_id: currPlan.planId },
             },
           );
         } catch (err) {
@@ -305,6 +290,7 @@ export class StripeService {
 
   async createCustomer(userId: string) {
     console.log('\n\n [Func] createCustomer', userId);
+    const clock = await this.createStripeTestClock(`CustomerClock-${userId}`);
     const localCustomer = await this.prisma.billingInfo.findUnique({
       where: { userId },
     });
@@ -326,12 +312,14 @@ export class StripeService {
             metadata: {
               userId,
             },
+            test_clock: clock.id,
           });
 
           await this.prisma.billingInfo.update({
             where: { id: localCustomer.id },
             data: {
               stripeCustomerId: newStripeCustomer.id,
+              stripeTestClockId: clock.id,
             },
           });
         } else {
@@ -366,12 +354,14 @@ export class StripeService {
             metadata: {
               userId,
             },
+            test_clock: clock.id,
           });
 
           await this.prisma.billingInfo.update({
             where: { id: localCustomer.id },
             data: {
               stripeCustomerId: newStripeCustomer.id,
+              stripeTestClockId: clock.id,
             },
           });
         }
@@ -407,12 +397,14 @@ export class StripeService {
           metadata: {
             userId,
           },
+          test_clock: clock.id,
         });
         await this.prisma.billingInfo.create({
           data: {
             userId: userId,
             serviceId: 'stripe',
             stripeCustomerId: newStripeCustomer.id,
+            stripeTestClockId: clock.id,
           },
         });
       }
@@ -429,23 +421,23 @@ export class StripeService {
     }
   }
 
-  async createCheckoutSessionSubscription(
-    user: User,
-    planId: EnumSubscriptionType,
-    order: Order,
-  ) {
+  async createCheckoutSessionSubscription(user: User, plan: Plan) {
     console.log(
       '\n\n [Func] createCheckoutSessionSubscription for user',
       user.id,
       'planId',
-      planId,
+      plan.planId,
     );
+
+    const planId = plan.planId;
     let customer = await this.prisma.billingInfo.findFirst({
       where: { userId: user.id },
     });
     if (!customer) {
       await this.createCustomer(user.id);
-      customer = await this.prisma.billingInfo.findFirst({ where: { userId } });
+      customer = await this.prisma.billingInfo.findFirst({
+        where: { userId: user.id },
+      });
       if (!customer) throw new BadRequestException('Failed to create customer');
     }
 
@@ -463,13 +455,31 @@ export class StripeService {
       }
     } catch {
       await this.createCustomer(user.id);
-      customer = await this.prisma.billingInfo.findFirst({ where: { userId: user.id } });
+      customer = await this.prisma.billingInfo.findFirst({
+        where: { userId: user.id },
+      });
       if (!customer) throw new BadRequestException('Failed to create customer');
     }
     console.log('15.15.15 Update Sub');
+
+    const subscriptions = await this.prisma.subscription.findMany({
+      where: {
+        userId: user.id,
+        status: EnumSubscriptionStatus.PENDING,
+      },
+      select: { id: true },
+    });
+
+    const subscriptionIds = subscriptions.map((s) => s.id);
+
     await this.prisma.subscription.updateMany({
-      where: { userId: user.id, status: EnumSubscriptionStatus.PENDING },
+      where: { id: { in: subscriptionIds } },
       data: { status: EnumSubscriptionStatus.EXPIRED },
+    });
+
+    await this.prisma.order.updateMany({
+      where: { subscriptionId: { in: subscriptionIds } },
+      data: { status: EnumOrderStatus.EXPIRED },
     });
 
     const activeSub = await this.prisma.subscription.findFirst({
@@ -489,18 +499,23 @@ export class StripeService {
       );
 
     if (planId == 'FREE') {
-      const freeSub = await this.prisma.subscription.create({
-        data: {
-          userId: user.id,
-          planId,
-          storeLimit: subscriptionSettings.storeLimit,
-          productLimit: subscriptionSettings.productLimit,
-          status: EnumSubscriptionStatus.ACTIVE,
-          customerId: customer.stripeCustomerId as string,
-          createdAt: new Date(),
-          period: subscriptionSettings.period,
-        },
-      });
+      const orderAndSub =
+        await this.subscriptionService.createSubscriptionAndOrder(
+          {
+            userId: user.id,
+            planId,
+            storeLimit: subscriptionSettings.storeLimit,
+            productLimit: subscriptionSettings.productLimit,
+            status: EnumSubscriptionStatus.ACTIVE,
+            customerId: customer.stripeCustomerId as string,
+            createdAt: new Date(),
+            period: subscriptionSettings.period,
+          },
+          user,
+          plan,
+          PaymentProvider.STRIPE,
+        );
+      const freeSub = orderAndSub.subscription;
       console.log('111 CREATE NEW SUB = ', freeSub);
 
       return `${process.env.CLIENT_URL}/billing?success=true&planId=${planId}`;
@@ -513,19 +528,25 @@ export class StripeService {
           (subscriptionSettings.period === BillingPeriod.MONTHLY ? 1 : 12),
       ),
     );
-    const subscription = await this.prisma.subscription.create({
-      data: {
-        userId: user.id,
-        planId,
-        storeLimit: subscriptionSettings.storeLimit,
-        productLimit: subscriptionSettings.productLimit,
-        status: EnumSubscriptionStatus.PENDING,
-        customerId: customer.stripeCustomerId as string,
-        createdAt: new Date(),
-        nextBillingDate,
-        period: subscriptionSettings.period,
-      },
-    });
+
+    const orderAndSub =
+      await this.subscriptionService.createSubscriptionAndOrder(
+        {
+          userId: user.id,
+          planId,
+          storeLimit: subscriptionSettings.storeLimit,
+          productLimit: subscriptionSettings.productLimit,
+          status: EnumSubscriptionStatus.PENDING,
+          customerId: customer.stripeCustomerId as string,
+          createdAt: new Date(),
+          nextBillingDate,
+          period: subscriptionSettings.period,
+        },
+        user,
+        plan,
+        PaymentProvider.STRIPE,
+      );
+    const subscription = orderAndSub.subscription as Subscription;
     console.log('222 CREATE NEW SUB = ', subscription);
     const previousSub =
       (await this.prisma.subscription.count({
@@ -544,6 +565,7 @@ export class StripeService {
             metadata: {
               userId: user.id,
               planId,
+              orderId: orderAndSub.order.id,
             },
           };
     const existUser = await this.userService.getById(user.id);
@@ -575,7 +597,7 @@ export class StripeService {
       ],
       mode: 'subscription',
       payment_method_types: ['card'],
-      customer_email: user.email,
+      // customer_email: user.email,
       saved_payment_method_options: {
         payment_method_save: 'enabled',
         allow_redisplay_filters: ['always'],
@@ -588,7 +610,7 @@ export class StripeService {
       metadata: {
         userId: user.id,
         planId,
-        orderId: order.id,
+        orderId: orderAndSub.order.id,
       },
     };
 
@@ -652,7 +674,7 @@ export class StripeService {
     return accountLink;
   }
 
-  async pay(dto: OrderDto, userId: string) {
+  async pay(dto: OrderDto, userId: string, order: Order) {
     const items = dto.orderItems;
     if (items.length > 1) {
       throw new BadRequestException('Only one item allowed per order');
@@ -717,6 +739,10 @@ export class StripeService {
             destination: sellerStripeId,
           },
         },
+        metadata: {
+          userId,
+          orderId: order.id,
+        },
       });
 
       sessions.push({ sellerStripeId, url: session.url });
@@ -725,9 +751,10 @@ export class StripeService {
     return sessions[0];
   }
 
-  public async handleWebhook(
-    event: Stripe.Event,
-  ): Promise<PaymentWebhookResult | null> {
+  // public async handleWebhook(
+  //   event: Stripe.Event,
+  // ): Promise<PaymentWebhookResult | null> {
+  public async handleWebhook(event: Stripe.Event) {
     switch (event.type) {
       case 'payment_method.attached':
         this.onPaymentMethodAttached(event);
@@ -756,48 +783,47 @@ export class StripeService {
       default:
         throw new BadRequestException(`Unknown event type: ${event.type}`);
     }
+    // TODO: implement handling different event types
+    // switch (event.type) {
+    //   case 'checkout.session.completed': {
+    //     const paymentObject = event.data.object as Stripe.Checkout.Session;
 
-    switch (event.type) {
-      case 'checkout.session.completed': {
-        const paymentObject = event.data.object as Stripe.Checkout.Session;
+    //     const orderId = paymentObject.metadata?.orderId;
+    //     const planId = paymentObject.metadata?.planId;
+    //     const paymentId = paymentObject.id;
 
-        const orderId = paymentObject.metadata?.orderId;
-        const planId = paymentObject.metadata?.planId;
-        const paymentId = paymentObject.id;
+    //     if (!orderId || !planId || !paymentId) {
+    //       return null;
+    //     }
+    //     return {
+    //       orderId: orderId,
+    //       planId,
+    //       paymentId,
+    //       status: EnumOrderStatus.SUCCEEDED,
+    //       raw: event,
+    //     };
+    //   }
+    //   case 'invoice.payment_failed': {
+    //     const invoice = event.data.object as Stripe.Invoice;
 
-        if (!orderId || !planId || !paymentId) {
-          return null;
-        }
-        return {
-          orderId: orderId,
-          planId,
-          paymentId,
-          status: EnumOrderStatus.SUCCEEDED,
-          raw: event,
-        };
-      }
-      case 'invoice.payment_failed': {
-        const invoice = event.data.object as Stripe.Invoice;
+    //     const orderId = invoice.metadata?.orderId;
+    //     const planId = invoice.metadata?.planId;
+    //     const paymentId = invoice.id;
 
-        const orderId = invoice.metadata?.orderId;
-        const planId = invoice.metadata?.planId;
-        const paymentId = invoice.id;
-
-        if (!orderId || !planId || !paymentId) {
-          return null;
-        }
-        return {
-          orderId: orderId,
-          planId,
-          paymentId,
-          status: EnumOrderStatus.FAILED,
-          raw: event,
-        };
-      }
-      default:
-        return null;
-    }
-    console.log('\n\n [Func] StripeService.handleWebhook');
+    //     if (!orderId || !planId || !paymentId) {
+    //       return null;
+    //     }
+    //     return {
+    //       orderId: orderId,
+    //       planId,
+    //       paymentId,
+    //       status: EnumOrderStatus.FAILED,
+    //       raw: event,
+    //     };
+    //   }
+    //   default:
+    //     return null;
+    // }
   }
   constructEvent(request: Request): { error?: Error; event?: Stripe.Event } {
     const sig = request.headers['stripe-signature'];
@@ -816,10 +842,11 @@ export class StripeService {
   }
 
   async onSubscriptionUpdated(event: Stripe.CustomerSubscriptionUpdatedEvent) {
-    console.log('\n\n [Func] onSubscriptionUpdated event');
+    console.log('\n\n [Func] WEBHOOK onSubscriptionUpdated event ', event);
     const session = event.data.object;
     let sub = await this.prisma.subscription.findFirst({
       where: { stripeSubscriptionId: session.id },
+      include: { order: true },
     });
     if (!sub) {
       console.log('[customer.subscription.updated] No subscription found');
@@ -828,6 +855,7 @@ export class StripeService {
           customerId: session.customer as string,
           status: EnumSubscriptionStatus.ACTIVE,
         },
+        include: { order: true },
       });
       if (!sub) {
         return;
@@ -840,9 +868,7 @@ export class StripeService {
         (event?.data?.object?.cancel_at || Date.now()) * 1000,
       );
       subUpdateData.cancelledReason = event.data.object.cancellation_details;
-      subUpdateData.nextPlanId = sub.nextPlanId
-        ? sub.nextPlanId
-        : EnumSubscriptionType.FREE;
+      subUpdateData.nextPlanId = sub.nextPlanId || EnumSubscriptionType.FREE;
     } else if (sub.cancelledAt) {
       subUpdateData.status = EnumSubscriptionStatus.ACTIVE;
       subUpdateData.cancelledAt = null;
@@ -867,15 +893,84 @@ export class StripeService {
   async onCheckoutSessionCompleted(
     event: Stripe.CheckoutSessionCompletedEvent,
   ) {
-    console.log('\n\n [Func] onCheckoutSessionCompleted');
+    const session = event.data.object;
+    if (session?.metadata?.planId) {
+      this.onCheckoutSessionCompletedSubscription(event);
+      return;
+    }
+    this.onCheckoutSessionCompletedProduct(event);
+    return;
+  }
+
+  async onCheckoutSessionCompletedProduct(
+    event: Stripe.CheckoutSessionCompletedEvent,
+  ) {
+    console.log(
+      '\n\n [Func] WEBHOOK onCheckoutSessionCompleted event = ',
+      event,
+    );
+    const session = event.data.object;
+    console.log('\nsession.metadata = ', session.metadata);
+    const { userId, orderId } = session.metadata as {
+      userId: string;
+      orderId: string;
+    };
+
+    const user = await this.userService.getById(userId);
+    if (!user) {
+      throw new NotFoundException(
+        'onCheckoutSessionCompletedProduct User not found',
+      );
+    }
+
+    if (!orderId) {
+      throw new NotFoundException(
+        'onCheckoutSessionCompletedProduct Order not found',
+      );
+    }
+
+    if (user && !user.email) {
+      await this.prisma.user.update({
+        where: { id: userId },
+        data: { email: session.customer_details?.email as string },
+      });
+    }
+
+    await this.prisma.order.update({
+      where: { id: orderId },
+      data: {
+        status: EnumOrderStatus.SUCCEEDED,
+        stripePaymentIntentId: session.payment_intent as string,
+      },
+    });
+  }
+
+  async onCheckoutSessionCompletedSubscription(
+    event: Stripe.CheckoutSessionCompletedEvent,
+  ) {
+    console.log(
+      '\n\n [Func] WEBHOOK onCheckoutSessionCompleted event = ',
+      event,
+    );
     const session = event.data.object;
     console.log('\nsession.metadata = ', session.metadata);
     const { userId, planId } = session.metadata as {
       userId: string;
+      orderId: string;
       planId: EnumSubscriptionType;
     };
 
     const user = await this.userService.getById(userId);
+    if (!user) {
+      throw new NotFoundException('onCheckoutSessionCompleted User not found');
+    }
+    const plan = await this.prisma.plan.findUnique({
+      where: { planId },
+    });
+    if (!plan) {
+      throw new NotFoundException('onCheckoutSessionCompleted Plan not found');
+    }
+
     if (user && !user.email) {
       await this.prisma.user.update({
         where: { id: userId },
@@ -885,14 +980,16 @@ export class StripeService {
 
     const oldSub = await this.prisma.subscription.findFirst({
       where: { userId, status: EnumSubscriptionStatus.ACTIVE },
+      include: { order: true },
     });
     if (oldSub) {
       if (oldSub.planId === EnumSubscriptionType.FREE) {
         console.log('222 Update Sub');
-        await this.prisma.subscription.update({
-          where: { id: oldSub.id },
-          data: { status: EnumSubscriptionStatus.CANCELLED },
-        });
+        await this.subscriptionService.updateSubscriptionAndOrder(
+          { status: EnumSubscriptionStatus.CANCELLED },
+          oldSub?.order?.id as string,
+          { status: EnumOrderStatus.CANCELLED },
+        );
       } else {
         try {
           await this.stripe.subscriptions.cancel(
@@ -906,14 +1003,16 @@ export class StripeService {
       }
     }
 
-    let sub: Subscription | null;
+    let sub;
     if (userId && planId) {
       sub = await this.prisma.subscription.findFirst({
         where: { userId, status: EnumSubscriptionStatus.PENDING, planId },
+        include: { order: true },
       });
       if (!sub) {
         sub = await this.prisma.subscription.findFirst({
           where: { userId, status: EnumSubscriptionStatus.ACTIVE, planId },
+          include: { order: true },
         });
         if (sub) return;
 
@@ -929,24 +1028,31 @@ export class StripeService {
           session.subscription as string,
         );
         const nextBillingDate =
-          this.calculateNextBillingDate(stripeSubscription);
+          this.calculateNextBillingDate(stripeSubscription) || undefined;
         const trialing = stripeSubscription.status === 'trialing';
-
-        sub = await this.prisma.subscription.create({
-          data: {
-            userId,
-            status: EnumSubscriptionStatus.ACTIVE,
-            planId: planId,
-            storeLimit: subscriptionSettings.storeLimit,
-            productLimit: subscriptionSettings.productLimit,
-            period: subscriptionSettings.period,
-            customerId: session.customer as string,
-            createdAt: new Date(),
-            nextBillingDate,
-            stripeSubscriptionId: session.subscription as string,
-            trialEndAt: trialing ? nextBillingDate : null,
-          },
-        });
+        const subAndOrder =
+          await this.subscriptionService.createSubscriptionAndOrder(
+            {
+              userId,
+              status: EnumSubscriptionStatus.ACTIVE,
+              planId: planId,
+              storeLimit: subscriptionSettings.storeLimit,
+              productLimit: subscriptionSettings.productLimit,
+              period: subscriptionSettings.period,
+              customerId: session.customer as string,
+              createdAt: new Date(),
+              nextBillingDate,
+              stripeSubscriptionId: session.subscription as string,
+              trialEndAt: trialing ? nextBillingDate : undefined,
+            },
+            user,
+            plan,
+            PaymentProvider.STRIPE,
+          );
+        sub = {
+          ...(subAndOrder.subscription as Subscription),
+          order: subAndOrder.order,
+        };
         console.log('333 CREATE NEW SUB = ', sub);
         return;
       }
@@ -956,6 +1062,7 @@ export class StripeService {
           customerId: session.customer as string,
           status: EnumSubscriptionStatus.PENDING,
         },
+        include: { order: true },
       });
       if (!sub) {
         const customer = await this.prisma.billingInfo.findUnique({
@@ -966,6 +1073,7 @@ export class StripeService {
         }
         sub = await this.prisma.subscription.findFirst({
           where: { userId, status: EnumSubscriptionStatus.PENDING },
+          include: { order: true },
         });
         if (!sub) {
           throw new BadRequestException('Subscription not found');
@@ -988,22 +1096,29 @@ export class StripeService {
 
     console.log('\n\n\n stripeSubscription', stripeSubscription);
 
-    let nextBillingDate: Date | null = null;
+    let nextBillingDate: Date;
     if (
       stripeSubscription.status === 'trialing' &&
       stripeSubscription.trial_end
     ) {
       nextBillingDate = new Date(stripeSubscription.trial_end * 1000);
     } else if ((stripeSubscription as any).current_period_end) {
-      nextBillingDate = this.calculateNextBillingDate(stripeSubscription);
+      nextBillingDate = this.calculateNextBillingDate(
+        stripeSubscription,
+      ) as Date;
     } else {
-      nextBillingDate = new Date(); // fallback
+      const date = new Date();
+      nextBillingDate = new Date(
+        new Date(date).setMonth(
+          date.getMonth() +
+            (subscriptionSettings.period === BillingPeriod.MONTHLY ? 1 : 12),
+        ),
+      );
     }
     console.log('333 Update Sub');
 
-    await this.prisma.subscription.update({
-      where: { id: sub.id },
-      data: {
+    await this.subscriptionService.updateSubscriptionAndOrder(
+      {
         status: EnumSubscriptionStatus.ACTIVE,
         storeLimit: subscriptionSettings.storeLimit,
         productLimit: subscriptionSettings.productLimit,
@@ -1012,16 +1127,22 @@ export class StripeService {
         trialEndAt:
           stripeSubscription.status === 'trialing'
             ? new Date((stripeSubscription as any).trial_end * 1000)
-            : null,
+            : undefined,
       },
-    });
+      sub.order.id as string,
+      { status: EnumOrderStatus.SUCCEEDED },
+    );
   }
 
   async onInvoicePaymentSucceeded(event: Stripe.InvoicePaymentSucceededEvent) {
-    console.log('\n\n [Func] onInvoicePaymentSucceeded');
+    console.log(
+      '\n\n [Func] WEBHOOK onInvoicePaymentSucceeded event = ',
+      event,
+    );
     const session = event.data.object;
     let sub = await this.prisma.subscription.findFirst({
       where: { stripeSubscriptionId: (session as any).subscription as string },
+      include: { order: true },
     });
     if (!sub) {
       const { userId, planId } = (session as any).subscription_details
@@ -1031,6 +1152,7 @@ export class StripeService {
       };
       sub = await this.prisma.subscription.findFirst({
         where: { userId, status: EnumSubscriptionStatus.PENDING, planId },
+        include: { order: true },
       });
       if (!sub) {
         console.log(
@@ -1055,31 +1177,41 @@ export class StripeService {
 
     console.log('stripeSubscription = ', stripeSubscription);
     console.log('444 Update Sub');
+    const nextBillingDate =
+      this.calculateNextBillingDate(stripeSubscription) || undefined;
 
-    await this.prisma.subscription.update({
-      where: { id: sub.id },
-      data: {
-        stripeSubscriptionId: (session as any).subscription as string,
-        status: EnumSubscriptionStatus.ACTIVE,
-        // nextBillingDate: new Date(
-        //   (stripeSubscription as any).current_period_end * 1000,
-        // ),
-        nextBillingDate: this.calculateNextBillingDate(stripeSubscription),
-        trialEndAt:
-          stripeSubscription.status === 'trialing'
-            ? new Date((stripeSubscription as any).trial_end * 1000)
-            : null,
-      },
-    });
+    const subDto = {
+      stripeSubscriptionId: (session as any).subscription as string,
+      status: EnumSubscriptionStatus.ACTIVE,
+      // nextBillingDate: new Date(
+      //   (stripeSubscription as any).current_period_end * 1000,
+      // ),
+      nextBillingDate,
+      ...(stripeSubscription.status === 'trialing'
+        ? { trialEndAt: new Date((stripeSubscription as any).trial_end * 1000) }
+        : {}),
+    };
+    const orderDto = {
+      providerMeta: JSON.parse(JSON.stringify(event.data.object)),
+      stripePaymentIntentId: (session as any).payment_intent as string,
+      status: EnumOrderStatus.SUCCEEDED,
+    };
+    await this.subscriptionService.updateSubscriptionAndOrder(
+      subDto,
+      sub?.order?.id as string,
+      orderDto,
+    );
   }
 
   async onCustomerSubscriptionDeleted(
     event: Stripe.CustomerSubscriptionDeletedEvent,
   ) {
-    console.log('\n\n [Func] onCustomerSubscriptionDeleted');
+    console.log('\n[WEBHOOK] onCustomerSubscriptionDeleted', event);
+
     const session = event.data.object;
     let sub = await this.prisma.subscription.findFirst({
       where: { stripeSubscriptionId: session.id },
+      include: { order: true },
     });
     if (!sub) {
       console.log('[customer.subscription.deleted] No subscription found');
@@ -1088,6 +1220,7 @@ export class StripeService {
           customerId: session.customer as string,
           status: EnumSubscriptionStatus.ACTIVE,
         },
+        include: { order: true },
       });
       if (!sub) {
         return;
@@ -1103,6 +1236,10 @@ export class StripeService {
           `There is no subscription with id ${sub.nextPlanId}`,
         );
 
+      const user = await this.prisma.user.findUnique({
+        where: { id: sub.userId },
+      });
+
       try {
         const date = new Date();
         const nextBillingDate = new Date(
@@ -1114,49 +1251,65 @@ export class StripeService {
           where: { userId: sub.userId },
         });
 
-        const newSub = await this.prisma.subscription.create({
-          data: {
-            userId: sub.userId,
-            status: EnumSubscriptionStatus.PENDING,
-            planId: sub.nextPlanId,
-            customerId: customer?.stripeCustomerId as string,
-            createdAt: new Date(),
-            nextBillingDate,
-            period: plan.period,
-          },
-        });
-        console.log('444 CREATE NEW SUB = ', sub);
+        console.log('444 CREATE NEW SUB');
+        const subAndOrder =
+          await this.subscriptionService.createSubscriptionAndOrder(
+            {
+              userId: sub.userId,
+              status: EnumSubscriptionStatus.PENDING,
+              planId: sub.nextPlanId,
+              customerId: customer?.stripeCustomerId as string,
+              createdAt: new Date(),
+              nextBillingDate,
+              period: plan.period,
+              storeLimit: plan.storeLimit,
+              productLimit: plan.productLimit,
+            },
+            user as User,
+            plan,
+            PaymentProvider.STRIPE,
+          );
+        const newSub = {
+          ...(subAndOrder.subscription as Subscription),
+          order: subAndOrder.order,
+        };
 
         if (plan.planId == EnumSubscriptionType.FREE) {
           console.log('555 Update Sub');
 
-          await this.prisma.subscription.update({
-            where: { id: newSub.id },
-            data: {
+          await this.subscriptionService.updateSubscriptionAndOrder(
+            {
               status: EnumSubscriptionStatus.ACTIVE,
               storeLimit: plan.storeLimit,
               productLimit: plan.productLimit,
               nextBillingDate: null,
             },
-          });
+            newSub.order.id as string,
+            { status: EnumOrderStatus.SUCCEEDED },
+          );
+
           console.log('666 Update Sub');
 
-          await this.prisma.subscription.update({
-            where: { id: sub.id },
-            data: {
+          await this.subscriptionService.updateSubscriptionAndOrder(
+            {
               cancelledAt: new Date(),
               cancelledReason: JSON.parse(
                 JSON.stringify(event.data.object.cancellation_details),
               ),
               status: EnumSubscriptionStatus.CANCELLED,
             },
-          });
+            sub?.order?.id as string,
+            { status: EnumOrderStatus.SUCCEEDED },
+          );
           return;
         }
 
         try {
+          console.log('444 111 CREATE NEW SUB');
+
           const subscription = await this.stripe.subscriptions.create({
             customer: customer?.stripeCustomerId as string,
+            // test_clock: customer?.stripeTestClockId || undefined,
             items: [
               {
                 price_data: {
@@ -1179,9 +1332,8 @@ export class StripeService {
           });
 
           console.log('777 Update Sub');
-          await this.prisma.subscription.update({
-            where: { id: newSub.id },
-            data: {
+          await this.subscriptionService.updateSubscriptionAndOrder(
+            {
               stripeSubscriptionId: subscription.id,
               nextBillingDate: this.calculateNextBillingDate(subscription),
               status:
@@ -1189,22 +1341,27 @@ export class StripeService {
                   ? EnumSubscriptionStatus.ACTIVE
                   : newSub.status,
             },
-          });
+            newSub.order.id as string,
+            { status: EnumOrderStatus.SUCCEEDED },
+          );
         } catch (err) {
+          console.log('ERR = ', err);
           const freePlan = await this.prisma.plan.findUnique({
             where: { planId: EnumSubscriptionType.FREE },
           });
           console.log('888 Update Sub');
-          await this.prisma.subscription.update({
-            where: { id: newSub.id },
-            data: {
+
+          await this.subscriptionService.updateSubscriptionAndOrder(
+            {
               planId: EnumSubscriptionType.FREE,
               status: EnumSubscriptionStatus.ACTIVE,
               nextBillingDate: null,
               storeLimit: freePlan?.storeLimit,
               productLimit: freePlan?.productLimit,
             },
-          });
+            newSub.order.id as string,
+            { status: EnumOrderStatus.SUCCEEDED },
+          );
         }
       } catch (err) {
         console.log(
@@ -1213,20 +1370,28 @@ export class StripeService {
       }
     }
     console.log('999 Update Sub');
-    await this.prisma.subscription.update({
-      where: { id: sub.id },
-      data: {
+
+    await this.subscriptionService.updateSubscriptionAndOrder(
+      {
         cancelledAt: new Date(),
         cancelledReason: JSON.parse(
           JSON.stringify(event.data.object.cancellation_details),
         ),
         status: EnumSubscriptionStatus.CANCELLED,
       },
-    });
+      sub?.order?.id as string,
+      { status: EnumOrderStatus.CANCELLED },
+    );
 
     const newSub = await this.prisma.subscription.findFirst({
-      where: { userId: sub.userId, status: EnumSubscriptionStatus.ACTIVE },
+      where: {
+        userId: sub.userId,
+        status: {
+          in: [EnumSubscriptionStatus.ACTIVE, EnumSubscriptionStatus.PENDING],
+        },
+      },
     });
+
     if (!newSub) {
       const customer = await this.prisma.billingInfo.findUnique({
         where: { userId: sub.userId },
@@ -1237,19 +1402,30 @@ export class StripeService {
       if (!subscriptionSettings)
         throw new BadRequestException('There is no subscription with id free');
 
-      const newFreeSub = await this.prisma.subscription.create({
-        data: {
-          userId: sub.userId,
-          status: EnumSubscriptionStatus.ACTIVE,
-          planId: EnumSubscriptionType.FREE,
-          storeLimit: subscriptionSettings.storeLimit,
-          productLimit: subscriptionSettings.productLimit,
-          period: subscriptionSettings.period,
-          customerId: customer?.stripeCustomerId as string,
-          createdAt: new Date(),
-          nextBillingDate: null,
-        },
+      const plan = await this.prisma.plan.findUnique({
+        where: { planId: EnumSubscriptionType.FREE },
       });
+      const user = await this.prisma.user.findUnique({
+        where: { id: sub.userId },
+      });
+      console.log('444 CREATE NEW SUB');
+      const newFreeSubAndOrder =
+        await this.subscriptionService.createSubscriptionAndOrder(
+          {
+            userId: sub.userId,
+            status: EnumSubscriptionStatus.ACTIVE,
+            planId: EnumSubscriptionType.FREE,
+            storeLimit: subscriptionSettings.storeLimit,
+            productLimit: subscriptionSettings.productLimit,
+            period: subscriptionSettings.period,
+            customerId: customer?.stripeCustomerId as string,
+            createdAt: new Date(),
+          },
+          user as User,
+          plan as Plan,
+          PaymentProvider.STRIPE,
+        );
+      const newFreeSub = newFreeSubAndOrder.subscription;
       console.log('555 CREATE NEW SUB = ', newFreeSub);
     }
   }
@@ -1257,10 +1433,14 @@ export class StripeService {
   async onCustomerSubscriptionPaused(
     event: Stripe.CustomerSubscriptionPausedEvent,
   ) {
-    console.log('\n\n [Func] onCustomerSubscriptionPaused');
+    console.log(
+      '\n\n [Func] WEBHOOK onCustomerSubscriptionPaused event = ',
+      event,
+    );
     const session = event.data.object;
     const sub = await this.prisma.subscription.findFirst({
       where: { stripeSubscriptionId: session.id },
+      include: { order: true },
     });
     if (!sub) {
       console.log('[customer.subscription.paused] No subscription found');
@@ -1268,22 +1448,27 @@ export class StripeService {
     }
 
     console.log('101010 Update Sub');
-    await this.prisma.subscription.update({
-      where: { id: sub.id },
-      data: {
+    await this.subscriptionService.updateSubscriptionAndOrder(
+      {
         status: EnumSubscriptionStatus.PAUSED,
         pausedAt: new Date(),
       },
-    });
+      sub?.order?.id as string,
+      { status: EnumOrderStatus.PAUSED },
+    );
   }
 
   async onCustomerSubscriptionResumed(
     event: Stripe.CustomerSubscriptionResumedEvent,
   ) {
-    console.log('\n\n [Func] onCustomerSubscriptionResumed');
+    console.log(
+      '\n\n [Func] WEBHOOK onCustomerSubscriptionResumed event = ',
+      event,
+    );
     const session = event.data.object;
     const sub = await this.prisma.subscription.findFirst({
       where: { stripeSubscriptionId: session.id },
+      include: { order: true },
     });
     if (!sub) {
       console.log('[customer.subscription.resumed] No subscription found');
@@ -1298,40 +1483,45 @@ export class StripeService {
           )
         : null;
     console.log('11.11.11 Update Sub');
-    await this.prisma.subscription.update({
-      where: { id: sub.id },
-      data: {
+
+    await this.subscriptionService.updateSubscriptionAndOrder(
+      {
         status: EnumSubscriptionStatus.ACTIVE,
         nextBillingDate: nextBillingDate,
         pausedAt: null,
       },
-    });
+      sub?.order?.id as string,
+      { status: EnumOrderStatus.SUCCEEDED },
+    );
   }
 
   async onInvoicePaymentFailed(event: Stripe.InvoicePaymentFailedEvent) {
-    console.log('\n\n [Func] onInvoicePaymentFailed');
+    console.log('\n\n [Func] WEBHOOK onInvoicePaymentFailed event = ', event);
     const session = event.data.object;
     if (!(session as any).subscription) return;
 
     const sub = await this.prisma.subscription.findFirst({
       where: { stripeSubscriptionId: (session as any).subscription as string },
+      include: { order: true },
     });
     if (!sub) {
       console.log('[invoice.payment_failed] No subscription found');
       return;
     }
     console.log('12.12.12 Update Sub');
-    await this.prisma.subscription.update({
-      where: { id: sub.id },
-      data: {
+
+    await this.subscriptionService.updateSubscriptionAndOrder(
+      {
         status: EnumSubscriptionStatus.OVERDUE,
       },
-    });
+      sub?.order?.id as string,
+      { status: EnumOrderStatus.FAILED },
+    );
   }
 
   // TODO
   async onPaymentMethodAttached(event: Stripe.PaymentMethodAttachedEvent) {
-    console.log('\n\n [Func] onPaymentMethodAttached');
+    console.log('\n\n [Func] WEBHOOK onPaymentMethodAttached EVENT = ', event);
     const customer = await this.prisma.billingInfo.findFirst({
       where: {
         stripeCustomerId: (event?.data?.object?.customer as any)
@@ -1423,5 +1613,29 @@ export class StripeService {
 
     console.log('\n\n\n ***** nextBillingDate = ', nextBillingDate);
     return nextBillingDate;
+  }
+
+  async createStripeTestClock(name: string = 'Test Clock') {
+    const clock = await this.stripe.testHelpers.testClocks.create({
+      frozen_time: Math.floor(Date.now() / 1000),
+      name: name,
+    });
+    return clock;
+  }
+
+  async simulateStripeTestClockAdvance(userId: string, numberOfDays: number) {
+    const customer = await this.prisma.billingInfo.findUnique({
+      where: { userId },
+    });
+    if (!customer || !customer.stripeTestClockId) {
+      throw new BadRequestException('No test clock found for user');
+    }
+    await this.stripe.testHelpers.testClocks.advance(
+      customer.stripeTestClockId,
+      {
+        frozen_time:
+          Math.floor(Date.now() / 1000) + 60 * 60 * 24 * numberOfDays,
+      },
+    );
   }
 }

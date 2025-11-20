@@ -1,0 +1,8 @@
+export const EnvVariables = {
+  NODE_ENV: process.env.NODE_ENV,
+  APP_ENV: process.env.APP_ENV,
+  APP_DOMAIN: process.env.APP_DOMAIN,
+  NEXT_PUBLIC_CLIENT_URL: process.env.NEXT_PUBLIC_CLIENT_URL,
+  NEXT_PUBLIC_SERVER_URL: process.env.NEXT_PUBLIC_SERVER_URL,
+  NEXT_PUBLIC_SERVER_SERVICE: process.env.NEXT_PUBLIC_SERVER_SERVICE,
+};

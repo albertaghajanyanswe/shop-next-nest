@@ -13,6 +13,7 @@ import { ConfigService } from '@nestjs/config';
 import { verify } from 'argon2';
 import { StripeService } from 'src/payment/provider/stripe/stripe.service';
 import { EnvVariables } from 'src/utils/constants/variables';
+import { EnumSubscriptionType } from '@prisma/client';
 
 @Injectable()
 export class AuthService {
@@ -43,11 +44,15 @@ export class AuthService {
     const tokens = this.issueTokens(user.id);
 
     await this.stripeService.createCustomer(user.id);
+
+    const plan = await this.prismaService.plan.findFirst({
+      where: { planId: EnumSubscriptionType.FREE },
+    });
+    if (!plan) {
+      throw new NotFoundException('Free plan not found');
+    }
     try {
-      await this.stripeService.createCheckoutSessionSubscription(
-        user,
-        'FREE',
-      );
+      await this.stripeService.createCheckoutSessionSubscription(user, plan);
     } catch (e) {
       console.log('error ', e);
     }

@@ -3,7 +3,7 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useParams, useRouter } from 'next/navigation';
 import { STORE_URL } from '@/config/url.config';
 import { useMemo } from 'react';
-import { QUERY_KEYS } from '@/shared/constants';
+import { QUERY_KEYS } from '@/shared/queryConstants';
 import { productService } from '@/services/product.service';
 
 export function useDeleteProduct() {
@@ -17,7 +17,9 @@ export function useDeleteProduct() {
     mutationKey: QUERY_KEYS.deleteProduct,
     mutationFn: (prodId?: string) => productService.delete(prodId ?? productId),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.getStoreProducts, storeId] });
+      queryClient.invalidateQueries({
+        queryKey: [QUERY_KEYS.getStoreProducts, storeId],
+      });
       toast.success('Product deleted successfully.');
       router.push(STORE_URL.products(storeId));
     },

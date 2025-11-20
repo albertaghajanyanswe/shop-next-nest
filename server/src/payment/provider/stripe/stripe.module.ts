@@ -1,19 +1,21 @@
 import { Module } from '@nestjs/common';
 import { StripeService } from './stripe.service';
-import { StripeController } from './stripe.controller';
 import { PrismaService } from 'src/prisma.service';
 import { UserService } from 'src/user/user.service';
 import { ConfigService } from '@nestjs/config';
 import { BillingInfoService } from 'src/billing-info/billing-info.service';
+import { SubscriptionService } from 'src/subscription/subscription.service';
 
 @Module({
-  controllers: [StripeController],
+  controllers: [],
   providers: [
     StripeService,
     PrismaService,
     UserService,
     ConfigService,
     BillingInfoService,
+    SubscriptionService
   ],
+  exports: [StripeService],
 })
 export class StripeModule {}

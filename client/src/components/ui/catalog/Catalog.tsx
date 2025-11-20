@@ -31,7 +31,7 @@ export function Catalog({
         )}
       </div>
       <div className='flex w-full items-center'>
-        {products.length > 0 ? (
+        {products?.length > 0 ? (
           <div className='mt-2 grid w-full gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5'>
             {products.map((product) => (
               <ProductCard key={product.id} product={product} />

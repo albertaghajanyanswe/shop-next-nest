@@ -2,7 +2,7 @@
 
 import { Catalog } from '@/components/ui/catalog/Catalog';
 import { productService } from '@/services/product.service';
-import { QUERY_KEYS } from '@/shared/constants';
+import { QUERY_KEYS } from '@/shared/queryConstants';
 import { IProduct } from '@/shared/types/product.interface';
 import { useQuery } from '@tanstack/react-query';
 import { useSearchParams } from 'next/navigation';

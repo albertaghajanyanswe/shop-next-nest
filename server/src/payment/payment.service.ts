@@ -9,6 +9,7 @@ import { InitSubscriptionPaymentRequest } from './dto';
 import {
   BillingPeriod,
   CurrencyEnum,
+  Order,
   PaymentProvider,
   User,
 } from '@prisma/client';
@@ -18,6 +19,7 @@ import { Response } from 'express';
 import { ConfigService } from '@nestjs/config';
 import { EnvVariables } from 'src/utils/constants/variables';
 import { OrderDto } from 'src/order/dto/order.dto';
+import { OrderService } from 'src/order/order.service';
 
 @Injectable()
 export class PaymentService {
@@ -25,6 +27,7 @@ export class PaymentService {
     private readonly prismaService: PrismaService,
     private readonly yoomoneyService: YoomoneyService,
     private readonly stripeService: StripeService,
+    private readonly orderService: OrderService,
     private configService: ConfigService,
   ) {}
 
@@ -38,7 +41,7 @@ export class PaymentService {
             plan: true,
           },
         },
-        orderItems: {},
+        orderItems: true,
       },
     });
 
@@ -61,83 +64,62 @@ export class PaymentService {
     const { planId, provider } = dto;
 
     const plan = await this.prismaService.plan.findUnique({
-      where: { id: planId },
+      where: { planId: planId },
     });
 
     if (!plan) {
       throw new NotFoundException('Plan not found');
     }
 
-    const order = await this.prismaService.order.create({
-      data: {
-        totalPrice: plan.price,
-        provider,
-        billingPeriod: plan.period,
-        user: {
-          connect: {
-            id: user.id,
-          },
-        },
-        subscription: {
-          connectOrCreate: {
-            where: {
-              userId: user.id,
-            },
-            create: {
-              user: {
-                connect: {
-                  id: user.id,
-                },
-              },
-              plan: {
-                connect: {
-                  id: plan.id,
-                },
-              },
-              period: plan.period,
-            },
-          },
-        },
-      },
-    });
+    // const order = await this.prismaService.order.create({
+    //   data: {
+    //     totalPrice: plan.price,
+    //     provider,
+    //     user: {
+    //       connect: {
+    //         id: user.id,
+    //       },
+    //     },
+    //     // subscription: {
+    //     //   create: {
+    //     //     user: {
+    //     //       connect: {
+    //     //         id: user.id,
+    //     //       },
+    //     //     },
+    //     //     plan: {
+    //     //       connect: {
+    //     //         id: plan.id,
+    //     //       },
+    //     //     },
+    //     //     period: plan.period,
+    //     //   },
+    //     // },
+    //   },
+    // });
 
     let payment;
 
     switch (provider) {
       case PaymentProvider.YOOKASSA:
-        payment = this.yoomoneyService.upgradeSubscription(
-          user,
-          plan,
-          order,
-          plan.period,
-        );
+        payment = this.yoomoneyService.upgradeSubscription(user, plan);
         break;
       case PaymentProvider.STRIPE:
-        payment = this.stripeService.upgradeSubscription(
-          user,
-          plan,
-          order,
-          plan.period,
-        );
+        payment = this.stripeService.upgradeSubscription(user, plan);
         break;
       default:
-        payment = this.stripeService.upgradeSubscription(
-          user,
-          plan,
-          order,
-          plan.period,
-        );
+        payment = this.stripeService.upgradeSubscription(user, plan);
     }
 
-    await this.prismaService.order.update({
-      where: {
-        id: order.id,
-      },
-      data: {
-        providerMeta: payment,
-      },
-    });
-    return order;
+    // await this.prismaService.order.update({
+    //   where: {
+    //     id: order.id,
+    //   },
+    //   data: {
+    //     providerMeta: payment,
+    //   },
+    // });
+    return payment;
   }
 
   public async cancelUpgrade(userId: string) {
@@ -174,10 +156,21 @@ export class PaymentService {
   }
 
   public async pay(dto: OrderDto, userId: string) {
-    return this.stripeService.pay(dto, userId);
+    const order = await this.orderService.createOrder(dto, userId);
+    return this.stripeService.pay(dto, userId, order as Order);
   }
 
   public async createConnectAccountStripe(user: User) {
     return this.stripeService.createConnectAccountStripe(user);
+  }
+
+  public async simulateStripeTestClockAdvance(
+    userId: string,
+    numberOfDays: number,
+  ) {
+    return this.stripeService.simulateStripeTestClockAdvance(
+      userId,
+      numberOfDays,
+    );
   }
 }

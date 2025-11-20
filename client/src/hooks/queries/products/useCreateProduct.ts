@@ -4,7 +4,7 @@ import { useParams, useRouter } from 'next/navigation';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { STORE_URL } from '@/config/url.config';
 import { productService } from '@/services/product.service';
-import { QUERY_KEYS } from '@/shared/constants';
+import { QUERY_KEYS } from '@/shared/queryConstants';
 import { IProductInput } from '@/shared/types/product.interface';
 
 export const useCreateProduct = () => {
@@ -18,7 +18,9 @@ export const useCreateProduct = () => {
     mutationKey: QUERY_KEYS.createProduct,
     mutationFn: (data: IProductInput) => productService.create(data, storeId),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.getStoreProducts, storeId] });
+      queryClient.invalidateQueries({
+        queryKey: [QUERY_KEYS.getStoreProducts, storeId],
+      });
       toast.success('Product created successfully.');
       router.push(STORE_URL.products(storeId));
     },

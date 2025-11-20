@@ -7,7 +7,7 @@ export class PlanService {
 
   async getAll() {
     const plans = await this.prisma.plan.findMany({
-      orderBy: { monthlyPrice: 'asc' },
+      orderBy: { price: 'asc' },
     });
     return plans;
   }

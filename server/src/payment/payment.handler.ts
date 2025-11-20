@@ -1,7 +1,12 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { PrismaService } from 'src/prisma.service';
 import type { PaymentWebhookResult } from './interfaces';
-import { BillingPeriod, EnumOrderStatus, EnumSubscriptionStatus } from '@prisma/client';
+import {
+  BillingPeriod,
+  EnumOrderStatus,
+  EnumSubscriptionStatus,
+  EnumSubscriptionType,
+} from '@prisma/client';
 
 @Injectable()
 export class PaymentHandler {
@@ -40,6 +45,9 @@ export class PaymentHandler {
       },
     });
 
+    const plan = await this.prismaService.plan.findUnique({
+      where: { planId: planId as EnumSubscriptionType },
+    });
     const subscription = order.subscription;
     if (!subscription) {
       this.logger.log(
@@ -64,7 +72,7 @@ export class PaymentHandler {
 
       let newEndDate: Date = new Date(baseDate);
 
-      if (order.billingPeriod === BillingPeriod.YEARLY) {
+      if (plan?.period === BillingPeriod.YEARLY) {
         newEndDate.setFullYear(newEndDate.getFullYear() + 1);
       } else {
         const currentDay = newEndDate.getDate();
@@ -84,14 +92,12 @@ export class PaymentHandler {
           plan: {
             connect: {
               id: planId,
-            }
-          }
+            },
+          },
         },
       });
 
-      this.logger.log(
-        `Payment succeeded ${subscription.user.email}`,
-      );
+      this.logger.log(`Payment succeeded ${subscription.user.email}`);
     } else if (status === EnumOrderStatus.FAILED) {
       await this.prismaService.subscription.update({
         where: { id: subscription.id },
@@ -99,10 +105,8 @@ export class PaymentHandler {
           status: EnumSubscriptionStatus.EXPIRED,
         },
       });
-      this.logger.log(
-        `Payment failed for ${subscription.user.email}`,
-      );
+      this.logger.log(`Payment failed for ${subscription.user.email}`);
     }
-    return { ok: true }
+    return { ok: true };
   }
 }

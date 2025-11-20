@@ -1,9 +1,9 @@
-import { axiosWithAuth } from "@/api/api.interceptors"
-import { API_URL } from "@/config/api.config"
+import { axiosWithAuth } from '@/api/api.interceptors';
+import { API_URL } from '@/config/api.config';
 
 interface IFile {
-  name: string
-  url: string
+  name: string;
+  url: string;
 }
 
 class FileService {
@@ -16,10 +16,20 @@ class FileService {
       headers: {
         'Content-Type': 'multipart/form-data',
       },
-    })
+    });
 
-    return data
+    return data;
+  }
+
+  async delete(url: string) {
+    const { data } = await axiosWithAuth<{ success: boolean }>({
+      url: API_URL.files(),
+      method: 'DELETE',
+      data: { url },
+    });
+
+    return data;
   }
 }
 
-export const fileService = new FileService()
+export const fileService = new FileService();

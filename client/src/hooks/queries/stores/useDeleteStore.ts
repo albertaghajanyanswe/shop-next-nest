@@ -4,7 +4,7 @@ import { storeService } from '@/services/store.service';
 import { useParams, useRouter } from 'next/navigation';
 import { PUBLIC_URL } from '@/config/url.config';
 import { useMemo } from 'react';
-import { QUERY_KEYS } from '@/shared/constants';
+import { QUERY_KEYS } from '@/shared/queryConstants';
 
 export function useDeleteStore() {
   const router = useRouter();

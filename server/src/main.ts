@@ -7,6 +7,7 @@ import { Logger } from '@nestjs/common';
 import { getSwaggerConfig } from './config';
 import { SwaggerModule } from '@nestjs/swagger';
 import type { NestExpressApplication } from '@nestjs/platform-express';
+import { join } from 'path';
 
 async function bootstrap() {
   const app = await NestFactory.create<NestExpressApplication>(AppModule);
@@ -14,7 +15,7 @@ async function bootstrap() {
   app.setGlobalPrefix('api');
   app.set('trust proxy', true);
   app.use(cookieParser());
-  app.use('/api/stripe/webhook', raw({ type: 'application/json' }));
+  app.use('/api/webhook/stripe', raw({ type: 'application/json' }));
   app.use(json({ limit: '10mb' }));
 
   app.enableCors({
@@ -29,6 +30,9 @@ async function bootstrap() {
     jsonDocumentUrl: 'api/openapi.json',
   });
 
+  // app.useStaticAssets(join(__dirname, '..', 'server-uploads'), {
+  //   prefix: '/server-uploads/products',
+  // });
   try {
     await app.listen(process.env.PORT ?? 4000);
     logger.log(`Server is running on port ${process.env.PORT ?? 4000}`);

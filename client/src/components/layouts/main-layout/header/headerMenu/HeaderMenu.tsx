@@ -36,6 +36,7 @@ import { CreateStoreModal } from '@/components/modals/CreateStoreModal';
 import Image from 'next/image';
 import { HeaderCart } from './headerCart/HeaderCart';
 import { usePathname } from 'next/navigation';
+import { generateImgPath } from '@/lib/imageUtils';
 
 // Types
 export interface HeaderMenuNavItem {
@@ -210,7 +211,7 @@ export const HeaderMenu = React.forwardRef<HTMLElement, HeaderMenuProps>(
                       'Orders'
                     ) : (
                       <Image
-                        src={user.picture || '/images/no-user-image.png'}
+                        src={generateImgPath(user.picture) || '/images/no-user-image.png'}
                         alt={user.name}
                         width={42}
                         height={42}

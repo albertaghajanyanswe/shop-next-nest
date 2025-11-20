@@ -4,13 +4,18 @@ import { IProduct, IProductInput } from '@/shared/types/product.interface';
 
 class ProductService {
   async getAll(searchTerm?: string | null) {
-    const { data } = await axiosClassic<IProduct[]>({
-      url: API_URL.products(),
-      method: 'GET',
-      params: searchTerm ? { searchTerm } : undefined,
-    });
+    try {
 
-    return data || [];
+      const { data } = await axiosClassic<IProduct[]>({
+        url: API_URL.products(),
+        method: 'GET',
+        params: searchTerm ? { searchTerm } : undefined,
+      });
+      console.log('DATA = ', data)
+      return data || [];
+    } catch(err) {
+      console.log('\n\n ProductService getAll ERR = ', err)
+    }
   }
 
   async getByStoreId(storeId: string) {

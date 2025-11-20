@@ -1,4 +1,5 @@
-export const SERVER_URL = process.env.SERVER_URL as string
+export const NEXT_PUBLIC_SERVER_URL = process.env
+  .NEXT_PUBLIC_SERVER_URL as string;
 
 export const API_URL = {
   root: (url = '') => `${url ? `${url}` : ''}`,
@@ -14,4 +15,5 @@ export const API_URL = {
   statistics: (url = '') => API_URL.root(`/statistics${url}`),
   files: (url = '') => API_URL.root(`/files${url}`),
   stripe: (url = '') => API_URL.root(`/stripe${url}`),
+  payment: (url = '') => API_URL.root(`/payment${url}`),
 };

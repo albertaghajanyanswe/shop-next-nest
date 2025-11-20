@@ -1,10 +1,12 @@
 generator client {
   provider = "prisma-client-js"
+  runtime             = "nodejs"
+
 }
 
 datasource db {
   provider = "postgresql"
-  url      = env("DATABASE_URL")
+  url      = env("DB_URI")
 }
 
 model User {
@@ -29,7 +31,7 @@ model User {
 
   billingInfo  BillingInfo?
 
-  subscription Subscription?
+  subscription Subscription[]
 
   stripeAccountId String? @map("stripe_account_id")
 
@@ -90,7 +92,7 @@ model Product {
   color   Color? @relation(fields: [colorId], references: [id])
   colorId String @map("color_id")
 
-  createdBy User?   @relation("UserProducts", fields: [userId], references: [id])
+  createdBy User?   @relation("UserProducts", fields: [userId], references: [id], onDelete: Cascade)
   userId    String? @map("user_id")
 
   favoritedBy User[] @relation("UserFavorites")
@@ -300,10 +302,10 @@ model Subscription {
   productLimit Int?         @map("product_limit")
   customerId   String?      @map("customer_id")
 
-  orders Order[]
+  order     Order?
 
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
-  userId String @unique @map("user_id")
+  userId String @map("user_id")
 
   plan   Plan                 @relation(fields: [planId], references: [planId])
   planId EnumSubscriptionType @map("plan_id")
@@ -324,6 +326,7 @@ model Subscription {
 model Order {
   id        String   @id @default(cuid())
 
+  stripePaymentIntentId String? @map("stripe_payment_intent_id")
   totalPrice      Float
 
   provider    PaymentProvider
@@ -332,13 +335,11 @@ model Order {
   externalId  String? @map("external_id")
   providerMeta Json?  @map("provider_meta")
 
-  billingPeriod BillingPeriod? @map("billing_period")
-
   user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId String @map("user_id")
 
-  subscription   Subscription? @relation(fields: [subscriptionId], references: [id], onDelete: Cascade)
-  subscriptionId String?      @map("subscription_id")
+  subscriptionId  String? @unique @map("subscription_id")
+  subscription    Subscription? @relation(fields: [subscriptionId], references: [id], onDelete: Cascade)
 
   orderItems OrderItem[]
 
@@ -373,7 +374,7 @@ model BillingInfo {
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
 
-  user   User   @relation(fields: [userId], references: [id])
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId String @unique @map("user_id")
 
   serviceId String @map("service_id")
@@ -381,6 +382,7 @@ model BillingInfo {
   stripeCustomerId           String? @map("stripe_customer_id")
   stripeDefaultPaymentMethod String? @map("stripe_default_payment_method")
 
+  stripeTestClockId String? @map("stripe_test_clock_id")
   @@map("billing_info")
 }
 
@@ -431,6 +433,8 @@ enum EnumOrderStatus {
   FAILED
   CANCELLED
   REFUNDED
+  EXPIRED
+  PAUSED
 
   @@map("order_status")
 }

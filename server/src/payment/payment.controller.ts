@@ -41,9 +41,12 @@ export class PaymentController {
   @Post('/sub-upgrade')
   public async initSubscription(
     @Body() dto: InitSubscriptionPaymentRequest,
-    @CurrentUser() user,
+    @CurrentUser() user: User,
+    @Res() res,
   ) {
-    return await this.paymentService.initSubscription(dto, user);
+    const upgradeRes = await this.paymentService.initSubscription(dto, user);
+    console.log('\n\n UPGRADE RES = ', upgradeRes);
+    return res.json({ url: upgradeRes });
   }
 
   @Auth()
@@ -98,5 +101,25 @@ export class PaymentController {
   @Auth()
   async createConnectAccountStripe(@CurrentUser() user: User) {
     return this.paymentService.createConnectAccountStripe(user);
+  }
+
+  @Auth()
+  @Post('/stripe/simulate-test-clock')
+  async simulateStripeTestClockAdvance(
+    @Body() dto: { numberOfDays: number },
+    @CurrentUser('id') userId: string,
+    @Res() res,
+  ) {
+    try {
+      const result = await this.paymentService.simulateStripeTestClockAdvance(
+        userId,
+        dto.numberOfDays,
+      );
+      return res.json({ ok: true });
+    } catch (err) {
+      throw new BadRequestException(
+        err?.message || 'Failed to simulate stripe test clock',
+      );
+    }
   }
 }

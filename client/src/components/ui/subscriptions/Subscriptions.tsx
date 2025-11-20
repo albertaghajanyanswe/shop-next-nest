@@ -20,6 +20,7 @@ import { count } from 'console';
 import { useGetSubscriptions } from '@/hooks/stripe/useGetSubscriptions';
 import { useCancelUpgrade } from '@/hooks/stripe/useCancelUpgrade';
 import { EnumSubscriptionStatus } from '@/shared/types/stripe.interface';
+import { useTestClock } from '@/hooks/stripe/useTestClock';
 
 const PLAN_FEATURES = {
   FREE: ['1 Store', '10 Products'],
@@ -40,6 +41,7 @@ export default function SubscriptionCards() {
 
   const { subscriptions, isLoadingSubscriptions } = useGetSubscriptions();
 
+  const { runTestClock, isLoadingTestClock } = useTestClock();
   const activeSubscription = subscriptions?.find(
     (sub) => sub.status === 'ACTIVE'
   );
@@ -261,6 +263,17 @@ export default function SubscriptionCards() {
               </CardFooter>
             </Card>
           ))}
+      </div>
+      <div className='flex flex-row gap-4'>
+        <Button variant='outline' onClick={() => runTestClock(9)}>
+          Clock 9 d
+        </Button>
+        <Button variant='outline' onClick={() => runTestClock(50)}>
+          Clock 50 d
+        </Button>
+        <Button variant='outline' onClick={() => runTestClock(367)}>
+          Clock 367 d
+        </Button>
       </div>
     </div>
   );

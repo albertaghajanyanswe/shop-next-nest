@@ -1,6 +1,6 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { storeService } from '@/services/store.service';
-import { QUERY_KEYS } from '@/shared/constants';
+import { QUERY_KEYS } from '@/shared/queryConstants';
 import { IUpdateStore } from '@/shared/types/store.interface';
 import { useParams } from 'next/navigation';
 import toast from 'react-hot-toast';
@@ -28,9 +28,12 @@ export function useUpdateStore() {
     },
   });
 
-  return useMemo(() => ({
-    store,
-    updateStore,
-    isLoadingUpdate,
-  }), [store, updateStore, isLoadingUpdate])
+  return useMemo(
+    () => ({
+      store,
+      updateStore,
+      isLoadingUpdate,
+    }),
+    [store, updateStore, isLoadingUpdate]
+  );
 }

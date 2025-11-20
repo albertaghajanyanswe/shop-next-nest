@@ -1,6 +1,6 @@
-import { useQuery } from "@tanstack/react-query";
-import { userService } from "@/services/user.service";
-import { QUERY_KEYS } from "@/shared/constants";
+import { useQuery } from '@tanstack/react-query';
+import { userService } from '@/services/user.service';
+import { QUERY_KEYS } from '@/shared/queryConstants';
 
 export function useProfile() {
   const { data: user, isLoading } = useQuery({
@@ -8,5 +8,5 @@ export function useProfile() {
     queryFn: () => userService.getProfile(),
   });
 
-  return { user, isLoading }
+  return { user, isLoading };
 }
