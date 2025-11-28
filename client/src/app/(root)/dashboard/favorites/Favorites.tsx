@@ -8,11 +8,8 @@ export default function Favorites() {
   if (!user) return null;
 
   return (
-    <div className='my-6'>
-      <Catalog
-        title='Favorites products'
-        products={user.favorites}
-      />
+    <div className='global-container my-6'>
+      <Catalog title='Favorites products' products={user.favorites} />
     </div>
   );
 }

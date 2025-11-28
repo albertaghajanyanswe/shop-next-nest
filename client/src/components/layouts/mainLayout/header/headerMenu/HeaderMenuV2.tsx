@@ -114,9 +114,9 @@ export const HeaderMenuV2 = React.forwardRef<HTMLElement, HeaderMenuProps>(
 
     // MOBILE NAV BAR
     const renderNavigationMenuMobile = useCallback(() => {
-      const showMobile = 'inline-flex md:hidden w-auto justify-center p-2';
+      const showMobile = 'inline-flex md:hidden w-auto justify-center p-1';
       return (
-        <div className='text-shop-light-color flex flex-col items-center gap-2 text-sm font-semibold capitalize md:flex-row md:gap-4'>
+        <div className='text-shop-light-color flex flex-col items-center gap-1 text-sm font-semibold capitalize md:flex-row md:gap-4'>
           <HeaderNavLink
             href={PUBLIC_URL.home()}
             isActive={pathName === PUBLIC_URL.home()}

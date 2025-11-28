@@ -50,7 +50,7 @@ export default async function CategoryPage({
   const { brand, products } = await getProducts(id);
 
   return (
-    <div className='my-6'>
+    <div className='global-container my-6'>
       <Catalog
         title={brand.name}
         description={brand.description}

@@ -8,6 +8,11 @@ export const PUBLIC_URL = {
   product: (id = '') => PUBLIC_URL.root(`/product/${id}`),
   category: (id = '') => PUBLIC_URL.root(`/category/${id}`),
   brand: (id = '') => PUBLIC_URL.root(`/brand/${id}`),
+  aboutUs: () => PUBLIC_URL.root(`/aboutUs`),
+  contactUs: () => PUBLIC_URL.root(`/contactUs`),
+  termsAndCondition: () => PUBLIC_URL.root(`/termsAndCondition`),
+  privacyPolicy: () => PUBLIC_URL.root(`/privacyPolicy`),
+  faqs: () => PUBLIC_URL.root(`/faqs`),
 }
 
 export const DASHBOARD_URL = {

@@ -37,7 +37,7 @@ export default function Home({ products, categories, brands }: HomeProps) {
           products={products}
         />
       </div>
-      <div className='global-container mt-8 flex-1'>
+      <div className='global-container mt-8 flex-1 py-6'>
         <ShopByCard<GetBrandDto>
           title='Shop By Brand'
           description='The most popular brands'
