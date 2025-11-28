@@ -13,7 +13,7 @@ import { ConfigService } from '@nestjs/config';
 import { verify } from 'argon2';
 import { StripeService } from 'src/payment/provider/stripe/stripe.service';
 import { EnvVariables } from 'src/utils/constants/variables';
-import { EnumSubscriptionType } from '@prisma/client';
+import { EnumRole, EnumSubscriptionType } from '@prisma/client';
 
 @Injectable()
 export class AuthService {
@@ -74,8 +74,8 @@ export class AuthService {
     return { user, ...tokens };
   }
 
-  issueTokens(userId: string) {
-    const data = { id: userId };
+  issueTokens(userId: string, role: EnumRole = EnumRole.USER) {
+    const data = { id: userId, role };
     const accessToken = this.jwt.sign(data, {
       expiresIn: '1h',
     });

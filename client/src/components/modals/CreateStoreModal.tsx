@@ -17,8 +17,8 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from '../ui/form-elements/Form';
-import { Input } from '../ui/form-elements/Input';
+} from '../ui/formElements/Form';
+import { Input } from '../ui/formElements/Input';
 import { Button } from '../ui/Button';
 
 export function CreateStoreModal({ children }: PropsWithChildren<unknown>) {

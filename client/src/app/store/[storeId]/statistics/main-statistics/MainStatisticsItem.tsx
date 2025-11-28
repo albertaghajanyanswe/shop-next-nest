@@ -2,7 +2,7 @@ import { IMainStatistics } from '@/shared/types/statistics.interface';
 import { getIcon } from './statistics.util';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/Card';
 import CountUp from 'react-countup';
-import { formatPrice } from '@/utils/string/formatPrice';
+import { formatPrice } from '@/utils/formatPrice';
 
 interface IMainStatisticsItemProps {
   item: IMainStatistics;
@@ -11,7 +11,7 @@ interface IMainStatisticsItemProps {
 export function MainStatisticsItem({ item }: IMainStatisticsItemProps) {
   const Icon = getIcon(item.id);
   return (
-    <Card className='drop-shadow-xs gap-1 py-2'>
+    <Card className='gap-1 py-2 drop-shadow-xs'>
       <CardHeader className='flex flex-row items-center justify-between space-y-0 px-4 py-2'>
         <CardTitle className='text-sm font-medium text-slate-500'>
           {item.name}

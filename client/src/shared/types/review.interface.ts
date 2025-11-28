@@ -1,11 +1,9 @@
-import { IUser } from "./user.interface"
-
-export interface IReview {
-  id: string
-  createdAt: string
-  text: string
-  rating: number
-  user: IUser
+export interface IReviewColumn {
+  id: string;
+  createdAt: string;
+  rating: string;
+  text: string;
+  username: string;
 }
 
-export type IReviewInput = Pick<IReview, 'rating' | 'text'>
+export type IReviewInput = Pick<IReviewColumn, 'rating' | 'text'>

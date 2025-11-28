@@ -3,14 +3,14 @@ import {
   FormField,
   FormItem,
   FormMessage,
-} from '@/components/ui/form-elements/Form';
-import { Input } from '@/components/ui/form-elements/Input';
+} from '@/components/ui/formElements/Form';
+import { Input } from '@/components/ui/formElements/Input';
+import { RegisterDto } from '@/generated/orval/types';
 import { validEmailRegex } from '@/shared/regex';
-import { IAuthForm } from '@/shared/types/auth.interface';
 import { UseFormReturn } from 'react-hook-form';
 
 export interface AuthFieldsProps {
-  form: UseFormReturn<IAuthForm, any, IAuthForm>;
+  form: UseFormReturn<RegisterDto, any, RegisterDto>;
   isPending: boolean;
   isReg?: boolean;
 }
@@ -20,7 +20,7 @@ export function AuthFields({ form, isPending, isReg }: AuthFieldsProps) {
     <>
       {isReg && (
         <>
-          <FormField
+          <FormField<RegisterDto, 'name'>
             control={form.control}
             name='name'
             rules={{ required: 'Name is required' }}
@@ -36,7 +36,7 @@ export function AuthFields({ form, isPending, isReg }: AuthFieldsProps) {
         </>
       )}
 
-      <FormField
+      <FormField<RegisterDto, 'email'>
         control={form.control}
         name='email'
         rules={{
@@ -61,7 +61,7 @@ export function AuthFields({ form, isPending, isReg }: AuthFieldsProps) {
         )}
       />
 
-      <FormField
+      <FormField<RegisterDto, 'password'>
         control={form.control}
         name='password'
         rules={{
@@ -74,7 +74,12 @@ export function AuthFields({ form, isPending, isReg }: AuthFieldsProps) {
         render={({ field }) => (
           <FormItem>
             <FormControl>
-              <Input placeholder='Password' type='password' disabled={isPending} {...field} />
+              <Input
+                placeholder='Password'
+                type='password'
+                disabled={isPending}
+                {...field}
+              />
             </FormControl>
             <FormMessage />
           </FormItem>

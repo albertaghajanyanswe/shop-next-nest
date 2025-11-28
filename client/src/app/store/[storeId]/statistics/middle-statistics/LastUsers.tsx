@@ -1,7 +1,7 @@
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/Card';
-import { generateImgPath } from '@/lib/imageUtils';
+import { generateImgPath } from '@/utils/imageUtils';
 import { ILastUser } from '@/shared/types/statistics.interface';
-import { formatPrice } from '@/utils/string/formatPrice';
+import { formatPrice } from '@/utils/formatPrice';
 import Image from 'next/image';
 
 interface ILastUsersProps {
@@ -22,13 +22,15 @@ export function LastUsers({ data }: ILastUsersProps) {
             data.map((user) => (
               <div key={user.id} className='mt-2 flex items-center'>
                 <Image
-                  src={generateImgPath(user.picture) || '/images/no-user-image.png'}
+                  src={
+                    generateImgPath(user.picture) || '/images/no-user-image.png'
+                  }
                   alt={user.name}
                   width={40}
                   height={40}
                   className='rounded-full'
                 />
-                <div className='break-all text-muted-foreground ml-4 space-y-1 text-sm'>
+                <div className='text-muted-foreground ml-4 space-y-1 text-sm break-all'>
                   <p className='leading-none font-medium text-black'>
                     {user.name}
                   </p>

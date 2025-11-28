@@ -9,16 +9,8 @@ import {
   PURGE,
   REGISTER,
   REHYDRATE,
+  PersistConfig,
 } from 'redux-persist';
-import { EnvVariables } from '@/shared/envVariables';
-
-const persistConfig = {
-  key: 'shop-web',
-  storage,
-  whitelist: ['cart'],
-  serialize: true,
-  deserialize: true,
-};
 
 const isClient = typeof window !== 'undefined';
 
@@ -26,17 +18,28 @@ const combinedReducers = combineReducers({
   cart: cartSlice.reducer,
 });
 
+// Функция для создания уникального ключа для каждого пользователя
+const getUserPersistKey = () => {
+  if (!isClient) return 'shop-web-default';
+
+  // Получи userId из localStorage, cookies или auth state
+  const userId = localStorage.getItem('userId') || 'anonymous';
+  return `shop-web-${userId}`;
+};
+
+// Создаём persist config с динамическим ключом
+const getPersistConfig = (): PersistConfig<any> => ({
+  key: getUserPersistKey(),
+  storage,
+  whitelist: ['cart'],
+  serialize: true,
+});
+
 let mainReducer = combinedReducers;
 
 if (isClient) {
   const { persistReducer } = require('redux-persist');
-  const storage = require('redux-persist/lib/storage');
-  mainReducer = persistReducer(persistConfig, combinedReducers);
-  // import('redux-persist').then(({ persistReducer }) => {
-  //   import('redux-persist/lib/storage').then((storage) => {
-  //     mainReducer = persistReducer(persistConfig, combinedReducers);
-  //   });
-  // });
+  mainReducer = persistReducer(getPersistConfig(), combinedReducers);
 }
 
 export const store = configureStore({
@@ -52,3 +55,9 @@ export const store = configureStore({
 
 export const persistor = persistStore(store);
 export type TypeRootState = ReturnType<typeof mainReducer>;
+
+export const resetStoreForNewUser = async () => {
+  await persistor.purge();
+  await persistor.flush();
+  window.location.reload();
+};

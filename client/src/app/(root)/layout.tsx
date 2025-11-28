@@ -1,4 +1,4 @@
-import { MainLayout } from '@/components/layouts/main-layout/MainLayout';
+import { MainLayout } from '@/components/layouts/mainLayout/MainLayout';
 import type { PropsWithChildren } from 'react';
 
 export default function Layout({ children }: PropsWithChildren<unknown>) {

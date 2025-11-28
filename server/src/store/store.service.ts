@@ -4,8 +4,7 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 import { PrismaService } from 'src/prisma.service';
-import { CreateStoreDto } from './dto/create-store.dto';
-import { UpdateStoreDto } from './dto/update-store.dto';
+import { StoreDto } from './dto/store.dto';
 
 @Injectable()
 export class StoreService {
@@ -23,7 +22,7 @@ export class StoreService {
     return store;
   }
 
-  async create(userId: string, dto: CreateStoreDto) {
+  async create(userId: string, dto: StoreDto) {
     if (dto.isDefaultStore) {
       const existingDefaultStore = await this.prisma.store.findFirst({
         where: { userId, isDefaultStore: true },
@@ -40,7 +39,7 @@ export class StoreService {
     });
   }
 
-  async update(storeId: string, userId: string, dto: UpdateStoreDto) {
+  async update(storeId: string, userId: string, dto: StoreDto) {
     const store = await this.getById(storeId, userId);
     if (
       dto.isDefaultStore !== undefined &&

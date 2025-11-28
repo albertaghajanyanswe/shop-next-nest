@@ -1,23 +1,24 @@
 import { productService } from '@/services/product.service';
 import { QUERY_KEYS } from '@/shared/queryConstants';
+import { iFilterParams } from '@/shared/types/filter.interface';
 import { useQuery } from '@tanstack/react-query';
 import { useParams } from 'next/navigation';
 import { useMemo } from 'react';
 
-export const useGetProducts = () => {
+export const useGetProducts = (queryParams?: iFilterParams) => {
   const params = useParams<{ storeId: string }>();
   const storeId = params.storeId;
 
-  const { data: products, isLoading: isLoadingProducts } = useQuery({
-    queryKey: [QUERY_KEYS.getStoreProducts, storeId],
-    queryFn: () => productService.getByStoreId(storeId),
+  const { data: productsData, isLoading: isLoadingProductsData } = useQuery({
+    queryKey: [QUERY_KEYS.getStoreProducts, storeId, queryParams?.params],
+    queryFn: () => productService.getByStoreId(storeId, queryParams?.params),
   });
 
   return useMemo(
     () => ({
-      products,
-      isLoadingProducts,
+      productsData,
+      isLoadingProductsData,
     }),
-    [products, isLoadingProducts]
+    [productsData, isLoadingProductsData]
   );
 };

@@ -1,6 +1,6 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { PrismaService } from 'src/prisma.service';
-import { SubscriptionDto } from './dto/subscription.dto';
+import { GetSubscriptionDto } from './dto/subscription.dto';
 import {
   EnumOrderStatus,
   EnumSubscriptionType,
@@ -31,7 +31,7 @@ export class SubscriptionService {
   }
 
   async createSubscriptionAndOrder(
-    data: SubscriptionDto,
+    data: GetSubscriptionDto,
     user: User,
     plan: Plan,
     provider: PaymentProvider,
@@ -62,7 +62,7 @@ export class SubscriptionService {
   }
 
   async updateSubscriptionAndOrder(
-    subscriptionDto: Partial<SubscriptionDto>,
+    getSubscriptionDto: Partial<GetSubscriptionDto>,
     orderId: string,
     orderDto: Partial<UpdateOrderDto>,
   ) {
@@ -72,7 +72,7 @@ export class SubscriptionService {
         ...orderDto,
         subscription: {
           update: {
-            ...subscriptionDto,
+            ...getSubscriptionDto,
           },
         },
       },

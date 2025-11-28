@@ -10,11 +10,14 @@ import { useEffect } from 'react';
 import { IOrderColumns, orderColumns } from './OrderColumns';
 import { useProfile } from '@/hooks/useProfile';
 import { EnumOrderStatus } from '@/shared/types/order.interface';
-import { formatPrice } from '@/utils/string/formatPrice';
-import { formateDate } from '@/utils/date/formateDate';
+import { formatPrice } from '@/utils/formatPrice';
+import { formateDate } from '@/utils/formateDate';
 import { Button } from '@/components/ui/Button';
 import { LogOut } from 'lucide-react';
-import { DataTable } from '@/components/ui/data-loading/DataTable';
+import { DataTable } from '@/components/ui/dataLoading/DataTable';
+import { useQueryParams } from '@/hooks/commons/useQueryParams';
+import { useGetOrders } from '@/hooks/queries/orders/useGetOrder';
+import { CustomPagination } from '@/components/ui/CustomPagination';
 
 export default function Orders() {
   const searchParams = useSearchParams();
@@ -29,6 +32,24 @@ export default function Orders() {
 
   const { user } = useProfile();
 
+  const { queryParams, changePage, changeLimit, changeSearch, changeSort } =
+    useQueryParams({
+      pageDefaultParams: {
+        params: {
+          sort: { field: 'createdAt', order: 'desc' },
+          filter: {},
+          limit: 10,
+          skip: 0,
+          search: {
+            value: '',
+            fields: ['id', 'status'],
+          },
+        },
+      },
+    });
+
+  const { ordersData, isLoadingOrdersData } = useGetOrders(queryParams);
+
   const { mutate: logout } = useMutation({
     mutationKey: QUERY_KEYS.logout,
     mutationFn: () => authService.logout(),
@@ -39,18 +60,38 @@ export default function Orders() {
 
   if (!user) return null;
 
-  const formattedOrders: IOrderColumns[] = user.orders.map((order) => ({
-    createdAt: formateDate(order.createdAt as unknown as string),
-    status: order.status === EnumOrderStatus.PENDING ? 'Pending' : 'Paid',
-    total: formatPrice(order.totalPrice),
-  }));
+  const formattedOrders: IOrderColumns[] = ordersData?.orders
+    ? ordersData?.orders?.map((order) => ({
+        createdAt: formateDate(order.createdAt as unknown as string),
+        status: order.status === EnumOrderStatus.PENDING ? 'Pending' : 'Paid',
+        totalPrice: order.totalPrice,
+      }))
+    : [];
 
   return (
     <div className='my-6'>
       <div className='mb-4 flex items-center justify-between'>
         <h1 className='text-2xl font-bold'>My orders</h1>
       </div>
-      <DataTable columns={orderColumns} data={formattedOrders} />
+      <DataTable
+        columns={orderColumns}
+        data={formattedOrders}
+        totalCount={ordersData?.totalCount as number}
+        limit={queryParams?.params?.limit as number}
+        skip={queryParams?.params?.skip as number}
+        onPageChange={changePage}
+        onLimitChange={changeLimit}
+        queryParams={queryParams}
+        onChangeSearch={changeSearch}
+        onChangeSort={changeSort}
+      />
+      <CustomPagination
+        limit={queryParams?.params?.limit as number}
+        total={ordersData?.totalCount as number}
+        skip={queryParams?.params?.skip as number}
+        onPageChange={changePage}
+        onLimitChange={changeLimit}
+      />
     </div>
   );
 }

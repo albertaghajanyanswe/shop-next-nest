@@ -1,4 +1,4 @@
-export interface IColor {
+export interface IColorColumn {
   id: string
   createdAt: string
   name: string
@@ -6,4 +6,4 @@ export interface IColor {
   storeId: string
 }
 
-export type IColorInput = Pick<IColor, 'name' | 'value'>
+export type IColorInput = Pick<IColorColumn, 'name' | 'value'>

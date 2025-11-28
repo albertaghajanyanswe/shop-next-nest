@@ -1,65 +1,65 @@
-import { axiosClassic, axiosWithAuth } from "@/api/api.interceptors"
-import { API_URL } from "@/config/api.config"
-import { ICategory, ICategoryInput } from "@/shared/types/category.interface"
+import { axiosClassic, axiosWithAuth } from '@/api/api.interceptors';
+import { API_URL } from '@/config/api.config';
+import { GetCategoryDto, GetCategoryDtoAndCount } from '@/generated/orval/types';
+import { ICategoryInput } from '@/shared/types/category.interface';
+import { iParams } from '@/shared/types/filter.interface';
 
 class CategoryService {
-
-  async getAll() {
-    const { data } = await axiosClassic<ICategory[]>({
-      url: API_URL.categories(),
+  async getAll(params?: iParams) {
+    const { data } = await axiosClassic<GetCategoryDtoAndCount>({
+      url: `${API_URL.categories()}?params=${encodeURIComponent(JSON.stringify(params))}`,
       method: 'GET',
-    })
+    });
 
-    return data
+    return data;
   }
 
   async getByStoreId(storeId: string) {
-    const { data } = await axiosWithAuth<ICategory[]>({
+    const { data } = await axiosWithAuth<GetCategoryDto[]>({
       url: API_URL.categories(`/by-storeId/${storeId}`),
       method: 'GET',
     });
 
-    return data
+    return data;
   }
 
   async getById(id: string) {
-    const { data } = await axiosClassic<ICategory>({
+    const { data } = await axiosClassic<GetCategoryDto>({
       url: API_URL.categories(`/by-id/${id}`),
       method: 'GET',
     });
 
-    return data
+    return data;
   }
 
   async create(data: ICategoryInput, storeId: string) {
-    const { data: createdCategory } = await axiosWithAuth<ICategory>({
+    const { data: createdCategory } = await axiosWithAuth<GetCategoryDto>({
       url: API_URL.categories(`/${storeId}`),
       method: 'POST',
       data,
-    })
+    });
 
-    return createdCategory
+    return createdCategory;
   }
 
   async update(id: string, data: ICategoryInput) {
-    const { data: updatedCategory } = await axiosWithAuth<ICategory>({
+    const { data: updatedCategory } = await axiosWithAuth<GetCategoryDto>({
       url: API_URL.categories(`/${id}`),
       method: 'PUT',
       data,
-    })
+    });
 
-    return updatedCategory
+    return updatedCategory;
   }
 
   async delete(id: string) {
-    const { data: deletedCategory } = await axiosWithAuth<ICategory>({
+    const { data: deletedCategory } = await axiosWithAuth<GetCategoryDto>({
       url: API_URL.categories(`/${id}`),
       method: 'DELETE',
-    })
+    });
 
-    return deletedCategory
+    return deletedCategory;
   }
-
 }
 
-export const categoryService = new CategoryService()
+export const categoryService = new CategoryService();

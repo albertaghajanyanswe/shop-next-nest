@@ -1,10 +1,31 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { PrismaService } from 'src/prisma.service';
 import { ColorDto } from './dto/color.dto';
+import { QueryPayloadBuilderService } from 'src/queryPayloadBuilder/QueryPayloadBuilder';
 
 @Injectable()
 export class ColorService {
-  constructor(private prisma: PrismaService) {}
+  constructor(
+    private prisma: PrismaService,
+    private readonly queryBuilderService: QueryPayloadBuilderService,
+  ) {}
+
+  async getAll(params?: string) {
+    const payload = this.queryBuilderService.build({
+      queryParams: params ?? '',
+    });
+    console.log('PAYLOAD = ', payload);
+    const colors = await this.prisma.color.findMany({
+      orderBy: {
+        createdAt: 'desc',
+      },
+      ...payload,
+    });
+    const totalCount = await this.prisma.color.count({
+      where: payload.where,
+    });
+    return { colors, totalCount };
+  }
 
   async getByStoreId(storeId: string) {
     if (!storeId) {

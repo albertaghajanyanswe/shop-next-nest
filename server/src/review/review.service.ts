@@ -2,24 +2,37 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { PrismaService } from 'src/prisma.service';
 import { ProductService } from 'src/product/product.service';
 import { ReviewDto } from './dto/review.dto';
+import { QueryPayloadBuilderService } from 'src/queryPayloadBuilder/QueryPayloadBuilder';
 
 @Injectable()
 export class ReviewService {
   constructor(
     private prisma: PrismaService,
     private productService: ProductService,
+    private readonly queryBuilderService: QueryPayloadBuilderService,
   ) {}
 
-  async getByStoreId(storeId: string) {
+  async getByStoreId(storeId: string, params?: string) {
     if (!storeId) {
       throw new NotFoundException('Store ID is required.');
     }
-    return this.prisma.review.findMany({
-      where: { storeId },
+    const payload = this.queryBuilderService.build({
+      queryParams: params || '',
+      storeId,
+    });
+
+    const reviews = await this.prisma.review.findMany({
+      ...payload,
+      orderBy: [{ ...payload.orderBy }, { id: 'asc' }],
       include: {
         user: true,
       },
     });
+
+    const totalCount = await this.prisma.review.count({
+      where: payload.where,
+    });
+    return { reviews, totalCount };
   }
 
   async getById(id: string, userId: string) {

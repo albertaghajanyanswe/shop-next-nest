@@ -1,4 +1,9 @@
-import axios, { CreateAxiosDefaults } from 'axios';
+import axios, {
+  AxiosRequestConfig,
+  AxiosResponse,
+  CreateAxiosDefaults,
+  AxiosInstance,
+} from 'axios';
 import { NEXT_PUBLIC_SERVER_URL } from '@/config/api.config';
 import { errorCatch, getContentType } from './api.helper';
 import {
@@ -9,9 +14,11 @@ import { authService } from '@/services/auth/auth.service';
 import { EnvVariables } from '@/shared/envVariables';
 
 const API_BASE =
-  typeof window === 'undefined'
-    ? process.env.NEXT_PUBLIC_SERVER_SERVICE // внутри Server Components
-    : process.env.NEXT_PUBLIC_CLIENT_URL; // в браузере
+  process.env.NODE_ENV === 'production'
+    ? typeof window === 'undefined'
+      ? process.env.NEXT_PUBLIC_SERVER_SERVICE
+      : process.env.NEXT_PUBLIC_CLIENT_URL
+    : process.env.NEXT_PUBLIC_SERVER_URL;
 
 const options: CreateAxiosDefaults = {
   baseURL: `${API_BASE}/api`,
@@ -19,9 +26,9 @@ const options: CreateAxiosDefaults = {
   withCredentials: true,
 };
 
-export const axiosClassic = axios.create(options);
+export const axiosClassic: AxiosInstance = axios.create(options);
 
-export const axiosWithAuth = axios.create(options);
+export const axiosWithAuth: AxiosInstance = axios.create(options);
 
 axiosWithAuth.interceptors.request.use(async (config) => {
   const accessToken = getAccessToken();
@@ -32,13 +39,14 @@ axiosWithAuth.interceptors.request.use(async (config) => {
 });
 
 axiosWithAuth.interceptors.response.use(
-  (config) => {
+  (config: AxiosResponse) => {
     return config;
   },
-  async (error) => {
-    const originalRequest = error.config;
+  async (error: any) => {
+    const originalRequest: AxiosRequestConfig & { _isRetry?: boolean } =
+      error.config;
     if (
-      (error.response.status === 401 ||
+      (error.response?.status === 401 ||
         errorCatch(error) === 'Unauthorized' ||
         errorCatch(error) === 'jwt expired' ||
         errorCatch(error) === 'jwt must be provided') &&
@@ -63,3 +71,13 @@ axiosWithAuth.interceptors.response.use(
     throw error;
   }
 );
+
+export interface ErrorResponse {
+  message: string;
+  statusCode?: number;
+  response: {
+    data: {
+      message: string
+    }
+  }
+}

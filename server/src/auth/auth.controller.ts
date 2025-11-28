@@ -12,7 +12,7 @@ import {
   ValidationPipe,
 } from '@nestjs/common';
 import { AuthService } from './auth.service';
-import { RegisterDto, LoginDto, LoginResponseDto, RegisterResponseDto } from './dto/auth.dto';
+import { RegisterDto, LoginDto, AuthResponseDto } from './dto/auth.dto';
 import type { Request, Response } from 'express';
 import { AuthGuard } from '@nestjs/passport';
 import { ApiOkResponse, ApiOperation } from '@nestjs/swagger';
@@ -22,7 +22,7 @@ export class AuthController {
   constructor(private readonly authService: AuthService) {}
 
   @ApiOperation({ summary: 'User login' })
-  @ApiOkResponse({ type: LoginResponseDto })
+  @ApiOkResponse({ type: AuthResponseDto })
   @UsePipes(new ValidationPipe())
   @HttpCode(200)
   @Post('login')
@@ -39,7 +39,7 @@ export class AuthController {
   }
 
   @ApiOperation({ summary: 'User registration' })
-  @ApiOkResponse({ type: RegisterResponseDto })
+  @ApiOkResponse({ type: AuthResponseDto })
   @UsePipes(new ValidationPipe())
   @HttpCode(200)
   @Post('register')
@@ -58,6 +58,7 @@ export class AuthController {
   @UsePipes(new ValidationPipe())
   @HttpCode(200)
   @Post('login/access-token')
+  @ApiOkResponse({ type: AuthResponseDto })
   async getNewTokens(
     @Req() req: Request,
     @Res({ passthrough: true }) res: Response,

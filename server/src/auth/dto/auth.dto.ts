@@ -1,6 +1,7 @@
 import { ApiProperty } from '@nestjs/swagger';
 import type { User } from '@prisma/client';
 import { IsEmail, IsOptional, IsString, MinLength } from 'class-validator';
+import { GetUserDto } from 'src/user/dto/user.dto';
 
 export class RegisterDto {
   @ApiProperty({
@@ -54,16 +55,12 @@ export class LoginDto {
   password: string;
 }
 
-export class RegisterResponseDto {
-  @ApiProperty({ example: {}, description: 'ID of the user' })
-  user: User;
-
-  @ApiProperty({ example: 'accessToken123', description: 'Access token' })
-  accessToken: string;
-}
-
-export class LoginResponseDto {
-  @ApiProperty({ example: {}, description: 'ID of the user' })
+export class AuthResponseDto {
+  @ApiProperty({
+    type: () => GetUserDto,
+    example: {},
+    description: 'ID of the user',
+  })
   user: User;
 
   @ApiProperty({ example: 'accessToken123', description: 'Access token' })

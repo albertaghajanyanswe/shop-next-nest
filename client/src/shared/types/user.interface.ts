@@ -1,5 +1,5 @@
+import { GetProductDto } from "@/generated/orval/types"
 import { IOrder } from "./order.interface"
-import { IProduct } from "./product.interface"
 import { IStore } from "./store.interface"
 
 export interface IUser {
@@ -7,7 +7,7 @@ export interface IUser {
   name: string
   email: string
   picture: string
-  favorites: IProduct[]
+  favorites: GetProductDto[]
   orders: IOrder[]
   stores: IStore[]
 }

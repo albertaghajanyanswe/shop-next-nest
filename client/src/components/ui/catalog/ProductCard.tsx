@@ -1,7 +1,6 @@
 'use client';
-import { PUBLIC_URL } from '@/config/url.config';
-import { IProduct } from '@/shared/types/product.interface';
-import { formatPrice } from '@/utils/string/formatPrice';
+
+import { useEffect, useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import {
@@ -9,93 +8,179 @@ import {
   CarouselApi,
   CarouselContent,
   CarouselItem,
-} from '../Carousel';
-import { useEffect, useState } from 'react';
+} from '@/components/ui/Carousel';
 import AddToCardButton from '@/app/(root)/product/[id]/productInfo/AddToCardButton';
 import FavoriteButton from '@/app/(root)/product/[id]/productInfo/FavoriteButton';
-import { generateImgPath } from '@/lib/imageUtils';
+import { PUBLIC_URL } from '@/config/url.config';
+import { generateImgPath } from '@/utils/imageUtils';
+import { ProductCardInfo } from './ProductCardInfo';
+import { GetProductWithDetails } from '@/generated/orval/types';
+import { useCart } from '@/hooks/queries/useCart';
+import CartActions from '@/components/layouts/mainLayout/header/headerMenu/headerCart/CartActions';
 
 interface ProductCardProps {
-  product: IProduct;
+  product: GetProductWithDetails;
 }
 
 export function ProductCard({ product }: ProductCardProps) {
-  const [api, setApi] = useState<CarouselApi | null>(null);
+  const [carouselApi, setCarouselApi] = useState<CarouselApi | null>(null);
   const [activeIndex, setActiveIndex] = useState(0);
+  const { orderItems } = useCart();
+  const isProductInCard = orderItems.find((p) => p.product.id === product.id);
 
   useEffect(() => {
-    if (!api) return;
+    if (!carouselApi) return;
 
     const updateIndex = () => {
-      setActiveIndex(api.selectedScrollSnap());
+      setActiveIndex(carouselApi.selectedScrollSnap());
     };
 
     updateIndex();
-
-    api.on('select', updateIndex);
+    carouselApi.on('select', updateIndex);
 
     return () => {
-      api.off('select', updateIndex);
+      carouselApi.off('select', updateIndex);
     };
-  }, [api]);
+  }, [carouselApi]);
 
   return (
-    <div className='bg-white'>
-      <Carousel setApi={setApi}>
-        <CarouselContent>
-          {product.images.map((image) => (
-            <CarouselItem key={image}>
-              <Link href={PUBLIC_URL.product(product.id)}>
-                <Image
-                  src={generateImgPath(image)}
-                  alt={product.title}
-                  width={300}
-                  height={300}
-                  className='img h-[300px] w-full rounded-lg object-cover'
-                  priority
-                />
-              </Link>
-            </CarouselItem>
-          ))}
-        </CarouselContent>
-      </Carousel>
-      {/* dots */}
-      <div className='mt-2 flex justify-center gap-2'>
-        {product.images.map((_, index) => (
-          <button
-            onClick={() => api?.scrollTo(index)}
-            key={index}
-            aria-label={`Go to slide ${index + 1}`}
-            className={`h-2 w-2 cursor-pointer rounded-full transition ${
-              activeIndex === index ? 'bg-gray-800' : 'bg-gray-300'
-            }`}
+    <div className='group border-shop-dark-green/15 relative flex flex-col rounded-md border bg-white text-xs xs:text-sm'>
+      <div className='group bg-shop_light_bg relative overflow-hidden'>
+        <Carousel setApi={setCarouselApi}>
+          <CarouselContent>
+            {product.images.map((image) => (
+              <CarouselItem key={image}>
+                <Link href={PUBLIC_URL.product(product.id)}>
+                  <Image
+                    src={generateImgPath(image)}
+                    alt={product.title}
+                    width={300}
+                    height={300}
+                    className='bg-shop-light-bg h-40 w-full object-contain p-1 transition-transform duration-500 group-hover:scale-105 xs:h-32 sm:h-64 xs:p-2'
+                    loading='lazy'
+                  />
+                </Link>
+              </CarouselItem>
+            ))}
+          </CarouselContent>
+        </Carousel>
+      </div>
+
+      {/* Контент */}
+      <div className='flex flex-1 flex-col gap-0 p-2 xs:p-3'>
+        <div className='mb-1 xs:mb-2'>
+          <ProductCardInfo
+            product={product}
+            carouselApi={carouselApi}
+            activeIndex={activeIndex}
           />
-        ))}
+        </div>
+
+        {/* CTA у дна карточки */}
+        <div className='mt-auto flex items-start gap-x-1 xs:gap-x-2'>
+          {isProductInCard ? (
+            <CartActions orderItem={isProductInCard} />
+          ) : (
+            <AddToCardButton product={product} className='flex-10' />
+          )}
+        </div>
       </div>
-      <h3 className='mt-4 line-clamp-1 font-semibold text-gray-700'>
-        {product.title}
-      </h3>
-      <p className='text-muted-foreground line-clamp-2 text-xs'>
-        {product.description}
-      </p>
-      <Link
-        href={PUBLIC_URL.category(product.category.id)}
-        className='mt-1 text-sm text-gray-500'
-      >
-        {product.category.title}
-      </Link>
-      <div className='mt-1 text-sm text-gray-900'>
-        {product.oldPrice && product.oldPrice !== product.price && (
-          <span className='mr-2 text-gray-500 line-through'>
-            {formatPrice(product.oldPrice)}
-          </span>
-        )}
-        <span className='font-bold'>{formatPrice(product.price)}</span>
-      </div>
-      <div className='mt-4 flex items-start gap-x-2'>
-        <AddToCardButton product={product} className='flex-10' />
-        <FavoriteButton product={product} />
-      </div>
+
+      {/* Favorite */}
+      <FavoriteButton
+        product={product}
+        className='absolute top-1 right-1 xs:top-2 xs:right-2'
+        btnVariant='outline'
+      />
     </div>
   );
 }
+
+// 'use client';
+
+// import { useEffect, useState } from 'react';
+// import Image from 'next/image';
+// import Link from 'next/link';
+// import {
+//   Carousel,
+//   CarouselApi,
+//   CarouselContent,
+//   CarouselItem,
+// } from '@/components/ui/Carousel';
+// import AddToCardButton from '@/app/(root)/product/[id]/productInfo/AddToCardButton';
+// import FavoriteButton from '@/app/(root)/product/[id]/productInfo/FavoriteButton';
+// import { PUBLIC_URL } from '@/config/url.config';
+// import { generateImgPath } from '@/utils/imageUtils';
+// import { ProductCardInfo } from './ProductCardInfo';
+// import { GetProductWithDetails } from '@/generated/orval/types';
+// import { useCart } from '@/hooks/queries/useCart';
+// import CartActions from '@/components/layouts/mainLayout/header/headerMenu/headerCart/CartActions';
+
+// interface ProductCardProps {
+//   product: GetProductWithDetails;
+// }
+
+// export function ProductCard({ product }: ProductCardProps) {
+//   const [carouselApi, setCarouselApi] = useState<CarouselApi | null>(null);
+//   const [activeIndex, setActiveIndex] = useState(0);
+//   const { orderItems, total } = useCart();
+//   const isProductInCard = orderItems.find((p) => p.product.id === product.id);
+
+//   useEffect(() => {
+//     if (!carouselApi) return;
+
+//     const updateIndex = () => {
+//       setActiveIndex(carouselApi.selectedScrollSnap());
+//     };
+
+//     updateIndex();
+
+//     carouselApi.on('select', updateIndex);
+
+//     return () => {
+//       carouselApi.off('select', updateIndex);
+//     };
+//   }, [carouselApi]);
+
+//   return (
+//     <div className='group border-shop-dark-green/15 relative flex flex-col rounded-md border bg-white text-sm'>
+//       <div className='group bg-shop_light_bg relative overflow-hidden'>
+//         <Carousel setApi={setCarouselApi}>
+//           <CarouselContent>
+//             {product.images.map((image) => (
+//               <CarouselItem key={image}>
+//                 <Link href={PUBLIC_URL.product(product.id)}>
+//                   <Image
+//                     src={generateImgPath(image)}
+//                     alt={product.title}
+//                     width={300}
+//                     height={300}
+//                     className='bg-shop-light-bg h-64 w-full overflow-hidden rounded-t-[6px] object-contain p-2 transition-transform duration-500 group-hover:scale-105'
+//                     priority
+//                   />
+//                 </Link>
+//               </CarouselItem>
+//             ))}
+//           </CarouselContent>
+//         </Carousel>
+//       </div>
+//       <div className='flex flex-1 flex-col gap-0 p-3'>
+//         <div className='mb-2'>
+//           <ProductCardInfo
+//             product={product}
+//             carouselApi={carouselApi}
+//             activeIndex={activeIndex}
+//           />
+//         </div>
+//         <div className='mt-auto flex items-start gap-x-2'>
+//           {isProductInCard ? (
+//             <CartActions orderItem={isProductInCard} />
+//           ) : (
+//             <AddToCardButton product={product} className='flex-10' />
+//           )}
+//         </div>
+//       </div>
+//       <FavoriteButton product={product} className='absolute top-2 right-2' btnVariant='outline' />
+//     </div>
+//   );
+// }

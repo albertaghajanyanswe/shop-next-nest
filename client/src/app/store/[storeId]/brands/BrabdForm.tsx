@@ -7,12 +7,12 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from '@/components/ui/form-elements/Form';
-import { Input } from '@/components/ui/form-elements/Input';
+} from '@/components/ui/formElements/Form';
+import { Input } from '@/components/ui/formElements/Input';
 import { Heading } from '@/components/ui/Heading';
 import { Trash2 } from 'lucide-react';
 import { SubmitHandler, useForm } from 'react-hook-form';
-import { IBrand, IBrandInput } from '@/shared/types/brand.interface';
+import { IBrandInput } from '@/shared/types/brand.interface';
 import { useCreateBrand } from '@/hooks/queries/brands/useCreateBrand';
 import { useUpdateBrand } from '@/hooks/queries/brands/useUpdateBrand';
 import { useDeleteBrand } from '@/hooks/queries/brands/useDeleteBrand';
@@ -23,11 +23,13 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/Select';
-import { ICategory } from '@/shared/types/category.interface';
+import { GetBrandDto, GetCategoryDto } from '@/generated/orval/types';
+import { Textarea } from '@/components/ui/Textarea';
+import { ImageUpload } from '@/components/ui/formElements/image-upload/ImageUpload';
 
 interface BrandFormProps {
-  brand?: IBrand;
-  categories: ICategory[];
+  brand?: GetBrandDto;
+  categories: GetCategoryDto[];
 }
 
 export function BrandForm({ brand, categories }: BrandFormProps) {
@@ -43,7 +45,9 @@ export function BrandForm({ brand, categories }: BrandFormProps) {
     mode: 'onChange',
     values: {
       name: brand?.name || '',
-      categoryId: brand?.categoryId || '',
+      description: brand?.description || '',
+      images: brand?.images || [],
+      // categoryId: brand?.categoryId || '',
     },
   });
 
@@ -60,7 +64,7 @@ export function BrandForm({ brand, categories }: BrandFormProps) {
 
   return (
     <div className='p-6'>
-      <div className='flex items-center justify-between mb-8'>
+      <div className='mb-8 flex items-center justify-between'>
         <Heading title={title} description={description} />
         {brand && (
           <ConfirmModal
@@ -84,6 +88,28 @@ export function BrandForm({ brand, categories }: BrandFormProps) {
           <div className='xs:grid-cols-1 mt-6 grid gap-6'>
             <FormField
               control={form.control}
+              name='images'
+              rules={{ required: 'Upload at least one image' }}
+              render={({ field }) => {
+                console.log('FIELD = ', field);
+                return (
+                  <FormItem className='mt-4'>
+                    <FormLabel>Images</FormLabel>
+                    <FormControl>
+                      <ImageUpload
+                        isDisabled={isLoading}
+                        onChange={field.onChange}
+                        value={field.value}
+                        folder='brands'
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                );
+              }}
+            />
+            <FormField
+              control={form.control}
               name='name'
               rules={{ required: 'Brand name is required' }}
               render={({ field }) => (
@@ -100,8 +126,25 @@ export function BrandForm({ brand, categories }: BrandFormProps) {
                 </FormItem>
               )}
             />
-
             <FormField
+              control={form.control}
+              name='description'
+              rules={{ required: 'Brand description is required' }}
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Brand description</FormLabel>
+                  <FormControl>
+                    <Textarea
+                      placeholder='Brand description'
+                      disabled={isLoading}
+                      {...field}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            {/* <FormField
               control={form.control}
               name='categoryId'
               rules={{ required: 'Category is required' }}
@@ -121,7 +164,7 @@ export function BrandForm({ brand, categories }: BrandFormProps) {
                     <SelectContent>
                       {categories.map((category) => (
                         <SelectItem key={category.id} value={category.id}>
-                          {category.title}
+                          {category.name}
                         </SelectItem>
                       ))}
                     </SelectContent>
@@ -129,7 +172,7 @@ export function BrandForm({ brand, categories }: BrandFormProps) {
                   <FormMessage />
                 </FormItem>
               )}
-            />
+            /> */}
           </div>
           <Button variant='primary' disabled={isLoading || !isFormDirty}>
             {action}

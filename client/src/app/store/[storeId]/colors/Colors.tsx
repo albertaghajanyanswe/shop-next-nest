@@ -1,8 +1,8 @@
 'use client';
 
 import { Button } from '@/components/ui/Button';
-import { DataTable } from '@/components/ui/data-loading/DataTable';
-import DataTableLoading from '@/components/ui/data-loading/DataTableLoading';
+import { DataTable } from '@/components/ui/dataLoading/DataTable';
+import DataTableLoading from '@/components/ui/dataLoading/DataTableLoading';
 import { Heading } from '@/components/ui/Heading';
 import { STORE_URL } from '@/config/url.config';
 import { useGetColors } from '@/hooks/queries/colors/useGetColors';
@@ -10,31 +10,50 @@ import { Plus } from 'lucide-react';
 import Link from 'next/link';
 import { useParams } from 'next/navigation';
 import { colorColumns } from './ColorColumns';
-import { IColor } from '@/shared/types/color.interface';
-import { formateDate } from '@/utils/date/formateDate';
+import { formateDate } from '@/utils/formateDate';
+import { IColorColumn } from '@/shared/types/color.interface';
+import { useQueryParams } from '@/hooks/commons/useQueryParams';
+import { CustomPagination } from '@/components/ui/CustomPagination';
 
 export function Colors() {
   const params = useParams<{ storeId: string }>();
   const storeId = params.storeId;
 
-  const { colors, isLoadingColors } = useGetColors();
-  const formattedColors: IColor[] = colors
-    ? colors?.map((color) => ({
+  const { queryParams, changePage, changeLimit, changeSearch, changeSort } =
+    useQueryParams({
+      pageDefaultParams: {
+        params: {
+          sort: { field: 'createdAt', order: 'desc' },
+          filter: {},
+          limit: 10,
+          skip: 0,
+          search: {
+            value: '',
+            fields: ['name', 'description'],
+          },
+        },
+      },
+    });
+
+  const { colorsData, isLoadingColorsData } = useGetColors(queryParams);
+
+  const formattedColors: IColorColumn[] = colorsData?.colors
+    ? colorsData?.colors?.map((color) => ({
         id: color.id,
         createdAt: formateDate(color.createdAt),
         name: color.name,
         value: color.value,
-        storeId: color.storeId,
+        storeId: color.storeId as string,
       }))
     : [];
   return (
     <div className='p-6'>
-      {isLoadingColors ? (
+      {isLoadingColorsData ? (
         <DataTableLoading />
       ) : (
         <div className='flex items-center justify-between'>
           <Heading
-            title={`Colors (${formattedColors.length})`}
+            title={`Colors (${colorsData?.totalCount})`}
             description='All colors from store'
           />
           <div className='flex items-center gap-x-4'>
@@ -52,6 +71,22 @@ export function Colors() {
           columns={colorColumns}
           data={formattedColors}
           filterKey='name'
+          totalCount={colorsData?.totalCount as number}
+          limit={queryParams?.params?.limit as number}
+          skip={queryParams?.params?.skip as number}
+          onPageChange={changePage}
+          onLimitChange={changeLimit}
+          queryParams={queryParams}
+          onChangeSearch={changeSearch}
+          onChangeSort={changeSort}
+        />
+
+        <CustomPagination
+          limit={queryParams?.params?.limit as number}
+          total={colorsData?.totalCount as number}
+          skip={queryParams?.params?.skip as number}
+          onPageChange={changePage}
+          onLimitChange={changeLimit}
         />
       </div>
     </div>

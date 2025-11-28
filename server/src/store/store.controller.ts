@@ -13,8 +13,8 @@ import {
 import { StoreService } from './store.service';
 import { Auth } from 'src/auth/decorators/auth.decorator';
 import { CurrentUser } from 'src/user/decorators/user.decorator';
-import { CreateStoreDto } from './dto/create-store.dto';
-import { UpdateStoreDto } from './dto/update-store.dto';
+import { GetStoreDto, StoreDto } from './dto/store.dto';
+import { ApiResponse } from '@nestjs/swagger';
 
 @Controller('stores')
 export class StoreController {
@@ -22,6 +22,7 @@ export class StoreController {
 
   @Auth()
   @Get('by-id/:id')
+  @ApiResponse({ type: GetStoreDto })
   async getStoreById(
     @Param('id') storeId: string,
     @CurrentUser('id') userId: string,
@@ -33,7 +34,8 @@ export class StoreController {
   @HttpCode(200)
   @Auth()
   @Post()
-  async create(@CurrentUser('id') userId: string, @Body() dto: CreateStoreDto) {
+  @ApiResponse({ type: GetStoreDto })
+  async create(@CurrentUser('id') userId: string, @Body() dto: StoreDto) {
     return this.storeService.create(userId, dto);
   }
 
@@ -41,10 +43,11 @@ export class StoreController {
   @HttpCode(200)
   @Auth()
   @Put(':id')
+  @ApiResponse({ type: GetStoreDto })
   async update(
     @Param('id') storeId: string,
     @CurrentUser('id') userId: string,
-    @Body() dto: UpdateStoreDto,
+    @Body() dto: StoreDto,
   ) {
     return this.storeService.update(storeId, userId, dto);
   }
@@ -52,6 +55,7 @@ export class StoreController {
   @HttpCode(200)
   @Auth()
   @Delete(':id')
+  @ApiResponse({ type: GetStoreDto })
   async delete(
     @Param('id') storeId: string,
     @CurrentUser('id') userId: string,

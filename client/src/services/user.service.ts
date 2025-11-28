@@ -1,5 +1,6 @@
 import { axiosWithAuth } from "@/api/api.interceptors"
 import { API_URL } from "@/config/api.config"
+import { GetUserDto } from "@/generated/orval/types"
 import { IUser } from "@/shared/types/user.interface"
 
 class UserService {
@@ -7,7 +8,7 @@ class UserService {
     console.log('\n\n\n\n *********NODE_ENV = ', process.env.NODE_ENV)
   }
   async getProfile() {
-    const { data } = await axiosWithAuth<IUser>({
+    const { data } = await axiosWithAuth<GetUserDto>({
       url: API_URL.users(`/profile`),
       method: 'GET',
     })
@@ -16,7 +17,7 @@ class UserService {
   }
 
   async toggleFavorite(productId: string) {
-    const response = await axiosWithAuth<IUser>({
+    const response = await axiosWithAuth<GetUserDto>({
       url: API_URL.users(`/profile/favorites/${productId}`),
       method: 'PATCH',
     })

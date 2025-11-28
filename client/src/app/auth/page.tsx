@@ -3,7 +3,7 @@ import { NO_INDEX_PAGE } from '../../utils/constants';
 import Auth from './Auth';
 
 export const metadata: Metadata = {
-  title: '',
+  title: 'Auth page',
   ...NO_INDEX_PAGE,
 };
 

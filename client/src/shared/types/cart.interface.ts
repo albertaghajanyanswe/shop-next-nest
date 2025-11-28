@@ -1,8 +1,8 @@
-import { IProduct } from "./product.interface"
+import { GetProductWithDetails } from "@/generated/orval/types"
 
 export interface ICartItem {
   id: string
-  product: IProduct
+  product: GetProductWithDetails
   quantity: number
   price: number
 }

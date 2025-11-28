@@ -1,65 +1,65 @@
-import { axiosClassic, axiosWithAuth } from "@/api/api.interceptors"
-import { API_URL } from "@/config/api.config"
-import { IBrand, IBrandInput } from "@/shared/types/brand.interface"
+import { axiosClassic, axiosWithAuth } from '@/api/api.interceptors';
+import { API_URL } from '@/config/api.config';
+import { GetBrandDto, GetBrandDtoAndCount } from '@/generated/orval/types';
+import { IBrandInput } from '@/shared/types/brand.interface';
+import { iParams } from '@/shared/types/filter.interface';
 
 class BrandService {
-
-  async getAll() {
-    const { data } = await axiosClassic<IBrand[]>({
-      url: API_URL.brands(),
+  async getAll(params?: iParams) {
+    const { data } = await axiosClassic<GetBrandDtoAndCount>({
+      url: `${API_URL.brands()}?params=${encodeURIComponent(JSON.stringify(params))}`,
       method: 'GET',
-    })
+    });
 
-    return data || []
+    return data;
   }
 
   async getByStoreId(storeId: string) {
-    const { data } = await axiosWithAuth<IBrand[]>({
+    const { data } = await axiosWithAuth<GetBrandDto[]>({
       url: API_URL.brands(`/by-storeId/${storeId}`),
       method: 'GET',
     });
 
-    return data || []
+    return data || [];
   }
 
   async getById(id: string) {
-    const { data } = await axiosWithAuth<IBrand>({
+    const { data } = await axiosClassic<GetBrandDto>({
       url: API_URL.brands(`/by-id/${id}`),
       method: 'GET',
     });
 
-    return data
+    return data;
   }
 
   async create(data: IBrandInput, storeId: string) {
-    const { data: createdCategory } = await axiosWithAuth<IBrand>({
+    const { data: createdCategory } = await axiosWithAuth<GetBrandDto>({
       url: API_URL.brands(`/${storeId}`),
       method: 'POST',
       data,
-    })
+    });
 
-    return createdCategory
+    return createdCategory;
   }
 
   async update(id: string, data: IBrandInput) {
-    const { data: updatedCategory } = await axiosWithAuth<IColor>({
+    const { data: updatedCategory } = await axiosWithAuth<GetBrandDto>({
       url: API_URL.brands(`/${id}`),
       method: 'PUT',
       data,
-    })
+    });
 
-    return updatedCategory
+    return updatedCategory;
   }
 
   async delete(id: string) {
-    const { data: deletedCategory } = await axiosWithAuth<IColor>({
+    const { data: deletedCategory } = await axiosWithAuth<GetBrandDto>({
       url: API_URL.brands(`/${id}`),
       method: 'DELETE',
-    })
+    });
 
-    return deletedCategory
+    return deletedCategory;
   }
-
 }
 
-export const brandService = new BrandService()
+export const brandService = new BrandService();

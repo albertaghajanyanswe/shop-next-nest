@@ -3,16 +3,16 @@
 import { useEffect, useState, useRef } from 'react';
 import { Copy, Check } from 'lucide-react';
 
-import { cn } from '@/lib/utils';
-import * as ColorUtils from '@/lib/colorUtils';
+import { cn } from '@/utils/common';
+import * as ColorUtils from '@/utils/colorUtils';
 import { Button } from '@/components/ui/Button';
 import {
   Popover,
   PopoverContent,
   PopoverTrigger,
 } from '@/components/ui/Popover';
-import { Input } from '@/components/ui/form-elements/Input';
-import { Label } from '@/components/ui/form-elements/Label';
+import { Input } from '@/components/ui/formElements/Input';
+import { Label } from '@/components/ui/formElements/Label';
 import { Slider } from '@/components/ui/Slider';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/Tabs';
 

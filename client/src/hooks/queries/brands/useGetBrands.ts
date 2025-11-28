@@ -1,23 +1,21 @@
 import { brandService } from '@/services/brandService';
 import { QUERY_KEYS } from '@/shared/queryConstants';
+import { iFilterParams } from '@/shared/types/filter.interface';
 import { useQuery } from '@tanstack/react-query';
 import { useParams } from 'next/navigation';
 import { useMemo } from 'react';
 
-export const useGetBrands = () => {
-  const params = useParams<{ storeId: string }>();
-  const storeId = params.storeId;
-
-  const { data: brands, isLoading: isLoadingBrands } = useQuery({
-    queryKey: [QUERY_KEYS.getStoreBrands, storeId],
-    queryFn: () => brandService.getByStoreId(storeId),
+export const useGetBrands = (queryParams?: iFilterParams) => {
+  const { data: brandsData, isLoading: isLoadingBrandsData } = useQuery({
+    queryKey: [QUERY_KEYS.getBrands, queryParams?.params],
+    queryFn: () => brandService.getAll(queryParams?.params),
   });
 
   return useMemo(
     () => ({
-      brands,
-      isLoadingBrands,
+      brandsData,
+      isLoadingBrandsData,
     }),
-    [brands, isLoadingBrands]
+    [brandsData, isLoadingBrandsData]
   );
 };

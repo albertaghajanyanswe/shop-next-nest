@@ -1,23 +1,34 @@
 import Link from 'next/link';
-import { ICatalog } from './catalog.interface';
-import { Button } from '../Button';
-import { ProductCard } from './ProductCard';
+import { ProductCard } from '@/components/ui/catalog/ProductCard';
+import { GetProductWithDetails } from '@/generated/orval/types';
+
+export interface ICatalog {
+  title: string;
+  description?: string;
+  descriptionLabel?: string;
+  linkTitle?: string;
+  link?: string;
+  products: GetProductWithDetails[] | undefined;
+}
 
 export function Catalog({
   title,
   description,
+  descriptionLabel,
   linkTitle,
   link,
   products,
 }: ICatalog) {
+
   return (
     <div className='m-auto'>
       <div className='mb-4 md:flex md:items-center md:justify-between'>
         <div className='max-w-2xl px-4 lg:max-w-full lg:px-0'>
-          <h1 className='text-2xl font-bold'>{title}</h1>
+          <p className='text-2xl font-bold'>{title}</p>
           {description && (
             <p className='text-muted-foreground mt-2 text-sm'>
-              <span className='font-medium text-xs'>Category description:</span> {description}
+              <span className='text-xs font-medium'>{descriptionLabel}</span>{' '}
+              {description}
             </p>
           )}
         </div>
@@ -31,8 +42,8 @@ export function Catalog({
         )}
       </div>
       <div className='flex w-full items-center'>
-        {products?.length > 0 ? (
-          <div className='mt-2 grid w-full gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5'>
+        {products && products?.length > 0 ? (
+          <div className='mt-2 grid w-full gap-6 xs:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5'>
             {products.map((product) => (
               <ProductCard key={product.id} product={product} />
             ))}

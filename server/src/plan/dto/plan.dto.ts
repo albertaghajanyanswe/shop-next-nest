@@ -1,13 +1,13 @@
-import { ApiProperty } from "@nestjs/swagger";
+import { ApiProperty } from '@nestjs/swagger';
 
-export class PlanResponse {
+export class GetPlanDto {
   @ApiProperty({
     description: 'Unique identifier for the plan',
     example: '2Nrfjrfr45frer',
   })
   public id: string;
 
-    @ApiProperty({
+  @ApiProperty({
     description: 'Name of the plan',
     example: 'Premium',
   })
@@ -51,7 +51,7 @@ export class PlanResponse {
       'Advanced analytics',
     ],
     isArray: true,
-    type: String
+    type: String,
   })
   public features: string[];
 

@@ -10,8 +10,8 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from '@/components/ui/form-elements/Form';
-import { Input } from '@/components/ui/form-elements/Input';
+} from '@/components/ui/formElements/Form';
+import { Input } from '@/components/ui/formElements/Input';
 import { Heading } from '@/components/ui/Heading';
 import { Textarea } from '@/components/ui/Textarea';
 import { DASHBOARD_URL } from '@/config/url.config';

@@ -6,8 +6,8 @@ import {
   DropdownMenuLabel,
   DropdownMenuTrigger,
 } from '@/components/ui/DropdownMenu';
-import { PUBLIC_URL, STORE_URL } from '@/config/url.config';
-import { IColor } from '@/shared/types/color.interface';
+import { STORE_URL } from '@/config/url.config';
+import { IColorColumn } from '@/shared/types/color.interface';
 import { ColumnDef } from '@tanstack/react-table';
 import {
   ArrowUpDown,
@@ -17,9 +17,13 @@ import {
 } from 'lucide-react';
 import Link from 'next/link';
 
-export const colorColumns: ColumnDef<IColor>[] = [
+export const colorColumns: ColumnDef<IColorColumn>[] = [
   {
     accessorKey: 'name',
+    meta: {
+      textClassName: 'truncate overflow-hidden text-ellipsis whitespace-nowrap',
+      sortField: 'name',
+    },
     header: ({ column }) => {
       return (
         <Button
@@ -35,6 +39,9 @@ export const colorColumns: ColumnDef<IColor>[] = [
 
   {
     accessorKey: 'value',
+    meta: {
+      textClassName: 'truncate overflow-hidden text-ellipsis whitespace-nowrap',
+    },
     header: ({ column }) => {
       return (
         <Button
@@ -61,6 +68,10 @@ export const colorColumns: ColumnDef<IColor>[] = [
 
   {
     accessorKey: 'createdAt',
+    meta: {
+      textClassName: 'truncate overflow-hidden text-ellipsis whitespace-nowrap',
+      sortField: 'createdAt',
+    },
     header: ({ column }) => {
       return (
         <Button

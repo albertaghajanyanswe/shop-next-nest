@@ -1,12 +1,12 @@
-import { PUBLIC_URL } from '@/config/url.config';
-import { IProduct } from '@/shared/types/product.interface';
-import { formatPrice } from '@/utils/string/formatPrice';
 import Link from 'next/link';
+import { PUBLIC_URL } from '@/config/url.config';
+import { formatPrice } from '@/utils/formatPrice';
 import AddToCardButton from './AddToCardButton';
 import FavoriteButton from './FavoriteButton';
+import { GetProductWithDetails } from '@/generated/orval/types';
 
 export interface ProductInfoProps {
-  product: IProduct;
+  product: GetProductWithDetails;
 }
 
 export default function ProductInfo({ product }: ProductInfoProps) {
@@ -16,7 +16,7 @@ export default function ProductInfo({ product }: ProductInfoProps) {
         product.reviews.length
     ) || 0;
   return (
-    <div>
+    <div className='flex w-full flex-col gap-5'>
       <div className='mt-10 space-y-5 sm:mt-16 lg:mt-0'>
         <h1 className='text-3xl font-bold'>{product.title}</h1>
         <div className='text-2xl'>{formatPrice(product.price)}</div>
@@ -28,9 +28,9 @@ export default function ProductInfo({ product }: ProductInfoProps) {
           <h3 className='font-semibold'>Category:</h3>
           <Link
             href={PUBLIC_URL.category(product.category.id)}
-            className='text-sm font-semibold text-primary-500 underline'
+            className='text-primary-500 text-sm font-semibold underline'
           >
-            {product.category.title}
+            {product.category.name}
           </Link>
         </div>
 
@@ -39,9 +39,11 @@ export default function ProductInfo({ product }: ProductInfoProps) {
           <div className='flex flex-row items-center justify-center gap-x-2'>
             <div
               className='size-6 rounded-full'
-              style={{ backgroundColor: product.color.value }}
+              style={{ backgroundColor: product.color?.value }}
             />
-            <p className='font-semibold text-sm text-neutral-700'>{product.color.name}</p>
+            <p className='text-sm font-semibold text-neutral-700'>
+              {product.color?.name} 111
+            </p>
           </div>
         </div>
 

@@ -16,7 +16,7 @@ import {
   FormField,
   FormItem,
   FormMessage,
-} from '../ui/form-elements/Form';
+} from '../ui/formElements/Form';
 import { Rating } from 'react-simple-star-rating';
 import { Textarea } from '../ui/Textarea';
 import { Button } from '../ui/Button';

@@ -1,6 +1,7 @@
 import type { NextConfig } from 'next';
 
-const isProd = process.env.NODE_ENV === 'production';
+const isProd = process.env.APP_ENV === 'production';
+const isDev = process.env.APP_ENV === 'development';
 
 const nextConfig: NextConfig = {
   env: {
@@ -52,16 +53,12 @@ const nextConfig: NextConfig = {
   },
   async rewrites() {
     // return []
-    if (isProd) {
+    if (isProd || isDev) {
       return [];
     }
     return [
       {
         source: '/server-uploads/:path*',
-        destination: `${process.env.NEXT_PUBLIC_SERVER_URL}/server-uploads/:path*`,
-      },
-      {
-        source: '/uploads/:path*',
         destination: `${process.env.NEXT_PUBLIC_SERVER_URL}/server-uploads/:path*`,
       },
       {

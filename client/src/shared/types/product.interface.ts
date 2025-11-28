@@ -1,7 +1,4 @@
-import { IBrand } from './brand.interface';
-import { ICategory } from './category.interface';
-import { IColor } from './color.interface';
-import { IReview } from './review.interface';
+import { GetBrandWithCategoryDto, GetCategoryDto, GetColorDto, GetProductWithDetailsState, GetReviewDto } from '@/generated/orval/types';
 import { IStore } from './store.interface';
 
 export enum EnumProductState {
@@ -16,13 +13,13 @@ export interface IProduct {
   price: number;
   oldPrice: number;
   images: string[];
-  category: ICategory;
-  brand: IBrand;
-  reviews: IReview[];
+  category: GetCategoryDto;
+  brand: GetBrandWithCategoryDto;
+  reviews: GetReviewDto[];
   store: IStore;
-  color: IColor;
+  color: GetColorDto;
   storeId: string;
-  state: EnumProductState;
+  state: GetProductWithDetailsState;
   userId: string;
 }
 
@@ -42,4 +39,26 @@ export interface IProductInput
   categoryId: string;
   colorId: string;
   brandId: string;
+}
+
+export interface IProductColumn {
+  id: string;
+  title: string;
+  price: number;
+  category: string;
+  color: string;
+  storeId: string;
+
+  // additional optional properties present on row.original used elsewhere
+  categoryId?: string;
+  brandId?: string;
+  colorId?: string;
+  images?: string[];
+  description?: string;
+  brand?: any;
+  reviews?: any[];
+  state?: string;
+  userId?: string;
+  originalPrice?: number;
+  image?: string
 }

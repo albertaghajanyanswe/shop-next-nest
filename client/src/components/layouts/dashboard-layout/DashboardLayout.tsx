@@ -15,10 +15,13 @@ import {
   CircleDollarSign,
   Settings,
 } from 'lucide-react';
-import { cn } from '@/lib/utils';
+import { cn } from '@/utils/common';
 import { Card } from '@/components/ui/Card';
-import { DASHBOARD_URL } from '@/config/url.config';
-import { MenuItem } from '../store-layout/sidebar/navigation/MenuItem';
+import { DASHBOARD_URL, PUBLIC_URL } from '@/config/url.config';
+import { MenuItem } from '../storeLayout/sidebar/navigation/MenuItem';
+import { userService } from '@/services/user.service';
+import { authService } from '@/services/auth/auth.service';
+import { useLogout } from '@/hooks/queries/user/useLogout';
 
 const menuItems = [
   { value: 'My Orders', icon: CircleDollarSign, link: DASHBOARD_URL.orders() },
@@ -34,7 +37,11 @@ const menuItems = [
 export function DashboardLayout({ children }: PropsWithChildren<unknown>) {
   const searchParams = useSearchParams();
   const [collapsed, setCollapsed] = useState(false);
-
+  const router = useRouter();
+  const { logout } = useLogout();
+  const handleLayout = () => {
+    logout();
+  };
   useEffect(() => {
     const accessToken = searchParams.get('accessToken');
     if (accessToken) {
@@ -44,6 +51,7 @@ export function DashboardLayout({ children }: PropsWithChildren<unknown>) {
 
   const { user } = useProfile();
   console.log('USER - ', user);
+
   if (!user) return null;
 
   return (
@@ -120,7 +128,9 @@ export function DashboardLayout({ children }: PropsWithChildren<unknown>) {
               ))}
             </nav> */}
             <div className='mt-6 flex w-full flex-1 flex-col'>
-              <div className={`flex w-full flex-col space-y-1 ${collapsed ? 'items-center' : ''}`}>
+              <div
+                className={`flex w-full flex-col space-y-1 ${collapsed ? 'items-center' : ''}`}
+              >
                 {menuItems.map((route) => (
                   <MenuItem
                     key={route.value}
@@ -137,6 +147,7 @@ export function DashboardLayout({ children }: PropsWithChildren<unknown>) {
                   'w-full rounded-xl bg-violet-50 font-medium hover:bg-violet-100',
                   collapsed ? 'justify-center' : ''
                 )}
+                onClick={handleLayout}
               >
                 <LogOut className='h-5 w-5' />
                 {!collapsed && <span>LOGOUT</span>}

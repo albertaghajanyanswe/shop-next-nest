@@ -23,17 +23,17 @@ export async function generateMetadata({
   const { category, products } = await getProducts(id);
 
   return {
-    title: category.title,
+    title: category.name,
     description: category.description,
     openGraph: {
-      title: category.title,
+      title: category.name,
       description: category.description,
       images: [
         {
           url: products?.[0]?.images?.[0] || '',
           width: 800,
           height: 600,
-          alt: category.title,
+          alt: category.name,
         },
       ],
     },
@@ -51,8 +51,9 @@ export default async function CategoryPage({
   return (
     <div className='my-6'>
       <Catalog
-        title={category.title}
+        title={category.name}
         description={category.description}
+        descriptionLabel='Category description:'
         products={products}
       />
     </div>

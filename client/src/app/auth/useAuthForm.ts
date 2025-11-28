@@ -1,8 +1,9 @@
 'use client';
-import { DASHBOARD_URL, PUBLIC_URL } from '@/config/url.config';
+import { ErrorResponse } from '@/api/api.interceptors';
+import { DASHBOARD_URL } from '@/config/url.config';
+import { AuthResponseDto, RegisterDto } from '@/generated/orval/types';
 import { authService } from '@/services/auth/auth.service';
 import { QUERY_KEYS } from '@/shared/queryConstants';
-import { IAuthForm } from '@/shared/types/auth.interface';
 import { useMutation } from '@tanstack/react-query';
 import { useRouter } from 'next/navigation';
 import { SubmitHandler, useForm } from 'react-hook-form';
@@ -11,7 +12,7 @@ import toast from 'react-hot-toast';
 export function useAuthForm(isReg: boolean) {
   const router = useRouter();
 
-  const form = useForm<IAuthForm>({
+  const form = useForm<RegisterDto>({
     mode: 'onChange',
     defaultValues: {
       name: '',
@@ -20,24 +21,24 @@ export function useAuthForm(isReg: boolean) {
     },
   });
 
-  const { mutate, isPending } = useMutation({
+  const { mutate, isPending } = useMutation<AuthResponseDto, ErrorResponse, RegisterDto>({
     mutationKey: QUERY_KEYS.auth,
-    mutationFn: (data: IAuthForm) =>
+    mutationFn: (data: RegisterDto) =>
       authService.main(isReg ? 'register' : 'login', data),
     onSuccess: () => {
       form.reset();
       toast.success('Login success');
       router.replace(DASHBOARD_URL.home());
     },
-    onError: (error: any) => {
+    onError: (error) => {
       console.log('error = ', error);
       toast.error(
-        error.response.data.message || error.message || 'Error while login'
+        error.response?.data?.message || error.message || 'Error while login'
       );
     },
   });
 
-  const onSubmit: SubmitHandler<IAuthForm> = (data) => {
+  const onSubmit: SubmitHandler<RegisterDto> = (data) => {
     mutate(data);
   };
 

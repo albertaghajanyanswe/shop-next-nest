@@ -11,12 +11,12 @@ import {
   CardHeader,
   CardTitle,
 } from '@/components/ui/Card';
-import { Form } from '@/components/ui/form-elements/Form';
+import { Form } from '@/components/ui/formElements/Form';
 import { Button } from '@/components/ui/Button';
 import { AuthFields } from './AuthFields';
 import { Social } from './Social';
 import Link from 'next/link';
-import { DASHBOARD_URL, PUBLIC_URL } from '@/config/url.config';
+import { PUBLIC_URL } from '@/config/url.config';
 
 export default function Auth() {
   const [isReg, setIsReg] = useState(false);
@@ -24,7 +24,7 @@ export default function Auth() {
 
   return (
     <div className='grid min-h-screen grid-cols-1 lg:grid-cols-2'>
-      <div className='bg-primary-100 hidden h-full items-center justify-center lg:flex'>
+      <div className='bg-primary-50 hidden h-full items-center justify-center lg:flex'>
         <Image
           src={'/images/myStore_logo.svg'}
           alt='auth'
@@ -61,7 +61,12 @@ export default function Auth() {
               >
                 <AuthFields form={form} isPending={isPending} isReg={isReg} />
 
-                <Button variant='primary' className='w-full' type='submit' disabled={isPending}>
+                <Button
+                  variant='primary'
+                  className='w-full'
+                  type='submit'
+                  disabled={isPending}
+                >
                   {isPending ? 'Loading...' : isReg ? 'Register' : 'Login'}
                 </Button>
               </form>

@@ -7,20 +7,20 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from '@/components/ui/form-elements/Form';
-import { Input } from '@/components/ui/form-elements/Input';
+} from '@/components/ui/formElements/Form';
+import { Input } from '@/components/ui/formElements/Input';
 import { Heading } from '@/components/ui/Heading';
 import { useCreateColor } from '@/hooks/queries/colors/useCreateColor';
 import { useDeleteColor } from '@/hooks/queries/colors/useDeleteColor';
 import { useUpdateColor } from '@/hooks/queries/colors/useUpdateColor';
 import { IColorInput } from '@/shared/types/color.interface';
-import { IColor } from '@/shared/types/color.interface';
 import { Trash2 } from 'lucide-react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { AdvancedColorPicker } from '@/components/ui/ColorPicker';
+import { GetColorDto } from '@/generated/orval/types';
 
 interface ColorFormProps {
-  color?: IColor;
+  color?: GetColorDto;
 }
 
 export function ColorForm({ color }: ColorFormProps) {
@@ -55,7 +55,7 @@ export function ColorForm({ color }: ColorFormProps) {
 
   return (
     <div className='p-6'>
-      <div className='flex items-center justify-between mb-8'>
+      <div className='mb-8 flex items-center justify-between'>
         <Heading title={title} description={description} />
         {color && (
           <ConfirmModal

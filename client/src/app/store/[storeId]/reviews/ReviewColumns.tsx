@@ -12,6 +12,10 @@ export interface IReviewColumn {
 export const reviewColumns: ColumnDef<IReviewColumn>[] = [
   {
     accessorKey: 'createdAt',
+    meta: {
+      textClassName: 'truncate overflow-hidden text-ellipsis whitespace-nowrap',
+      sortField: 'createdAt',
+    },
     header: ({ column }) => {
       return (
         <Button
@@ -27,6 +31,10 @@ export const reviewColumns: ColumnDef<IReviewColumn>[] = [
 
   {
     accessorKey: 'rating',
+    meta: {
+      textClassName: 'truncate overflow-hidden text-ellipsis whitespace-nowrap',
+      sortField: 'rating',
+    },
     header: ({ column }) => {
       return (
         <Button
@@ -42,6 +50,10 @@ export const reviewColumns: ColumnDef<IReviewColumn>[] = [
 
   {
     accessorKey: 'username',
+    meta: {
+      textClassName: 'truncate overflow-hidden text-ellipsis whitespace-nowrap',
+      sortField: 'user_name',
+    },
     header: ({ column }) => {
       return (
         <Button

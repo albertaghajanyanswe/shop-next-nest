@@ -1,61 +1,24 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { PrismaService } from 'src/prisma.service';
 import { ProductDto } from './dto/product.dto';
+import { QueryPayloadBuilderService } from 'src/queryPayloadBuilder/QueryPayloadBuilder';
 
 @Injectable()
 export class ProductService {
-  constructor(private readonly prisma: PrismaService) {}
+  constructor(
+    private readonly prisma: PrismaService,
+    private readonly queryBuilderService: QueryPayloadBuilderService,
+  ) {}
 
-  async getAll(searchTerm?: string) {
-    if (searchTerm) {
-      return await this.getSearchTermFilter(searchTerm);
-    }
-
+  async getAll(params?: string) {
+    const payload = this.queryBuilderService.build({
+      queryParams: params || '',
+    });
     const products = await this.prisma.product.findMany({
       orderBy: {
         createdAt: 'desc',
       },
-      include: {
-        category: true,
-        brand: true,
-      },
-    });
-    return products;
-  }
-
-  private async getSearchTermFilter(searchTerm: string) {
-    return this.prisma.product.findMany({
-      where: {
-        OR: [
-          {
-            title: {
-              contains: searchTerm,
-              mode: 'insensitive',
-            },
-          },
-          {
-            description: {
-              contains: searchTerm,
-              mode: 'insensitive',
-            },
-          },
-        ],
-      },
-      include: {
-        category: true,
-        brand: true,
-      },
-    });
-  }
-
-  async getByStoreId(storeId: string) {
-    if (!storeId) {
-      throw new NotFoundException('Store ID is required.');
-    }
-    return this.prisma.product.findMany({
-      where: {
-        storeId,
-      },
+      ...payload,
       include: {
         category: true,
         color: true,
@@ -63,10 +26,41 @@ export class ProductService {
         brand: true,
       },
     });
+    const totalCount = await this.prisma.product.count({
+      where: payload.where,
+    });
+    return { products, totalCount };
+  }
+
+  async getByStoreId(storeId: string, params?: string) {
+    if (!storeId) {
+      throw new NotFoundException('Store ID is required.');
+    }
+    const payload = this.queryBuilderService.build({
+      queryParams: params || '',
+      storeId,
+    });
+
+    const products = await this.prisma.product.findMany({
+      ...payload,
+      orderBy: [{ ...payload.orderBy }, { id: 'asc' }],
+      include: {
+        category: true,
+        color: true,
+        store: true,
+        brand: true,
+      },
+    });
+
+    const totalCount = await this.prisma.product.count({
+      where: payload.where,
+    });
+
+    return { products, totalCount };
   }
 
   async getByIdHelper(id: string) {
-    const product = await this.prisma.product.findUnique({
+    const product = await this.prisma.product.findFirst({
       where: {
         id,
       },
@@ -126,7 +120,30 @@ export class ProductService {
     return products;
   }
 
-  async getMostPopular() {
+  async getByBrandId(brandId: string) {
+    const products = await this.prisma.product.findMany({
+      where: {
+        brand: {
+          id: brandId,
+        },
+      },
+      include: {
+        category: true,
+        brand: true,
+      },
+    });
+
+    if (!products) {
+      throw new NotFoundException('Products not found.');
+    }
+
+    return products;
+  }
+
+  async getMostPopular(params?: string) {
+    const payload = this.queryBuilderService.build({
+      queryParams: params || '',
+    });
     const mostPopularProducts = await this.prisma.orderItem.groupBy({
       by: ['productId'],
       _count: {
@@ -137,10 +154,15 @@ export class ProductService {
           id: 'desc',
         },
       },
+      ...(payload.take ? { take: payload.take } : {}),
+      ...(payload.skip ? { skip: payload.skip } : {}),
     });
 
+    console.log('mostPopularProducts.length = ', mostPopularProducts.length);
     if (!mostPopularProducts.length) {
       return this.prisma.product.findMany({
+        ...(payload.take ? { take: payload.take } : {}),
+        ...(payload.skip ? { skip: payload.skip } : {}),
         orderBy: {
           totalViews: 'desc',
         },
@@ -162,6 +184,8 @@ export class ProductService {
         category: true,
         brand: true,
       },
+      ...(payload.take ? { take: payload.take } : {}),
+      ...(payload.skip ? { skip: payload.skip } : {}),
     });
 
     return products;
@@ -175,7 +199,7 @@ export class ProductService {
     const similarProducts = await this.prisma.product.findMany({
       where: {
         category: {
-          title: currentProduct?.category?.title,
+          name: currentProduct?.category?.name,
         },
         NOT: {
           id: currentProduct.id,
@@ -200,8 +224,8 @@ export class ProductService {
         price: dto.price,
         images: dto.images,
         categoryId: dto.categoryId,
-        colorId: dto.colorId,
-        brandId: dto.brandId,
+        colorId: dto.colorId || '',
+        brandId: dto.brandId || '',
         storeId,
         userId,
       },

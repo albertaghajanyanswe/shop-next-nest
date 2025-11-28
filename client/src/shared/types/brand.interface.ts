@@ -1,13 +1,11 @@
-import { ICategory } from "./category.interface"
-
-export interface IBrand {
-  id: string
-  createdAt: string
-  name: string
-  storeId: string
-  categoryId: string
-  category: ICategory
-  categoryTitle: string
+export interface IBrandColumn {
+  id: string;
+  createdAt: string;
+  name: string;
+  description?: string;
+  images: string[];
+  image: string;
+  storeId: string | undefined;
 }
 
-export type IBrandInput = Pick<IBrand, 'name' | 'categoryId'>;
+export type IBrandInput = Pick<IBrandColumn, 'name' | 'description' | 'images'>;

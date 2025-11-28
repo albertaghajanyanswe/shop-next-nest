@@ -1,23 +1,21 @@
 import { colorService } from '@/services/color.service';
 import { QUERY_KEYS } from '@/shared/queryConstants';
+import { iFilterParams } from '@/shared/types/filter.interface';
 import { useQuery } from '@tanstack/react-query';
 import { useParams } from 'next/navigation';
 import { useMemo } from 'react';
 
-export const useGetColors = () => {
-  const params = useParams<{ storeId: string }>();
-  const storeId = params.storeId;
-
-  const { data: colors, isLoading: isLoadingColors } = useQuery({
-    queryKey: [QUERY_KEYS.getStoreColors, storeId],
-    queryFn: () => colorService.getByStoreId(storeId),
+export const useGetColors = (queryParams?: iFilterParams) => {
+  const { data: colorsData, isLoading: isLoadingColorsData } = useQuery({
+    queryKey: [QUERY_KEYS.getStoreColors, queryParams?.params],
+    queryFn: () => colorService.getAll(queryParams?.params),
   });
 
   return useMemo(
     () => ({
-      colors,
-      isLoadingColors,
+      colorsData,
+      isLoadingColorsData,
     }),
-    [colors, isLoadingColors]
+    [colorsData, isLoadingColorsData]
   );
 };

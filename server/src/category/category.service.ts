@@ -1,10 +1,32 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { PrismaService } from 'src/prisma.service';
 import { CategoryDto } from './dto/category.dto';
+import { EnumRole, User } from '@prisma/client';
+import { QueryPayloadBuilderService } from 'src/queryPayloadBuilder/QueryPayloadBuilder';
 
 @Injectable()
 export class CategoryService {
-  constructor(private prisma: PrismaService) {}
+  constructor(
+    private prisma: PrismaService,
+    private readonly queryBuilderService: QueryPayloadBuilderService,
+  ) {}
+
+  async getAll(params?: string) {
+    const payload = this.queryBuilderService.build({
+      queryParams: params ?? '',
+    });
+    console.log('PAYLOAD = ', payload)
+    const categories = await this.prisma.category.findMany({
+      orderBy: {
+        createdAt: 'desc',
+      },
+      ...payload,
+    });
+    const totalCount = await this.prisma.category.count({
+      where: payload.where,
+    });
+    return { categories, totalCount };
+  }
 
   async getByStoreId(storeId: string) {
     if (!storeId) {
@@ -25,27 +47,34 @@ export class CategoryService {
     return category;
   }
 
-  async create(storeId: string, dto: CategoryDto) {
+  async create(userId: string, storeId: string, dto: CategoryDto) {
     return this.prisma.category.create({
       data: {
         ...dto,
         storeId,
+        userId,
       },
     });
   }
 
-  async update(id: string, dto: CategoryDto) {
+  async update(user: User, id: string, dto: CategoryDto) {
     await this.getById(id);
     return this.prisma.category.update({
-      where: { id },
+      where: {
+        id,
+        ...(user.role !== EnumRole.ADMIN && { userId: user.id }),
+      },
       data: dto,
     });
   }
 
-  async delete(id: string) {
+  async delete(user: User, id: string) {
     await this.getById(id);
     return this.prisma.category.delete({
-      where: { id },
+      where: {
+        id,
+        ...(user.role !== EnumRole.ADMIN && { userId: user.id }),
+      },
     });
   }
 }

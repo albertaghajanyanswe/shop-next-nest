@@ -9,6 +9,9 @@ import {
 import { PUBLIC_URL, STORE_URL } from '@/config/url.config';
 import { useCreateProduct } from '@/hooks/queries/products/useCreateProduct';
 import { useDeleteProduct } from '@/hooks/queries/products/useDeleteProduct';
+import type { IProductColumn } from '@/shared/types/product.interface';
+import { formatPrice } from '@/utils/formatPrice';
+import { generateImgPath } from '@/utils/imageUtils';
 import { ColumnDef } from '@tanstack/react-table';
 import {
   ArrowUpDown,
@@ -18,35 +21,74 @@ import {
   Pencil,
   Trash2,
 } from 'lucide-react';
+import Image from 'next/image';
 import Link from 'next/link';
-
-export interface IProductColumn {
-  id: string;
-  title: string;
-  price: number;
-  category: string;
-  color: string;
-  storeId: string;
-
-  // additional optional properties present on row.original used elsewhere
-  categoryId?: string;
-  brandId?: string;
-  colorId?: string;
-  images?: string[];
-  description?: string;
-  brand?: any;
-  reviews?: any[];
-  state?: string;
-  userId?: string;
-  originalPrice?: number;
-}
 
 export const productColumns: ColumnDef<IProductColumn>[] = [
   {
-    accessorKey: 'title',
+    accessorKey: 'image',
+    meta: {
+      textClassName:
+        'truncate overflow-hidden text-ellipsis whitespace-nowrap max-w-[80px]',
+    },
+    header: ({ column }) => {
+      return (
+        <Button variant='ghost' className='p-0 pl-3'>
+          Image
+        </Button>
+      );
+    },
+    cell: ({ row }) => {
+      return (
+        <Image
+          src={generateImgPath(row.original.image as string)}
+          alt={row.original.title}
+          width={44}
+          height={44}
+          className='hoverEffect h-11 max-h-11 min-h-10 w-11 max-w-11 min-w-10 rounded-md object-contain group-hover:scale-110'
+          priority
+        />
+      );
+    },
+  },
+  {
+    accessorKey: 'id',
+    meta: {
+      className: 'w-[15%]',
+      textClassName:
+        'truncate overflow-hidden text-ellipsis whitespace-nowrap max-w-[80px]',
+      sortField: 'id',
+    },
+
     header: ({ column }) => {
       return (
         <Button
+          className='p-0 has-[>svg]:px-0'
+          variant='ghost'
+          onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
+        >
+          ID
+          <ArrowUpDown className='ml-2 size-4' />
+        </Button>
+      );
+    },
+    cell: ({ row }) => {
+      return <p>{row.original.id.slice(-5)}</p>;
+    },
+  },
+  {
+    accessorKey: 'title',
+    meta: {
+      className: 'w-[30%]',
+      textClassName:
+        'truncate overflow-hidden text-ellipsis whitespace-nowrap max-w-[100px] sm:max-w-[150px] xl:max-w-[200px]',
+      sortField: 'title',
+    },
+
+    header: ({ column }) => {
+      return (
+        <Button
+          className='p-0 has-[>svg]:px-0'
           variant='ghost'
           onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
         >
@@ -59,24 +101,41 @@ export const productColumns: ColumnDef<IProductColumn>[] = [
 
   {
     accessorKey: 'price',
+    meta: {
+      className: 'w-[10%]',
+      textClassName:
+        'truncate overflow-hidden text-ellipsis whitespace-nowrap max-w-[80px]  place-items-center',
+      sortField: 'price',
+    },
     header: ({ column }) => {
       return (
         <Button
           variant='ghost'
           onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
+          className='p-0 has-[>svg]:px-0'
         >
           Price
           <ArrowUpDown className='ml-2 size-4' />
         </Button>
       );
     },
+    cell: ({ row }) => {
+      return formatPrice(row.original.price);
+    },
   },
 
   {
     accessorKey: 'category',
+    meta: {
+      sortField: 'category_name',
+      className: 'w-[15%]',
+      textClassName:
+        'truncate overflow-hidden text-ellipsis whitespace-nowrap max-w-[120px]',
+    },
     header: ({ column }) => {
       return (
         <Button
+          className='p-0 has-[>svg]:px-0'
           variant='ghost'
           onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
         >
@@ -89,34 +148,32 @@ export const productColumns: ColumnDef<IProductColumn>[] = [
 
   {
     accessorKey: 'color',
+    meta: {
+      className: 'w-[10%]',
+      textClassName:
+        'truncate overflow-hidden text-ellipsis whitespace-nowrap max-w-[80px]',
+    },
     header: ({ column }) => {
       return (
-        <Button
-          variant='ghost'
-          onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
-        >
+        <Button className='p-0' variant='ghost'>
           Color
-          <ArrowUpDown className='ml-2 size-4' />
         </Button>
       );
     },
     cell: ({ row }) => {
       return (
-        <div className='flex items-center gap-x-3'>
-          <div
-            className='size-5 rounded-full border'
-            style={{ backgroundColor: row.original.color }}
-          />
-          {row.original.color}
-        </div>
+        <div
+          className='size-5 rounded-full border'
+          style={{ backgroundColor: row.original.color }}
+        />
       );
     },
   },
   {
     accessorKey: 'actions',
+    meta: { className: 'w-[5%]' },
     header: 'Actions',
     cell: ({ row }) => {
-      console.log('ROW = ', row);
       const { createProduct, isLoadingCreate } = useCreateProduct();
       const { deleteProduct, isLoadingDelete } = useDeleteProduct();
 

@@ -1,19 +1,31 @@
-import { Button } from '@/components/ui/Button';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { AiFillHeart, AiOutlineHeart } from 'react-icons/ai';
+import { Button, buttonVariants } from '@/components/ui/Button';
 import { useProfile } from '@/hooks/useProfile';
 import { userService } from '@/services/user.service';
 import { QUERY_KEYS } from '@/shared/queryConstants';
-import { IProduct } from '@/shared/types/product.interface';
-import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { AiFillHeart, AiOutlineHeart } from 'react-icons/ai';
+import { GetProductWithDetails } from '@/generated/orval/types';
+import { memo } from 'react';
 
 interface FavoriteButtonProps {
-  product: IProduct;
+  product: GetProductWithDetails;
   className?: string;
+  btnVariant:
+    | 'default'
+    | 'destructive'
+    | 'outline'
+    | 'secondary'
+    | 'ghost'
+    | 'link'
+    | 'primary'
+    | null
+    | undefined;
 }
 
-export default function FavoriteButton({
+function FavoriteButton({
   product,
   className = '',
+  btnVariant = 'secondary',
 }: FavoriteButtonProps) {
   const { user } = useProfile();
   const queryClient = useQueryClient();
@@ -26,11 +38,11 @@ export default function FavoriteButton({
   });
 
   if (!user) return null;
-  const isExists = user.favorites.some((p) => p.id === product.id);
+  const isExists = user.favorites?.some((p) => p.id === product.id);
 
   return (
     <Button
-      variant='secondary'
+      variant={btnVariant}
       size='icon'
       onClick={() => toggleFavorite()}
       disabled={isPending}
@@ -38,10 +50,12 @@ export default function FavoriteButton({
       aria-label='Toggle favorite'
     >
       {isExists ? (
-        <AiFillHeart className='size-5 text-red-500' />
+        <AiFillHeart className='text-shop-btn-dark-green size-5' />
       ) : (
         <AiOutlineHeart className='size-5' />
       )}
     </Button>
   );
 }
+
+export default memo(FavoriteButton);

@@ -7,20 +7,21 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from '@/components/ui/form-elements/Form';
-import { Input } from '@/components/ui/form-elements/Input';
+} from '@/components/ui/formElements/Form';
+import { ImageUpload } from '@/components/ui/formElements/image-upload/ImageUpload';
+import { Input } from '@/components/ui/formElements/Input';
 import { Heading } from '@/components/ui/Heading';
 import { Textarea } from '@/components/ui/Textarea';
+import { GetCategoryDto } from '@/generated/orval/types';
 import { useCreateCategory } from '@/hooks/queries/categories/useCreateCategory';
 import { useDeleteCategory } from '@/hooks/queries/categories/useDeleteCategory';
 import { useUpdateCategory } from '@/hooks/queries/categories/useUpdateCategory';
 import { ICategoryInput } from '@/shared/types/category.interface';
-import { ICategory } from '@/shared/types/category.interface';
 import { Trash2 } from 'lucide-react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 
 interface CategoryFormProps {
-  category?: ICategory | null;
+  category?: GetCategoryDto | null;
 }
 
 export function CategoryForm({ category }: CategoryFormProps) {
@@ -37,8 +38,9 @@ export function CategoryForm({ category }: CategoryFormProps) {
   const form = useForm<ICategoryInput>({
     mode: 'onChange',
     values: {
-      title: category?.title || '',
+      name: category?.name || '',
       description: category?.description || '',
+      images: category?.images || [],
     },
   });
 
@@ -54,7 +56,7 @@ export function CategoryForm({ category }: CategoryFormProps) {
   };
   return (
     <div className='p-6'>
-      <div className='flex items-center justify-between mb-8'>
+      <div className='mb-8 flex items-center justify-between'>
         <Heading title={title} description={description} />
         {category && (
           <ConfirmModal
@@ -75,10 +77,32 @@ export function CategoryForm({ category }: CategoryFormProps) {
           onSubmit={form.handleSubmit(onSubmit)}
           className='h-full space-y-6'
         >
-          <div className='mt-6 grid gap-6 xs:grid-cols-1'>
+          <div className='xs:grid-cols-1 mt-6 grid gap-6'>
             <FormField
               control={form.control}
-              name='title'
+              name='images'
+              rules={{ required: 'Upload at least one image' }}
+              render={({ field }) => {
+                console.log('FIELD = ', field);
+                return (
+                  <FormItem className='mt-4'>
+                    <FormLabel>Images</FormLabel>
+                    <FormControl>
+                      <ImageUpload
+                        isDisabled={isLoading}
+                        onChange={field.onChange}
+                        value={field.value}
+                        folder='categories'
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                );
+              }}
+            />
+            <FormField
+              control={form.control}
+              name='name'
               rules={{ required: 'Category name is required' }}
               render={({ field }) => (
                 <FormItem>

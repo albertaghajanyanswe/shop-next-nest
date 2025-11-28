@@ -8,25 +8,25 @@ import { useGetBrands } from '@/hooks/queries/brands/useGetBrands';
 
 export function ProductEdit() {
   const { product, isLoadingProduct } = useGetProductById();
-  const { categories, isLoadingCategories } = useGetCategories();
-  const { colors, isLoadingColors } = useGetColors();
-  const { brands, isLoadingBrands } = useGetBrands();
+  const { categoriesData, isLoadingCategoriesData } = useGetCategories();
+  const { colorsData, isLoadingColorsData } = useGetColors();
+  const { brandsData, isLoadingBrandsData } = useGetBrands();
   const isLoading =
     isLoadingProduct ||
-    isLoadingCategories ||
-    isLoadingColors ||
-    isLoadingBrands;
+    isLoadingCategoriesData ||
+    isLoadingColorsData ||
+    isLoadingBrandsData;
 
   if (isLoading) return <div>Loading...</div>;
 
   if (!product) return <div>Product not found</div>;
-
+  console.log('111 brandsData?.brands ', brandsData?.brands)
   return (
     <ProductForm
       product={product}
-      categories={categories || []}
-      colors={colors || []}
-      brands={brands || []}
+      categories={categoriesData?.categories || []}
+      colors={colorsData?.colors || []}
+      brands={brandsData?.brands || []}
     />
   );
 }

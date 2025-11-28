@@ -1,6 +1,6 @@
-import { cn } from "@/lib/utils";
-import { cva, VariantProps } from "class-variance-authority";
-import { LoaderCircle } from "lucide-react";
+import { cn } from '@/utils/common';
+import { cva, VariantProps } from 'class-variance-authority';
+import { LoaderCircle } from 'lucide-react';
 
 const iconVariants = cva('animate-spin text-muted-foreground', {
   variants: {

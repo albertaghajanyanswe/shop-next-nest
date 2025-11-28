@@ -1,8 +1,7 @@
-import { productService } from '@/services/product.service';
 import { Metadata } from 'next';
-import Product from './Product';
 import { notFound } from 'next/navigation';
-import { EnvVariables } from '@/shared/envVariables';
+import { productService } from '@/services/product.service';
+import Product from './Product';
 
 export const revalidate = 60;
 
@@ -11,23 +10,18 @@ export async function generateStaticParams() {
     return [];
   }
 
-  const products = await productService.getAll();
-  const res = products ? products.map((product) => ({ id: product.id })) : [];
+  const productsData = await productService.getAll();
+  const res = productsData?.products ? productsData?.products?.map((product) => ({ id: product.id })) : [];
   console.log('generateStaticParams = RES = ', res)
   return res;
 }
 
 async function getProducts(id: string) {
   try {
-
-    console.log('getProducts ID = ', id)
-    // const product = await productService.getById(id)
     const [product, similarProducts] = await Promise.all([
       productService.getById(id),
       productService.getSimilar(id),
     ]);
-
-    // console.log('product = ', product)
     return { product, similarProducts };
   } catch(err) {
     console.log('ERROR ', err)

@@ -13,7 +13,7 @@ import {
   IsString,
 } from 'class-validator';
 
-export class SubscriptionDto {
+export class GetSubscriptionDto {
   @ApiProperty({
     description: 'Subscription unique identifier from Stripe',
     example: 'TKyCIBiPTFs6Lq',

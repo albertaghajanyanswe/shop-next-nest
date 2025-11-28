@@ -16,6 +16,9 @@ import { PlanModule } from './plan/plan.module';
 import { StripeModule } from './payment/provider/stripe/stripe.module';
 import { PaymentModule } from './payment/payment.module';
 import { BillingInfoModule } from './billing-info/billing-info.module';
+import { SeedService } from './seeder/SeedService';
+import { PrismaService } from './prisma.service';
+import { QueryPayloadBuilderService } from './queryPayloadBuilder/QueryPayloadBuilder';
 @Module({
   imports: [
     ConfigModule.forRoot(),
@@ -37,6 +40,6 @@ import { BillingInfoModule } from './billing-info/billing-info.module';
     BillingInfoModule,
   ],
   controllers: [],
-  providers: [],
+  providers: [PrismaService, SeedService, QueryPayloadBuilderService],
 })
 export class AppModule {}

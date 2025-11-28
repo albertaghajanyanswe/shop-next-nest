@@ -28,13 +28,15 @@ model User {
   reviews   Review[]
   orders    Order[]
   products  Product[] @relation("UserProducts")
-
+  brand     Brand[]
+  category     Category[]
   billingInfo  BillingInfo?
 
   subscription Subscription[]
 
   stripeAccountId String? @map("stripe_account_id")
 
+  role  EnumRole   @default(USER)
   @@map("user")
 }
 
@@ -89,16 +91,16 @@ model Product {
   category   Category? @relation(fields: [categoryId], references: [id])
   categoryId String?   @map("category_id")
 
-  color   Color? @relation(fields: [colorId], references: [id])
-  colorId String @map("color_id")
+  color   Color? @relation(fields: [colorId], references: [id], onDelete: SetNull)
+  colorId String? @map("color_id")
 
   createdBy User?   @relation("UserProducts", fields: [userId], references: [id], onDelete: Cascade)
   userId    String? @map("user_id")
 
   favoritedBy User[] @relation("UserFavorites")
 
-  brand   Brand? @relation(fields: [brandId], references: [id])
-  brandId String @map("brand_id")
+  brand   Brand? @relation(fields: [brandId], references: [id], onDelete: SetNull)
+  brandId String? @map("brand_id")
 
   isPublished Boolean @default(true)
   isBlocked   Boolean @default(false)
@@ -111,15 +113,17 @@ model Category {
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
 
-  title       String
+  name       String @unique
   description String?
+  images      String[]
 
   products Product[]
 
   store   Store?  @relation(fields: [storeId], references: [id])
   storeId String? @map("store_id")
 
-  brands Brand[]
+  user   User?  @relation(fields: [userId], references: [id])
+  userId String? @map("user_id")
 
   @@map("category")
 }
@@ -129,15 +133,17 @@ model Brand {
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
 
-  name String
+  name String @unique
+  description String?
+  images      String[]
 
   store   Store?  @relation(fields: [storeId], references: [id])
   storeId String? @map("store_id")
 
-  products Product[]
+  user   User?  @relation(fields: [userId], references: [id])
+  userId String? @map("user_id")
 
-  category   Category? @relation(fields: [categoryId], references: [id])
-  categoryId String?   @map("category_id")
+  products Product[]
 
   @@map("brand")
 }
@@ -444,4 +450,9 @@ enum CurrencyEnum {
   EUR
   RUB
   @@map("currency_enum")
+}
+
+enum EnumRole {
+  USER
+  ADMIN
 }

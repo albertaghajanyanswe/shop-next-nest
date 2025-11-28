@@ -1,7 +1,7 @@
 import { Controller, Get, Param } from '@nestjs/common';
 import { PlanService } from './plan.service';
 import { ApiOkResponse, ApiOperation } from '@nestjs/swagger';
-import { PlanResponse } from './dto/plan.dto';
+import { GetPlanDto } from './dto/plan.dto';
 
 @Controller('plans')
 export class PlanController {
@@ -11,7 +11,7 @@ export class PlanController {
     summary: 'Get all available plans',
     description: 'Retrieve a list of all subscription plans.',
   })
-  @ApiOkResponse({ type: [PlanResponse] })
+  @ApiOkResponse({ type: [GetPlanDto] })
   @Get()
   async getAll() {
     return this.planService.getAll();
@@ -21,7 +21,7 @@ export class PlanController {
     summary: 'Get plan by ID',
     description: 'Retrieve a subscription plan by its unique identifier.',
   })
-  @ApiOkResponse({ type: PlanResponse })
+  @ApiOkResponse({ type: GetPlanDto })
   @Get('by-id/:id')
   async getById(@Param('id') id: string) {
     return this.planService.getById(id);

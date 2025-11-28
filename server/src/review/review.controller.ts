@@ -6,13 +6,20 @@ import {
   HttpCode,
   Param,
   Post,
+  Query,
   UsePipes,
   ValidationPipe,
 } from '@nestjs/common';
 import { ReviewService } from './review.service';
 import { Auth } from 'src/auth/decorators/auth.decorator';
-import { ReviewDto } from './dto/review.dto';
+import {
+  GetReviewDto,
+  GetReviewWithUserDto,
+  GetReviewWithUserDtoAndCount,
+  ReviewDto,
+} from './dto/review.dto';
 import { CurrentUser } from 'src/user/decorators/user.decorator';
+import { ApiOkResponse } from '@nestjs/swagger';
 
 @Controller('reviews')
 export class ReviewController {
@@ -20,14 +27,19 @@ export class ReviewController {
 
   @Auth()
   @Get('by-storeId/:storeId')
-  async getByStoreId(@Param('storeId') storeId: string) {
-    return this.reviewService.getByStoreId(storeId);
+  @ApiOkResponse({ type: GetReviewWithUserDtoAndCount, isArray: true })
+  async getByStoreId(
+    @Param('storeId') storeId: string,
+    @Query('params') params?: string,
+  ) {
+    return this.reviewService.getByStoreId(storeId, params);
   }
 
   @UsePipes(new ValidationPipe())
   @HttpCode(200)
   @Auth()
   @Post(':productId/:storeId')
+  @ApiOkResponse({ type: GetReviewDto })
   async create(
     @CurrentUser('id') userId: string,
     @Param('storeId') storeId: string,
@@ -40,6 +52,7 @@ export class ReviewController {
   @HttpCode(200)
   @Auth()
   @Delete(':id')
+  @ApiOkResponse({ type: GetReviewDto })
   async delete(@CurrentUser('id') userId: string, @Param('id') id: string) {
     return this.reviewService.delete(id, userId);
   }

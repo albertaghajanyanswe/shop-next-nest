@@ -9,7 +9,10 @@ export default function Favorites() {
 
   return (
     <div className='my-6'>
-      <Catalog title='Favorites products' products={user.favorites} />
+      <Catalog
+        title='Favorites products'
+        products={user.favorites}
+      />
     </div>
   );
 }

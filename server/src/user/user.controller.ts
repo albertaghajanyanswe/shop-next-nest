@@ -2,6 +2,8 @@ import { Controller, Get, Param, Patch } from '@nestjs/common';
 import { UserService } from './user.service';
 import { Auth } from 'src/auth/decorators/auth.decorator';
 import { CurrentUser } from './decorators/user.decorator';
+import { ApiResponse } from '@nestjs/swagger';
+import { GetUserDto } from './dto/user.dto';
 
 @Controller('users')
 export class UserController {
@@ -9,6 +11,7 @@ export class UserController {
 
   @Auth()
   @Get('profile')
+  @ApiResponse({ type: GetUserDto })
   async getProfile(@CurrentUser('id') id: string) {
     return this.userService.getById(id);
   }

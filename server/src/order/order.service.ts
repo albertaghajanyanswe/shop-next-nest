@@ -1,9 +1,11 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { PrismaService } from 'src/prisma.service';
 import { ICapturePayment, YooCheckout } from '@a2seven/yoo-checkout';
 import { OrderDto } from './dto/order.dto';
 import { PaymentStatusDto } from './dto/payment-status.dto';
 import { EnumOrderStatus, PaymentProvider } from '@prisma/client';
+import type { User } from '@prisma/client';
+import { QueryPayloadBuilderService } from 'src/queryPayloadBuilder/QueryPayloadBuilder';
 
 const checkout = new YooCheckout({
   shopId: process.env['YOOKASSA_SHOP_ID'] as string,
@@ -12,7 +14,54 @@ const checkout = new YooCheckout({
 
 @Injectable()
 export class OrderService {
-  constructor(private prisma: PrismaService) {}
+  constructor(
+    private prisma: PrismaService,
+    private readonly queryBuilderService: QueryPayloadBuilderService,
+  ) {}
+
+  async getAll(user: User, params?: string) {
+    const payload = this.queryBuilderService.build({
+      queryParams: params || '',
+      userId: user.id,
+    });
+    const orders = await this.prisma.order.findMany({
+      orderBy: {
+        createdAt: 'desc',
+      },
+      ...payload,
+      include: {
+        user: true,
+        orderItems: true,
+      },
+    });
+    const totalCount = await this.prisma.order.count({
+      where: payload.where,
+    });
+    return { orders, totalCount };
+  }
+
+  async getByIdHelper(user: User, id: string) {
+    const order = await this.prisma.order.findFirst({
+      where: {
+        id,
+        userId: user.id,
+      },
+      include: {
+        user: true,
+        orderItems: true,
+      },
+    });
+
+    if (!order) {
+      throw new NotFoundException('Order not found.');
+    }
+
+    return order;
+  }
+
+  async getById(user: User, id: string) {
+    return await this.getByIdHelper(user, id);
+  }
 
   async createPayment(dto: OrderDto, userId: string) {
     console.log('\n\n createPayment userId ', userId);

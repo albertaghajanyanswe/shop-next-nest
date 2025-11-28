@@ -3,10 +3,11 @@ export const PUBLIC_URL = {
 
   home: () => PUBLIC_URL.root(`/`),
   auth: () => PUBLIC_URL.root(`/auth`),
-  explorer: (query = '') => PUBLIC_URL.root(`/explorer${query ? `?${query}` : ''}`),
+  shop: (query = '') => PUBLIC_URL.root(`/shop${query ? `?${query}` : ''}`),
 
   product: (id = '') => PUBLIC_URL.root(`/product/${id}`),
   category: (id = '') => PUBLIC_URL.root(`/category/${id}`),
+  brand: (id = '') => PUBLIC_URL.root(`/brand/${id}`),
 }
 
 export const DASHBOARD_URL = {

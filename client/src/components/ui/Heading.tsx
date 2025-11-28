@@ -1,6 +1,6 @@
 'use client';
 
-import { cn } from '@/lib/utils';
+import { cn } from '@/utils/common';
 import { ArrowLeft } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 
@@ -11,7 +11,12 @@ interface IHeadingProps {
   showBackButton?: boolean;
 }
 
-export function Heading({ title, description, className, showBackButton = true }: IHeadingProps) {
+export function Heading({
+  title,
+  description,
+  className,
+  showBackButton = true,
+}: IHeadingProps) {
   const router = useRouter();
   const back = () => {
     router.back();

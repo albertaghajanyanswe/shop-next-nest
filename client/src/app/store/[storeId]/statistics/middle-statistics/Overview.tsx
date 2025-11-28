@@ -6,7 +6,7 @@ import {
   type ChartConfig,
 } from '@/components/ui/Chart';
 import { IMonthlySales } from '@/shared/types/statistics.interface';
-import { formatPrice } from '@/utils/string/formatPrice';
+import { formatPrice } from '@/utils/formatPrice';
 import { Area, AreaChart, CartesianGrid, XAxis } from 'recharts';
 
 interface IOverviewProps {

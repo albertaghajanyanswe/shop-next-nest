@@ -1,14 +1,18 @@
 import { Button } from '@/components/ui/Button';
 import { useActions } from '@/hooks/queries/useActions';
 import { useCart } from '@/hooks/queries/useCart';
-import { cn } from '@/lib/utils';
-import { IProduct } from '@/shared/types/product.interface';
+import { cn } from '@/utils/common';
+import { GetProductWithDetails } from '@/generated/orval/types';
+import { ShoppingCart } from 'lucide-react';
 
 interface AddToCardButtonProps {
-  product: IProduct;
+  product: GetProductWithDetails;
   className?: string;
 }
-export default function AddToCardButton({ product, className = '' }: AddToCardButtonProps) {
+export default function AddToCardButton({
+  product,
+  className = '',
+}: AddToCardButtonProps) {
   const { addToCard, removeFromCard } = useActions();
   const { orderItems } = useCart();
 
@@ -23,8 +27,15 @@ export default function AddToCardButton({ product, className = '' }: AddToCardBu
       addToCard({ product, quantity: 1, price: product.price });
     }
   };
+
   return (
-    <Button variant='primary' size='lg' className={cn('w-full', className)} onClick={handleClick}>
+    <Button
+      variant='primary'
+      size='lg'
+      className={cn('w-full h-8 sm:h-10', className)}
+      onClick={handleClick}
+    >
+      <ShoppingCart />
       {currentElement ? 'Remove from card' : 'Add to card'}
     </Button>
   );

@@ -3,14 +3,14 @@ import { ReviewModal } from '@/components/modals/ReviewModal';
 import { Button } from '@/components/ui/Button';
 import { useDeleteReview } from '@/hooks/queries/reviews/useDeleteReview';
 import { useProfile } from '@/hooks/useProfile';
-import { generateImgPath } from '@/lib/imageUtils';
-import { IProduct } from '@/shared/types/product.interface';
+import { generateImgPath } from '@/utils/imageUtils';
 import { Plus, Trash2 } from 'lucide-react';
 import Image from 'next/image';
 import { Rating } from 'react-simple-star-rating';
+import { GetProductWithDetails } from '@/generated/orval/types';
 
 export interface ProductReviewsProps {
-  product: IProduct;
+  product: GetProductWithDetails;
 }
 
 export default function ProductReviews({ product }: ProductReviewsProps) {
@@ -22,7 +22,7 @@ export default function ProductReviews({ product }: ProductReviewsProps) {
       <div className='mt-6 flex items-center justify-between'>
         <h1 className='text-2xl font-bold'>Reviews</h1>
         {user && (
-          <ReviewModal storeId={product.storeId}>
+          <ReviewModal storeId={product.storeId as string}>
             <Button variant='ghost'>
               <Plus className='mr-2 size-4' />
               Add review
@@ -37,7 +37,10 @@ export default function ProductReviews({ product }: ProductReviewsProps) {
               <div className='flex justify-between'>
                 <div className='flex items-center gap-x-4 font-medium'>
                   <Image
-                    src={generateImgPath(review.user.picture) || '/images/no-user-image.png'}
+                    src={
+                      generateImgPath(review.user?.picture || '') ||
+                      '/images/no-user-image.png'
+                    }
                     alt={review.user.name}
                     width={40}
                     height={40}
@@ -48,7 +51,7 @@ export default function ProductReviews({ product }: ProductReviewsProps) {
                 {user?.id === review.user.id && (
                   <ConfirmModal handleConfirm={() => deleteReview(review.id)}>
                     <Button variant='ghost' className='mt-3 text-red-500'>
-                      <Trash2 className='text-red-500 hover:text-red-600 size-4' />
+                      <Trash2 className='size-4 text-red-500 hover:text-red-600' />
                     </Button>
                   </ConfirmModal>
                 )}

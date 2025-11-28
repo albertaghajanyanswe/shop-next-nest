@@ -1,34 +1,45 @@
 import { axiosClassic, axiosWithAuth } from '@/api/api.interceptors';
 import { API_URL } from '@/config/api.config';
-import { IProduct, IProductInput } from '@/shared/types/product.interface';
+import {
+  GetProductDto,
+  GetProductWithDetails,
+  GetProductWithDetailsAndCount,
+} from '@/generated/orval/types';
+import { iParams } from '@/shared/types/filter.interface';
+import { IProductInput } from '@/shared/types/product.interface';
 
 class ProductService {
-  async getAll(searchTerm?: string | null) {
+  async getAll(params?: iParams) {
     try {
-
-      const { data } = await axiosClassic<IProduct[]>({
-        url: API_URL.products(),
+      const { data } = await axiosClassic<GetProductWithDetailsAndCount>({
+        url: API_URL.products(
+          `?params=${encodeURIComponent(JSON.stringify(params))}`
+        ),
         method: 'GET',
-        params: searchTerm ? { searchTerm } : undefined,
+        // params: params ? encodeURIComponent(JSON.stringify(params)) : undefined,
       });
-      console.log('DATA = ', data)
-      return data || [];
-    } catch(err) {
-      console.log('\n\n ProductService getAll ERR = ', err)
+      return data;
+    } catch (err) {
+      console.log('\n\n ProductService getAll ERR = ', err);
     }
   }
 
-  async getByStoreId(storeId: string) {
-    const { data } = await axiosWithAuth<IProduct[]>({
-      url: API_URL.products(`/by-storeId/${storeId}`),
+  async getByStoreId(
+    storeId: string,
+    params?: any | null
+  ): Promise<GetProductWithDetailsAndCount> {
+    const { data } = await axiosWithAuth<GetProductWithDetailsAndCount>({
+      url: API_URL.products(
+        `/by-storeId/${storeId}?params=${encodeURIComponent(JSON.stringify(params))}`
+      ),
       method: 'GET',
     });
 
-    return data || [];
+    return data || { products: [], totalCount: 0 };
   }
 
   async getById(id: string) {
-    const { data } = await axiosClassic<IProduct>({
+    const { data } = await axiosClassic<GetProductWithDetails>({
       url: API_URL.products(`/by-id/${id}`),
       method: 'GET',
     });
@@ -36,7 +47,7 @@ class ProductService {
     return data;
   }
   async getProductById(id: string) {
-    const { data } = await axiosClassic<IProduct>({
+    const { data } = await axiosClassic<GetProductWithDetails>({
       url: API_URL.products(`/product-by-id/${id}`),
       method: 'GET',
     });
@@ -44,7 +55,7 @@ class ProductService {
   }
 
   async getByCategoryId(categoryId: string) {
-    const { data } = await axiosClassic<IProduct[]>({
+    const { data } = await axiosClassic<GetProductWithDetails[]>({
       url: API_URL.products(`/by-categoryId/${categoryId}`),
       method: 'GET',
     });
@@ -52,10 +63,21 @@ class ProductService {
     return data;
   }
 
-  async getMostPopular() {
+  async getByBrandId(brandId: string) {
+    const { data } = await axiosClassic<GetProductWithDetails[]>({
+      url: API_URL.products(`/by-brandId/${brandId}`),
+      method: 'GET',
+    });
+
+    return data;
+  }
+
+  async getMostPopular(params?: iParams) {
     try {
-      const { data } = await axiosClassic<IProduct[]>({
-        url: API_URL.products(`/most-popular`),
+      const { data } = await axiosClassic<GetProductWithDetails[]>({
+        url: API_URL.products(
+          `/most-popular?params=${encodeURIComponent(JSON.stringify(params))}`
+        ),
         method: 'GET',
       });
 
@@ -66,7 +88,7 @@ class ProductService {
   }
 
   async getSimilar(id: string) {
-    const { data } = await axiosClassic<IProduct[]>({
+    const { data } = await axiosClassic<GetProductWithDetails[]>({
       url: API_URL.products(`/similar/${id}`),
       method: 'GET',
     });
@@ -75,7 +97,7 @@ class ProductService {
   }
 
   async create(data: IProductInput, storeId: string) {
-    const { data: createdStore } = await axiosWithAuth<IProduct>({
+    const { data: createdStore } = await axiosWithAuth<GetProductDto>({
       url: API_URL.products(`/${storeId}`),
       method: 'POST',
       data,
@@ -85,7 +107,7 @@ class ProductService {
   }
 
   async update(id: string, data: IProductInput) {
-    const { data: updatedStore } = await axiosWithAuth<IProduct>({
+    const { data: updatedStore } = await axiosWithAuth<GetProductDto>({
       url: API_URL.products(`/${id}`),
       method: 'PUT',
       data,
@@ -95,7 +117,7 @@ class ProductService {
   }
 
   async delete(id: string) {
-    const { data: deletedStore } = await axiosWithAuth<IProduct>({
+    const { data: deletedStore } = await axiosWithAuth<GetProductDto>({
       url: API_URL.products(`/${id}`),
       method: 'DELETE',
     });

@@ -7,9 +7,9 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from '@/components/ui/form-elements/Form';
-import { ImageUpload } from '@/components/ui/form-elements/image-upload/ImageUpload';
-import { Input } from '@/components/ui/form-elements/Input';
+} from '@/components/ui/formElements/Form';
+import { ImageUpload } from '@/components/ui/formElements/image-upload/ImageUpload';
+import { Input } from '@/components/ui/formElements/Input';
 import { Heading } from '@/components/ui/Heading';
 import {
   Select,
@@ -19,25 +19,25 @@ import {
   SelectValue,
 } from '@/components/ui/Select';
 import { Textarea } from '@/components/ui/Textarea';
+import {
+  GetBrandDto,
+  GetCategoryDto,
+  GetColorDto,
+  GetProductWithDetails,
+  GetProductWithDetailsState,
+} from '@/generated/orval/types';
 import { useCreateProduct } from '@/hooks/queries/products/useCreateProduct';
 import { useDeleteProduct } from '@/hooks/queries/products/useDeleteProduct';
 import { useUpdateProduct } from '@/hooks/queries/products/useUpdateProduct';
-import { IBrand } from '@/shared/types/brand.interface';
-import { ICategory } from '@/shared/types/category.interface';
-import { IColor } from '@/shared/types/color.interface';
-import {
-  EnumProductState,
-  IProduct,
-  IProductInput,
-} from '@/shared/types/product.interface';
+import { IProductInput } from '@/shared/types/product.interface';
 import { Trash2 } from 'lucide-react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 
-interface productFormProps {
-  product?: IProduct;
-  categories: ICategory[];
-  colors: IColor[];
-  brands: IBrand[];
+interface ProductFormProps {
+  product?: GetProductWithDetails;
+  categories: GetCategoryDto[];
+  colors: GetColorDto[];
+  brands: GetBrandDto[];
 }
 
 // const DEFAULT_VALUES: IProductInput = {
@@ -55,7 +55,7 @@ export function ProductForm({
   categories,
   colors,
   brands,
-}: productFormProps) {
+}: ProductFormProps) {
   const { createProduct, isLoadingCreate } = useCreateProduct();
   const { updateProduct, isLoadingUpdate } = useUpdateProduct();
   const { deleteProduct, isLoadingDelete } = useDeleteProduct();
@@ -76,7 +76,7 @@ export function ProductForm({
       categoryId: product?.category?.id || '',
       colorId: product?.color?.id || '',
       brandId: product?.brand?.id || '',
-      state: product?.state || EnumProductState.NEW,
+      state: product?.state || GetProductWithDetailsState.NEW,
     },
   });
 
@@ -136,7 +136,7 @@ export function ProductForm({
             name='images'
             rules={{ required: 'Upload at least one image' }}
             render={({ field }) => {
-              console.log('FIELD = ', field)
+              console.log('FIELD = ', field);
               return (
                 <FormItem className='mt-4'>
                   <FormLabel>Images</FormLabel>
@@ -241,7 +241,7 @@ export function ProductForm({
                     <SelectContent>
                       {categories.map((category) => (
                         <SelectItem key={category.id} value={category.id}>
-                          {category.title}
+                          {category.name}
                         </SelectItem>
                       ))}
                     </SelectContent>

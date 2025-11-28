@@ -1,9 +1,14 @@
-export interface ICategory {
-  id: string
-  createdAt: string
-  title: string
-  description: string
-  storeId: string
+export interface ICategoryColumn {
+  id: string;
+  name: string;
+  description: string;
+  createdAt: string;
+  storeId: string;
+  images: string[];
+  image: string;
 }
 
-export type ICategoryInput = Pick<ICategory, 'title' | 'description'>
+export type ICategoryInput = Pick<
+  ICategoryColumn,
+  'name' | 'description' | 'images'
+>;

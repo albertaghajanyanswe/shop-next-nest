@@ -1,23 +1,20 @@
 import { useMemo } from 'react';
-import { useParams } from 'next/navigation';
 import { useQuery } from '@tanstack/react-query';
 import { categoryService } from '@/services/category.service';
 import { QUERY_KEYS } from '@/shared/queryConstants';
+import { iFilterParams } from '@/shared/types/filter.interface';
 
-export const useGetCategories = () => {
-  const params = useParams<{ storeId: string }>();
-  const storeId = params.storeId;
-
-  const { data: categories, isLoading: isLoadingCategories } = useQuery({
-    queryKey: [QUERY_KEYS.getStoreCategories, storeId],
-    queryFn: () => categoryService.getByStoreId(storeId),
+export const useGetCategories = (queryParams?: iFilterParams) => {
+  const { data: categoriesData, isLoading: isLoadingCategoriesData } = useQuery({
+    queryKey: [QUERY_KEYS.getCategories, queryParams?.params],
+    queryFn: () => categoryService.getAll(queryParams?.params),
   });
 
   return useMemo(
     () => ({
-      categories,
-      isLoadingCategories,
+      categoriesData,
+      isLoadingCategoriesData,
     }),
-    [categories, isLoadingCategories]
+    [categoriesData, isLoadingCategoriesData]
   );
 };
