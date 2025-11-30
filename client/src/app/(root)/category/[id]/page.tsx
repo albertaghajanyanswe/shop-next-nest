@@ -6,12 +6,12 @@ import type { Metadata } from 'next';
 export const revalidate = 60;
 
 async function getProducts(categoryId: string) {
-  const [products, category] = await Promise.all([
-    productService.getByCategoryId(categoryId),
+  const [productsData, category] = await Promise.all([
+    productService.getAll({ filter: { categoryId }}),
     categoryService.getById(categoryId),
   ]);
 
-  return { products, category };
+  return { productsData, category };
 }
 
 export async function generateMetadata({
@@ -20,8 +20,8 @@ export async function generateMetadata({
   params: Promise<{ id: string }>;
 }): Promise<Metadata> {
   const { id } = await params;
-  const { category, products } = await getProducts(id);
-
+  const { category, productsData } = await getProducts(id);
+  console.log('PROD = ', productsData)
   return {
     title: category.name,
     description: category.description,
@@ -30,7 +30,7 @@ export async function generateMetadata({
       description: category.description,
       images: [
         {
-          url: products?.[0]?.images?.[0] || '',
+          url: productsData?.products?.[0]?.images?.[0] || '',
           width: 800,
           height: 600,
           alt: category.name,
@@ -46,7 +46,7 @@ export default async function CategoryPage({
   params: Promise<{ id: string }>;
 }) {
   const { id } = await params;
-  const { category, products } = await getProducts(id);
+  const { category, productsData } = await getProducts(id);
 
   return (
     <div className='global-container my-6'>
@@ -54,7 +54,7 @@ export default async function CategoryPage({
         title={category.name}
         description={category.description}
         descriptionLabel='Category description:'
-        products={products}
+        products={productsData?.products}
       />
     </div>
   );

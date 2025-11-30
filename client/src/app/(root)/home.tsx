@@ -1,3 +1,4 @@
+import { Button } from '@/components/ui/Button';
 import { HomeBanner } from '../../components/ui/homeBanner/HomeBanner';
 import { Catalog } from '@/components/ui/catalog/Catalog';
 import ShopByCard from '@/components/ui/shopByCard/ShopByCard';

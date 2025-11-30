@@ -5,7 +5,7 @@ import { useQuery } from '@tanstack/react-query';
 import { useParams } from 'next/navigation';
 import { useMemo } from 'react';
 
-export const useGetProducts = (queryParams?: iFilterParams) => {
+export const useGetStoreProducts = (queryParams?: iFilterParams) => {
   const params = useParams<{ storeId: string }>();
   const storeId = params.storeId;
 

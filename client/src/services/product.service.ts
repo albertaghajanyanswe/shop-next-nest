@@ -54,24 +54,6 @@ class ProductService {
     return data;
   }
 
-  async getByCategoryId(categoryId: string) {
-    const { data } = await axiosClassic<GetProductWithDetails[]>({
-      url: API_URL.products(`/by-categoryId/${categoryId}`),
-      method: 'GET',
-    });
-
-    return data;
-  }
-
-  async getByBrandId(brandId: string) {
-    const { data } = await axiosClassic<GetProductWithDetails[]>({
-      url: API_URL.products(`/by-brandId/${brandId}`),
-      method: 'GET',
-    });
-
-    return data;
-  }
-
   async getMostPopular(params?: iParams) {
     try {
       const { data } = await axiosClassic<GetProductWithDetails[]>({
@@ -87,9 +69,11 @@ class ProductService {
     }
   }
 
-  async getSimilar(id: string) {
+  async getSimilar(id: string, params?: iParams) {
     const { data } = await axiosClassic<GetProductWithDetails[]>({
-      url: API_URL.products(`/similar/${id}`),
+      url: API_URL.products(
+        `/similar/${id}?params=${encodeURIComponent(JSON.stringify(params))}`
+      ),
       method: 'GET',
     });
 

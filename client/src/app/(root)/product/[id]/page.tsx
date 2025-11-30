@@ -20,7 +20,7 @@ async function getProducts(id: string) {
   try {
     const [product, similarProducts] = await Promise.all([
       productService.getById(id),
-      productService.getSimilar(id),
+      productService.getSimilar(id, { limit: 10, skip: 0}),
     ]);
     return { product, similarProducts };
   } catch(err) {

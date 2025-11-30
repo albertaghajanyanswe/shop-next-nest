@@ -203,6 +203,7 @@ export function ProductForm({
                     disabled={isLoading}
                     onValueChange={field.onChange}
                     defaultValue={field.value}
+                    // open
                   >
                     <FormControl>
                       <SelectTrigger className='w-full'>

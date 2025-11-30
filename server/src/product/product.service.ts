@@ -100,46 +100,6 @@ export class ProductService {
     return product;
   }
 
-  async getByCategoryId(categoryId: string) {
-    const products = await this.prisma.product.findMany({
-      where: {
-        category: {
-          id: categoryId,
-        },
-      },
-      include: {
-        category: true,
-        brand: true,
-      },
-    });
-
-    if (!products) {
-      throw new NotFoundException('Products not found.');
-    }
-
-    return products;
-  }
-
-  async getByBrandId(brandId: string) {
-    const products = await this.prisma.product.findMany({
-      where: {
-        brand: {
-          id: brandId,
-        },
-      },
-      include: {
-        category: true,
-        brand: true,
-      },
-    });
-
-    if (!products) {
-      throw new NotFoundException('Products not found.');
-    }
-
-    return products;
-  }
-
   async getMostPopular(params?: string) {
     const payload = this.queryBuilderService.build({
       queryParams: params || '',
@@ -191,11 +151,16 @@ export class ProductService {
     return products;
   }
 
-  async getSimilar(id: string) {
+  async getSimilar(id: string, params?: string) {
     const currentProduct = await this.getByIdHelper(id);
     if (!currentProduct) {
       throw new NotFoundException('Current product not found.');
     }
+
+    const payload = this.queryBuilderService.build({
+      queryParams: params || '',
+    });
+    const { where, ...rest} = payload;
     const similarProducts = await this.prisma.product.findMany({
       where: {
         category: {
@@ -211,6 +176,7 @@ export class ProductService {
       include: {
         category: true,
       },
+      ...rest
     });
 
     return similarProducts;

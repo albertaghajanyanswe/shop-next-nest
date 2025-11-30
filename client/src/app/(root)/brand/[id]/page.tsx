@@ -7,12 +7,12 @@ import type { Metadata } from 'next';
 export const revalidate = 60;
 
 async function getProducts(brandId: string) {
-  const [products, brand] = await Promise.all([
-    productService.getByBrandId(brandId),
+  const [productsData, brand] = await Promise.all([
+    productService.getAll({ filter: { brandId }}),
     brandService.getById(brandId),
   ]);
 
-  return { products, brand };
+  return { productsData, brand };
 }
 
 export async function generateMetadata({
@@ -21,7 +21,7 @@ export async function generateMetadata({
   params: Promise<{ id: string }>;
 }): Promise<Metadata> {
   const { id } = await params;
-  const { brand, products } = await getProducts(id);
+  const { brand, productsData } = await getProducts(id);
 
   return {
     title: brand.name,
@@ -31,7 +31,7 @@ export async function generateMetadata({
       description: brand.description,
       images: [
         {
-          url: products?.[0]?.images?.[0] || '',
+          url: productsData?.products?.[0]?.images?.[0] || '',
           width: 800,
           height: 600,
           alt: brand.name,
@@ -47,7 +47,7 @@ export default async function CategoryPage({
   params: Promise<{ id: string }>;
 }) {
   const { id } = await params;
-  const { brand, products } = await getProducts(id);
+  const { brand, productsData } = await getProducts(id);
 
   return (
     <div className='global-container my-6'>
@@ -55,7 +55,7 @@ export default async function CategoryPage({
         title={brand.name}
         description={brand.description}
         descriptionLabel='Brand description:'
-        products={products}
+        products={productsData?.products}
       />
     </div>
   );

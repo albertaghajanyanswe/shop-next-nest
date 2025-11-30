@@ -5,8 +5,7 @@ import { DataTable } from '@/components/ui/dataLoading/DataTable';
 import DataTableLoading from '@/components/ui/dataLoading/DataTableLoading';
 import { Heading } from '@/components/ui/Heading';
 import { STORE_URL } from '@/config/url.config';
-import { useGetProducts } from '@/hooks/queries/products/useGetProducts';
-import { formatPrice } from '@/utils/formatPrice';
+import { useGetStoreProducts } from '@/hooks/queries/products/useGetStoreProducts';
 import { Plus } from 'lucide-react';
 import Link from 'next/link';
 import { useParams } from 'next/navigation';
@@ -34,7 +33,7 @@ export function Products() {
       },
     });
 
-  const { productsData, isLoadingProductsData } = useGetProducts(queryParams);
+  const { productsData, isLoadingProductsData } = useGetStoreProducts(queryParams);
 
   const formattedProducts = productsData?.products
     ? productsData?.products?.map((product) => ({

@@ -20,7 +20,6 @@ export function ProductEdit() {
   if (isLoading) return <div>Loading...</div>;
 
   if (!product) return <div>Product not found</div>;
-  console.log('111 brandsData?.brands ', brandsData?.brands)
   return (
     <ProductForm
       product={product}

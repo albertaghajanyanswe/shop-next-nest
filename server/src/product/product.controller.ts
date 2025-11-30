@@ -8,12 +8,10 @@ import {
   Post,
   Put,
   Query,
-  Req,
   UsePipes,
   ValidationPipe,
 } from '@nestjs/common';
 import { ProductService } from './product.service';
-import { Auth } from 'src/auth/decorators/auth.decorator';
 import {
   GetProductDto,
   GetProductWithDetails,
@@ -22,6 +20,8 @@ import {
 } from './dto/product.dto';
 import { CurrentUser } from 'src/user/decorators/user.decorator';
 import { ApiOkResponse } from '@nestjs/swagger';
+import { AuthAndOwner } from 'src/auth/decorators/owner.decorator';
+import { StoreService } from 'src/store/store.service';
 
 @Controller('products')
 export class ProductController {
@@ -32,10 +32,12 @@ export class ProductController {
   async getAll(@Query('params') params?: string) {
     return this.productService.getAll(params);
   }
-  @Auth()
+
+  @AuthAndOwner(StoreService, 'storeId')
   @Get('by-storeId/:storeId')
   @ApiOkResponse({ type: GetProductWithDetails, isArray: true })
   async getByStoreId(
+    @CurrentUser('id') userId: string,
     @Param('storeId') storeId: string,
     @Query('params') params?: string,
   ) {
@@ -54,22 +56,10 @@ export class ProductController {
     return this.productService.getProductById(id);
   }
 
-  @Get('by-categoryId/:categoryId')
-  @ApiOkResponse({ type: GetProductWithDetails, isArray: true })
-  async getByCategoryId(@Param('categoryId') categoryId: string) {
-    return this.productService.getByCategoryId(categoryId);
-  }
-
-  @Get('by-brandId/:brandId')
-  @ApiOkResponse({ type: GetProductWithDetails, isArray: true })
-  async getByBrandId(@Param('brandId') brandId: string) {
-    return this.productService.getByBrandId(brandId);
-  }
-
   @Get('similar/:id')
   @ApiOkResponse({ type: GetProductWithDetails, isArray: true })
-  async getSimilar(@Param('id') id: string) {
-    return this.productService.getSimilar(id);
+  async getSimilar(@Param('id') id: string, @Query('params') params?: string) {
+    return this.productService.getSimilar(id, params);
   }
 
   @Get('most-popular')
@@ -80,7 +70,7 @@ export class ProductController {
 
   @UsePipes(new ValidationPipe())
   @HttpCode(200)
-  @Auth()
+  @AuthAndOwner(StoreService, 'storeId')
   @Post(':storeId')
   @ApiOkResponse({ type: GetProductDto })
   async create(
@@ -93,7 +83,7 @@ export class ProductController {
 
   @UsePipes(new ValidationPipe())
   @HttpCode(200)
-  @Auth()
+  @AuthAndOwner(ProductService, 'id')
   @Put(':id')
   @ApiOkResponse({ type: GetProductDto })
   async update(@Param('id') id: string, @Body() dto: ProductDto) {
@@ -101,7 +91,7 @@ export class ProductController {
   }
 
   @HttpCode(200)
-  @Auth()
+  @AuthAndOwner(ProductService, 'id')
   @Delete(':id')
   @ApiOkResponse({ type: GetProductDto })
   async delete(@Param('id') id: string) {
