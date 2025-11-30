@@ -39,7 +39,6 @@ export class ProductController {
     @Param('storeId') storeId: string,
     @Query('params') params?: string,
   ) {
-    console.log('-----params = ', params);
     return this.productService.getByStoreId(storeId, params);
   }
 

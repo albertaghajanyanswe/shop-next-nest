@@ -162,7 +162,7 @@ export const HeaderMenuV2 = React.forwardRef<HTMLElement, HeaderMenuProps>(
           )}
         </div>
       );
-    }, [user, pathName]);
+    }, [user, isLoadingUser, pathName]);
 
     // DESKTOP NAV BAR
     const renderNavigationMenuDesktop = useCallback(() => {
@@ -204,7 +204,7 @@ export const HeaderMenuV2 = React.forwardRef<HTMLElement, HeaderMenuProps>(
             )
           )}
 
-          {user && (
+          {!isLoadingUser && user && (
             <HeaderNavLinkBtn
               onClick={() => router.push(DASHBOARD_URL.favorites())}
               badge={user?.favorites?.length}
@@ -229,7 +229,7 @@ export const HeaderMenuV2 = React.forwardRef<HTMLElement, HeaderMenuProps>(
           )}
         </div>
       );
-    }, [user, pathName, router]);
+    }, [user, isLoadingUser, pathName, router]);
 
     return (
       <header

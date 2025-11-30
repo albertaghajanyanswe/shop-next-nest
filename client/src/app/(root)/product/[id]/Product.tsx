@@ -28,15 +28,15 @@ export default function Product({
   });
   return (
     <div>
-      <div className='mx-auto max-w-7xl'>
-        <div className='space-y-7 px-4 py-10 sm:px-6 lg:px-8'>
-          <div className='grid grid-cols-1 gap-x-8 md:grid-cols-2'>
-            <ProductGallery product={product} />
-            <ProductInfo product={product} />
-          </div>
+      <div className='global-container'>
+        <div className='my-6 grid grid-cols-1 gap-x-8 md:grid-cols-2'>
+          <ProductGallery product={product} />
+          <ProductInfo product={product} />
         </div>
-        <Catalog title='Similar products' products={similarProducts} />
-        <ProductReviews product={product} />
+        <div className='my-6'>
+          <Catalog title='Similar products' products={similarProducts} />
+          <ProductReviews product={product} />
+        </div>
       </div>
     </div>
   );
