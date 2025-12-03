@@ -20,9 +20,7 @@ export function MobileSidebar() {
           <SheetTitle />
         </VisuallyHidden>
         <VisuallyHidden>
-          <DialogDescription>
-            Mobile sidebar dialog
-          </DialogDescription>
+          <DialogDescription>Mobile sidebar dialog</DialogDescription>
         </VisuallyHidden>
 
         <Sidebar />

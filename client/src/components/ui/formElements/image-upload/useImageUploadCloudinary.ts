@@ -10,10 +10,14 @@ interface UseImageUploadProps {
   onChange: (value: string[]) => void;
 }
 
-export function useImageUploadCloudinary({ folder, onChange }: UseImageUploadProps) {
+export function useImageUploadCloudinary({
+  folder,
+  onChange,
+}: UseImageUploadProps) {
   const { mutate: uploadFiles, isPending: isUploading } = useMutation({
     mutationKey: [QUERY_KEYS.uploadImage, folder],
-    mutationFn: (formData: FormData) => cloudinaryFileService.upload(formData, folder),
+    mutationFn: (formData: FormData) =>
+      cloudinaryFileService.upload(formData, folder),
     onSuccess: (data) => {
       const urls = data.map((file) => file.secure_url);
       onChange(urls);

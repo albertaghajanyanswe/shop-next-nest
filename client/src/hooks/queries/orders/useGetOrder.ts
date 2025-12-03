@@ -5,7 +5,6 @@ import { useQuery } from '@tanstack/react-query';
 import { useMemo } from 'react';
 
 export const useGetOrders = (queryParams?: iFilterParams) => {
-
   const { data: ordersData, isLoading: isLoadingOrdersData } = useQuery({
     queryKey: [QUERY_KEYS.getStoreProducts, queryParams?.params],
     queryFn: () => orderService.getAll(queryParams?.params),

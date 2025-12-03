@@ -10,9 +10,7 @@ export function CreateProduct() {
   const { colorsData, isLoadingColorsData } = useGetColors();
   const { brandsData, isLoadingBrandsData } = useGetBrands();
   const isLoading =
-    isLoadingCategoriesData ||
-    isLoadingColorsData ||
-    isLoadingBrandsData;
+    isLoadingCategoriesData || isLoadingColorsData || isLoadingBrandsData;
 
   if (isLoading) return <div>Loading...</div>;
 

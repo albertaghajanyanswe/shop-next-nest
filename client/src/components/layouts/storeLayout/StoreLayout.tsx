@@ -4,16 +4,16 @@ import { Header } from './header/Header';
 
 export function StoreLayout({ children }: PropsWithChildren<unknown>) {
   return (
-    <div className='flex flex-col w-full'>
+    <div className='flex w-full flex-col'>
       <div className='layout'>
-        <div className='hidden lg:flex h-full w-64 flex-col fixed inset-y-0 z-[50]'>
+        <div className='fixed inset-y-0 z-[50] hidden h-full w-64 flex-col lg:flex'>
           <Sidebar />
         </div>
-        <div className='h-[70px] lg:pl-64 fixed inset-y-0 w-full z-[49]'>
+        <div className='fixed inset-y-0 z-[49] h-[70px] w-full lg:pl-64'>
           <Header />
         </div>
       </div>
-      <main className='lg:pl-64 py-[70px] bg-white'>{children}</main>
+      <main className='bg-white py-[70px] lg:pl-64'>{children}</main>
     </div>
   );
 }

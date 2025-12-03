@@ -1,4 +1,10 @@
-import { GetBrandWithCategoryDto, GetCategoryDto, GetColorDto, GetProductWithDetailsState, GetReviewDto } from '@/generated/orval/types';
+import {
+  GetBrandWithCategoryDto,
+  GetCategoryDto,
+  GetColorDto,
+  GetProductWithDetailsState,
+  GetReviewDto,
+} from '@/generated/orval/types';
 import { IStore } from './store.interface';
 
 export enum EnumProductState {
@@ -60,5 +66,5 @@ export interface IProductColumn {
   state?: string;
   userId?: string;
   originalPrice?: number;
-  image?: string
+  image?: string;
 }

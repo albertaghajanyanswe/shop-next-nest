@@ -1,4 +1,10 @@
-import { Album, DollarSign, FolderKanban, LucideIcon, Star } from "lucide-react";
+import {
+  Album,
+  DollarSign,
+  FolderKanban,
+  LucideIcon,
+  Star,
+} from 'lucide-react';
 
 export function getIcon(id: number): LucideIcon {
   switch (id) {

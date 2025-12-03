@@ -11,7 +11,7 @@ export const LoadingProducts = () => {
       </h2>
       <div className='text-darkRed animate-scale-pulse-slow flex items-center gap-1 space-x-2'>
         <LoaderCircle className='text-shop-orange animate-spin' />
-        <span className='flex flex-row items-center justify-center gap-x-1 text-shop-orange'>
+        <span className='text-shop-orange flex flex-row items-center justify-center gap-x-1'>
           Products is loading
         </span>
       </div>

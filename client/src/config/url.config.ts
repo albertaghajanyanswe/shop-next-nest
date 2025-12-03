@@ -13,7 +13,7 @@ export const PUBLIC_URL = {
   termsAndCondition: () => PUBLIC_URL.root(`/termsAndCondition`),
   privacyPolicy: () => PUBLIC_URL.root(`/privacyPolicy`),
   faqs: () => PUBLIC_URL.root(`/faqs`),
-}
+};
 
 export const DASHBOARD_URL = {
   root: (url = '') => `/dashboard${url ? `${url}` : ''}`,
@@ -24,19 +24,21 @@ export const DASHBOARD_URL = {
   subscriptions: () => DASHBOARD_URL.root(`/subscriptions`),
   profile: () => DASHBOARD_URL.root(`/profile`),
   settings: () => DASHBOARD_URL.root(`/settings`),
-}
+};
 
 export const STORE_URL = {
   root: (url = '') => `/store${url ? `${url}` : ''}`,
 
   home: (storeId = '') => STORE_URL.root(`/${storeId}`),
   products: (storeId = '') => STORE_URL.root(`/${storeId}/products`),
-  productCreate: (storeId = '') => STORE_URL.root(`/${storeId}/products/create`),
+  productCreate: (storeId = '') =>
+    STORE_URL.root(`/${storeId}/products/create`),
   productEdit: (storeId = '', productId = '') =>
     STORE_URL.root(`/${storeId}/products/${productId}`),
 
   categories: (storeId = '') => STORE_URL.root(`/${storeId}/categories`),
-  categoryCreate: (storeId = '') => STORE_URL.root(`/${storeId}/categories/create`),
+  categoryCreate: (storeId = '') =>
+    STORE_URL.root(`/${storeId}/categories/create`),
   categoryEdit: (storeId = '', categoryId = '') =>
     STORE_URL.root(`/${storeId}/categories/${categoryId}`),
 
@@ -53,4 +55,4 @@ export const STORE_URL = {
   reviews: (storeId = '') => STORE_URL.root(`/${storeId}/reviews`),
 
   settings: (storeId = '') => STORE_URL.root(`/${storeId}/settings`),
-}
+};

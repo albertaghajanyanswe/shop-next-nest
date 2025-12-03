@@ -31,11 +31,7 @@ export async function generateMetadata(): Promise<Metadata> {
     description,
     image: '/images/myStore_logo.svg',
     isPublic: true,
-    keywords: [
-      ...POPULAR_KEYWORDS,
-      ...topCategories,
-      ...topBrands,
-    ],
+    keywords: [...POPULAR_KEYWORDS, ...topCategories, ...topBrands],
     author: SITE_NAME,
     ogType: 'website',
     url: process.env.NEXT_PUBLIC_APP_URL,

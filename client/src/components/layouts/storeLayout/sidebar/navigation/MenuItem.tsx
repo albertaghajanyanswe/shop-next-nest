@@ -16,9 +16,9 @@ export function MenuItem({ route, showOnlyIcon }: MenuItemProps) {
     <Link
       href={route.link}
       className={cn(
-        'flex items-center gap-x-3 rounded-lg bg-transparent px-3 py-2.5 text-sm font-medium text-neutral-700 transition-all duration-200 hover:bg-shop-dark-green hover:text-white ',
+        'hover:bg-shop-dark-green flex items-center gap-x-3 rounded-lg bg-transparent px-3 py-2.5 text-sm font-medium text-neutral-700 transition-all duration-200 hover:text-white',
         isActive &&
-          'text-white bg-shop-dark-green hover:bg-shop-dark-green hover:text-white'
+          'bg-shop-dark-green hover:bg-shop-dark-green text-white hover:text-white'
       )}
     >
       <route.icon className='size-5' />

@@ -1,41 +1,41 @@
-import { ICartItem } from "./cart.interface"
-import { IUser } from "./user.interface"
+import { ICartItem } from './cart.interface';
+import { IUser } from './user.interface';
 
 interface IAmount {
-  value: string
-  currency: string
+  value: string;
+  currency: string;
 }
 
 interface IRecipient {
-  account_id: string
-  gateway_id: string
+  account_id: string;
+  gateway_id: string;
 }
 
 interface IPaymentMethod {
-  type: string
-  id: string
-  saved: boolean
+  type: string;
+  id: string;
+  saved: boolean;
 }
 
 interface IConfirmation {
-  type: string
-  return_url: string
-  confirmation_url: string
+  type: string;
+  return_url: string;
+  confirmation_url: string;
 }
 
 export interface IPaymentResponse {
-  id: string
-  status: string
-  amount: IAmount
-  recipient: IRecipient
-  payment_method: IPaymentMethod
-  created_at: Date
-  confirmation: IConfirmation
+  id: string;
+  status: string;
+  amount: IAmount;
+  recipient: IRecipient;
+  payment_method: IPaymentMethod;
+  created_at: Date;
+  confirmation: IConfirmation;
 }
 
 export interface IStripePaymentResponse {
-  sellerStripeId: string
-  url: string
+  sellerStripeId: string;
+  url: string;
 }
 
 export enum EnumOrderStatus {
@@ -44,10 +44,10 @@ export enum EnumOrderStatus {
 }
 
 export interface IOrder {
-  id: string
-  createdAt: Date
-  orderItems: ICartItem[]
-  status: EnumOrderStatus
-  user: IUser
-  totalPrice: number
+  id: string;
+  createdAt: Date;
+  orderItems: ICartItem[];
+  status: EnumOrderStatus;
+  user: IUser;
+  totalPrice: number;
 }

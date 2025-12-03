@@ -1,29 +1,29 @@
-import { axiosWithAuth } from "@/api/api.interceptors"
-import { API_URL } from "@/config/api.config"
-import { GetUserDto } from "@/generated/orval/types"
-import { IUser } from "@/shared/types/user.interface"
+import { axiosWithAuth } from '@/api/api.interceptors';
+import { API_URL } from '@/config/api.config';
+import { GetUserDto } from '@/generated/orval/types';
+import { IUser } from '@/shared/types/user.interface';
 
 class UserService {
   constructor() {
-    console.log('\n\n\n\n *********NODE_ENV = ', process.env.NODE_ENV)
+    console.log('\n\n\n\n *********NODE_ENV = ', process.env.NODE_ENV);
   }
   async getProfile() {
     const { data } = await axiosWithAuth<GetUserDto>({
       url: API_URL.users(`/profile`),
       method: 'GET',
-    })
+    });
 
-    return data
+    return data;
   }
 
   async toggleFavorite(productId: string) {
     const response = await axiosWithAuth<GetUserDto>({
       url: API_URL.users(`/profile/favorites/${productId}`),
       method: 'PATCH',
-    })
+    });
 
-    return response
+    return response;
   }
 }
 
-export const userService = new UserService()
+export const userService = new UserService();

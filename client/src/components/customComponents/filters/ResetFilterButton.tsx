@@ -13,16 +13,15 @@ export const ResetFilterButton = ({
 }: ResetFilterButtonProps) => {
   return (
     <Button
-      className='flex w-full items-center justify-start p-0 text-red-500 hover:text-red-600 hover:no-underline group'
+      className='group flex w-full items-center justify-start p-0 text-red-500 hover:text-red-600 hover:no-underline'
       variant='link'
       onClick={() => resetFilter(filterKey)}
     >
       {/* Reset Filter <span className='text-[12px]'>({selectedCount} selected)</span> */}
-
       Reset Filter
       <Badge
         variant='outline'
-        className='border-red-200 bg-white text-neutral-600 group-hover:border-red-400 font-medium'
+        className='border-red-200 bg-white font-medium text-neutral-600 group-hover:border-red-400'
       >
         {selectedCount} selected
       </Badge>

@@ -77,7 +77,7 @@ export interface ErrorResponse {
   statusCode?: number;
   response: {
     data: {
-      message: string
-    }
-  }
+      message: string;
+    };
+  };
 }

@@ -44,7 +44,7 @@ export const ShowMoreText: React.FC<IShowMoreTextProps> = ({
       {isNeedShortenText && (
         <Button
           variant='link'
-          className={`p-0 mt-0 m-0 font-semibold no-underline hover:underline cursor-pointer ${btnClass}`}
+          className={`m-0 mt-0 cursor-pointer p-0 font-semibold no-underline hover:underline ${btnClass}`}
           onClick={toggleShowFull}
         >
           {showFull ? 'Show Less' : 'Show More'}

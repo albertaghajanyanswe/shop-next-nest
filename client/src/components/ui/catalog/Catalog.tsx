@@ -12,7 +12,7 @@ export interface ICatalog {
   linkTitle?: string;
   link?: string;
   products: GetProductWithDetails[] | undefined;
-  showSearch?: boolean
+  showSearch?: boolean;
 }
 
 export function Catalog({
@@ -22,14 +22,14 @@ export function Catalog({
   linkTitle,
   link,
   products,
-  showSearch = false
+  showSearch = false,
 }: ICatalog) {
   return (
     <>
       <div className='mb-4 md:flex md:items-center md:justify-between'>
-        <div className='px-0 w-full'>
+        <div className='w-full px-0'>
           <p className='text-2xl font-semibold'>{title}</p>
-            {showSearch && <SearchInput />}
+          {showSearch && <SearchInput />}
 
           {description && (
             <p className='text-muted-foreground mt-2 text-sm'>
@@ -41,7 +41,7 @@ export function Catalog({
         {linkTitle && link && (
           <Link
             href={link}
-            className='text-primary-700 hover:text-primary-700/70 hidden text-sm font-medium md:flex whitespace-nowrap'
+            className='text-primary-700 hover:text-primary-700/70 hidden text-sm font-medium whitespace-nowrap md:flex'
           >
             {linkTitle}
           </Link>

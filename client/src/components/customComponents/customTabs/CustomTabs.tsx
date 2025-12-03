@@ -32,7 +32,11 @@ export function CustomTabs({
     <Tabs defaultValue={activeTab} className={`${className}`}>
       <TabsList className={listClassName}>
         {tabs.map((tab) => (
-          <TabsTrigger key={tab.id} value={tab.id} className={`cursor-pointer ${triggerClassName}`}>
+          <TabsTrigger
+            key={tab.id}
+            value={tab.id}
+            className={`cursor-pointer ${triggerClassName}`}
+          >
             {tab.label}
           </TabsTrigger>
         ))}

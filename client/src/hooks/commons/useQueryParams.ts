@@ -27,7 +27,7 @@ export const useQueryParams = ({
       arrayLimit: Infinity,
     });
 
-    console.log('PARSED = ', parsed)
+    console.log('PARSED = ', parsed);
 
     return {
       params: {
@@ -130,7 +130,7 @@ export const useQueryParams = ({
         params: {
           ...queryParams.params,
           search: {
-            ...queryParams?.params?.search as iSearch,
+            ...(queryParams?.params?.search as iSearch),
             value,
           },
           skip: 0, // сбрасываем на первую страницу

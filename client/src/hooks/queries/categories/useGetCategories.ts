@@ -5,10 +5,12 @@ import { QUERY_KEYS } from '@/shared/queryConstants';
 import { iFilterParams } from '@/shared/types/filter.interface';
 
 export const useGetCategories = (queryParams?: iFilterParams) => {
-  const { data: categoriesData, isLoading: isLoadingCategoriesData } = useQuery({
-    queryKey: [QUERY_KEYS.getCategories, queryParams?.params],
-    queryFn: () => categoryService.getAll(queryParams?.params),
-  });
+  const { data: categoriesData, isLoading: isLoadingCategoriesData } = useQuery(
+    {
+      queryKey: [QUERY_KEYS.getCategories, queryParams?.params],
+      queryFn: () => categoryService.getAll(queryParams?.params),
+    }
+  );
 
   return useMemo(
     () => ({

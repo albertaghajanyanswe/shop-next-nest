@@ -6,13 +6,13 @@ import { NEXT_PUBLIC_SERVER_URL } from '@/config/api.config';
 export function Social() {
   const router = useRouter();
   return (
-    <div className='space-y-3 w-full mt-5'>
+    <div className='mt-5 w-full space-y-3'>
       <Button
         variant='outline'
         onClick={() => router.push(`${NEXT_PUBLIC_SERVER_URL}/api/auth/google`)}
         className='w-full'
       >
-        <FcGoogle className='size-5 mr-2' />
+        <FcGoogle className='mr-2 size-5' />
         Continue with Google
       </Button>
     </div>

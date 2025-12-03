@@ -1,8 +1,7 @@
 'use client';
 
-import { useGetCategories } from "@/hooks/queries/categories/useGetCategories";
-import { BrandForm } from "../BrabdForm";
-
+import { useGetCategories } from '@/hooks/queries/categories/useGetCategories';
+import { BrandForm } from '../BrabdForm';
 
 export function CreateBrand() {
   const { categories, isLoadingCategories } = useGetCategories();

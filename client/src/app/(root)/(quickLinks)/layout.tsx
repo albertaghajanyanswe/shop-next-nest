@@ -13,9 +13,5 @@ export default function InfoLayout({
 }: {
   children: React.ReactNode;
 }) {
-  return (
-    <main className='global-container my-6'>
-      {children}
-    </main>
-  );
+  return <main className='global-container my-6'>{children}</main>;
 }

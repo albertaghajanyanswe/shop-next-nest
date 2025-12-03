@@ -1,6 +1,9 @@
 import { axiosWithAuth } from '@/api/api.interceptors';
 import { API_URL } from '@/config/api.config';
-import { GetOrderWithItemsDto, GetOrderWithItemsDtoAndCount } from '@/generated/orval/types';
+import {
+  GetOrderWithItemsDto,
+  GetOrderWithItemsDtoAndCount,
+} from '@/generated/orval/types';
 import { iParams } from '@/shared/types/filter.interface';
 import {
   EnumOrderStatus,

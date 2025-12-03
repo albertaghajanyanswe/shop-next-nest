@@ -6,4 +6,4 @@ export interface IReviewColumn {
   username: string;
 }
 
-export type IReviewInput = Pick<IReviewColumn, 'rating' | 'text'>
+export type IReviewInput = Pick<IReviewColumn, 'rating' | 'text'>;

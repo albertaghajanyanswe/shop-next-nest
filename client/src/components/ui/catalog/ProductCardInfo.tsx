@@ -31,7 +31,7 @@ function ProductCardInfoUnMemo({
           />
         ))}
       </div>
-      <p className='line-clamp-1 text-xs font-semibold text-gray-700 sm:text-sm mt-1'>
+      <p className='mt-1 line-clamp-1 text-xs font-semibold text-gray-700 sm:text-sm'>
         {product.title}
       </p>
       <p className='text-muted-foreground line-clamp-2 h-10 text-xs'>
@@ -50,7 +50,7 @@ function ProductCardInfoUnMemo({
         {product.category?.name}
       </Link>
 
-      <div className='mb-2 text-sm sm:text-md'>
+      <div className='sm:text-md mb-2 text-sm'>
         <span className='text-shop-red font-semibold'>
           {formatPrice(product.price)}
         </span>

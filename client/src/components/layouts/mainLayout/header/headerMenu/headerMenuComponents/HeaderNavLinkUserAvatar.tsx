@@ -18,7 +18,7 @@ const UserAvatarComponent = ({ user, url }: UserAvatarProps) => (
       alt={user?.name || 'User img'}
       width={42}
       height={42}
-      className='w-9 sm:w-10 rounded-full'
+      className='w-9 rounded-full sm:w-10'
       priority={false}
     />
   </Link>

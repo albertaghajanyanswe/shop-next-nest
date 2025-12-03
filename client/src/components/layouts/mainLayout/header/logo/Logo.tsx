@@ -19,7 +19,9 @@ export function Logo({ classNames = '' }: LogoProps) {
         height={48}
         className='h-[48px] w-[64px]'
       /> */}
-      <h2 className={`group text-shop-dark-green hover:text-shop-light-green hoverEffect font-sans text-xl font-black tracking-wider uppercase sm:text-2xl ${classNames}`}>
+      <h2
+        className={`group text-shop-dark-green hover:text-shop-light-green hoverEffect font-sans text-xl font-black tracking-wider uppercase sm:text-2xl ${classNames}`}
+      >
         {SITE_NAME.slice(0, -1)}
         <span className='text-shop-light-green group-hover:text-shop-dark-green hoverEffect'>
           {SITE_NAME.slice(-1)}

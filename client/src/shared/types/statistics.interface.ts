@@ -1,23 +1,23 @@
 export interface IMainStatistics {
-  id: number
-  name: string
-  value: number
+  id: number;
+  name: string;
+  value: number;
 }
 
-export interface IMonthlySales{
-  date: string
-  value: number
+export interface IMonthlySales {
+  date: string;
+  value: number;
 }
 
 export interface ILastUser {
-  id: string
-  name: string
-  email: string
-  picture: string
-  total: number
+  id: string;
+  name: string;
+  email: string;
+  picture: string;
+  total: number;
 }
 
 export interface IMiddleStatistics {
-  monthlySales: IMonthlySales[]
-  lastUsers: ILastUser[]
+  monthlySales: IMonthlySales[];
+  lastUsers: ILastUser[];
 }

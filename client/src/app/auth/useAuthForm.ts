@@ -21,7 +21,11 @@ export function useAuthForm(isReg: boolean) {
     },
   });
 
-  const { mutate, isPending } = useMutation<AuthResponseDto, ErrorResponse, RegisterDto>({
+  const { mutate, isPending } = useMutation<
+    AuthResponseDto,
+    ErrorResponse,
+    RegisterDto
+  >({
     mutationKey: QUERY_KEYS.auth,
     mutationFn: (data: RegisterDto) =>
       authService.main(isReg ? 'register' : 'login', data),

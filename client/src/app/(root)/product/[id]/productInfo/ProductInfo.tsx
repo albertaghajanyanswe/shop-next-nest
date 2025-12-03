@@ -26,7 +26,9 @@ export default function ProductInfo({ product }: ProductInfoProps) {
           {product.title}
         </h1>
         <div className='mb-2 text-sm sm:text-lg'>
-          <span className='font-semibold text-shop-red'>{formatPrice(product.price)}</span>
+          <span className='text-shop-red font-semibold'>
+            {formatPrice(product.price)}
+          </span>
           {product.oldPrice && product.oldPrice !== product.price && (
             <span className='ml-2 text-gray-500 line-through'>
               {formatPrice(product.oldPrice)}

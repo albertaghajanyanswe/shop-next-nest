@@ -1,6 +1,9 @@
 import { axiosClassic, axiosWithAuth } from '@/api/api.interceptors';
 import { API_URL } from '@/config/api.config';
-import { GetCategoryDto, GetCategoryDtoAndCount } from '@/generated/orval/types';
+import {
+  GetCategoryDto,
+  GetCategoryDtoAndCount,
+} from '@/generated/orval/types';
 import { ICategoryInput } from '@/shared/types/category.interface';
 import { iParams } from '@/shared/types/filter.interface';
 

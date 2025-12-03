@@ -2,7 +2,7 @@ import { LoaderCircle } from 'lucide-react';
 import { memo } from 'react';
 
 interface NoDataFoundProps {
-  entityName: string
+  entityName: string;
 }
 export const NoDataFound = ({ entityName }: NoDataFoundProps) => {
   return (
