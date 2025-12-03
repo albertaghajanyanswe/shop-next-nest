@@ -6,6 +6,7 @@ export class SeedService implements OnApplicationBootstrap {
   constructor(private prisma: PrismaService) {}
 
   async onApplicationBootstrap() {
+    console.log('PROCESS ', process.env);
     await this.seedCategories();
     await this.seedBrands();
   }

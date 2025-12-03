@@ -6,11 +6,12 @@ import { userService } from '@/services/user.service';
 import { QUERY_KEYS } from '@/shared/queryConstants';
 import { GetProductWithDetails } from '@/generated/orval/types';
 import { memo } from 'react';
+import toast from 'react-hot-toast';
 
 interface FavoriteButtonProps {
   product: GetProductWithDetails;
   className?: string;
-  btnVariant:
+  btnVariant?:
     | 'default'
     | 'destructive'
     | 'outline'
@@ -20,12 +21,15 @@ interface FavoriteButtonProps {
     | 'primary'
     | null
     | undefined;
+
+  onlyIcon?: boolean;
 }
 
 function FavoriteButton({
   product,
   className = '',
   btnVariant = 'secondary',
+  onlyIcon = true,
 }: FavoriteButtonProps) {
   const { user } = useProfile();
   const queryClient = useQueryClient();
@@ -37,22 +41,33 @@ function FavoriteButton({
     },
   });
 
-  if (!user) return null;
-  const isExists = user.favorites?.some((p) => p.id === product.id);
+  const isExists = user?.favorites?.some((p) => p.id === product.id);
 
+  const handleToggleFavorite = () => {
+    if (!user) {
+      toast.error('Please login to add product in favorite');
+    }
+    toggleFavorite();
+  };
   return (
     <Button
       variant={btnVariant}
-      size='icon'
-      onClick={() => toggleFavorite()}
+      size={onlyIcon ? 'icon' : 'default'}
+      onClick={handleToggleFavorite}
       disabled={isPending}
       className={className}
       aria-label='Toggle favorite'
     >
       {isExists ? (
-        <AiFillHeart className='text-shop-btn-dark-green size-5' />
-      ) : (
+        onlyIcon ? (
+          <AiFillHeart className='text-shop-btn-dark-green size-5' />
+        ) : (
+          <>Remove From Favorites</>
+        )
+      ) : onlyIcon ? (
         <AiOutlineHeart className='size-5' />
+      ) : (
+        <>Add To Favorites</>
       )}
     </Button>
   );

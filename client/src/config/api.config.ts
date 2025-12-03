@@ -14,6 +14,7 @@ export const API_URL = {
   orders: (url = '') => API_URL.root(`/orders${url}`),
   statistics: (url = '') => API_URL.root(`/statistics${url}`),
   files: (url = '') => API_URL.root(`/files${url}`),
+  cloudinaryFiles: (url = '') => API_URL.root(`/cloudinary/files${url}`),
   stripe: (url = '') => API_URL.root(`/stripe${url}`),
   payment: (url = '') => API_URL.root(`/payment${url}`),
 };

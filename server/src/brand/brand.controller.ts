@@ -17,6 +17,8 @@ import { BrandDto, GetBrandDto, GetBrandDtoAndCount } from './dto/brand.dto';
 import { ApiOkResponse } from '@nestjs/swagger';
 import { CurrentUser } from 'src/user/decorators/user.decorator';
 import type { User } from '@prisma/client';
+import { AuthAndOwner } from 'src/auth/decorators/owner.decorator';
+import { StoreService } from 'src/store/store.service';
 
 @Controller('brands')
 export class BrandController {
@@ -30,7 +32,7 @@ export class BrandController {
     return this.brandService.getAll(params);
   }
 
-  @Auth()
+  @AuthAndOwner(StoreService, 'storeId')
   @Get('by-storeId/:storeId')
   @ApiOkResponse({
     type: GetBrandDto,
@@ -48,7 +50,7 @@ export class BrandController {
 
   @UsePipes(new ValidationPipe())
   @HttpCode(200)
-  @Auth()
+  @AuthAndOwner(StoreService, 'storeId')
   @Post(':storeId')
   @ApiOkResponse({ type: GetBrandDto })
   async create(
@@ -61,7 +63,7 @@ export class BrandController {
 
   @UsePipes(new ValidationPipe())
   @HttpCode(200)
-  @Auth()
+  @AuthAndOwner(BrandService, 'id')
   @Put(':id')
   @ApiOkResponse({ type: GetBrandDto })
   async update(
@@ -73,7 +75,7 @@ export class BrandController {
   }
 
   @HttpCode(200)
-  @Auth()
+  @AuthAndOwner(BrandService, 'id')
   @Delete(':id')
   @ApiOkResponse({ type: GetBrandDto })
   async delete(@CurrentUser() user: User, @Param('id') id: string) {

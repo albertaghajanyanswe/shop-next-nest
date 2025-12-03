@@ -7,19 +7,26 @@ import {
   Param,
   Post,
   Put,
+  Query,
   UsePipes,
   ValidationPipe,
 } from '@nestjs/common';
 import { StoreService } from './store.service';
 import { Auth } from 'src/auth/decorators/auth.decorator';
 import { CurrentUser } from 'src/user/decorators/user.decorator';
-import { GetStoreDto, StoreDto } from './dto/store.dto';
-import { ApiResponse } from '@nestjs/swagger';
+import { GetStoreDto, GetStoreDtoAndCount, StoreDto } from './dto/store.dto';
+import { ApiOkResponse, ApiResponse } from '@nestjs/swagger';
+import { AuthAndOwner } from 'src/auth/decorators/owner.decorator';
 
 @Controller('stores')
 export class StoreController {
   constructor(private readonly storeService: StoreService) {}
 
+  @Get()
+  @ApiOkResponse({ type: GetStoreDtoAndCount })
+  async getAll(@Query('params') params?: string) {
+    return this.storeService.getAll(params);
+  }
   @Auth()
   @Get('by-id/:id')
   @ApiResponse({ type: GetStoreDto })
@@ -41,7 +48,7 @@ export class StoreController {
 
   @UsePipes(new ValidationPipe())
   @HttpCode(200)
-  @Auth()
+  @AuthAndOwner(StoreService, 'id')
   @Put(':id')
   @ApiResponse({ type: GetStoreDto })
   async update(
@@ -53,7 +60,7 @@ export class StoreController {
   }
 
   @HttpCode(200)
-  @Auth()
+  @AuthAndOwner(StoreService, 'id')
   @Delete(':id')
   @ApiResponse({ type: GetStoreDto })
   async delete(

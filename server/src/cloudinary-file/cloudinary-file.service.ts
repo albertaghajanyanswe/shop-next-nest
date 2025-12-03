@@ -1,0 +1,61 @@
+import { Injectable, BadRequestException } from '@nestjs/common';
+import {
+  UploadApiResponse,
+  UploadApiErrorResponse,
+  v2 as cloudinary,
+} from 'cloudinary';
+
+@Injectable()
+export class CloudinaryFileService {
+  async uploadFile(
+    file: Express.Multer.File,
+    folder: string,
+  ): Promise<UploadApiResponse | UploadApiErrorResponse> {
+    return new Promise((resolve, reject) => {
+      cloudinary.uploader
+        .upload_stream(
+          {
+            folder,
+            resource_type: 'auto',
+          },
+          (error, result) => {
+            if (error) return reject(error);
+            resolve(result as UploadApiResponse);
+          },
+        )
+        .end(file.buffer);
+    });
+  }
+
+  async uploadFiles(
+    files: Express.Multer.File[],
+    folder: string,
+  ): Promise<UploadApiResponse[]> {
+    if (!files?.length) throw new BadRequestException('No files provided');
+
+    const results = await Promise.all(
+      files.map((file) => this.uploadFile(file, folder)),
+    );
+
+    return results as UploadApiResponse[];
+  }
+
+  async deleteFile(url: string): Promise<boolean> {
+    // const url =
+    //   'http://res.cloudinary.com/dvuo50sjj/image/upload/v1764672034/products/avvegssidk0vb7ewtxox.png';
+    // const publicId = 'products/avvegssidk0vb7ewtxox';
+
+    console.log('url = ', url)
+    const afterUpload = url.split('/upload/')[1];
+    const withoutVersion = afterUpload.replace(/^v\d+\//, '');
+    const publicId = withoutVersion.replace(/\.[^/.]+$/, '');
+
+    console.log(publicId);
+
+    const result = await cloudinary.uploader.destroy(publicId, {
+      resource_type: 'image',
+    });
+
+    return result.result === 'ok' || result.result === 'not found';
+  }
+}

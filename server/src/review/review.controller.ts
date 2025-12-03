@@ -20,12 +20,14 @@ import {
 } from './dto/review.dto';
 import { CurrentUser } from 'src/user/decorators/user.decorator';
 import { ApiOkResponse } from '@nestjs/swagger';
+import { AuthAndOwner } from 'src/auth/decorators/owner.decorator';
+import { StoreService } from 'src/store/store.service';
 
 @Controller('reviews')
 export class ReviewController {
   constructor(private readonly reviewService: ReviewService) {}
 
-  @Auth()
+  @AuthAndOwner(StoreService, 'storeId')
   @Get('by-storeId/:storeId')
   @ApiOkResponse({ type: GetReviewWithUserDtoAndCount, isArray: true })
   async getByStoreId(
@@ -50,7 +52,7 @@ export class ReviewController {
   }
 
   @HttpCode(200)
-  @Auth()
+  @AuthAndOwner(ReviewService, 'id')
   @Delete(':id')
   @ApiOkResponse({ type: GetReviewDto })
   async delete(@CurrentUser('id') userId: string, @Param('id') id: string) {

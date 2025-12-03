@@ -13,16 +13,22 @@ import {
 } from '@nestjs/common';
 import { CategoryService } from './category.service';
 import { Auth } from 'src/auth/decorators/auth.decorator';
-import { CategoryDto, GetCategoryDto, GetCategoryDtoAndCount } from './dto/category.dto';
+import {
+  CategoryDto,
+  GetCategoryDto,
+  GetCategoryDtoAndCount,
+} from './dto/category.dto';
 import { ApiOkResponse } from '@nestjs/swagger';
 import { CurrentUser } from 'src/user/decorators/user.decorator';
 import type { User } from '@prisma/client';
+import { AuthAndOwner } from 'src/auth/decorators/owner.decorator';
+import { StoreService } from 'src/store/store.service';
 
 @Controller('categories')
 export class CategoryController {
   constructor(private readonly categoryService: CategoryService) {}
 
-  @Auth()
+  @AuthAndOwner(StoreService, 'storeId')
   @Get('by-storeId/:storeId')
   @ApiOkResponse({ type: GetCategoryDto, isArray: true })
   async getByStoreId(@Param('storeId') storeId: string) {
@@ -43,7 +49,7 @@ export class CategoryController {
 
   @UsePipes(new ValidationPipe())
   @HttpCode(200)
-  @Auth()
+  @AuthAndOwner(StoreService, 'storeId')
   @Post(':storeId')
   @ApiOkResponse({ type: GetCategoryDto })
   async create(
@@ -56,7 +62,7 @@ export class CategoryController {
 
   @UsePipes(new ValidationPipe())
   @HttpCode(200)
-  @Auth()
+  @AuthAndOwner(CategoryService, 'id')
   @Put(':id')
   @ApiOkResponse({ type: GetCategoryDto })
   async update(
@@ -68,10 +74,10 @@ export class CategoryController {
   }
 
   @HttpCode(200)
-  @Auth()
+  @AuthAndOwner(CategoryService, 'id')
   @Delete(':id')
   @ApiOkResponse({ type: GetCategoryDto })
   async delete(@CurrentUser() user: User, @Param('id') id: string) {
-  return this.categoryService.delete(user, id);
+    return this.categoryService.delete(user, id);
   }
 }

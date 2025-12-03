@@ -15,6 +15,8 @@ import { ColorService } from './color.service';
 import { Auth } from 'src/auth/decorators/auth.decorator';
 import { ColorDto, GetColorDto, GetColorDtoAndCount } from './dto/color.dto';
 import { ApiOkResponse } from '@nestjs/swagger';
+import { AuthAndOwner } from 'src/auth/decorators/owner.decorator';
+import { StoreService } from 'src/store/store.service';
 
 @Controller('colors')
 export class ColorController {
@@ -26,7 +28,7 @@ export class ColorController {
     return this.colorService.getAll(params);
   }
 
-  @Auth()
+  @AuthAndOwner(StoreService, 'storeId')
   @Get('by-storeId/:storeId')
   @ApiOkResponse({ type: GetColorDto, isArray: true })
   async getByStoreId(@Param('storeId') storeId: string) {
@@ -42,7 +44,7 @@ export class ColorController {
 
   @UsePipes(new ValidationPipe())
   @HttpCode(200)
-  @Auth()
+  @AuthAndOwner(StoreService, 'storeId')
   @Post(':storeId')
   @ApiOkResponse({ type: GetColorDto })
   async create(@Param('storeId') storeId: string, @Body() dto: ColorDto) {
@@ -51,7 +53,7 @@ export class ColorController {
 
   @UsePipes(new ValidationPipe())
   @HttpCode(200)
-  @Auth()
+  @AuthAndOwner(ColorService, 'id')
   @Put(':id')
   @ApiOkResponse({ type: GetColorDto })
   async update(@Param('id') id: string, @Body() dto: ColorDto) {
@@ -59,7 +61,7 @@ export class ColorController {
   }
 
   @HttpCode(200)
-  @Auth()
+  @AuthAndOwner(ColorService, 'id')
   @Delete(':id')
   @ApiOkResponse({ type: GetColorDto })
   async delete(@Param('id') id: string) {

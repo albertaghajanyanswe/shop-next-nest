@@ -81,13 +81,15 @@ export function Colors() {
           onChangeSort={changeSort}
         />
 
-        <CustomPagination
-          limit={queryParams?.params?.limit as number}
-          total={colorsData?.totalCount as number}
-          skip={queryParams?.params?.skip as number}
-          onPageChange={changePage}
-          onLimitChange={changeLimit}
-        />
+        {!!colorsData?.totalCount && (
+          <CustomPagination
+            limit={queryParams?.params?.limit as number}
+            total={colorsData?.totalCount as number}
+            skip={queryParams?.params?.skip as number}
+            onPageChange={changePage}
+            onLimitChange={changeLimit}
+          />
+        )}
       </div>
     </div>
   );

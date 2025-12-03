@@ -1,4 +1,4 @@
-import { useMemo } from 'react';
+import { useCallback, useMemo } from 'react';
 import toast from 'react-hot-toast';
 import { useParams, useRouter } from 'next/navigation';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
@@ -13,12 +13,13 @@ export function useDeleteCategory() {
   const categoryId = params.categoryId;
   const queryClient = useQueryClient();
 
-  const { mutate: deleteCategory, isPending: isLoadingDelete } = useMutation({
+  const mutation = useMutation({
     mutationKey: QUERY_KEYS.deleteCategory,
-    mutationFn: () => categoryService.delete(categoryId),
+    mutationFn: (cId?: string) => categoryService.delete(cId ?? categoryId),
     onSuccess: () => {
       queryClient.invalidateQueries({
-        queryKey: QUERY_KEYS.getStoreCategories,
+        queryKey: [QUERY_KEYS.getCategories],
+        exact: false,
       });
       toast.success('Category deleted successfully.');
       router.push(STORE_URL.categories(storeId));
@@ -27,6 +28,12 @@ export function useDeleteCategory() {
       toast.error('Failed to delete category.');
     },
   });
+
+  const deleteCategory = useCallback(
+    (cId?: string) => mutation.mutate(cId),
+    [mutation]
+  );
+  const isLoadingDelete = mutation.isPending;
 
   return useMemo(
     () => ({ deleteCategory, isLoadingDelete }),

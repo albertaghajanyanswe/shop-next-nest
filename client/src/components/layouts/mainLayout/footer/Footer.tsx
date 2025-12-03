@@ -23,7 +23,7 @@ export default async function Footer() {
   const categories = await getCategories();
 
   return (
-    <footer className='global-container bg-shop-bg w-full border-t'>
+    <footer className='global-container bg-shop-light-bg w-full border-t'>
       <div>
         {/* ===== Top Contact Row ===== */}
         <div className='container grid grid-cols-2 gap-8 py-6 md:grid-cols-4'>
@@ -120,7 +120,8 @@ export default async function Footer() {
 
       {/* Bottom */}
       <div className='py-6 text-center text-neutral-600'>
-        © 2025 <span className='font-bold'>MYSTORE</span>. All rights reserved.
+        © 2025 <span className='font-semibold'>MYSTORE</span>. All rights
+        reserved.
       </div>
     </footer>
   );

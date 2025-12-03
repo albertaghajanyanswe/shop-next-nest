@@ -83,7 +83,6 @@ export function CategoryForm({ category }: CategoryFormProps) {
               name='images'
               rules={{ required: 'Upload at least one image' }}
               render={({ field }) => {
-                console.log('FIELD = ', field);
                 return (
                   <FormItem className='mt-4'>
                     <FormLabel>Images</FormLabel>

@@ -2,7 +2,7 @@ import toast from 'react-hot-toast';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useParams, useRouter } from 'next/navigation';
 import { STORE_URL } from '@/config/url.config';
-import { useMemo } from 'react';
+import { useCallback, useMemo } from 'react';
 import { QUERY_KEYS } from '@/shared/queryConstants';
 import { productService } from '@/services/product.service';
 
@@ -27,7 +27,10 @@ export function useDeleteProduct() {
       toast.error('Failed to delete product.');
     },
   });
-  const deleteProduct = (prodId?: string) => mutation.mutate(prodId);
+  const deleteProduct = useCallback(
+    (pId?: string) => mutation.mutate(pId),
+    [mutation]
+  );
   const isLoadingDelete = mutation.isPending;
 
   return useMemo(

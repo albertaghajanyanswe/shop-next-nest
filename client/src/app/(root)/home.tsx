@@ -1,4 +1,3 @@
-import { Button } from '@/components/ui/Button';
 import { HomeBanner } from '../../components/ui/homeBanner/HomeBanner';
 import { Catalog } from '@/components/ui/catalog/Catalog';
 import ShopByCard from '@/components/ui/shopByCard/ShopByCard';
@@ -19,15 +18,17 @@ export default function Home({ products, categories, brands }: HomeProps) {
   return (
     <>
       <HomeBanner />
-      <div className='global-container mt-8 flex-1'>
-        <ShopByCard<GetCategoryDto>
-          title='Shop By Category'
-          description='The most popular categories'
-          linkTitle='View all'
-          linkClb={PUBLIC_URL.category}
-          data={categories}
-        />
-      </div>
+      {categories && categories.length > 0 && (
+        <div className='global-container mt-8 flex-1'>
+          <ShopByCard<GetCategoryDto>
+            title='Shop By Category'
+            description='The most popular categories'
+            linkTitle='View all'
+            linkClb={PUBLIC_URL.shop}
+            data={categories}
+          />
+        </div>
+      )}
       <div className='global-container mt-8 flex-1'>
         <Catalog
           title='Most Popular'
@@ -38,15 +39,17 @@ export default function Home({ products, categories, brands }: HomeProps) {
           products={products}
         />
       </div>
-      <div className='global-container mt-8 flex-1 py-6'>
-        <ShopByCard<GetBrandDto>
-          title='Shop By Brand'
-          description='The most popular brands'
-          linkTitle='View all'
-          linkClb={PUBLIC_URL.brand}
-          data={brands}
-        />
-      </div>
+      {brands && brands.length > 0 && (
+        <div className='global-container mt-8 flex-1 py-6'>
+          <ShopByCard<GetBrandDto>
+            title='Shop By Brand'
+            description='The most popular brands'
+            linkTitle='View all'
+            linkClb={PUBLIC_URL.shop}
+            data={brands}
+          />
+        </div>
+      )}
     </>
   );
 }

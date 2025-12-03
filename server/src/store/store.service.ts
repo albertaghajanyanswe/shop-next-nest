@@ -5,10 +5,30 @@ import {
 } from '@nestjs/common';
 import { PrismaService } from 'src/prisma.service';
 import { StoreDto } from './dto/store.dto';
+import { QueryPayloadBuilderService } from 'src/queryPayloadBuilder/QueryPayloadBuilder';
 
 @Injectable()
 export class StoreService {
-  constructor(private prisma: PrismaService) {}
+  constructor(
+    private prisma: PrismaService,
+    private readonly queryBuilderService: QueryPayloadBuilderService,
+  ) {}
+
+  async getAll(params?: string) {
+    const payload = this.queryBuilderService.build({
+      queryParams: params || '',
+    });
+    const stores = await this.prisma.store.findMany({
+      orderBy: {
+        createdAt: 'desc',
+      },
+      ...payload,
+    });
+    const totalCount = await this.prisma.store.count({
+      where: payload.where,
+    });
+    return { stores, totalCount };
+  }
 
   async getById(storeId: string, userId: string) {
     const store = await this.prisma.store.findUnique({

@@ -8,6 +8,8 @@ import { Plus, Trash2 } from 'lucide-react';
 import Image from 'next/image';
 import { Rating } from 'react-simple-star-rating';
 import { GetProductWithDetails } from '@/generated/orval/types';
+import { formatDateWithHour } from '@/utils/formateDate';
+import NoDataFound from '@/components/customComponents/loading/NoDataFound';
 
 export interface ProductReviewsProps {
   product: GetProductWithDetails;
@@ -18,61 +20,78 @@ export default function ProductReviews({ product }: ProductReviewsProps) {
   const { deleteReview, isLoadingDelete } = useDeleteReview();
 
   return (
-    <>
-      <div className='mt-6 flex items-center justify-between'>
-        <h1 className='text-2xl font-bold'>Reviews</h1>
+    <div className='mt-2'>
+      <div className='flex items-center justify-between'>
+        <p className='text-2xl font-semibold'>Reviews</p>
         {user && (
           <ReviewModal storeId={product.storeId as string}>
-            <Button variant='ghost'>
+            <Button
+              variant='ghost'
+              className='hover:border-primary-100 border border-white hover:border'
+            >
               <Plus className='mr-2 size-4' />
               Add review
             </Button>
           </ReviewModal>
         )}
       </div>
-      <div className='mt-4 grid gap-8 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-4'>
-        {product?.reviews.length ? (
+      <div className='flex flex-col gap-6 rounded-xl bg-white py-3'>
+        {!!product?.reviews?.length ? (
           product.reviews.map((review) => (
-            <div className='rounded-lg border p-4' key={review.id}>
-              <div className='flex justify-between'>
-                <div className='flex items-center gap-x-4 font-medium'>
-                  <Image
-                    src={
-                      generateImgPath(review.user?.picture || '') ||
-                      '/images/no-user-image.png'
-                    }
-                    alt={review.user.name}
-                    width={40}
-                    height={40}
-                    className='h-10 w-10 rounded-full'
+            <div key={review.id} className='flex items-start justify-between'>
+              <div className='relative rounded-md' key={review.id}>
+                <div className='mb-2 flex items-center gap-2'>
+                  <Rating
+                    initialValue={review.rating}
+                    readonly
+                    SVGstyle={{ display: 'inline-block' }}
+                    size={16}
+                    allowFraction
+                    transition
+                    className='m-0 p-0'
                   />
-                  {review.user.name}
+                  <p className='mt-[2px] text-sm font-semibold'>
+                    {review.user.name}
+                  </p>
+                  <p className='mt-[2px] text-xs font-semibold'>-</p>
+                  <p className='text-muted-foreground mt-[2px] text-xs font-semibold'>
+                    {formatDateWithHour(review.createdAt)}
+                  </p>
                 </div>
-                {user?.id === review.user.id && (
-                  <ConfirmModal handleConfirm={() => deleteReview(review.id)}>
-                    <Button variant='ghost' className='mt-3 text-red-500'>
-                      <Trash2 className='size-4 text-red-500 hover:text-red-600' />
-                    </Button>
-                  </ConfirmModal>
-                )}
+                <div className='flex items-center justify-between'>
+                  <div className='flex items-center gap-x-4 font-medium'>
+                    <Image
+                      src={
+                        generateImgPath(review.user?.picture || '') ||
+                        '/images/no-user-image.png'
+                      }
+                      alt={review.user.name}
+                      width={40}
+                      height={40}
+                      className='h-10 w-10 rounded-full'
+                    />
+                    <div className='text-muted-foreground text-xs font-normal'>
+                      {review.text}
+                    </div>
+                  </div>
+                </div>
               </div>
-              <Rating
-                initialValue={review.rating}
-                readonly
-                SVGstyle={{ display: 'inline-block' }}
-                size={20}
-                allowFraction
-                transition
-              />
-              <div className='text-muted-foreground mt-1 text-sm'>
-                {review.text}
-              </div>
+              {user?.id === review.user.id && (
+                <ConfirmModal handleConfirm={() => deleteReview(review.id)}>
+                  <Button
+                    variant='ghost'
+                    className='text-red-500 hover:bg-red-500/5'
+                  >
+                    <Trash2 className='size-4 text-red-500 hover:text-red-600' />
+                  </Button>
+                </ConfirmModal>
+              )}
             </div>
           ))
         ) : (
-          <div className='mt-4'>No reviews found</div>
+          <NoDataFound entityName='Reviews' />
         )}
       </div>
-    </>
+    </div>
   );
 }

@@ -4,6 +4,7 @@ import { PUBLIC_URL } from '@/config/url.config';
 import { formatPrice } from '@/utils/formatPrice';
 import { memo } from 'react';
 import { GetProductWithDetails } from '@/generated/orval/types';
+import QueryString from 'qs';
 
 interface ProductCardInfoProps {
   product: GetProductWithDetails;
@@ -18,7 +19,7 @@ function ProductCardInfoUnMemo({
 }: ProductCardInfoProps) {
   return (
     <>
-      <div className='mt-0 sm:mt-1 md:mt-2 flex justify-center gap-2'>
+      <div className='mt-0 flex justify-center gap-2'>
         {product.images.map((_, index) => (
           <button
             onClick={() => carouselApi?.scrollTo(index)}
@@ -30,25 +31,34 @@ function ProductCardInfoUnMemo({
           />
         ))}
       </div>
-      <h3 className='mt-2 line-clamp-1 text-xs font-semibold text-gray-700 sm:mt-4 sm:text-sm'>
+      <p className='line-clamp-1 text-xs font-semibold text-gray-700 sm:text-sm mt-1'>
         {product.title}
-      </h3>
-      <p className='text-muted-foreground line-clamp-2 text-xs'>
+      </p>
+      <p className='text-muted-foreground line-clamp-2 h-10 text-xs'>
         {product.description}
       </p>
       <Link
-        href={PUBLIC_URL.category(product.category?.id)}
-        className='mt-1 text-xs text-gray-500 sm:text-sm'
+        href={PUBLIC_URL.shop(
+          QueryString.stringify(
+            { filter: { categoryId: [product?.category?.id] } },
+            { skipNulls: true }
+          )
+        )}
+        className='text-shop-light-green mt-1 text-xs hover:underline sm:text-sm'
+        aria-label='Go to shop'
       >
         {product.category?.name}
       </Link>
-      <div className='mt-1 text-sm text-gray-900'>
+
+      <div className='mb-2 text-sm sm:text-md'>
+        <span className='text-shop-red font-semibold'>
+          {formatPrice(product.price)}
+        </span>
         {product.oldPrice && product.oldPrice !== product.price && (
-          <span className='mr-2 text-gray-500 line-through'>
+          <span className='ml-2 text-gray-500 line-through'>
             {formatPrice(product.oldPrice)}
           </span>
         )}
-        <span className='font-bold'>{formatPrice(product.price)}</span>
       </div>
     </>
   );

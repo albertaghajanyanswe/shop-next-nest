@@ -5,8 +5,8 @@ import { ComponentType, memo } from 'react';
 
 interface HeaderNavLinkBtnProps {
   onClick: () => void;
-  badge?: string | number
-  isActive: boolean
+  badge?: string | number;
+  isActive: boolean;
   Icon: ComponentType<{ className?: string }>;
 }
 const HeaderNavLinkBtnComponent = ({
@@ -18,7 +18,7 @@ const HeaderNavLinkBtnComponent = ({
   return (
     <Button
       variant='outline'
-      className={`icon-btn hover:text-shop-light-green hoverEffect group relative ${
+      className={`icon-btn hover:text-shop-light-green hoverEffect group relative flex items-center whitespace-nowrap ${
         isActive ? 'bg-primary-50 border-primary-300' : ''
       }`}
       onClick={onClick}

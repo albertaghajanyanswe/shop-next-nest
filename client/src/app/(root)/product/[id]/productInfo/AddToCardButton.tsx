@@ -32,7 +32,7 @@ export default function AddToCardButton({
     <Button
       variant='primary'
       size='lg'
-      className={cn('w-full h-8 sm:h-10', className)}
+      className={cn('flex-1', className)}
       onClick={handleClick}
     >
       <ShoppingCart />

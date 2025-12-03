@@ -17,6 +17,7 @@ import { AuthFields } from './AuthFields';
 import { Social } from './Social';
 import Link from 'next/link';
 import { PUBLIC_URL } from '@/config/url.config';
+import { Logo } from '@/components/layouts/mainLayout/header/logo/Logo';
 
 export default function Auth() {
   const [isReg, setIsReg] = useState(false);
@@ -33,18 +34,11 @@ export default function Auth() {
         />
       </div>
       <div className='flex h-full flex-col items-center justify-center'>
-        <Card className='flex w-[500px] flex-col items-center justify-center border-none p-6 shadow-none'>
-          <Link href={PUBLIC_URL.home()} className='flex items-center gap-2'>
-            <Image
-              src={'/images/myStore_logo.svg'}
-              alt={'auth'}
-              width={100}
-              height={50}
-              className='rounded-full'
-            />
-          </Link>
+        <Card className='flex w-[500px] flex-col items-center justify-center border-none bg-white p-6 shadow-none'>
+          <Logo classNames='sm:text-4xl' />
+
           <CardHeader className='flex w-full flex-col items-center justify-center pb-5'>
-            <CardTitle className='text-primary-700 pb-1 text-center text-3xl font-bold'>
+            <CardTitle className='text-primary-700 pb-1 text-center text-2xl font-semibold'>
               {isReg
                 ? 'Join us to create and manage your online stores.'
                 : 'Welcome Back!'}

@@ -3,11 +3,14 @@ import { SITE_NAME } from '@/utils/constants';
 import Image from 'next/image';
 import Link from 'next/link';
 
-export function Logo() {
+interface LogoProps {
+  classNames?: string;
+}
+export function Logo({ classNames = '' }: LogoProps) {
   return (
     <Link
       href={PUBLIC_URL.home()}
-      className='flex items-center gap-x-1 transition-opacity hover:opacity-75'
+      className={`flex items-center gap-x-1 transition-opacity hover:opacity-75`}
     >
       {/* <Image
         src='/images/myStore_logo.svg'
@@ -16,7 +19,7 @@ export function Logo() {
         height={48}
         className='h-[48px] w-[64px]'
       /> */}
-      <h2 className='group text-shop-dark-green hover:text-shop-light-green hoverEffect font-sans text-xl sm:text-2xl font-black tracking-wider uppercase'>
+      <h2 className={`group text-shop-dark-green hover:text-shop-light-green hoverEffect font-sans text-xl font-black tracking-wider uppercase sm:text-2xl ${classNames}`}>
         {SITE_NAME.slice(0, -1)}
         <span className='text-shop-light-green group-hover:text-shop-dark-green hoverEffect'>
           {SITE_NAME.slice(-1)}

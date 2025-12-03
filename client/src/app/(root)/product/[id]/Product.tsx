@@ -8,6 +8,11 @@ import ProductGallery from './product-gallery/ProductGallery';
 import ProductInfo from './productInfo/ProductInfo';
 import ProductReviews from './productReviews/ProductReviews';
 import { GetProductWithDetails } from '@/generated/orval/types';
+import {
+  CustomTabs,
+  TabItem,
+} from '@/components/customComponents/customTabs/CustomTabs';
+import { useMemo } from 'react';
 
 export interface ProductProps {
   initialProduct: GetProductWithDetails;
@@ -26,18 +31,49 @@ export default function Product({
     initialData: initialProduct,
     enabled: !!id,
   });
+
+  const tabs: TabItem[] = useMemo(() => {
+    return [
+      {
+        id: 'review',
+        label: 'Reviews',
+        content: <ProductReviews product={product} />,
+      },
+      {
+        id: 'info',
+        label: 'Additional Information',
+        content: (
+          <div className='bg-shop-light-bg rounded-md p-4'>
+            <p>Some additional information about product</p>
+          </div>
+        ),
+      },
+      {
+        id: 'desc',
+        label: 'Description',
+        content: (
+          <div className='bg-shop-light-bg rounded-md p-4'>
+            {product.description}
+          </div>
+        ),
+      },
+    ];
+  }, [product]);
+
   return (
-    <div>
-      <div className='global-container'>
-        <div className='my-6 grid grid-cols-1 gap-x-8 md:grid-cols-2'>
+    <>
+      <div className='my-6 grid w-full grid-cols-[6fr_6fr] gap-x-4 gap-y-0 md:grid-cols-2 xl:grid-cols-[7fr_5fr]'>
+        <div className='bg-neutral100 order-1 col-span-2 row-span-1 w-full rounded-none sm:rounded-2xl md:col-span-1'>
           <ProductGallery product={product} />
+        </div>
+        <div className='order-2 col-span-2 row-span-5 mt-[24px] w-full md:col-span-1 md:mt-[0px]'>
           <ProductInfo product={product} />
         </div>
-        <div className='my-6'>
-          <Catalog title='Similar products' products={similarProducts} />
-          <ProductReviews product={product} />
-        </div>
       </div>
-    </div>
+      <Catalog title='Similar products' products={similarProducts} />
+      <div className='mt-6 mb-4 w-full max-w-3xl'>
+        <CustomTabs tabs={tabs} defaultValue='review' />
+      </div>
+    </>
   );
 }

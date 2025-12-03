@@ -5,7 +5,8 @@ import { Providers } from '../providers/providers';
 import { Poppins } from 'next/font/google';
 
 const poppins = Poppins({
-  subsets: ['latin', 'latin-ext'],
+  subsets: ['latin'],
+  style: 'normal',
   weight: ['400', '500', '600', '700'],
   display: 'swap',
 });
@@ -16,6 +17,9 @@ export const metadata: Metadata = {
     template: `%s | ${SITE_NAME}`,
   },
   description: SITE_DESCRIPTION,
+  alternates: {
+    canonical: `${process.env.NEXT_PUBLIC_APP_URL}`, // <-- canonical URL
+  },
 };
 
 export default function RootLayout({

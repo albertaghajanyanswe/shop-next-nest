@@ -6,6 +6,7 @@ import {
   PAUSE,
   PERSIST,
   persistStore,
+  persistReducer,
   PURGE,
   REGISTER,
   REHYDRATE,
@@ -32,12 +33,13 @@ const getPersistConfig = (): PersistConfig<any> => ({
   key: getUserPersistKey(),
   storage,
   whitelist: ['cart'],
-  serialize: true,
+  // serialize: true,
 });
 
 let mainReducer = combinedReducers;
 
 if (isClient) {
+  // eslint-disable-next-line @typescript-eslint/no-require-imports
   const { persistReducer } = require('redux-persist');
   mainReducer = persistReducer(getPersistConfig(), combinedReducers);
 }

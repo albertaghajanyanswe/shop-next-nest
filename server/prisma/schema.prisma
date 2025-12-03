@@ -153,7 +153,7 @@ model Color {
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
 
-  name  String
+  name  String @unique
   value String
 
   products Product[]

@@ -48,17 +48,29 @@ export class GetStoreDto {
   @IsString()
   title: string;
 
-  @ApiProperty({ example: 'Store description', description: 'Store description', required: false })
+  @ApiProperty({
+    example: 'Store description',
+    description: 'Store description',
+    required: false,
+  })
   @IsOptional()
   @IsString()
   description?: string;
 
-  @ApiProperty({ example: 'userId123', description: 'Owner user ID', required: false })
+  @ApiProperty({
+    example: 'userId123',
+    description: 'Owner user ID',
+    required: false,
+  })
   @IsOptional()
   @IsString()
   userId?: string;
 
-  @ApiProperty({ example: 'https://image.com/store.png', description: 'Store image', required: false })
+  @ApiProperty({
+    example: 'https://image.com/store.png',
+    description: 'Store image',
+    required: false,
+  })
   @IsOptional()
   @IsString()
   image?: string;
@@ -74,4 +86,16 @@ export class GetStoreDto {
   @ApiProperty({ example: false, description: 'Is blocked' })
   @IsBoolean()
   isBlocked: boolean;
+}
+
+export class GetStoreDtoAndCount {
+  @ApiProperty({
+    type: () => GetStoreDto,
+    required: false,
+    isArray: true,
+  })
+  stores: GetStoreDto[];
+
+  @ApiProperty({ type: Number, required: false })
+  totalCount: number;
 }

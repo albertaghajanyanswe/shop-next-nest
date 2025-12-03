@@ -91,13 +91,15 @@ export function Categories() {
           onChangeSort={changeSort}
         />
 
-        <CustomPagination
-          limit={queryParams?.params?.limit as number}
-          total={categoriesData?.totalCount as number}
-          skip={queryParams?.params?.skip as number}
-          onPageChange={changePage}
-          onLimitChange={changeLimit}
-        />
+        {!!categoriesData?.totalCount && (
+          <CustomPagination
+            limit={queryParams?.params?.limit as number}
+            total={categoriesData?.totalCount as number}
+            skip={queryParams?.params?.skip as number}
+            onPageChange={changePage}
+            onLimitChange={changeLimit}
+          />
+        )}
       </div>
     </div>
   );
