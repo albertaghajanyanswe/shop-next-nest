@@ -2,7 +2,7 @@ import toast from 'react-hot-toast';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useParams, useRouter } from 'next/navigation';
 import { STORE_URL } from '@/config/url.config';
-import { useMemo } from 'react';
+import { useCallback, useMemo } from 'react';
 import { QUERY_KEYS } from '@/shared/queryConstants';
 import { colorService } from '@/services/color.service';
 
@@ -13,9 +13,9 @@ export function useDeleteColor() {
   const colorId = params.colorId;
   const queryClient = useQueryClient();
 
-  const { mutate: deleteColor, isPending: isLoadingDelete } = useMutation({
+  const mutation = useMutation({
     mutationKey: QUERY_KEYS.deleteColor,
-    mutationFn: () => colorService.delete(colorId),
+    mutationFn: (cId?: string) => colorService.delete(cId ?? colorId),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: QUERY_KEYS.getStoreColors });
       toast.success('Color deleted successfully.');
@@ -25,6 +25,13 @@ export function useDeleteColor() {
       toast.error('Failed to delete color.');
     },
   });
+
+  const deleteColor = useCallback(
+    (cId?: string) => mutation.mutate(cId),
+    [mutation]
+  );
+
+  const isLoadingDelete = mutation.isPending;
 
   return useMemo(
     () => ({ deleteColor, isLoadingDelete }),

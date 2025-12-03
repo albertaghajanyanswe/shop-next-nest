@@ -152,7 +152,7 @@ export function ProductForm({
               );
             }}
           />
-          <div className='mt-4 grid gap-4 sm:grid-cols-2'>
+          <div className='mt-4 grid gap-4 sm:grid-cols-2 items-start'>
             <FormField
               control={form.control}
               name='title'
@@ -191,7 +191,7 @@ export function ProductForm({
               )}
             />
           </div>
-          <div className='mt-4 grid gap-4 sm:grid-cols-3'>
+          <div className='mt-4 grid gap-4 sm:grid-cols-3 items-start'>
             <FormField
               control={form.control}
               name='colorId'

@@ -1,6 +1,9 @@
 import Link from 'next/link';
 import { ProductCard } from '@/components/ui/catalog/ProductCard';
 import { GetProductWithDetails } from '@/generated/orval/types';
+import { LoaderCircle } from 'lucide-react';
+import NoProductsFound from '@/components/customComponents/loading/NoProductsFound';
+import { SearchInput } from '@/components/layouts/mainLayout/header/searchInput/SearchInput';
 
 export interface ICatalog {
   title: string;
@@ -9,6 +12,7 @@ export interface ICatalog {
   linkTitle?: string;
   link?: string;
   products: GetProductWithDetails[] | undefined;
+  showSearch?: boolean
 }
 
 export function Catalog({
@@ -18,13 +22,15 @@ export function Catalog({
   linkTitle,
   link,
   products,
+  showSearch = false
 }: ICatalog) {
-
   return (
-    <div className='m-auto'>
+    <>
       <div className='mb-4 md:flex md:items-center md:justify-between'>
-        <div className='max-w-2xl px-4 lg:max-w-full lg:px-0'>
-          <p className='text-2xl font-bold'>{title}</p>
+        <div className='px-0 w-full'>
+          <p className='text-2xl font-semibold'>{title}</p>
+            {showSearch && <SearchInput />}
+
           {description && (
             <p className='text-muted-foreground mt-2 text-sm'>
               <span className='text-xs font-medium'>{descriptionLabel}</span>{' '}
@@ -35,7 +41,7 @@ export function Catalog({
         {linkTitle && link && (
           <Link
             href={link}
-            className='text-primary-500 hover:text-primary-500/90 hidden text-sm font-medium md:flex'
+            className='text-primary-700 hover:text-primary-700/70 hidden text-sm font-medium md:flex whitespace-nowrap'
           >
             {linkTitle}
           </Link>
@@ -43,17 +49,15 @@ export function Catalog({
       </div>
       <div className='flex w-full items-center'>
         {products && products?.length > 0 ? (
-          <div className='mt-2 grid w-full gap-6 xs:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5'>
+          <div className='xs:grid-cols-2 mt-2 grid w-full gap-6 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 2xl:grid-cols-4'>
             {products.map((product) => (
               <ProductCard key={product.id} product={product} />
             ))}
           </div>
         ) : (
-          <div className='text-muted-foreground text-center italic'>
-            No products found
-          </div>
+          <NoProductsFound />
         )}
       </div>
-    </div>
+    </>
   );
 }

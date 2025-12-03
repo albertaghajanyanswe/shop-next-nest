@@ -155,6 +155,7 @@ export const HeaderMenuV2 = React.forwardRef<HTMLElement, HeaderMenuProps>(
               href={PUBLIC_URL.auth()}
               isActive={pathName === PUBLIC_URL.auth()}
               label='Login'
+              linkClass='flex items-center whitespace-nowrap'
             >
               <LogOut className='mr-2 size-4' />
               Login
@@ -270,9 +271,11 @@ export const HeaderMenuV2 = React.forwardRef<HTMLElement, HeaderMenuProps>(
             </button>
 
             {/* Search */}
-            <div className='order-2 hidden w-full flex-1 px-4 md:flex'>
-              <SearchInput />
-            </div>
+            {pathName !== PUBLIC_URL.shop() && (
+              <div className='order-2 hidden w-full flex-1 px-4 md:flex'>
+                <SearchInput />
+              </div>
+            )}
 
             {/* DESKTOP Nav Bar */}
             <div className='order-3 ml-auto flex flex-none items-center gap-6'>

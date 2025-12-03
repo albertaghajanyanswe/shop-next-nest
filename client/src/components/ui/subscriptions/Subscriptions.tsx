@@ -89,7 +89,7 @@ export default function SubscriptionCards() {
     if (period === 'monthly' || plan.planId === 'FREE') {
       return (
         <>
-          <p className='text-3xl font-bold lg:text-4xl'>
+          <p className='text-3xl font-semibold lg:text-4xl'>
             ${plan.price}
             <span className='text-muted-foreground text-sm font-semibold'>
               /monthly
@@ -116,7 +116,7 @@ export default function SubscriptionCards() {
               </span>
             </span>
           )}
-          <span className='text-primary text-3xl font-bold lg:text-4xl'>
+          <span className='text-primary text-3xl font-semibold lg:text-4xl'>
             ${plan.price}
             <span className='text-muted-foreground text-sm font-semibold'>
               /annual

@@ -9,9 +9,11 @@ export default function PageHeader({
 }) {
   return (
     <header className={`mb-6 ${classNames}`}>
-      <h1 className='mb-4 text-2xl font-bold tracking-tight'>{title}</h1>
+      <h1 className='mb-4 text-2xl font-semibold tracking-tight'>{title}</h1>
       {description && (
-        <p className='leading-relaxed; text-sm text-neutral-600'>{description}</p>
+        <p className='leading-relaxed; text-sm text-neutral-600'>
+          {description}
+        </p>
       )}
     </header>
   );

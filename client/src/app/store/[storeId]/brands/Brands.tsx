@@ -87,13 +87,15 @@ export function Brands() {
           onChangeSearch={changeSearch}
           onChangeSort={changeSort}
         />
-        <CustomPagination
-          limit={queryParams?.params?.limit as number}
-          total={brandsData?.totalCount as number}
-          skip={queryParams?.params?.skip as number}
-          onPageChange={changePage}
-          onLimitChange={changeLimit}
-        />
+        {!!brandsData?.totalCount && (
+          <CustomPagination
+            limit={queryParams?.params?.limit as number}
+            total={brandsData?.totalCount as number}
+            skip={queryParams?.params?.skip as number}
+            onPageChange={changePage}
+            onLimitChange={changeLimit}
+          />
+        )}
       </div>
     </div>
   );

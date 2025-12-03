@@ -24,6 +24,73 @@ import {
 import Image from 'next/image';
 import Link from 'next/link';
 
+const ProductActionsCell = ({ row }: { row: IProductColumn }) => {
+  const { createProduct, isLoadingCreate } = useCreateProduct();
+  const { deleteProduct, isLoadingDelete } = useDeleteProduct();
+
+  return (
+    <DropdownMenu>
+      <DropdownMenuTrigger asChild>
+        <Button variant='ghost' className='h-8 w-8 p-0'>
+          <MoreHorizontal className='size-4' />
+        </Button>
+      </DropdownMenuTrigger>
+      <DropdownMenuContent align='end'>
+        <DropdownMenuLabel>Action</DropdownMenuLabel>
+        <Link href={PUBLIC_URL.product(row.id)} target='_blank'>
+          <DropdownMenuItem>
+            <ExternalLink className='mr-2 size-4' />
+            Product page
+          </DropdownMenuItem>
+        </Link>
+        <Link href={STORE_URL.productEdit(row.storeId, row.id)}>
+          <DropdownMenuItem>
+            <Pencil className='mr-2 size-4' />
+            Edit product
+          </DropdownMenuItem>
+        </Link>
+        <Button
+          variant='ghost'
+          className='h-8 w-full p-0 text-sm font-normal'
+          style={{ placeContent: 'start' }}
+          disabled={isLoadingCreate}
+          onClick={() =>
+            createProduct({
+              title: row.title,
+              price: Number(row.originalPrice),
+              description: row.description ?? '',
+              categoryId: row.categoryId,
+              brandId: row.brandId,
+              colorId: row.colorId ?? '',
+              storeId: row.storeId,
+              images: row.images ?? [],
+              userId: row.userId ?? '',
+            } as any)
+          }
+        >
+          <DropdownMenuItem className='place-content-start'>
+            <CopyPlus className='mr-2 size-4' />
+            Duplicate
+          </DropdownMenuItem>
+        </Button>
+
+        <Button
+          variant='ghost'
+          className='h-8 w-full p-0 text-sm font-normal'
+          style={{ placeContent: 'start' }}
+          disabled={isLoadingDelete}
+          onClick={() => deleteProduct(row.id)}
+        >
+          <DropdownMenuItem className='place-content-start'>
+            <Trash2 className='mr-2 size-4' />
+            Delete
+          </DropdownMenuItem>
+        </Button>
+      </DropdownMenuContent>
+    </DropdownMenu>
+  );
+};
+
 export const productColumns: ColumnDef<IProductColumn>[] = [
   {
     accessorKey: 'image',
@@ -173,77 +240,6 @@ export const productColumns: ColumnDef<IProductColumn>[] = [
     accessorKey: 'actions',
     meta: { className: 'w-[5%]' },
     header: 'Actions',
-    cell: ({ row }) => {
-      const { createProduct, isLoadingCreate } = useCreateProduct();
-      const { deleteProduct, isLoadingDelete } = useDeleteProduct();
-
-      return (
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button variant='ghost' className='h-8 w-8 p-0'>
-              <MoreHorizontal className='size-4' />
-            </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent align='end'>
-            <DropdownMenuLabel>Action</DropdownMenuLabel>
-            <Link href={PUBLIC_URL.product(row.original.id)} target='_blank'>
-              <DropdownMenuItem>
-                <ExternalLink className='mr-2 size-4' />
-                Product page
-              </DropdownMenuItem>
-            </Link>
-            <Link
-              href={STORE_URL.productEdit(
-                row.original.storeId,
-                row.original.id
-              )}
-            >
-              <DropdownMenuItem>
-                <Pencil className='mr-2 size-4' />
-                Edit product
-              </DropdownMenuItem>
-            </Link>
-            <Button
-              variant='ghost'
-              className='h-8 w-full p-0 text-sm font-normal'
-              style={{ placeContent: 'start' }}
-              disabled={isLoadingCreate}
-              onClick={() =>
-                createProduct({
-                  title: row.original.title,
-                  price: Number(row.original.originalPrice),
-                  // ensure required fields exist by using existing values or safe defaults
-                  description: row.original.description ?? '',
-                  categoryId: row.original.categoryId,
-                  brandId: row.original.brandId,
-                  colorId: row.original.colorId ?? '',
-                  storeId: row.original.storeId,
-                  images: row.original.images ?? [],
-                  userId: row.original.userId ?? '',
-                } as any)
-              }
-            >
-              <DropdownMenuItem className='place-content-start'>
-                <CopyPlus className='mr-2 size-4' />
-                Duplicate
-              </DropdownMenuItem>
-            </Button>
-
-            <Button
-              variant='ghost'
-              className='h-8 w-full p-0 text-sm font-normal'
-              style={{ placeContent: 'start' }}
-              disabled={isLoadingDelete}
-              onClick={() => deleteProduct(row.original.id)}
-            >
-              <DropdownMenuItem className='place-content-start'>
-                <Trash2 className='mr-2 size-4' />
-                Delete
-              </DropdownMenuItem>
-            </Button>
-          </DropdownMenuContent>
-        </DropdownMenu>
-      );
-    },
+    cell: ({ row }) => <ProductActionsCell row={row.original} />,
   },
 ];

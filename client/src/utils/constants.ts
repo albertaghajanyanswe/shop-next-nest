@@ -1,4 +1,5 @@
-export const NO_INDEX_PAGE = { rorbots: { index: false, follow: false }}
+export const NO_INDEX_PAGE = { rorbots: { index: false, follow: false } };
 
-export const SITE_NAME = "MYSTORE";
-export const SITE_DESCRIPTION = "Welcome to our inline shopping store - unique platform for buying and selling products.";
+export const SITE_NAME = 'MYSTORE';
+export const SITE_DESCRIPTION =
+  'Discover popular categories, brands, and trending products in our online store.';

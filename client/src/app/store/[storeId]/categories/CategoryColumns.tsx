@@ -7,6 +7,7 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/DropdownMenu';
 import { PUBLIC_URL, STORE_URL } from '@/config/url.config';
+import { useDeleteCategory } from '@/hooks/queries/categories/useDeleteCategory';
 import { ICategoryColumn } from '@/shared/types/category.interface';
 import { generateImgPath } from '@/utils/imageUtils';
 import { ColumnDef } from '@tanstack/react-table';
@@ -15,9 +16,61 @@ import {
   ExternalLink,
   MoreHorizontal,
   Pencil,
+  Trash2,
 } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
+
+const CategoryActionsCell = ({
+  row,
+  storeId,
+}: {
+  row: ICategoryColumn & { isCurrentUserAdmin: boolean };
+  storeId: string;
+}) => {
+  const { deleteCategory, isLoadingDelete } = useDeleteCategory();
+
+  return (
+    <DropdownMenu>
+      <DropdownMenuTrigger asChild>
+        <Button variant='ghost' className='h-8 w-8 p-0'>
+          <MoreHorizontal className='size-4' />
+        </Button>
+      </DropdownMenuTrigger>
+      <DropdownMenuContent align='end'>
+        <DropdownMenuLabel>Action</DropdownMenuLabel>
+        <Link href={PUBLIC_URL.category(row.id)} target='_blank'>
+          <DropdownMenuItem>
+            <ExternalLink className='mr-2 size-4' />
+            Category page
+          </DropdownMenuItem>
+        </Link>
+
+        {(storeId === row.storeId || row.isCurrentUserAdmin) && (
+          <Link href={STORE_URL.categoryEdit(row.storeId, row.id)}>
+            <DropdownMenuItem>
+              <Pencil className='mr-2 size-4' />
+              Edit category
+            </DropdownMenuItem>
+          </Link>
+        )}
+
+        <Button
+          variant='ghost'
+          className='h-8 w-full p-0 text-sm font-normal'
+          style={{ placeContent: 'start' }}
+          disabled={isLoadingDelete}
+          onClick={() => deleteCategory(row.id)}
+        >
+          <DropdownMenuItem className='place-content-start'>
+            <Trash2 className='mr-2 size-4' />
+            Delete
+          </DropdownMenuItem>
+        </Button>
+      </DropdownMenuContent>
+    </DropdownMenu>
+  );
+};
 
 export const categoryColumns = (
   storeId: string
@@ -92,40 +145,9 @@ export const categoryColumns = (
     {
       accessorKey: 'actions',
       header: 'Actions',
-      cell: ({ row }) => {
-        return (
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button variant='ghost' className='h-8 w-8 p-0'>
-                <MoreHorizontal className='size-4' />
-              </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent align='end'>
-              <DropdownMenuLabel>Action</DropdownMenuLabel>
-              <Link href={PUBLIC_URL.category(row.original.id)} target='_blank'>
-                <DropdownMenuItem>
-                  <ExternalLink className='mr-2 size-4' />
-                  Category page
-                </DropdownMenuItem>
-              </Link>
-              {(storeId === row.original.storeId ||
-                row.original.isCurrentUserAdmin) && (
-                <Link
-                  href={STORE_URL.categoryEdit(
-                    row.original.storeId,
-                    row.original.id
-                  )}
-                >
-                  <DropdownMenuItem>
-                    <Pencil className='mr-2 size-4' />
-                    Edit category
-                  </DropdownMenuItem>
-                </Link>
-              )}
-            </DropdownMenuContent>
-          </DropdownMenu>
-        );
-      },
+      cell: ({ row }) => (
+        <CategoryActionsCell row={row.original} storeId={storeId} />
+      ),
     },
   ];
 };

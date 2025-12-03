@@ -13,7 +13,7 @@ export const metadata: Metadata = {
 export default function Thanks() {
   return (
     <div className='ax-auto my-24 flex max-w-4xl flex-col items-center space-y-6 py-20 text-center'>
-      <h1 className='mb-0 text-4xl font-bold tracking-tight md:text-5xl'>
+      <h1 className='mb-0 text-4xl font-semibold tracking-tight md:text-5xl'>
         Thanks for your order
       </h1>
       <p className='text-muted-foreground mt-3 mb-6 text-lg'>

@@ -3,11 +3,11 @@
 import { useCallback } from 'react';
 import { useDropzone } from 'react-dropzone';
 import Image from 'next/image';
-import { X, ImagePlus } from 'lucide-react';
+import { X, ImagePlus, LoaderCircle } from 'lucide-react';
 import { cn } from '@/utils/common';
-import { useImageUpload } from './useImageUpload';
-import { useDeleteImage } from './useDeleteImage';
 import { generateImgPath } from '@/utils/imageUtils';
+import { useImageUploadCloudinary } from './useImageUploadCloudinary';
+import { useDeleteImageCloudinary } from './useDeleteImageCloudinary';
 
 interface ImageUploadProps {
   value: string[];
@@ -22,12 +22,12 @@ export function ImageUpload({
   folder,
   isDisabled,
 }: ImageUploadProps) {
-  const { handleUpload, isUploading } = useImageUpload({
+  const { handleUpload, isUploading } = useImageUploadCloudinary({
     folder,
     onChange: (newUrls) => onChange([...value, ...newUrls]),
   });
 
-  const { deleteImage, isDeleting } = useDeleteImage((url) =>
+  const { deleteImage, isDeleting } = useDeleteImageCloudinary((url) =>
     onChange(value.filter((item) => item !== url))
   );
 
@@ -52,17 +52,17 @@ export function ImageUpload({
         className={cn(
           'group cursor-pointer rounded-lg border-2 border-dashed p-4 text-center transition-colors sm:p-6',
           isDragActive
-            ? 'border-primary-700 text-primary-700 bg-blue-50'
-            : 'hover:border-primary-700 hover:text-primary-700 border-gray-300',
+            ? 'border-shop-light-green text-shop-light-green bg-primary-100'
+            : 'hover:border-shop-light-green hover:text-shop-light-green border-gray-300',
           (isUploading || isDisabled) && 'cursor-not-allowed opacity-50'
         )}
       >
         <input {...getInputProps()} />
         <div className='flex flex-col items-center justify-center space-y-2'>
-          <ImagePlus className='group-hover:text-primary-700 h-6 w-6 text-gray-500 transition-colors' />
+          <ImagePlus className='group-hover:text-shop-light-green h-6 w-6 text-neutral-600 transition-colors' />
           <p
             className={cn(
-              'group-hover:text-primary-700 text-sm text-neutral-500 transition-colors',
+              'group-hover:text-shop-light-green text-sm text-neutral-600 transition-colors',
               isDragActive && 'text-primary-700'
             )}
           >
@@ -74,9 +74,9 @@ export function ImageUpload({
       </div>
 
       {/* Preview grid */}
-      {value.length > 0 && (
-        <div className='xs:grid-cols-3 mt-4 grid grid-cols-2 gap-4 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6'>
-          {value.map((url) => (
+      <div className='xs:grid-cols-3 mt-4 grid grid-cols-2 gap-4 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6'>
+        {value &&
+          value.map((url) => (
             <div
               key={url}
               className='group relative aspect-square w-full overflow-hidden rounded-md border border-neutral-200 hover:border-neutral-400'
@@ -98,8 +98,15 @@ export function ImageUpload({
               </button>
             </div>
           ))}
-        </div>
-      )}
+        {isUploading && (
+          <div className='text-darkRed animate-scale-pulse-slow flex min-h-[128px] min-w-[128px] items-center gap-1 space-x-2 rounded-md border border-neutral-200 p-4'>
+            <LoaderCircle className='text-shop-orange animate-spin' />
+            <span className='text-shop-orange flex flex-row items-center justify-center gap-x-1 text-xs'>
+              Uploading...
+            </span>
+          </div>
+        )}
+      </div>
     </div>
   );
 }

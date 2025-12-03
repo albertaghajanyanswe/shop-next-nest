@@ -19,7 +19,7 @@ export function MainStatisticsItem({ item }: IMainStatisticsItemProps) {
         <Icon className='size-5' />
       </CardHeader>
       <CardContent className='px-4 py-2'>
-        <h2 className='text-2xl font-bold'>
+        <h2 className='text-2xl font-semibold'>
           {item.id !== 1 ? (
             <CountUp end={item.value} />
           ) : (

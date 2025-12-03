@@ -49,3 +49,4 @@ export const cartSlice = createSlice({
     },
   },
 });
+export const cartReducer = cartSlice.reducer;

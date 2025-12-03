@@ -71,7 +71,7 @@ export default function Orders() {
   return (
     <div className='my-6'>
       <div className='mb-4 flex items-center justify-between'>
-        <h1 className='text-2xl font-bold'>My orders</h1>
+        <h1 className='text-2xl font-semibold'>My orders</h1>
       </div>
       <DataTable
         columns={orderColumns}
@@ -85,13 +85,15 @@ export default function Orders() {
         onChangeSearch={changeSearch}
         onChangeSort={changeSort}
       />
-      <CustomPagination
-        limit={queryParams?.params?.limit as number}
-        total={ordersData?.totalCount as number}
-        skip={queryParams?.params?.skip as number}
-        onPageChange={changePage}
-        onLimitChange={changeLimit}
-      />
+      {!!ordersData?.totalCount && (
+        <CustomPagination
+          limit={queryParams?.params?.limit as number}
+          total={ordersData?.totalCount as number}
+          skip={queryParams?.params?.skip as number}
+          onPageChange={changePage}
+          onLimitChange={changeLimit}
+        />
+      )}
     </div>
   );
 }

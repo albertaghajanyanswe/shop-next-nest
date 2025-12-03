@@ -4,11 +4,46 @@ import { productService } from '@/services/product.service';
 import { categoryService } from '@/services/category.service';
 import { brandService } from '@/services/brandService';
 import { GetBrandDto, GetCategoryDto } from '@/generated/orval/types';
+import { SITE_NAME } from '@/utils/constants';
+import { generateMeta, POPULAR_KEYWORDS } from '@/components/meta/Meta';
 
-export const metadata: Metadata = {
-  title:
-    'Your perfect choice starts here. Explore premium products for every day.',
-};
+export async function generateMetadata(): Promise<Metadata> {
+  const products = await getProducts();
+
+  const topBrands = Array.from(
+    new Set(
+      products?.map((p) => p.brand?.name).filter((x): x is string => Boolean(x))
+    )
+  ).slice(0, 5);
+
+  const topCategories = Array.from(
+    new Set(
+      products
+        ?.map((p) => p.category?.name)
+        .filter((x): x is string => Boolean(x))
+    )
+  ).slice(0, 5);
+  const categoryList = topCategories.join(', ');
+
+  const description = `Explore all products at ${SITE_NAME} — ${categoryList} and more from top brands. Shop the latest deals today.`;
+  const meta = generateMeta({
+    title: `${SITE_NAME} | Explore popular products, categories & brands`,
+    description,
+    image: '/images/myStore_logo.svg',
+    isPublic: true,
+    keywords: [
+      ...POPULAR_KEYWORDS,
+      ...topCategories,
+      ...topBrands,
+    ],
+    author: SITE_NAME,
+    ogType: 'website',
+    url: process.env.NEXT_PUBLIC_APP_URL,
+  });
+
+  console.log('META = ', meta);
+  return meta;
+}
 
 export const revalidate = 60;
 
@@ -26,13 +61,17 @@ async function getCategories() {
 }
 
 async function getBrands() {
-  const brands = ((await brandService.getAll({ limit: 9, skip: 0 })) || []).brands;
+  const brands = ((await brandService.getAll({ limit: 9, skip: 0 })) || [])
+    .brands;
   return brands as GetBrandDto[];
 }
 export default async function HomePage() {
   const products = await getProducts();
-  console.log('products ', products.length);
   const categories = await getCategories();
   const brands = await getBrands();
-  return <Home products={products} categories={categories} brands={brands} />;
+  return (
+    <>
+      <Home products={products} categories={categories} brands={brands} />;
+    </>
+  );
 }

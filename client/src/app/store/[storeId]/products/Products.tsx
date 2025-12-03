@@ -33,7 +33,8 @@ export function Products() {
       },
     });
 
-  const { productsData, isLoadingProductsData } = useGetStoreProducts(queryParams);
+  const { productsData, isLoadingProductsData } =
+    useGetStoreProducts(queryParams);
 
   const formattedProducts = productsData?.products
     ? productsData?.products?.map((product) => ({
@@ -86,13 +87,15 @@ export function Products() {
           onChangeSearch={changeSearch}
           onChangeSort={changeSort}
         />
-        <CustomPagination
-          limit={queryParams?.params?.limit as number}
-          total={productsData?.totalCount as number}
-          skip={queryParams?.params?.skip as number}
-          onPageChange={changePage}
-          onLimitChange={changeLimit}
-        />
+        {!!productsData?.totalCount && (
+          <CustomPagination
+            limit={queryParams?.params?.limit as number}
+            total={productsData?.totalCount as number}
+            skip={queryParams?.params?.skip as number}
+            onPageChange={changePage}
+            onLimitChange={changeLimit}
+          />
+        )}
       </div>
     </div>
   );

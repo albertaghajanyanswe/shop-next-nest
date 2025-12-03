@@ -27,6 +27,8 @@ export const useQueryParams = ({
       arrayLimit: Infinity,
     });
 
+    console.log('PARSED = ', parsed)
+
     return {
       params: {
         sort: (parsed.sort as unknown as iSort) ??
@@ -62,7 +64,7 @@ export const useQueryParams = ({
       const query = qs.stringify(newQuery, { skipNulls: true });
       router.push(`${newRoute}?${query}`);
     },
-    [router, pathname]
+    [router]
   );
 
   // полностью заменить params
@@ -77,7 +79,7 @@ export const useQueryParams = ({
     (newParams: iFilterParams, newRoute: string) => {
       pushRoutePath(newParams.params, newRoute);
     },
-    [replaceRoutePath]
+    [pushRoutePath]
   );
   // изменить только filter
   const changeFilterObject = useCallback(

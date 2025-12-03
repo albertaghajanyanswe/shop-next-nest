@@ -85,8 +85,8 @@ function CartActions({ orderItem }: CartActionsProps) {
 
       <Separator orientation='horizontal' className='my-1' />
       <div className='flex items-center justify-between'>
-        <p className='text-xs font-bold'>Subtotal</p>
-        <p className='mr-2 text-xs font-bold'>
+        <p className='text-xs font-semibold'>Subtotal</p>
+        <p className='mr-2 text-xs font-semibold'>
           {formatPrice(orderItem.price * orderItem.quantity)}
         </p>
       </div>
