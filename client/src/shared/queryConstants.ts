@@ -1,6 +1,7 @@
 export const QUERY_KEYS = {
   auth: ['auth user'],
   profile: ['profile'],
+  getAllStores: ['get-all-stores'],
   createStore: ['create-store'],
   updateStore: ['update-store'],
   deleteStore: ['delete-store'],

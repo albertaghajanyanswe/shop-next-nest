@@ -19,6 +19,8 @@ export interface GetCategoryDto {
   description?: string;
   /** Category images */
   images: string[];
+  /** Category rating value */
+  rating?: number;
   /** Store ID */
   storeId?: string;
   /** User ID */

@@ -8,7 +8,14 @@ import { Search } from 'lucide-react';
 import { usePathname } from 'next/navigation';
 import { useState } from 'react';
 
-export function SearchInput() {
+interface SearchInputProps {
+  placeholder?: string;
+  redirectToShop?: boolean;
+}
+export function SearchInput({
+  placeholder = 'Search products...',
+  redirectToShop = true,
+}: SearchInputProps) {
   const pathname = usePathname();
   const { queryParams, setFilteredParams, setFilteredParamsWithPush } =
     useQueryParams({});
@@ -28,7 +35,7 @@ export function SearchInput() {
         skip: 0,
       },
     };
-    if (pathname === PUBLIC_URL.shop()) {
+    if (pathname === PUBLIC_URL.shop() || !redirectToShop) {
       setFilteredParams(newFilter);
       return;
     }
@@ -37,7 +44,7 @@ export function SearchInput() {
   return (
     <div className='relative flex w-full items-center'>
       <Input
-        placeholder='Search products...'
+        placeholder={placeholder}
         value={searchTerm}
         onChange={(e) => setSearchTerm(e.target.value)}
         className='rounded-lg rounded-r-none pr-8 focus-visible:ring-transparent'

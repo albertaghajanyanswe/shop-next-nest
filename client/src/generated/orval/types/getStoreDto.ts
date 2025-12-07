@@ -19,8 +19,16 @@ export interface GetStoreDto {
   description?: string;
   /** Owner user ID */
   userId?: string;
-  /** Store image */
-  image?: string;
+  /** Store images */
+  images: string[];
+  /** Store country */
+  country?: string;
+  /** Store city */
+  city?: string;
+  /** Store address */
+  address?: string;
+  /** Store phone */
+  phone?: string;
   /** Is default store */
   isDefaultStore: boolean;
   /** Is published */

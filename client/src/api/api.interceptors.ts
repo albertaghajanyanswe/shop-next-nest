@@ -14,11 +14,15 @@ import { authService } from '@/services/auth/auth.service';
 import { EnvVariables } from '@/shared/envVariables';
 
 const API_BASE =
-  process.env.NODE_ENV === 'production'
+  process.env.NODE_ENV === 'production' ||
+  process.env.NODE_ENV === 'development'
     ? typeof window === 'undefined'
       ? process.env.NEXT_PUBLIC_SERVER_SERVICE
       : process.env.NEXT_PUBLIC_CLIENT_URL
-    : process.env.NEXT_PUBLIC_SERVER_URL;
+    : process.env.NEXT_PUBLIC_SERVER_SERVICE;
+
+console.log('APP_ENV = ', process.env.APP_ENV);
+console.log('API_BASE = ', process.env.API_BASE);
 
 const options: CreateAxiosDefaults = {
   baseURL: `${API_BASE}/api`,

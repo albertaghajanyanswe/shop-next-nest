@@ -36,13 +36,49 @@ export class GetUserDto {
   name: string;
 
   @ApiProperty({
-    example: 'https://avatar.com/img.png',
+    example: 'https://res.cloudinary.com/dvuo50sjj/image/upload/w_500,q_auto,f_auto/v1764687769/products/mfhyojzhx8drdd6zlzwf.webp',
     description: 'Profile picture URL',
     required: false,
   })
   @IsOptional()
   @IsString()
   picture?: string;
+
+  @ApiProperty({
+    example: 'Store country',
+    description: 'Store country',
+    required: false,
+  })
+  @IsOptional()
+  @IsString()
+  country?: string;
+
+  @ApiProperty({
+    example: 'Store city',
+    description: 'Store city',
+    required: false,
+  })
+  @IsOptional()
+  @IsString()
+  city?: string;
+
+  @ApiProperty({
+    example: 'Store address',
+    description: 'Store address',
+    required: false,
+  })
+  @IsOptional()
+  @IsString()
+  address?: string;
+
+  @ApiProperty({
+    example: 'Store phone',
+    description: 'Store phone',
+    required: false,
+  })
+  @IsOptional()
+  @IsString()
+  phone?: string;
 
   @ApiProperty({ example: 'johndoe', description: 'Username', required: false })
   @IsOptional()

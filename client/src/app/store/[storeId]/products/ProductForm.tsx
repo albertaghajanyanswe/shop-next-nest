@@ -1,5 +1,7 @@
+import { CustomComboBox } from '@/components/customComponents/CustomCombobox';
 import { ConfirmModal } from '@/components/modals/ConfirmModal';
 import { Button } from '@/components/ui/Button';
+import { Combobox } from '@/components/ui/Combobox';
 import {
   Form,
   FormControl,
@@ -31,6 +33,7 @@ import { useDeleteProduct } from '@/hooks/queries/products/useDeleteProduct';
 import { useUpdateProduct } from '@/hooks/queries/products/useUpdateProduct';
 import { IProductInput } from '@/shared/types/product.interface';
 import { Trash2 } from 'lucide-react';
+import { useMemo } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 
 interface ProductFormProps {
@@ -90,6 +93,14 @@ export function ProductForm({
       createProduct(data);
     }
   };
+
+  const categoriesList = useMemo(() => {
+    return categories.map((i) => ({ label: i.name, value: i.id }));
+  }, [categories]);
+
+  const brandsList = useMemo(() => {
+    return brands.map((i) => ({ label: i.name, value: i.id }));
+  }, [brands]);
   return (
     <div className='p-6'>
       <div className='mb-8 flex items-center justify-between'>
@@ -152,7 +163,7 @@ export function ProductForm({
               );
             }}
           />
-          <div className='mt-4 grid items-start gap-4 sm:grid-cols-2'>
+          <div className='grid items-start gap-4 sm:grid-cols-2'>
             <FormField
               control={form.control}
               name='title'
@@ -191,11 +202,11 @@ export function ProductForm({
               )}
             />
           </div>
-          <div className='mt-4 grid items-start gap-4 sm:grid-cols-3'>
-            <FormField
+          <div className='grid items-start gap-4 sm:grid-cols-3'>
+            {/* <FormField
               control={form.control}
               name='colorId'
-              rules={{ required: 'Color is required' }}
+              // rules={{ required: 'Color is required' }}
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Color</FormLabel>
@@ -221,8 +232,31 @@ export function ProductForm({
                   <FormMessage />
                 </FormItem>
               )}
-            />
+            /> */}
+
             <FormField
+              control={form.control}
+              name='colorId'
+              rules={{ required: 'Color is required' }}
+              render={({ field, fieldState }) => (
+                <FormItem>
+                  <FormLabel>Color</FormLabel>
+                  <FormControl>
+                    <CustomComboBox
+                      options={colors}
+                      value={field.value}
+                      onChange={field.onChange}
+                      placeholder='Select a color'
+                      disabled={isLoading}
+                      error={fieldState?.error?.message}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
+            {/* <FormField
               control={form.control}
               name='categoryId'
               rules={{ required: 'Category is required' }}
@@ -250,8 +284,31 @@ export function ProductForm({
                   <FormMessage />
                 </FormItem>
               )}
-            />
+            /> */}
+
             <FormField
+              control={form.control}
+              name='categoryId'
+              rules={{ required: 'Category is required' }}
+              render={({ field, fieldState }) => (
+                <FormItem>
+                  <FormLabel>Category</FormLabel>
+                  <FormControl>
+                    <CustomComboBox
+                      options={categories}
+                      value={field.value}
+                      onChange={field.onChange}
+                      placeholder='Select a category'
+                      disabled={isLoading}
+                      error={fieldState?.error?.message}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
+            {/* <FormField
               control={form.control}
               name='brandId'
               rules={{ required: 'Brand is required' }}
@@ -276,6 +333,27 @@ export function ProductForm({
                       ))}
                     </SelectContent>
                   </Select>
+                  <FormMessage />
+                </FormItem>
+              )}
+            /> */}
+            <FormField
+              control={form.control}
+              name='brandId'
+              rules={{ required: 'Brand is required' }}
+              render={({ field, fieldState }) => (
+                <FormItem>
+                  <FormLabel>Brand</FormLabel>
+                  <FormControl>
+                    <CustomComboBox
+                      options={brands}
+                      value={field.value}
+                      onChange={field.onChange}
+                      placeholder='Select a brand'
+                      disabled={isLoading}
+                      error={fieldState?.error?.message}
+                    />
+                  </FormControl>
                   <FormMessage />
                 </FormItem>
               )}

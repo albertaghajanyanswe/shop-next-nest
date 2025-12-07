@@ -13,7 +13,6 @@ interface IOverviewProps {
   data: IMonthlySales[];
 }
 
-// TODO
 const chartConfig = {
   value: {
     label: 'Profit',

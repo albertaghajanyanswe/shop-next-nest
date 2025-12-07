@@ -3,19 +3,21 @@ import { PrismaService } from 'src/prisma.service';
 import { CategoryDto } from './dto/category.dto';
 import { EnumRole, User } from '@prisma/client';
 import { QueryPayloadBuilderService } from 'src/queryPayloadBuilder/QueryPayloadBuilder';
+import { CloudinaryFileService } from 'src/cloudinary-file/cloudinary-file.service';
 
 @Injectable()
 export class CategoryService {
   constructor(
     private prisma: PrismaService,
     private readonly queryBuilderService: QueryPayloadBuilderService,
+    private readonly cloudinaryFileService: CloudinaryFileService,
   ) {}
 
   async getAll(params?: string) {
     const payload = this.queryBuilderService.build({
       queryParams: params ?? '',
     });
-    console.log('PAYLOAD = ', payload)
+    console.log('PAYLOAD = ', payload);
     const categories = await this.prisma.category.findMany({
       orderBy: {
         createdAt: 'desc',
@@ -69,7 +71,10 @@ export class CategoryService {
   }
 
   async delete(user: User, id: string) {
-    await this.getById(id);
+    const cat = await this.getById(id);
+
+    await this.cloudinaryFileService.deleteManyFiles(cat.images);
+
     return this.prisma.category.delete({
       where: {
         id,

@@ -20,7 +20,7 @@ export function generateMeta(props: MetaProps): Metadata {
     title,
     description,
     image = '/images/myStore_logo.svg',
-    url = process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000',
+    url = process.env.NEXT_PUBLIC_CLIENT_URL || 'http://localhost:3000',
     isPublic = true,
     keywords = [],
     author = '',
@@ -29,7 +29,7 @@ export function generateMeta(props: MetaProps): Metadata {
 
   const fullUrl = url.startsWith('http')
     ? url
-    : `${process.env.NEXT_PUBLIC_APP_URL}${url}`;
+    : `${process.env.NEXT_PUBLIC_CLIENT_URL}${url}`;
 
   const metadata: Metadata = {
     title,

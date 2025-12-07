@@ -5,8 +5,8 @@ const isDev = process.env.APP_ENV === 'development';
 
 const nextConfig: NextConfig = {
   env: {
-    APP_ENV: process.env.APP_ENV,
     APP_DOMAIN: process.env.APP_DOMAIN,
+    NEXT_PUBLIC_APP_ENV: process.env.NEXT_PUBLIC_APP_ENV,
     NEXT_PUBLIC_CLIENT_URL: process.env.NEXT_PUBLIC_CLIENT_URL,
     NEXT_PUBLIC_SERVER_URL: process.env.NEXT_PUBLIC_SERVER_URL,
     NEXT_PUBLIC_SERVER_SERVICE: process.env.NEXT_PUBLIC_SERVER_SERVICE,
@@ -53,9 +53,9 @@ const nextConfig: NextConfig = {
   },
   async rewrites() {
     // return []
-    if (isProd || isDev) {
-      return [];
-    }
+    // if (isProd || isDev) {
+    //   return [];
+    // }
     return [
       {
         source: '/server-uploads/:path*',

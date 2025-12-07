@@ -3,12 +3,14 @@ import { PrismaService } from 'src/prisma.service';
 import { BrandDto } from './dto/brand.dto';
 import { EnumRole, User } from '@prisma/client';
 import { QueryPayloadBuilderService } from 'src/queryPayloadBuilder/QueryPayloadBuilder';
+import { CloudinaryFileService } from 'src/cloudinary-file/cloudinary-file.service';
 
 @Injectable()
 export class BrandService {
   constructor(
     private prisma: PrismaService,
     private readonly queryBuilderService: QueryPayloadBuilderService,
+    private readonly cloudinaryFileService: CloudinaryFileService,
   ) {}
 
   async getAll(params?: string) {
@@ -21,7 +23,7 @@ export class BrandService {
       },
       ...payload,
     });
-    console.log('brands  ', brands)
+    console.log('brands  ', brands);
     const totalCount = await this.prisma.brand.count({
       where: payload.where,
     });
@@ -69,7 +71,9 @@ export class BrandService {
   }
 
   async delete(user: User, id: string) {
-    await this.getById(id);
+    const brand = await this.getById(id);
+    await this.cloudinaryFileService.deleteManyFiles(brand.images);
+
     return this.prisma.brand.delete({
       where: {
         id,

@@ -66,8 +66,15 @@ export function ProductCard({ product }: ProductCardProps) {
                       // height={300}
                       fill
                       priority
-                      placeholder='blur'
-                      blurDataURL={generateImgPath(image, productImgBlurParams)}
+                      {...(image
+                        ? {
+                            placeholder: 'blur',
+                            blurDataURL: generateImgPath(
+                              image,
+                              productImgBlurParams
+                            ),
+                          }
+                        : {})}
                       sizes='(max-width: 768px) 100vw, 400px'
                     />
                   </div>

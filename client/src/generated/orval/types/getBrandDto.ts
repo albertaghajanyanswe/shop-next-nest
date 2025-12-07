@@ -19,6 +19,8 @@ export interface GetBrandDto {
   description?: string;
   /** Category images */
   images: string[];
+  /** Brand rating value */
+  rating?: number;
   /** Store ID */
   storeId?: string;
   /** User ID */

@@ -13,6 +13,7 @@ import {
 } from './config';
 
 async function getCategories() {
+  // TODO
   const categories = (
     (await categoryService.getAll({ limit: 7, skip: 0 })) || []
   )?.categories;

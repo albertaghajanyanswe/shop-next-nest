@@ -11,6 +11,7 @@ import {
   FormLabel,
   FormMessage,
 } from '@/components/ui/formElements/Form';
+import { ImageUpload } from '@/components/ui/formElements/image-upload/ImageUpload';
 import { Input } from '@/components/ui/formElements/Input';
 import { Heading } from '@/components/ui/Heading';
 import { Textarea } from '@/components/ui/Textarea';
@@ -32,6 +33,11 @@ export function Settings() {
     values: {
       title: store?.title || '',
       description: store?.description || '',
+      images: store?.images || [],
+      country: store?.country || '',
+      city: store?.city || '',
+      address: store?.address || '',
+      phone: store?.phone || '',
     },
   });
   console.log('form ', form.formState.dirtyFields);
@@ -66,6 +72,27 @@ export function Settings() {
           onSubmit={form.handleSubmit(onSubmit)}
           className='h-full space-y-6'
         >
+          <FormField
+            control={form.control}
+            name='images'
+            rules={{ required: 'Upload at least one image' }}
+            render={({ field }) => {
+              console.log('FIELD = ', field);
+              return (
+                <FormItem className='mt-4'>
+                  <FormLabel>Images</FormLabel>
+                  <FormControl>
+                    <ImageUpload
+                      isDisabled={isLoadingUpdate}
+                      onChange={field.onChange}
+                      value={field.value}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              );
+            }}
+          />
           <div className='mt-4 grid gap-4 sm:grid-cols-2 lg:grid-cols-3'>
             <FormField
               control={form.control}
@@ -73,7 +100,7 @@ export function Settings() {
               rules={{ required: 'Store name is required' }}
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Store name</FormLabel>
+                  <FormLabel>Name</FormLabel>
                   <FormControl>
                     <Input
                       placeholder='Store name'
@@ -87,6 +114,78 @@ export function Settings() {
             />
           </div>
 
+          <div className='mt-4 grid gap-4 sm:grid-cols-2 lg:grid-cols-3'>
+            <FormField
+              control={form.control}
+              name='country'
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Country</FormLabel>
+                  <FormControl>
+                    <Input
+                      placeholder='Store country'
+                      disabled={isLoadingUpdate}
+                      {...field}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name='city'
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>City</FormLabel>
+                  <FormControl>
+                    <Input
+                      placeholder='Store city'
+                      disabled={isLoadingUpdate}
+                      {...field}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+          </div>
+          <div className='mt-4 grid gap-4 sm:grid-cols-2 lg:grid-cols-3'>
+            <FormField
+              control={form.control}
+              name='address'
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Address</FormLabel>
+                  <FormControl>
+                    <Input
+                      placeholder='Store address'
+                      disabled={isLoadingUpdate}
+                      {...field}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name='phone'
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Phone number</FormLabel>
+                  <FormControl>
+                    <Input
+                      placeholder='Store phone'
+                      disabled={isLoadingUpdate}
+                      {...field}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+          </div>
           <FormField
             control={form.control}
             name='description'

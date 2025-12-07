@@ -11,6 +11,16 @@ export interface StoreDto {
   title: string;
   /** Store description */
   description: string;
+  /** Store images URLs */
+  images: string[];
+  /** Store country */
+  country: string;
+  /** Store city */
+  city: string;
+  /** Store address */
+  address: string;
+  /** Store phone number */
+  phone: string;
   /** Mark is this default store, each user can have one default store */
   isDefaultStore?: boolean;
 }

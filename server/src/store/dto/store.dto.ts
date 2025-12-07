@@ -1,5 +1,12 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsBoolean, IsOptional, IsString } from 'class-validator';
+import {
+  ArrayMinSize,
+  IsArray,
+  IsBoolean,
+  IsNotEmpty,
+  IsOptional,
+  IsString,
+} from 'class-validator';
 
 export class StoreDto {
   @ApiProperty({
@@ -13,13 +20,49 @@ export class StoreDto {
   title: string;
 
   @ApiProperty({
-    required: true,
     example: 'Vesta electronics store',
     description: 'Store description',
   })
   @IsString()
   @IsOptional()
   description?: string;
+
+  @ApiProperty({ type: [String], description: 'Store images URLs' })
+  @IsArray()
+  @IsString({ each: true })
+  images: string[];
+
+  @ApiProperty({
+    example: 'Armenia',
+    description: 'Store country',
+  })
+  @IsString()
+  @IsOptional()
+  country?: string;
+
+  @ApiProperty({
+    example: 'Erevan',
+    description: 'Store city',
+  })
+  @IsString()
+  @IsOptional()
+  city?: string;
+
+  @ApiProperty({
+    example: 'Shinararneri 7/23',
+    description: 'Store address',
+  })
+  @IsString()
+  @IsOptional()
+  address?: string;
+
+  @ApiProperty({
+    example: '+37495898795',
+    description: 'Store phone number',
+  })
+  @IsString()
+  @IsOptional()
+  phone?: string;
 
   @ApiProperty({
     required: false,
@@ -67,13 +110,53 @@ export class GetStoreDto {
   userId?: string;
 
   @ApiProperty({
-    example: 'https://image.com/store.png',
-    description: 'Store image',
+    required: true,
+    description: 'Store images',
+    example: [
+      'https://res.cloudinary.com/dvuo50sjj/image/upload/w_500,q_auto,f_auto/v1764687769/products/mfhyojzhx8drdd6zlzwf.webp',
+    ],
+  })
+  @IsOptional()
+  @IsString({
+    each: true,
+  })
+  images?: string[];
+
+  @ApiProperty({
+    example: 'Store country',
+    description: 'Store country',
     required: false,
   })
   @IsOptional()
   @IsString()
-  image?: string;
+  country?: string;
+
+  @ApiProperty({
+    example: 'Store city',
+    description: 'Store city',
+    required: false,
+  })
+  @IsOptional()
+  @IsString()
+  city?: string;
+
+  @ApiProperty({
+    example: 'Store address',
+    description: 'Store address',
+    required: false,
+  })
+  @IsOptional()
+  @IsString()
+  address?: string;
+
+  @ApiProperty({
+    example: 'Store phone',
+    description: 'Store phone',
+    required: false,
+  })
+  @IsOptional()
+  @IsString()
+  phone?: string;
 
   @ApiProperty({ example: true, description: 'Is default store' })
   @IsBoolean()

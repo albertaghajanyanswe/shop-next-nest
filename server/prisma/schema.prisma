@@ -19,6 +19,10 @@ model User {
 
   name    String  @default("Not Provided")
   picture String?
+  country    String?
+  city       String?
+  address    String?
+  phone      String?
 
   username String? @unique
 
@@ -47,6 +51,11 @@ model Store {
 
   title       String
   description String?
+  images      String[]
+  country    String?
+  city       String?
+  address    String?
+  phone      String?
 
   user   User?   @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId String? @map("user_id")
@@ -57,7 +66,7 @@ model Store {
   reviews    Review[]
   orderItems OrderItem[]
   brands     Brand[]
-  image      String?
+
 
   isDefaultStore Boolean @default(false)
   isPublished    Boolean @default(true)
@@ -113,10 +122,10 @@ model Category {
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
 
-  name       String @unique
+  name        String @unique
   description String?
   images      String[]
-
+  rating      Float?
   products Product[]
 
   store   Store?  @relation(fields: [storeId], references: [id])
@@ -136,6 +145,7 @@ model Brand {
   name String @unique
   description String?
   images      String[]
+  rating      Float?
 
   store   Store?  @relation(fields: [storeId], references: [id])
   storeId String? @map("store_id")

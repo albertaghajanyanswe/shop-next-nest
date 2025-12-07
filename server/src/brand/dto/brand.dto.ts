@@ -2,6 +2,7 @@ import { ApiProperty } from '@nestjs/swagger';
 import {
   ArrayMinSize,
   IsNotEmpty,
+  IsNumber,
   IsOptional,
   IsString,
 } from 'class-validator';
@@ -81,6 +82,15 @@ export class GetBrandDto {
     message: 'Brand image urls cannot be empty',
   })
   images: string[];
+
+  @ApiProperty({
+    required: false,
+    example: 5,
+    description: 'Brand rating value',
+  })
+  @IsNumber({}, { message: 'Rating should be number' })
+  @IsOptional()
+  rating: number;
 
   @ApiProperty({
     example: 'storeId123',

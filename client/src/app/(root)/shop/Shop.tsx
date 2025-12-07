@@ -17,7 +17,7 @@ import Filters from '@/components/customComponents/filters/Filters';
 import LoadingProducts from '@/components/customComponents/loading/LoadingProducts';
 
 interface ShopProps {
-  products?: GetProductWithDetails[];
+  initialProducts?: GetProductWithDetails[];
   stores?: GetStoreDto[];
   categories?: GetCategoryDto[];
   brands?: GetBrandDto[];
@@ -25,7 +25,7 @@ interface ShopProps {
 }
 
 export default function Shop({
-  products,
+  initialProducts,
   totalCount = 0,
   stores,
   categories,
@@ -47,7 +47,6 @@ export default function Shop({
   });
 
   console.log('queryParams = ', queryParams);
-  const initialProducts = products?.slice(0, queryParams.params.limit ?? 10);
 
   const {
     data: productData,
@@ -59,7 +58,7 @@ export default function Shop({
       JSON.stringify(queryParams.params),
     ],
     queryFn: () => productService.getAll(queryParams.params),
-    // initialData: { products: initialProducts, totalCount },
+    initialData: { products: initialProducts, totalCount },
     // keepPreviousData: true,
   });
 
@@ -69,9 +68,9 @@ export default function Shop({
     <>
       <div className='grid grid-cols-1 gap-6 py-6 md:grid-cols-[250px_1fr]'>
         <Filters categories={categories} brands={brands} stores={stores} />
-        <div className='relative'>
+        <div className='relative w-full'>
           {loading ? (
-            <LoadingProducts />
+            <LoadingProducts entityName='Products' />
           ) : (
             <>
               <Catalog

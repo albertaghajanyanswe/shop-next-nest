@@ -72,6 +72,11 @@ export class StoreService {
       data: {
         title: dto.title,
         description: dto.description,
+        images: dto.images,
+        country: dto.country,
+        city: dto.city,
+        address: dto.address,
+        phone: dto.phone,
         // isPublished: dto.isPublished,
         // isBlocked: dto.isBlocked,
       },

@@ -19,6 +19,8 @@ import { BillingInfoModule } from './billing-info/billing-info.module';
 import { SeedService } from './seeder/SeedService';
 import { PrismaService } from './prisma.service';
 import { QueryPayloadBuilderService } from './queryPayloadBuilder/QueryPayloadBuilder';
+import { CloudinaryFileModule } from './cloudinary-file/cloudinary-file.module';
+import { CloudinaryProvider } from './cloudinary-file/cloudinary-file.provider';
 @Module({
   imports: [
     ConfigModule.forRoot(),
@@ -38,8 +40,9 @@ import { QueryPayloadBuilderService } from './queryPayloadBuilder/QueryPayloadBu
     StripeModule,
     PaymentModule,
     BillingInfoModule,
+    CloudinaryFileModule,
   ],
   controllers: [],
-  providers: [PrismaService, SeedService, QueryPayloadBuilderService],
+  providers: [PrismaService, SeedService, CloudinaryProvider, QueryPayloadBuilderService],
 })
 export class AppModule {}

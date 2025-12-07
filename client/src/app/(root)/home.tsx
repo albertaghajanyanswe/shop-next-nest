@@ -26,6 +26,7 @@ export default function Home({ products, categories, brands }: HomeProps) {
             linkTitle='View all'
             linkClb={PUBLIC_URL.shop}
             data={categories}
+            filterKey='categoryId'
           />
         </div>
       )}
@@ -47,6 +48,7 @@ export default function Home({ products, categories, brands }: HomeProps) {
             linkTitle='View all'
             linkClb={PUBLIC_URL.shop}
             data={brands}
+            filterKey='brandId'
           />
         </div>
       )}

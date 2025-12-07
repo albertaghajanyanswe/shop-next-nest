@@ -18,7 +18,7 @@ export const metadata: Metadata = {
   },
   description: SITE_DESCRIPTION,
   alternates: {
-    canonical: `${process.env.NEXT_PUBLIC_APP_URL}`, // <-- canonical URL
+    canonical: `${process.env.NEXT_PUBLIC_CLIENT_URL}`, // <-- canonical URL
   },
 };
 

@@ -27,6 +27,14 @@ export interface GetUserDto {
   name: string;
   /** Profile picture URL */
   picture?: string;
+  /** Store country */
+  country?: string;
+  /** Store city */
+  city?: string;
+  /** Store address */
+  address?: string;
+  /** Store phone */
+  phone?: string;
   /** Username */
   username?: string;
   /** Stores created by user */

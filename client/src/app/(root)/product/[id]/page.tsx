@@ -11,9 +11,6 @@ export const revalidate = 60;
 
 export async function generateStaticParams() {
   // TODO
-  // if (process.env.NODE_ENV === 'production') {
-  //   return [];
-  // }
   const productsData = await productService.getAll();
   const res = productsData?.products
     ? productsData?.products?.map((product) => ({ id: product.id }))
@@ -53,7 +50,7 @@ export async function generateMetadata({
     keywords: [...POPULAR_KEYWORDS, brand, category],
     author: SITE_NAME,
     ogType: 'website',
-    url: `${process.env.NEXT_PUBLIC_APP_URL}/shop`,
+    url: `${process.env.NEXT_PUBLIC_CLIENT_URL}/shop`,
   });
   return meta;
 }

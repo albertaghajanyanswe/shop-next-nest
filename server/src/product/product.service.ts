@@ -2,12 +2,14 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { PrismaService } from 'src/prisma.service';
 import { ProductDto } from './dto/product.dto';
 import { QueryPayloadBuilderService } from 'src/queryPayloadBuilder/QueryPayloadBuilder';
+import { CloudinaryFileService } from 'src/cloudinary-file/cloudinary-file.service';
 
 @Injectable()
 export class ProductService {
   constructor(
     private readonly prisma: PrismaService,
     private readonly queryBuilderService: QueryPayloadBuilderService,
+    private readonly cloudinaryFileService: CloudinaryFileService,
   ) {}
 
   async getAll(params?: string) {
@@ -160,7 +162,7 @@ export class ProductService {
     const payload = this.queryBuilderService.build({
       queryParams: params || '',
     });
-    const { where, ...rest} = payload;
+    const { where, ...rest } = payload;
     const similarProducts = await this.prisma.product.findMany({
       where: {
         category: {
@@ -176,7 +178,7 @@ export class ProductService {
       include: {
         category: true,
       },
-      ...rest
+      ...rest,
     });
 
     return similarProducts;
@@ -218,7 +220,9 @@ export class ProductService {
   }
 
   async delete(id: string) {
-    await this.getByIdHelper(id);
+    const product = await this.getByIdHelper(id);
+    await this.cloudinaryFileService.deleteManyFiles(product.images);
+
     return this.prisma.product.delete({
       where: { id },
     });

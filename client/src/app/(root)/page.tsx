@@ -34,7 +34,7 @@ export async function generateMetadata(): Promise<Metadata> {
     keywords: [...POPULAR_KEYWORDS, ...topCategories, ...topBrands],
     author: SITE_NAME,
     ogType: 'website',
-    url: process.env.NEXT_PUBLIC_APP_URL,
+    url: process.env.NEXT_PUBLIC_CLIENT_URL,
   });
 
   console.log('META = ', meta);
@@ -44,21 +44,41 @@ export async function generateMetadata(): Promise<Metadata> {
 export const revalidate = 60;
 
 async function getProducts() {
+  // TODO
+  // const isDevOrProd =
+  //   process.env.NODE_ENV === 'production' ||
+  //   process.env.NODE_ENV === 'development';
+  // if (isDevOrProd) {
+  //   return [];
+  // }
+
   const products =
     (await productService.getMostPopular({ limit: 8, skip: 0 })) || [];
   return products;
 }
 
 async function getCategories() {
+  // TODO
   const categories = (
-    (await categoryService.getAll({ limit: 9, skip: 0 })) || []
+    (await categoryService.getAll({
+      limit: 9,
+      skip: 0,
+      sort: { field: 'rating', order: 'desc' },
+    })) || []
   )?.categories;
   return categories as GetCategoryDto[];
 }
 
 async function getBrands() {
-  const brands = ((await brandService.getAll({ limit: 9, skip: 0 })) || [])
-    .brands;
+  // TODO
+
+  const brands = (
+    (await brandService.getAll({
+      limit: 9,
+      skip: 0,
+      sort: { field: 'rating', order: 'desc' },
+    })) || []
+  ).brands;
   return brands as GetBrandDto[];
 }
 export default async function HomePage() {

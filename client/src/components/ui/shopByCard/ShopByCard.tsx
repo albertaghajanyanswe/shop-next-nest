@@ -9,6 +9,7 @@ import {
 } from '@/utils/imageUtils';
 import { PUBLIC_URL } from '@/config/url.config';
 import QueryString from 'qs';
+import { hashStringToColors } from '@/utils/common';
 
 export interface IShopByCard<TData> {
   title: string;
@@ -16,6 +17,7 @@ export interface IShopByCard<TData> {
   linkTitle?: string;
   linkClb: (id?: string) => string;
   data: GetCategoryDto[] | GetBrandDto[];
+  filterKey: string;
 }
 
 const ShopByCardComponent = <TData,>({
@@ -24,6 +26,7 @@ const ShopByCardComponent = <TData,>({
   linkTitle,
   linkClb,
   data,
+  filterKey,
 }: IShopByCard<TData>) => {
   return (
     <div className='m-auto'>
@@ -54,28 +57,46 @@ const ShopByCardComponent = <TData,>({
                 key={item.id}
                 href={linkClb(
                   QueryString.stringify(
-                    { filter: { categoryId: [item.id] } },
+                    { filter: { [filterKey]: [item.id] } },
                     { skipNulls: true }
                   )
                 )}
-                className='group shadow-darkRed/20 hoverEffect flex h-24 flex-col items-center justify-center overflow-hidden rounded-md bg-white p-2 text-center hover:shadow-lg'
+                className='group hoverEffect hover:bg-shop-light-bg flex h-30 flex-col items-center justify-center overflow-hidden rounded-md bg-white p-2 text-center'
               >
-                <div className='relative h-20 w-20'>
-                  <Image
-                    src={generateImgPath(item.images[0], categoryImgParams)}
-                    alt={item.name}
-                    className='hoverEffect h-18 max-h-18 min-h-18 w-18 max-w-18 min-w-18 object-contain will-change-transform group-hover:scale-110'
-                    width={72}
-                    height={72}
-                    priority
-                    placeholder='blur'
-                    blurDataURL={generateImgPath(
-                      item.images[0],
-                      categoryImgBlurParams
-                    )}
-                  />
-                </div>
-                <p className='text-shop-dark-color text-xs font-semibold'>
+                {item.images[0] ? (
+                  <div className='relative h-20 w-20'>
+                    <Image
+                      src={generateImgPath(item.images[0], categoryImgParams)}
+                      alt={item.name}
+                      className='hoverEffect h-18 max-h-18 min-h-18 w-18 max-w-18 min-w-18 object-contain will-change-transform group-hover:scale-110'
+                      width={72}
+                      height={72}
+                      priority
+                      {...(item.images[0]
+                        ? {
+                            placeholder: 'blur',
+                            blurDataURL: generateImgPath(
+                              item.images[0],
+                              categoryImgBlurParams
+                            ),
+                          }
+                        : {})}
+                    />
+                  </div>
+                ) : (
+                  <div
+                    aria-hidden
+                    className='flex h-full w-full items-center justify-center rounded-md'
+                    style={{
+                      background: `linear-gradient(135deg, ${hashStringToColors(item.name || 'brand')[0]}, ${hashStringToColors(item.name || 'brand')[1]})`,
+                    }}
+                  >
+                    <span className='text-xs font-semibold tracking-wide text-white drop-shadow'>
+                      {item.name}
+                    </span>
+                  </div>
+                )}
+                <p className='text-shop-dark-color line-clamp-1 text-xs font-semibold'>
                   {item.name}
                 </p>
               </Link>

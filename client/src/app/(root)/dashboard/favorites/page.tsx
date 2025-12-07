@@ -8,5 +8,9 @@ export const metadata: Metadata = {
 };
 
 export default async function FavoritesPage() {
-  return <Favorites />;
+  return (
+    <>
+      <Favorites />;
+    </>
+  );
 }

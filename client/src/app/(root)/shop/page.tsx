@@ -12,9 +12,11 @@ import {
 } from '@/components/meta/Meta';
 import { SITE_NAME } from '@/utils/constants';
 import Breadcrumbs from '@/components/customComponents/Breadcrumbs';
+import { PUBLIC_URL } from '@/config/url.config';
 
 export async function generateMetadata(): Promise<Metadata> {
-  const productsData = await productService.getAll();
+  // TODO
+  const productsData = await productService.getAll({ limit: 10, skip: 0 });
 
   const topBrands = Array.from(
     new Set(
@@ -43,7 +45,7 @@ export async function generateMetadata(): Promise<Metadata> {
     keywords: [...POPULAR_KEYWORDS, ...topCategories, ...topBrands],
     author: SITE_NAME,
     ogType: 'website',
-    url: `${process.env.NEXT_PUBLIC_APP_URL}/shop`,
+    url: `${process.env.NEXT_PUBLIC_CLIENT_URL}/${PUBLIC_URL.shop()}`,
   });
 
   console.log('META = ', meta);
@@ -54,22 +56,19 @@ export const revalidate = 60;
 
 async function getProducts() {
   // TODO
-  // if (process.env.NODE_ENV === 'production') {
-  //   return { products: [], totalCount: 0 };
-  // }
   const products = await productService.getAll();
   return products;
 }
 
-export default async function ExplorerPage() {
+export default async function ShopPage() {
   const productsData = await getProducts();
 
+  // TODO
   const [categoriesData, brandsData, storesData] = await Promise.all([
     categoryService.getAll(),
     brandService.getAll(),
     storeService.getAll(),
   ]);
-
   return (
     <div className='global-container'>
       <Breadcrumbs

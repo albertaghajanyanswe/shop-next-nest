@@ -5,6 +5,11 @@ export interface IStore {
   isDefaultStore?: boolean;
   isPublished?: boolean;
   isBlocked?: boolean;
+  images?: string[];
+  country?: string;
+  city?: string;
+  address?: string;
+  phone?: string;
 }
 
 export type ICreateStore = Pick<IStore, 'title'>;

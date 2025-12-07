@@ -5,6 +5,7 @@ import { PrismaService } from 'src/prisma.service';
 import { ProductService } from 'src/product/product.service';
 import { QueryPayloadBuilderService } from 'src/queryPayloadBuilder/QueryPayloadBuilder';
 import { StoreService } from 'src/store/store.service';
+import { CloudinaryFileService } from 'src/cloudinary-file/cloudinary-file.service';
 
 @Module({
   controllers: [ReviewController],
@@ -14,6 +15,7 @@ import { StoreService } from 'src/store/store.service';
     ProductService,
     StoreService,
     QueryPayloadBuilderService,
+    CloudinaryFileService
   ],
 })
 export class ReviewModule {}

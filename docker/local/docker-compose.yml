@@ -90,6 +90,8 @@ services:
     environment:
       - NODE_ENV=development
       # - NEXT_PUBLIC_SERVER_URL=http://nginx
+    env_file:
+      - ../../client/.env.local
     depends_on:
       - server
     networks:

@@ -129,7 +129,12 @@ export const HeaderMenuV2 = React.forwardRef<HTMLElement, HeaderMenuProps>(
             label='Shop'
             linkClass={showMobile}
           />
-
+          <HeaderNavLink
+            href={PUBLIC_URL.stores()}
+            isActive={pathName === PUBLIC_URL.stores()}
+            label='Stores'
+            linkClass={showMobile}
+          />
           {!isLoadingUser && user?.stores?.length ? (
             <HeaderNavLink
               href={STORE_URL.home(user.stores[0].id)}
@@ -183,7 +188,12 @@ export const HeaderMenuV2 = React.forwardRef<HTMLElement, HeaderMenuProps>(
             label='Shop'
             linkClass={showDesktop}
           />
-
+          <HeaderNavLink
+            href={PUBLIC_URL.stores()}
+            isActive={pathName === PUBLIC_URL.stores()}
+            label='Stores'
+            linkClass={showDesktop}
+          />
           {user?.stores?.length ? (
             <HeaderNavLink
               href={STORE_URL.home(user.stores[0].id)}
