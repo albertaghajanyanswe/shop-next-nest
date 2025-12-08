@@ -83,7 +83,7 @@ export function HeaderCart({ triggerBtnClass }: HeaderCartProps) {
             <div className='text-muted-foreground text-sm'>Basket is empty</div>
           )}
         </div>
-        {/* {orderItems?.length ? (
+        {orderItems?.length ? (
           <>
             <div className='text-lg font-medium'>
               <span className='text-muted-foreground'>Total amount:</span>
@@ -92,13 +92,13 @@ export function HeaderCart({ triggerBtnClass }: HeaderCartProps) {
             <Button
               onClick={handleClickCheckout}
               variant='primary'
-              disabled={isLoadingCreate}
+              disabled={isLoadingCreateMultiple}
               className='w-full'
             >
               Checkout
             </Button>
           </>
-        ) : null} */}
+        ) : null}
       </SheetContent>
     </Sheet>
   );

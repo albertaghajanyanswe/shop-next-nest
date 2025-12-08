@@ -173,4 +173,8 @@ export class PaymentService {
       numberOfDays,
     );
   }
+
+  public async createLoginLink(user: User) {
+    return this.stripeService.createLoginLink(user);
+  }
 }

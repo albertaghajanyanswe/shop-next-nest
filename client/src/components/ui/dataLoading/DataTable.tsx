@@ -25,6 +25,10 @@ import { useEffect, useMemo, useState } from 'react';
 import { useDebounce } from '@/hooks/commons/useDebounce';
 import { iFilterParams, iSort } from '@/shared/types/filter.interface';
 
+interface WithId {
+  id: string;
+}
+
 export interface MyColumnMeta {
   sortField?: string;
   className?: string;
@@ -48,22 +52,31 @@ interface DataTableProps<TData, TValue> {
   onChangeSearch: (value: string, fields?: string[]) => void;
   onChangeSort: (sortObj: iSort) => void;
   queryParams: iFilterParams;
+  onRowClick?: (order: TData) => void;
 }
 
-export function DataTable<TData, TValue>({
+export function DataTable<TData extends WithId, TValue>({
   columns,
   data,
   filterKey,
   queryParams,
   onChangeSearch,
   onChangeSort,
+  onRowClick,
 }: DataTableProps<TData, TValue>) {
   const [searchValue, setSearchValue] = useState(
     queryParams.params.search?.value ?? ''
   );
+
   const debouncedSearch = useDebounce(searchValue, 400);
+  const [isFirst, setIsFirst] = useState(true);
 
   useEffect(() => {
+    if (isFirst) {
+      setIsFirst(false);
+      return;
+    }
+    console.log('debouncedSearch = ', debouncedSearch);
     onChangeSearch(debouncedSearch);
   }, [debouncedSearch]);
   // ---------- STABLE SORTING ----------
@@ -206,13 +219,15 @@ export function DataTable<TData, TValue>({
           <TableBody>
             {table.getRowModel().rows.length ? (
               table.getRowModel().rows.map((row) => (
-                <TableRow key={row.id} className='group'>
+                <TableRow
+                  key={row.id}
+                  className={`group ${onRowClick ? 'cursor-pointer' : ''}`}
+                  onClick={() => (onRowClick ? onRowClick(row.original) : {})}
+                >
                   {row.getVisibleCells().map((cell) => (
                     <TableCell
                       key={cell.id}
-                      className={
-                        (cell.column.columnDef.meta as MyColumnMeta)?.className
-                      }
+                      className={`${(cell.column.columnDef.meta as MyColumnMeta)?.className}`}
                     >
                       <div
                         className={`text-sm ${(cell.column.columnDef.meta as MyColumnMeta)?.textClassName}`}

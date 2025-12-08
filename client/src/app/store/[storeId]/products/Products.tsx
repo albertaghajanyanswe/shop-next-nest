@@ -8,30 +8,36 @@ import { STORE_URL } from '@/config/url.config';
 import { useGetStoreProducts } from '@/hooks/queries/products/useGetStoreProducts';
 import { Plus } from 'lucide-react';
 import Link from 'next/link';
-import { useParams } from 'next/navigation';
+import { useParams, useSearchParams } from 'next/navigation';
 import { productColumns } from './ProductColumns';
 import { useQueryParams } from '@/hooks/commons/useQueryParams';
 import { CustomPagination } from '@/components/ui/CustomPagination';
+import QueryString from 'qs';
 
 export function Products() {
   const params = useParams<{ storeId: string }>();
   const storeId = params.storeId;
 
-  const { queryParams, changePage, changeLimit, changeSearch, changeSort } =
-    useQueryParams({
-      pageDefaultParams: {
-        params: {
-          sort: { field: 'createdAt', order: 'desc' },
-          filter: {},
-          limit: 10,
-          skip: 0,
-          search: {
-            value: '',
-            fields: ['title', 'description'],
-          },
+  const {
+    queryParams,
+    changePage,
+    changeLimit,
+    changeSearch,
+    changeSort,
+  } = useQueryParams({
+    pageDefaultParams: {
+      params: {
+        sort: { field: 'createdAt', order: 'desc' },
+        filter: {},
+        limit: 10,
+        skip: 0,
+        search: {
+          value: '',
+          fields: ['title', 'description'],
         },
       },
-    });
+    },
+  });
 
   const { productsData, isLoadingProductsData } =
     useGetStoreProducts(queryParams);

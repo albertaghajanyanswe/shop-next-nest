@@ -10,7 +10,7 @@ export const useGetStoreProducts = (queryParams?: iFilterParams) => {
   const storeId = params.storeId;
 
   const { data: productsData, isLoading: isLoadingProductsData } = useQuery({
-    queryKey: [QUERY_KEYS.getStoreProducts, storeId, queryParams?.params],
+    queryKey: [QUERY_KEYS.getStoreProducts[0], storeId, JSON.stringify(queryParams?.params)],
     queryFn: () => productService.getByStoreId(storeId, queryParams?.params),
   });
 

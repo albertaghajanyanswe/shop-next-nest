@@ -1,7 +1,11 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { PrismaService } from 'src/prisma.service';
 import { ICapturePayment, YooCheckout } from '@a2seven/yoo-checkout';
-import { OrderDto } from './dto/order.dto';
+import { GetOrderItemDto, OrderDto } from './dto/order.dto';
 import { PaymentStatusDto } from './dto/payment-status.dto';
 import { EnumOrderStatus, PaymentProvider } from '@prisma/client';
 import type { User } from '@prisma/client';
@@ -37,6 +41,84 @@ export class OrderService {
     const totalCount = await this.prisma.order.count({
       where: payload.where,
     });
+    return { orders, totalCount };
+  }
+
+  async getOrderItems(user: User, params?: string) {
+    const payload = this.queryBuilderService.build({
+      queryParams: params || '',
+      userId: user.id,
+    });
+    const orderItems = await this.prisma.orderItem.findMany({
+      orderBy: { createdAt: 'desc' },
+      ...payload,
+
+      select: {
+        id: true,
+        createdAt: true,
+        updatedAt: true,
+        quantity: true,
+        price: true,
+        cachedProductTitle: true,
+        cachedProductImages: true,
+
+        user: {
+          select: {
+            id: true,
+            email: true,
+            name: true,
+          },
+        },
+        order: {
+          select: {
+            id: true,
+            status: true,
+            user: {
+              select: {
+                id: true,
+                email: true,
+                name: true,
+              },
+            },
+          },
+        },
+      },
+    });
+    const totalCount = await this.prisma.order.count({
+      where: payload.where,
+    });
+    return { orderItems, totalCount };
+  }
+
+  async getSoldOrders(user: User, params?: string) {
+    const payload = this.queryBuilderService.build({
+      queryParams: params || '',
+      // userId: user.id,
+    });
+
+    const where = {
+      orderItems: {
+        some: { product: { userId: user.id } }, // здесь обязательно наличие хотя бы одного товара пользователя
+      },
+      ...payload.where,
+    };
+
+    console.log('\n\n user = ', user.id);
+    console.log('\n\n where = ', JSON.parse(JSON.stringify(where)));
+    const orders = await this.prisma.order.findMany({
+      orderBy: { createdAt: 'desc' },
+      where,
+      include: {
+        user: true, // покупатель
+        orderItems: {
+          include: { product: true },
+          where: { userId: user.id },
+        },
+      },
+    });
+
+    const totalCount = await this.prisma.order.count({ where });
+
     return { orders, totalCount };
   }
 
@@ -78,6 +160,11 @@ export class OrderService {
         store: {
           connect: {
             id: item.storeId,
+          },
+        },
+        user: {
+          connect: {
+            id: item.userId,
           },
         },
       }));
@@ -167,6 +254,11 @@ export class OrderService {
             id: item.storeId,
           },
         },
+        user: {
+          connect: {
+            id: item.userId,
+          },
+        },
       }));
 
       const totalPrice = dto.orderItems.reduce((acc, item) => {
@@ -213,20 +305,43 @@ export class OrderService {
     console.log('\n\n createPayment userId ', userId);
     console.log('createPayment dto ', dto);
     try {
-      const orderItems = dto.orderItems.map((item) => ({
-        quantity: item.quantity,
-        price: item.price,
-        product: {
-          connect: {
-            id: item.productId,
+      const orderItems: any = [];
+
+      for (const item of dto.orderItems) {
+        const product = await this.prisma.product.findUnique({
+          where: { id: item.productId },
+          select: {
+            title: true,
+            images: true,
           },
-        },
-        store: {
-          connect: {
-            id: item.storeId,
+        });
+
+        if (!product) {
+          throw new BadRequestException(`Product ${item.productId} not found`);
+        }
+        console.log('\n\n item = ', item);
+        orderItems.push({
+          quantity: item.quantity,
+          price: item.price,
+          cachedProductTitle: product.title,
+          cachedProductImages: product.images,
+          product: {
+            connect: {
+              id: item.productId,
+            },
           },
-        },
-      }));
+          store: {
+            connect: {
+              id: item.storeId,
+            },
+          },
+          user: {
+            connect: {
+              id: item.userId,
+            },
+          },
+        });
+      }
 
       const totalPrice = dto.orderItems.reduce((acc, item) => {
         return acc + item.price * item.quantity;

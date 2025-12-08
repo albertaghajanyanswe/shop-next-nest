@@ -28,15 +28,15 @@ model User {
 
   stores Store[]
 
-  favorites Product[] @relation("UserFavorites")
-  reviews   Review[]
-  orders    Order[]
-  products  Product[] @relation("UserProducts")
-  brand     Brand[]
-  category     Category[]
-  billingInfo  BillingInfo?
-
-  subscription Subscription[]
+  favorites     Product[] @relation("UserFavorites")
+  reviews       Review[]
+  orders        Order[]
+  orderItems    OrderItem[]
+  products      Product[] @relation("UserProducts")
+  brand         Brand[]
+  category      Category[]
+  billingInfo   BillingInfo?
+  subscription  Subscription[]
 
   stripeAccountId String? @map("stripe_account_id")
 
@@ -343,6 +343,7 @@ model Order {
   id        String   @id @default(cuid())
 
   stripePaymentIntentId String? @map("stripe_payment_intent_id")
+  stripeSessionId String? @map("stripe_session_id")
   totalPrice      Float
 
   provider    PaymentProvider
@@ -378,6 +379,12 @@ model OrderItem {
 
   product   Product? @relation(fields: [productId], references: [id])
   productId String?  @map("product_id")
+
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId String @map("user_id")
+
+  cachedProductTitle String?
+  cachedProductImages String[]
 
   store   Store?  @relation(fields: [storeId], references: [id])
   storeId String? @map("store_id")

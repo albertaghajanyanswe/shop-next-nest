@@ -131,6 +131,7 @@ export class ProductService {
         include: {
           category: true,
           brand: true,
+          store: true
         },
       });
     }
@@ -145,6 +146,7 @@ export class ProductService {
       include: {
         category: true,
         brand: true,
+        store: true
       },
       ...(payload.take ? { take: payload.take } : {}),
       ...(payload.skip ? { skip: payload.skip } : {}),

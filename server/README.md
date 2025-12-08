@@ -123,7 +123,7 @@ npx prisma generate
 
 stripe login
 
-stripe listen --forward-to localhost:4000/api/stripe/webhook
+stripe listen --forward-to localhost:4000/api/webhook/stripe
 
 stripe trigger checkout.session.completed
 

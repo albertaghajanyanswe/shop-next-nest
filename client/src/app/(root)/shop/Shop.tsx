@@ -53,10 +53,7 @@ export default function Shop({
     isLoading,
     isPending,
   } = useQuery({
-    queryKey: [
-      QUERY_KEYS.productExplorer[0],
-      JSON.stringify(queryParams.params),
-    ],
+    queryKey: [QUERY_KEYS.productShop[0], JSON.stringify(queryParams.params)],
     queryFn: () => productService.getAll(queryParams.params),
     initialData: { products: initialProducts, totalCount },
     // keepPreviousData: true,

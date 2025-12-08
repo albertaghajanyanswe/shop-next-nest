@@ -1,0 +1,26 @@
+import React, { memo } from 'react';
+import { InfoSectionItem } from './OrderDetailsModal';
+
+interface InfoSectionProps {
+  items: InfoSectionItem[];
+  className?: string;
+}
+
+export function InfoSection({ items, className = '' }: InfoSectionProps) {
+  return (
+    <div
+      className={`space-y-2 text-sm ${className} bg-shop-green-hover rounded-md p-3`}
+    >
+      {items.map((item, idx) => (
+        <p key={idx} className={`${item.className} flex`}>
+          <span className='flex-2 font-semibold'>{item.title}:</span>
+          <span className='ml-2 flex-5 font-medium wrap-anywhere text-neutral-600'>
+            {item.value}
+          </span>
+        </p>
+      ))}
+    </div>
+  );
+}
+
+export default memo(InfoSection);

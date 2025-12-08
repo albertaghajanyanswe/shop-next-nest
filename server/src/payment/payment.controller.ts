@@ -122,4 +122,10 @@ export class PaymentController {
       );
     }
   }
+
+  @Auth()
+  @Get('/stripe/create-login-link')
+  async createLoginLink(@CurrentUser() user: User) {
+    return await this.paymentService.createLoginLink(user);
+  }
 }

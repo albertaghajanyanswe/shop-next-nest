@@ -21,12 +21,12 @@ export const useCheckoutStripeMultipleItems = () => {
           orderItems: orderItems.map((item) => ({
             quantity: item.quantity,
             price: item.product.price,
-            productId: item.product.id,
-            storeId: item.product.storeId,
+            productId: item.product.id as string,
+            storeId: item.product.storeId as string,
             name: item.product.title,
-            description: item.product.description,
+            description: item.product.description as string,
             image: item.product.images[0],
-            userId: item.product.userId,
+            userId: item.product.userId as string,
           })),
         });
       },

@@ -624,12 +624,35 @@ export class StripeService {
   }
 
   /**
+   * Сгенерировать login link в Stripe Dashboard продавца
+   */
+  async createLoginLink(user: User) {
+    if (!user.stripeAccountId) {
+      return {
+        loginLink: null,
+        error: 'User does not have stripe connected account',
+      };
+    }
+    const loginLink = await this.stripe.accounts.createLoginLink(
+      user.stripeAccountId,
+    );
+    return { loginLink: loginLink.url };
+  }
+
+  /**
+   * Проверка статуса аккаунта продавца
+   */
+  async getAccountStatus(accountId: string) {
+    return await this.stripe.accounts.retrieve(accountId);
+  }
+
+  /**
    * Создаёт подключённый аккаунт продавца
    */
   async createConnectedAccount(email: string) {
     const account = await this.stripe.accounts.create({
       type: 'express',
-      country: 'US',
+      // country: 'US',
       email,
       capabilities: { transfers: { requested: true } },
     });
@@ -651,9 +674,9 @@ export class StripeService {
   async createAccountLink(accountId: string) {
     const accountLink = await this.stripe.accountLinks.create({
       account: accountId,
+      type: 'account_onboarding',
       refresh_url: `${process.env.CLIENT_URL}/onboarding/refresh`,
       return_url: `${process.env.CLIENT_URL}/onboarding/success`,
-      type: 'account_onboarding',
     });
 
     return { accountLink: accountLink.url };
@@ -665,16 +688,108 @@ export class StripeService {
     if (!user.stripeAccountId) {
       const createdAccount = await this.createConnectedAccount(user.email);
       createdAccountId = createdAccount.id;
+      await this.prisma.user.update({
+        where: { id: user.id },
+        data: { stripeAccountId: createdAccountId },
+      });
     }
-    await this.prisma.user.update({
-      where: { id: user.id },
-      data: { stripeAccountId: createdAccountId },
-    });
-    const accountLink = await this.createAccountLink(createdAccountId);
-    return accountLink;
+
+    const account = await this.getAccountStatus(createdAccountId);
+
+    const isReady =
+      account.details_submitted &&
+      account.payouts_enabled &&
+      account.charges_enabled;
+
+    const accountLinkObj = isReady
+      ? { accountLink: null }
+      : await this.createAccountLink(createdAccountId);
+
+    return { ...accountLinkObj, isReady };
+
+    // const accountLink = await this.createAccountLink(createdAccountId);
+    // return accountLink;
   }
 
   async pay(dto: OrderDto, userId: string, order: Order) {
+    const items = dto.orderItems;
+    if (!items.length) throw new BadRequestException('No items in order');
+
+    const lineItems = items.map((item) => ({
+      price_data: {
+        currency: 'usd',
+        product_data: {
+          name: item.name || '',
+          description: item.description || '',
+        },
+        unit_amount: Math.round(item.price * 100),
+      },
+      quantity: item.quantity,
+    }));
+
+    // Создаем одну checkout session на основной Stripe аккаунт
+    const session = await this.stripe.checkout.sessions.create({
+      payment_method_types: ['card'],
+      line_items: lineItems,
+      mode: 'payment',
+      success_url: `${process.env.CLIENT_URL}/payment/success`,
+      cancel_url: `${process.env.CLIENT_URL}/payment/cancel`,
+      metadata: {
+        userId,
+        orderId: order.id,
+      },
+    });
+
+    // Сохраняем sessionId в заказе для вебхуков
+    await this.prisma.order.update({
+      where: { id: order.id },
+      data: {
+        stripeSessionId: session.id,
+        stripePaymentIntentId:
+          typeof session.payment_intent === 'string'
+            ? session.payment_intent
+            : session.payment_intent?.id,
+      },
+    });
+
+    return { url: session.url };
+  }
+
+  async distributeFunds(orderId: string) {
+    const order = await this.prisma.order.findUnique({
+      where: { id: orderId },
+      include: { orderItems: { include: { product: true } } },
+    });
+
+    if (!order) throw new NotFoundException('Order not found');
+
+    // Группируем по seller
+    const bySeller = new Map<string, { amount: number }>();
+    for (const item of order.orderItems) {
+      const amount = Math.round(item.price * item.quantity * 100); // в центах
+      const sellerId = item?.product?.userId as string;
+      if (!bySeller.has(sellerId)) bySeller.set(sellerId, { amount: 0 });
+      bySeller.get(sellerId)!.amount += amount;
+    }
+
+    // Отправляем деньги каждому продавцу (с комиссией платформы)
+    for (const [sellerId, { amount }] of bySeller.entries()) {
+      const seller = await this.prisma.user.findUnique({
+        where: { id: sellerId },
+      });
+      if (!seller?.stripeAccountId) continue;
+
+      const transferAmount = Math.round(amount * 0.95); // удерживаем 5% комиссию
+      await this.stripe.transfers.create({
+        amount: transferAmount,
+        currency: 'usd',
+        destination: seller.stripeAccountId,
+        source_transaction: order.stripePaymentIntentId as string, // если нужна связь с платежом
+      });
+    }
+  }
+
+  async payOneItem(dto: OrderDto, userId: string, order: Order) {
     const items = dto.orderItems;
     if (items.length > 1) {
       throw new BadRequestException('Only one item allowed per order');

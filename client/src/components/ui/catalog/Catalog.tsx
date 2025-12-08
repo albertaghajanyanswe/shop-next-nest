@@ -29,7 +29,7 @@ export function Catalog({
       <div className='mb-4 md:flex md:items-center md:justify-between'>
         <div className='w-full px-0'>
           <p className='text-2xl font-semibold'>{title}</p>
-          {showSearch && <SearchInput />}
+          {showSearch && <div className='mt-4'><SearchInput /></div>}
 
           {description && (
             <p className='text-muted-foreground mt-2 text-sm'>

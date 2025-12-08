@@ -155,6 +155,11 @@ export class YoomoneyService {
             id: item.storeId,
           },
         },
+        user: {
+          connect: {
+            id: item.userId,
+          },
+        },
       }));
 
       const totalPrice = dto.orderItems.reduce((acc, item) => {

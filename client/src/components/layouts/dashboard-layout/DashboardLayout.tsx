@@ -25,6 +25,7 @@ import { useLogout } from '@/hooks/queries/user/useLogout';
 
 const menuItems = [
   { value: 'My Orders', icon: CircleDollarSign, link: DASHBOARD_URL.orders() },
+  { value: 'My sales', icon: CircleDollarSign, link: DASHBOARD_URL.sales() },
   {
     value: 'Subscriptions',
     icon: CreditCard,
@@ -55,12 +56,12 @@ export function DashboardLayout({ children }: PropsWithChildren<unknown>) {
   if (!user) return null;
 
   return (
-    <div className='my-6 flex w-full flex-row gap-2'>
+    <div className='my-6 flex w-full flex-row gap-6 global-container'>
       <div className='layout'>
         <div className='inset-y-0 z-[50] flex h-full flex-col'>
           <aside
             className={cn(
-              'flex flex-col rounded-2xl bg-white shadow-sm transition-all duration-300',
+              'flex flex-col rounded-md bg-white shadow-sm transition-all duration-300',
               collapsed ? 'w-20 items-center p-3' : 'w-80 p-5'
             )}
           >
@@ -156,7 +157,7 @@ export function DashboardLayout({ children }: PropsWithChildren<unknown>) {
           </aside>
         </div>
       </div>
-      <main className='w-full bg-white p-4'>{children}</main>
+      <main className='w-full bg-white'>{children}</main>
     </div>
   );
 }

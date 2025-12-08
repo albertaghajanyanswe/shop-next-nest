@@ -12,15 +12,13 @@ export interface GetOrderItemDto {
   /** Order item price */
   price: number;
   /** Order item product id */
-  productId: number;
+  productId: string;
   /** Order item store id */
-  storeId: number;
+  storeId: string;
   /** Order item name */
   name?: string;
   /** Order item desc */
   description?: string;
-  /** Order item image */
-  image?: string;
   /** Owner user id */
   userId: string;
   /** Order item ID */
@@ -29,4 +27,8 @@ export interface GetOrderItemDto {
   createdAt: string;
   /** Updated timestamp */
   updatedAt: string;
+  /** Product images */
+  cachedProductImages: string[];
+  /** Order item desc */
+  cachedProductTitle?: string;
 }

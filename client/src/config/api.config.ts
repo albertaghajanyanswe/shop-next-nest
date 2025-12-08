@@ -12,6 +12,8 @@ export const API_URL = {
   brands: (url = '') => API_URL.root(`/brands${url}`),
   reviews: (url = '') => API_URL.root(`/reviews${url}`),
   orders: (url = '') => API_URL.root(`/orders${url}`),
+  soldOrders: (url = '') => API_URL.root(`/orders/sold${url}`),
+  orderItems: (url = '') => API_URL.root(`/orders/orderItems${url}`),
   statistics: (url = '') => API_URL.root(`/statistics${url}`),
   files: (url = '') => API_URL.root(`/files${url}`),
   cloudinaryFiles: (url = '') => API_URL.root(`/cloudinary/files${url}`),

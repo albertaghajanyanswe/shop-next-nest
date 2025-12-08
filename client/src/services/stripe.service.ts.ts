@@ -90,6 +90,15 @@ class StripeService {
     });
     return data;
   }
+
+  async getLoginUrl() {
+    const { data: managementLink } = await axiosWithAuth({
+      url: API_URL.payment(`/stripe/create-login-link`),
+      method: 'GET',
+    });
+
+    return managementLink;
+  }
 }
 
 export const stripeService = new StripeService();

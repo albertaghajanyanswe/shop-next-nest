@@ -42,7 +42,7 @@ export class SeedService implements OnApplicationBootstrap {
       {
         name: 'Monitors',
         images: [
-          'https://res.cloudinary.com/dvuo50sjj/image/upload/v1765047345/monitors_rdzh1c.png',
+          'https://res.cloudinary.com/dvuo50sjj/image/upload/v1765049968/monitors_c9hx2t.png',
         ],
         rating: 10,
       },

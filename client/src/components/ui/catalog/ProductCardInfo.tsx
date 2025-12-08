@@ -34,23 +34,37 @@ function ProductCardInfoUnMemo({
       <p className='mt-1 line-clamp-1 text-xs font-semibold text-gray-700 sm:text-sm'>
         {product.title}
       </p>
-      <p className='text-muted-foreground line-clamp-2 h-10 text-xs'>
+      <p className='text-muted-foreground line-clamp-1 h-4 text-xs'>
         {product.description}
       </p>
-      <Link
-        href={PUBLIC_URL.shop(
-          QueryString.stringify(
-            { filter: { categoryId: [product?.category?.id] } },
-            { skipNulls: true }
-          )
-        )}
-        className='text-shop-light-green mt-1 text-xs hover:underline sm:text-sm'
-        aria-label='Go to shop'
-      >
-        {product.category?.name}
-      </Link>
+      <div className='flex flex-col'>
+        <Link
+          href={PUBLIC_URL.shop(
+            QueryString.stringify(
+              { filter: { storeId: [product?.storeId] } },
+              { skipNulls: true }
+            )
+          )}
+          className='text-shop-dark-green text-xs hover:underline sm:text-sm'
+          aria-label='Go to shop'
+        >
+          {product.store?.title}
+        </Link>
+        <Link
+          href={PUBLIC_URL.shop(
+            QueryString.stringify(
+              { filter: { categoryId: [product?.category?.id] } },
+              { skipNulls: true }
+            )
+          )}
+          className='text-shop-light-green text-xs hover:underline sm:text-sm'
+          aria-label='Go to shop'
+        >
+          {product.category?.name}
+        </Link>
+      </div>
 
-      <div className='sm:text-md mb-2 text-sm'>
+      <div className='sm:text-md mt-2 text-sm'>
         <span className='text-shop-red font-semibold'>
           {formatPrice(product.price)}
         </span>

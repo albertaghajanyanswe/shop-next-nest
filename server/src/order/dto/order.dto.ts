@@ -2,13 +2,16 @@ import { ApiProperty } from '@nestjs/swagger';
 import { EnumOrderStatus, PaymentProvider } from '@prisma/client';
 import { Type } from 'class-transformer';
 import {
+  ArrayMinSize,
   IsArray,
   IsEnum,
+  IsNotEmpty,
   IsNumber,
   IsOptional,
   IsString,
   ValidateNested,
 } from 'class-validator';
+import { GetUserDto } from 'src/user/dto/user.dto';
 
 export class OrderDto {
   @ApiProperty({
@@ -133,7 +136,7 @@ export class OrderItemDto {
     description: 'Order item product id',
   })
   @IsString({ message: 'Product ID should be string' })
-  productId: number;
+  productId: string;
 
   @ApiProperty({
     required: true,
@@ -141,7 +144,7 @@ export class OrderItemDto {
     description: 'Order item store id',
   })
   @IsString({ message: 'Store ID should be string' })
-  storeId: number;
+  storeId: string;
 
   @ApiProperty({
     required: false,
@@ -160,15 +163,6 @@ export class OrderItemDto {
   @IsOptional()
   @IsString({ message: 'Description should be string' })
   description?: string;
-
-  @ApiProperty({
-    required: false,
-    example: 'Order item image',
-    description: 'Order item image',
-  })
-  @IsOptional()
-  @IsString({ message: 'Image should be string' })
-  image?: string;
 
   @ApiProperty({
     required: true,
@@ -197,11 +191,45 @@ export class GetOrderItemDto extends OrderItemDto {
     description: 'Updated timestamp',
   })
   updatedAt: Date;
+
+  @ApiProperty({
+    required: true,
+    description: 'Product images',
+    example: ['/server-uploads/products/1763382867638-iphone 14 pro.jpeg'],
+  })
+  @IsString({
+    message: 'Please provide at least one product image',
+    each: true,
+  })
+  @ArrayMinSize(1, {
+    message: 'Order item must have at least one image',
+  })
+  @IsNotEmpty({
+    each: true,
+    message: 'Order item image urls cannot be empty',
+  })
+  cachedProductImages: string[];
+
+  @ApiProperty({
+    required: false,
+    example: 'Order item desc',
+    description: 'Order item desc',
+  })
+  @IsOptional()
+  @IsString({ message: 'Order item cached product name should be string' })
+  cachedProductTitle?: string;
+}
+
+export class GetOrderWithUserDto extends GetOrderDto {
+  @ApiProperty({ type: () => GetUserDto })
+  user: GetUserDto;
 }
 
 export class GetOrderWithItemsDto extends GetOrderDto {
   @ApiProperty({ type: () => GetOrderItemDto, isArray: true })
   orderItems: GetOrderItemDto;
+  @ApiProperty({ type: () => GetUserDto })
+  user: GetUserDto;
 }
 
 export class GetOrderWithItemsDtoAndCount {
@@ -211,6 +239,24 @@ export class GetOrderWithItemsDtoAndCount {
     isArray: true,
   })
   orders: GetOrderWithItemsDto[];
+
+  @ApiProperty({ type: Number, required: false })
+  totalCount: number;
+}
+
+export class GetOrderItemsDetailsDto extends GetOrderItemDto {
+  @ApiProperty({ type: () => GetUserDto })
+  user: GetUserDto;
+  @ApiProperty({ type: () => GetOrderWithUserDto })
+  order: GetOrderWithUserDto;
+}
+export class GetOrderItemsDetailsDtoAndCount {
+  @ApiProperty({
+    type: () => GetOrderItemsDetailsDto,
+    required: false,
+    isArray: true,
+  })
+  orderItems: GetOrderItemsDetailsDto[];
 
   @ApiProperty({ type: Number, required: false })
   totalCount: number;

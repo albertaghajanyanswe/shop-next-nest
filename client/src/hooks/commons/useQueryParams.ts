@@ -19,7 +19,6 @@ export const useQueryParams = ({
   const pathname = usePathname();
   const searchParams = useSearchParams();
 
-  // формируем queryParams из URL + default
   const queryParams: iFilterParams = useMemo(() => {
     const parsed = qs.parse(searchParams.toString(), {
       ignoreQueryPrefix: true,
@@ -27,9 +26,7 @@ export const useQueryParams = ({
       arrayLimit: Infinity,
     });
 
-    console.log('PARSED = ', parsed);
-
-    return {
+    const res = {
       params: {
         sort: (parsed.sort as unknown as iSort) ??
           pageDefaultParams?.params.sort ?? { field: 'id', order: 'asc' },
@@ -48,9 +45,9 @@ export const useQueryParams = ({
           },
       },
     };
+    return res;
   }, [searchParams, pageDefaultParams]);
 
-  // функция для обновления URL
   const replaceRoutePath = useCallback(
     (newQuery: any) => {
       const query = qs.stringify(newQuery, { skipNulls: true });
@@ -67,7 +64,6 @@ export const useQueryParams = ({
     [router]
   );
 
-  // полностью заменить params
   const setFilteredParams = useCallback(
     (newParams: iFilterParams) => {
       replaceRoutePath(newParams.params);
@@ -81,9 +77,10 @@ export const useQueryParams = ({
     },
     [pushRoutePath]
   );
-  // изменить только filter
+
   const changeFilterObject = useCallback(
     (newFilter: iFilter) => {
+      console.log('\n\n -----changeFilterObject');
       replaceRoutePath({
         ...queryParams.params,
         filter: newFilter,
@@ -101,23 +98,30 @@ export const useQueryParams = ({
       },
     });
   };
-  const changeLimit = (limit: number) => {
-    setFilteredParams({
-      params: {
-        ...queryParams.params,
-        limit,
-        skip: 0,
-      },
-    });
-  };
+  const changeLimit = useCallback(
+    (limit: number) => {
+      console.log('\n\n -----changeLimit');
+
+      setFilteredParams({
+        params: {
+          ...queryParams.params,
+          limit,
+          skip: 0,
+        },
+      });
+    },
+    [queryParams, setFilteredParams]
+  );
 
   const changeSort = useCallback(
     (sort: iSort) => {
+      console.log('\n\n -----changeSort');
+
       setFilteredParams({
         params: {
           ...queryParams.params,
           sort,
-          skip: 0, // сбрасываем на первую страницу
+          skip: 0,
         },
       });
     },
@@ -126,6 +130,8 @@ export const useQueryParams = ({
 
   const changeSearch = useCallback(
     (value: string) => {
+      console.log('\n\n -----changeSearch');
+
       setFilteredParams({
         params: {
           ...queryParams.params,
@@ -133,7 +139,7 @@ export const useQueryParams = ({
             ...(queryParams?.params?.search as iSearch),
             value,
           },
-          skip: 0, // сбрасываем на первую страницу
+          skip: 0,
         },
       });
     },

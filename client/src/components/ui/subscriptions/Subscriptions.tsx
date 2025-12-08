@@ -186,7 +186,7 @@ export default function SubscriptionCards() {
   };
 
   return (
-    <div className='mt-12 space-y-6'>
+    <div className='space-y-6'>
       {/* Toggle period */}
       <div className='flex items-center justify-center space-x-2'>
         <Label htmlFor='period'>Monthly</Label>

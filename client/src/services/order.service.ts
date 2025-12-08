@@ -1,6 +1,7 @@
 import { axiosWithAuth } from '@/api/api.interceptors';
 import { API_URL } from '@/config/api.config';
 import {
+  GetOrderItemsDetailsDtoAndCount,
   GetOrderWithItemsDto,
   GetOrderWithItemsDtoAndCount,
 } from '@/generated/orval/types';
@@ -28,6 +29,24 @@ class OrderService {
   async getAll(params?: iParams) {
     const { data } = await axiosWithAuth<GetOrderWithItemsDtoAndCount>({
       url: `${API_URL.orders()}?params=${encodeURIComponent(JSON.stringify(params))}`,
+      method: 'GET',
+    });
+
+    return data;
+  }
+
+  async getAllSoldOrders(params?: iParams) {
+    const { data } = await axiosWithAuth<GetOrderWithItemsDtoAndCount>({
+      url: `${API_URL.soldOrders()}?params=${encodeURIComponent(JSON.stringify(params))}`,
+      method: 'GET',
+    });
+
+    return data;
+  }
+
+  async getOrderItems(params?: iParams) {
+    const { data } = await axiosWithAuth<GetOrderItemsDetailsDtoAndCount>({
+      url: `${API_URL.orderItems()}?params=${encodeURIComponent(JSON.stringify(params))}`,
       method: 'GET',
     });
 

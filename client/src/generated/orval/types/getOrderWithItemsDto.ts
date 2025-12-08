@@ -12,6 +12,7 @@ import type { GetOrderWithItemsDtoExternalId } from './getOrderWithItemsDtoExter
 import type { GetOrderWithItemsDtoProviderMeta } from './getOrderWithItemsDtoProviderMeta';
 import type { GetOrderWithItemsDtoSubscriptionId } from './getOrderWithItemsDtoSubscriptionId';
 import type { GetOrderItemDto } from './getOrderItemDto';
+import type { GetUserDto } from './getUserDto';
 
 export interface GetOrderWithItemsDto {
   /** Unique order ID */
@@ -37,4 +38,5 @@ export interface GetOrderWithItemsDto {
   /** Last update timestamp */
   updatedAt: string;
   orderItems: GetOrderItemDto[];
+  user: GetUserDto;
 }
