@@ -6,12 +6,13 @@
  * OpenAPI spec version: 0.0.1
  */
 import type { GetOrderWithItemsDtoStripePaymentIntentId } from './getOrderWithItemsDtoStripePaymentIntentId';
+import type { GetOrderWithItemsDtoStripeChargeId } from './getOrderWithItemsDtoStripeChargeId';
 import type { GetOrderWithItemsDtoProvider } from './getOrderWithItemsDtoProvider';
 import type { GetOrderWithItemsDtoStatus } from './getOrderWithItemsDtoStatus';
 import type { GetOrderWithItemsDtoExternalId } from './getOrderWithItemsDtoExternalId';
 import type { GetOrderWithItemsDtoProviderMeta } from './getOrderWithItemsDtoProviderMeta';
 import type { GetOrderWithItemsDtoSubscriptionId } from './getOrderWithItemsDtoSubscriptionId';
-import type { GetOrderItemDto } from './getOrderItemDto';
+import type { GetOrderItemsWithUserDto } from './getOrderItemsWithUserDto';
 import type { GetUserDto } from './getUserDto';
 
 export interface GetOrderWithItemsDto {
@@ -19,6 +20,8 @@ export interface GetOrderWithItemsDto {
   id: string;
   /** Stripe Payment Intent ID (optional) */
   stripePaymentIntentId?: GetOrderWithItemsDtoStripePaymentIntentId;
+  /** Stripe Charge ID (optional) */
+  stripeChargeId?: GetOrderWithItemsDtoStripeChargeId;
   /** Total order price */
   totalPrice: number;
   /** Payment provider used for the order */
@@ -37,6 +40,8 @@ export interface GetOrderWithItemsDto {
   createdAt: string;
   /** Last update timestamp */
   updatedAt: string;
-  orderItems: GetOrderItemDto[];
+  /** Distribute funds date timestamp */
+  payoutCompletedAt: string;
+  orderItems: GetOrderItemsWithUserDto[];
   user: GetUserDto;
 }

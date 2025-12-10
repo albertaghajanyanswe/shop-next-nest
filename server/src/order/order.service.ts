@@ -1,5 +1,6 @@
 import {
   BadRequestException,
+  ForbiddenException,
   Injectable,
   NotFoundException,
 } from '@nestjs/common';
@@ -7,7 +8,7 @@ import { PrismaService } from 'src/prisma.service';
 import { ICapturePayment, YooCheckout } from '@a2seven/yoo-checkout';
 import { GetOrderItemDto, OrderDto } from './dto/order.dto';
 import { PaymentStatusDto } from './dto/payment-status.dto';
-import { EnumOrderStatus, PaymentProvider } from '@prisma/client';
+import { EnumOrderStatus, EnumRole, PaymentProvider } from '@prisma/client';
 import type { User } from '@prisma/client';
 import { QueryPayloadBuilderService } from 'src/queryPayloadBuilder/QueryPayloadBuilder';
 
@@ -35,13 +36,55 @@ export class OrderService {
       ...payload,
       include: {
         user: true,
-        orderItems: true,
+        orderItems: {
+          include: {
+            user: {
+              select: {
+                id: true,
+                name: true,
+                email: true,
+                role: true,
+              },
+            },
+          },
+        },
       },
     });
     const totalCount = await this.prisma.order.count({
       where: payload.where,
     });
     return { orders, totalCount };
+  }
+
+  async getAllOrders(user: User, params?: string) {
+    try {
+      if (!user || user.role !== EnumRole.SUPER_ADMIN) {
+        throw new ForbiddenException(`Don't have enum permissions.`);
+      }
+      const payload = this.queryBuilderService.build({
+        queryParams: params || '',
+      });
+      const orders = await this.prisma.order.findMany({
+        orderBy: {
+          createdAt: 'desc',
+        },
+        ...payload,
+        include: {
+          user: true,
+          orderItems: {
+            include: {
+              user: true,
+            },
+          },
+        },
+      });
+      const totalCount = await this.prisma.order.count({
+        where: payload.where,
+      });
+      return { orders, totalCount };
+    } catch (err) {
+      console.log('err = ', err);
+    }
   }
 
   async getOrderItems(user: User, params?: string) {
@@ -111,7 +154,16 @@ export class OrderService {
       include: {
         user: true, // покупатель
         orderItems: {
-          include: { product: true },
+          include: {
+            product: true,
+            user: {
+              select: {
+                id: true,
+                name: true,
+                email: true,
+              },
+            },
+          },
           where: { userId: user.id },
         },
       },

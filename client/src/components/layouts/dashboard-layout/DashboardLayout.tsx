@@ -9,7 +9,6 @@ import {
   CreditCard,
   HelpCircle,
   LogOut,
-  ChevronRight,
   ArrowUpCircle,
   Menu,
   CircleDollarSign,
@@ -17,23 +16,46 @@ import {
 } from 'lucide-react';
 import { cn } from '@/utils/common';
 import { Card } from '@/components/ui/Card';
-import { DASHBOARD_URL, PUBLIC_URL } from '@/config/url.config';
+import { DASHBOARD_URL } from '@/config/url.config';
 import { MenuItem } from '../storeLayout/sidebar/navigation/MenuItem';
-import { userService } from '@/services/user.service';
-import { authService } from '@/services/auth/auth.service';
 import { useLogout } from '@/hooks/queries/user/useLogout';
+import { GetUserDto } from '@/generated/orval/types';
 
-const menuItems = [
-  { value: 'My Orders', icon: CircleDollarSign, link: DASHBOARD_URL.orders() },
-  { value: 'My sales', icon: CircleDollarSign, link: DASHBOARD_URL.sales() },
-  {
-    value: 'Subscriptions',
-    icon: CreditCard,
-    link: DASHBOARD_URL.subscriptions(),
-  },
-  { value: 'Support service', icon: HelpCircle, link: '' },
-  { value: 'Account Settings', icon: Settings, link: DASHBOARD_URL.settings() },
-];
+const menuItems = (user: GetUserDto) => {
+  return [
+    {
+      value: 'Manage Orders',
+      icon: CircleDollarSign,
+      link: DASHBOARD_URL.manageOrders(),
+      show: user.role === 'SUPER_ADMIN',
+    },
+    {
+      value: 'My Orders',
+      icon: CircleDollarSign,
+      link: DASHBOARD_URL.orders(),
+      show: true,
+    },
+    {
+      value: 'My sales',
+      icon: CircleDollarSign,
+      link: DASHBOARD_URL.sales(),
+      show: true,
+    },
+    {
+      value: 'Subscriptions',
+      icon: CreditCard,
+      link: DASHBOARD_URL.subscriptions(),
+      show: true,
+    },
+    { value: 'Support service', icon: HelpCircle, link: '', show: true },
+    {
+      value: 'Account Settings',
+      icon: Settings,
+      link: DASHBOARD_URL.settings(),
+      show: true,
+    },
+  ];
+};
 
 export function DashboardLayout({ children }: PropsWithChildren<unknown>) {
   const searchParams = useSearchParams();
@@ -51,12 +73,11 @@ export function DashboardLayout({ children }: PropsWithChildren<unknown>) {
   }, [searchParams]);
 
   const { user } = useProfile();
-  console.log('USER - ', user);
 
   if (!user) return null;
 
   return (
-    <div className='my-6 flex w-full flex-row gap-6 global-container'>
+    <div className='global-container my-6 flex w-full flex-row gap-6'>
       <div className='layout'>
         <div className='inset-y-0 z-[50] flex h-full flex-col'>
           <aside
@@ -85,13 +106,7 @@ export function DashboardLayout({ children }: PropsWithChildren<unknown>) {
                 collapsed ? 'flex-col p-2' : ''
               )}
             >
-              <div className='flex h-12 w-12 items-center justify-center rounded-full bg-gray-100'>
-                {/* <img
-                  src=''
-                  alt='avatar'
-                  className='h-10 w-10 rounded-full object-cover'
-                /> */}
-              </div>
+              <div className='flex h-12 w-12 items-center justify-center rounded-full bg-gray-100'></div>
               {!collapsed && (
                 <div className='flex w-full flex-1 flex-col'>
                   <span className='font-medium text-blue-600'>{user.name}</span>
@@ -111,34 +126,21 @@ export function DashboardLayout({ children }: PropsWithChildren<unknown>) {
             )}
 
             <div className='my-4 border-t' />
-
-            {/* Menu */}
-            {/* <nav className='flex flex-col gap-1'>
-              {menuItems.map(({ value, icon: Icon, href }) => (
-                <Button
-                  key={value}
-                  variant='ghost'
-                  className={cn(
-                    'flex items-center justify-start gap-3 rounded-xl text-base font-normal hover:bg-gray-50',
-                    collapsed ? 'justify-center' : 'px-4 py-3'
-                  )}
-                >
-                  <Icon className='h-5 w-5' />
-                  {!collapsed && <span>{value}</span>}
-                </Button>
-              ))}
-            </nav> */}
             <div className='mt-6 flex w-full flex-1 flex-col'>
               <div
                 className={`flex w-full flex-col space-y-1 ${collapsed ? 'items-center' : ''}`}
               >
-                {menuItems.map((route) => (
-                  <MenuItem
-                    key={route.value}
-                    route={route}
-                    showOnlyIcon={collapsed}
-                  />
-                ))}
+                {menuItems(user).map((route) => {
+                  return (
+                    route.show && (
+                      <MenuItem
+                        key={route.value}
+                        route={route}
+                        showOnlyIcon={collapsed}
+                      />
+                    )
+                  );
+                })}
               </div>
             </div>
             <div className='mt-auto pt-4'>

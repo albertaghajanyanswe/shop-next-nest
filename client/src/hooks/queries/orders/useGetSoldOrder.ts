@@ -7,7 +7,7 @@ import { useMemo } from 'react';
 export const useGetSoldOrders = (queryParams?: iFilterParams) => {
   const { data: soldOrdersData, isLoading: isLoadingSoldOrdersData } = useQuery(
     {
-      queryKey: [QUERY_KEYS.getSoldOrders, queryParams?.params],
+      queryKey: [QUERY_KEYS.getSoldOrders[0], queryParams?.params],
       queryFn: () => orderService.getAllSoldOrders(queryParams?.params),
     }
   );

@@ -2,10 +2,7 @@ import React from 'react';
 import { CustomModal } from '@/components/modals/CustomModal';
 import { InfoSection } from './InfoSection';
 import { ItemsTable } from './ItemsTable';
-import {
-  GetOrderItemsDetailsDto,
-  GetOrderWithItemsDto,
-} from '@/generated/orval/types';
+import { GetOrderItemsDetailsDto, GetUserDto } from '@/generated/orval/types';
 import { formatDateWithHour } from '@/utils/formateDate';
 import { STATUS_COLOR } from '@/utils/colorUtils';
 import {
@@ -19,19 +16,23 @@ import {
   TableSectionColumn,
   TableSectionItem,
 } from './OrderDetailsModal';
-import { TotalSection } from './TotalSection';
+import { OrderItemTotalSection } from './OrderItemTotalSection';
+import { formatPrice } from '@/utils/formatPrice';
 
 interface OrderItemDetailsModalProps<T extends TableSectionItem> {
   isOpen: boolean;
   setIsOpen: (open: boolean) => void;
   orderItem: GetOrderItemsDetailsDto;
+  user: GetUserDto;
 }
 
 export function OrderItemDetailsModal<T extends TableSectionItem>({
   isOpen,
   setIsOpen,
   orderItem,
+  user,
 }: OrderItemDetailsModalProps<T>) {
+  console.log('OrderItemDetailsModal user ', user);
   const getOrderInfoItems = (): InfoSectionItem[] => {
     if (!orderItem) return [];
 
@@ -71,19 +72,19 @@ export function OrderItemDetailsModal<T extends TableSectionItem>({
         key: 'image',
         title: 'Product',
         type: 'image',
-        span: 6,
+        span: 'col-span-6',
       },
       {
         key: 'quantity',
         title: 'Quantity',
         type: 'text',
-        span: 3,
+        span: 'col-span-3',
       },
       {
         key: 'price',
         title: 'Price',
         type: 'text',
-        span: 3,
+        span: 'col-span-3',
       },
     ];
   };
@@ -134,14 +135,17 @@ export function OrderItemDetailsModal<T extends TableSectionItem>({
             <ItemsTable
               columns={getOrderTableColumns()}
               items={getOrderTableItems()}
+              user={user}
             />
           </div>
         </div>
 
         {/* Total */}
-        <TotalSection
-          title='Total:'
-          value={orderItem.price * orderItem.quantity}
+        <OrderItemTotalSection
+          title='Total'
+          value={formatPrice(orderItem.price * orderItem.quantity)}
+          user={user}
+          orderItemId={orderItem.id}
         />
       </div>
     </CustomModal>

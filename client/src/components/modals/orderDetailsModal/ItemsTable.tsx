@@ -5,12 +5,20 @@ import {
   TableSectionColumn,
   TableSectionItem,
 } from './OrderDetailsModal';
+import { useDistributeFundsOrderItem } from '@/hooks/stripe/useDistributeFundsOrderItem';
+import {
+  GetOrderItemsWithUserDtoStatus,
+  GetUserDto,
+} from '@/generated/orval/types';
+import { Button } from '@/components/ui/Button';
+import { CircleDollarSignIcon } from 'lucide-react';
 
 interface GenericTableProps<T extends TableSectionItem> {
   columns: TableSectionColumn[];
   items: T[];
   renderCell?: (item: T, column: TableSectionColumn) => React.ReactNode;
   className?: string;
+  user: GetUserDto;
 }
 
 function DefaultCellRenderer<T extends TableSectionItem>(
@@ -20,7 +28,9 @@ function DefaultCellRenderer<T extends TableSectionItem>(
   const value = item[column.key];
 
   if (column.type === 'text') {
-    return <span className='text-sm font-medium text-neutral-700'>{value}</span>;
+    return (
+      <span className='text-sm font-medium text-neutral-700'>{value}</span>
+    );
   }
 
   if (column.type === 'image' && value) {
@@ -40,7 +50,7 @@ function DefaultCellRenderer<T extends TableSectionItem>(
             className='max-h-15 object-contain'
           />
         </div>
-        <p className='text-sm text-neutral-700 font-medium'>{item.title}</p>
+        <p className='text-sm font-medium text-neutral-700'>{item.title}</p>
       </div>
     );
   }
@@ -53,16 +63,16 @@ export function ItemsTable<T extends TableSectionItem>({
   items,
   renderCell = DefaultCellRenderer,
   className = '',
+  user,
 }: GenericTableProps<T>) {
-  const gridCols = columns.reduce((sum, col) => sum + (col.span || 1), 0);
+  const { distributeFundsOrderItem, isLoadingDistributeFundsOrderItem } =
+    useDistributeFundsOrderItem();
 
   return (
     <div className={`space-y-3 ${className}`}>
-      <div
-        className={`hidden grid-cols-${gridCols} gap-4 p-0 text-sm font-semibold text-neutral-700 sm:grid`}
-      >
+      <div className='hidden grid-cols-12 gap-4 p-0 text-sm font-semibold text-neutral-700 sm:grid'>
         {columns.map((col) => (
-          <div key={col.key} className={`col-span-${col.span || 1} text-left`}>
+          <div key={col.key} className={`${col.span || 'col-span-3'}`}>
             {col.title}
           </div>
         ))}
@@ -72,24 +82,46 @@ export function ItemsTable<T extends TableSectionItem>({
       {items.map((item) => (
         <div
           key={item.id}
-          className={`grid-cols-${gridCols} flex flex-col gap-4 rounded-lg border border-shop-light-green/70 p-2 sm:grid`}
+          className='border-shop-light-green/70 gap-4 rounded-lg border p-2'
         >
-          {columns.map((col) => (
-            <div
-              key={`${item.id}-${col.key}`}
-              className={`col-span-${col.span || 1} flex flex-row items-center justify-between ${
-                col.type === 'text'
-                  ? 'justify-between sm:justify-between'
-                  : 'justify-between sm:justify-between'
-              }`}
+          <div className='flex flex-col gap-4 sm:grid sm:grid-cols-12'>
+            {columns.map((col) => (
+              <div
+                key={`${item.id}-${col.key}`}
+                className={`${col.span || 'col-span-3'} flex items-center justify-between wrap-anywhere`}
+              >
+                <span className='text-sm font-semibold text-neutral-700 sm:hidden'>
+                  {col.title}
+                </span>
+
+                {renderCell(item, col)}
+              </div>
+            ))}
+          </div>
+          {user.role === 'SUPER_ADMIN' && item.orderItemId && (
+            <Button
+              disabled={
+                isLoadingDistributeFundsOrderItem ||
+                item.orderItemStatus ===
+                  GetOrderItemsWithUserDtoStatus.TRANSFER_PAYED
+              }
+              onClick={() => {
+                if (
+                  item.orderItemStatus !==
+                  GetOrderItemsWithUserDtoStatus.TRANSFER_PAYED
+                ) {
+                  distributeFundsOrderItem(item.orderItemId);
+                }
+              }}
+              variant='outline'
             >
-              {/* Мобильный label */}
-              <span className='text-sm font-semibold text-neutral-700 sm:hidden'>
-                {col.title}
-              </span>
-              {renderCell(item, col)}
-            </div>
-          ))}
+              <CircleDollarSignIcon />
+              {item.orderItemStatus ===
+              GetOrderItemsWithUserDtoStatus.TRANSFER_PAYED
+                ? 'The Customer has already been paid'
+                : 'Pay the customer'}
+            </Button>
+          )}
         </div>
       ))}
     </div>

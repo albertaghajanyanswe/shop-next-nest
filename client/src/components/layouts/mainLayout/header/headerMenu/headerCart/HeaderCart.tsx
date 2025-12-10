@@ -87,7 +87,7 @@ export function HeaderCart({ triggerBtnClass }: HeaderCartProps) {
           <>
             <div className='text-lg font-medium'>
               <span className='text-muted-foreground'>Total amount:</span>
-              <span className='text-primary ml-2'>{formatPrice(total)}</span>
+              <span className='text-shop-red ml-2'>{formatPrice(total)}</span>
             </div>
             <Button
               onClick={handleClickCheckout}

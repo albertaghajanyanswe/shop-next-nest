@@ -50,8 +50,11 @@ export const QUERY_KEYS = {
   connectAccount: ['create-connect-account-stripe'],
   payStripe: ['pay-stripe'],
   testClock: ['test-clock'],
+  getAllOrders: ['get-all-orders'],
   getOrders: ['get-orders'],
   getSoldOrders: ['get-sold-orders'],
   getOrderItems: ['get-order-items'],
   getOrderById: ['get-order-by-id'],
+  distributeFundsOrder: ['distribute-funds-order'],
+  distributeFundsOrderItem: ['distribute-funds-order-item'],
 };

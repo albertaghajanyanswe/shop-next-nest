@@ -59,23 +59,20 @@ export function ProductCard({ product }: ProductCardProps) {
                     <Image
                       src={generateImgPath(image, productImgParams)}
                       alt={`${product.title}`}
-                      // className='bg-shop-light-bg xs:h-32 xs:p-2 h-40 w-full object-contain p-1 transition-transform duration-500 group-hover:scale-105 sm:h-64 '
                       className='bg-shop-light-bg xs:p-2 h-40 w-full object-contain p-1 transition-transform duration-500 group-hover:scale-105'
-                      // className='hoverEffect object-contain group-hover:scale-110'
-                      // width={300}
-                      // height={300}
                       fill
-                      priority
-                      {...(image
-                        ? {
-                            placeholder: 'blur',
-                            blurDataURL: generateImgPath(
-                              image,
-                              productImgBlurParams
-                            ),
-                          }
-                        : {})}
-                      sizes='(max-width: 768px) 100vw, 400px'
+                      loading='eager'
+                      // priority
+                      // {...(image
+                      //   ? {
+                      //       placeholder: 'blur',
+                      //       blurDataURL: generateImgPath(
+                      //         image,
+                      //         productImgBlurParams
+                      //       ),
+                      //     }
+                      //   : {})}
+                      // sizes='(max-width: 768px) 100vw, 400px'
                     />
                   </div>
                 </Link>

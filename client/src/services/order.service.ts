@@ -26,6 +26,14 @@ export type TypeData = {
 };
 
 class OrderService {
+  async getAllOrders(params?: iParams) {
+    const { data } = await axiosWithAuth<GetOrderWithItemsDtoAndCount>({
+      url: `${API_URL.allOrders()}?params=${encodeURIComponent(JSON.stringify(params))}`,
+      method: 'GET',
+    });
+
+    return data;
+  }
   async getAll(params?: iParams) {
     const { data } = await axiosWithAuth<GetOrderWithItemsDtoAndCount>({
       url: `${API_URL.orders()}?params=${encodeURIComponent(JSON.stringify(params))}`,

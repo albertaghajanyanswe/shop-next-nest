@@ -128,4 +128,24 @@ export class PaymentController {
   async createLoginLink(@CurrentUser() user: User) {
     return await this.paymentService.createLoginLink(user);
   }
+
+  @Auth()
+  @Post('/stripe/order/distribute-funds')
+  async orderPayToCustomer(
+    @CurrentUser() user: User,
+    @Body() dto: { orderId: string },
+  ) {
+    return await this.paymentService.orderPayToCustomer(user, dto.orderId);
+  }
+  @Auth()
+  @Post('/stripe/orderItem/distribute-funds')
+  async orderItemPayToCustomer(
+    @CurrentUser() user: User,
+    @Body() dto: { orderItemId: string },
+  ) {
+    return await this.paymentService.orderItemPayToCustomer(
+      user,
+      dto.orderItemId,
+    );
+  }
 }

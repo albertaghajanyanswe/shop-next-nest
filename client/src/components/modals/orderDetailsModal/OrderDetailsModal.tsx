@@ -2,7 +2,7 @@ import React from 'react';
 import { CustomModal } from '@/components/modals/CustomModal';
 import { InfoSection } from './InfoSection';
 import { ItemsTable } from './ItemsTable';
-import { GetOrderWithItemsDto } from '@/generated/orval/types';
+import { GetOrderWithItemsDto, GetUserDto } from '@/generated/orval/types';
 import { formatDateWithHour } from '@/utils/formateDate';
 import { STATUS_COLOR } from '@/utils/colorUtils';
 import {
@@ -10,7 +10,8 @@ import {
   categoryImgParams,
   generateImgPath,
 } from '@/utils/imageUtils';
-import { TotalSection } from './TotalSection';
+import { OrderTotalSection } from './OrderTotalSection';
+import { formatPrice } from '@/utils/formatPrice';
 
 export type CellType = 'text' | 'image';
 
@@ -24,7 +25,7 @@ export interface TableSectionColumn {
   key: string;
   title: string;
   type: CellType;
-  span?: number;
+  span?: string;
 }
 
 export interface TableSectionItem {
@@ -44,13 +45,16 @@ interface OrderDetailsModalProps<T extends TableSectionItem> {
   isOpen: boolean;
   setIsOpen: (open: boolean) => void;
   order: GetOrderWithItemsDto;
+  user: GetUserDto;
 }
 
 export function OrderDetailsModal<T extends TableSectionItem>({
   isOpen,
   setIsOpen,
   order,
+  user,
 }: OrderDetailsModalProps<T>) {
+  console.log('ORDER = ', order);
   const getOrderInfoItems = (): InfoSectionItem[] => {
     if (!order) return [];
 
@@ -92,19 +96,25 @@ export function OrderDetailsModal<T extends TableSectionItem>({
         key: 'image',
         title: 'Product',
         type: 'image',
-        span: 6,
+        span: 'col-span-5',
+      },
+      {
+        key: 'userEmail',
+        title: 'User',
+        type: 'text',
+        span: 'col-span-3',
       },
       {
         key: 'quantity',
         title: 'Quantity',
         type: 'text',
-        span: 3,
+        span: 'col-span-2',
       },
       {
         key: 'price',
         title: 'Price',
         type: 'text',
-        span: 3,
+        span: 'col-span-2',
       },
     ];
   };
@@ -127,6 +137,9 @@ export function OrderDetailsModal<T extends TableSectionItem>({
       quantity: item.quantity,
       price: `$${item.price.toFixed(2)}`,
       title: item.cachedProductTitle,
+      userEmail: item.user.email,
+      orderItemId: item.id,
+      orderItemStatus: item.status,
     }));
   };
 
@@ -152,13 +165,19 @@ export function OrderDetailsModal<T extends TableSectionItem>({
               <ItemsTable
                 columns={getOrderTableColumns()}
                 items={getOrderTableItems()}
+                user={user}
               />
             </div>
           </div>
         )}
 
         {/* Total */}
-        <TotalSection title='Total:' value={order?.totalPrice.toFixed(2)} />
+        <OrderTotalSection
+          title='Total'
+          value={formatPrice(order?.totalPrice)}
+          orderId={order.id}
+          user={user}
+        />
       </div>
     </CustomModal>
   );

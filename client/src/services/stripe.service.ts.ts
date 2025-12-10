@@ -99,6 +99,24 @@ class StripeService {
 
     return managementLink;
   }
+
+  async distributeFundsOrder(orderId: string) {
+    const { data } = await axiosWithAuth<{ message: string }>({
+      url: API_URL.payment(`/stripe/order/distribute-funds`),
+      method: 'POST',
+      data: { orderId },
+    });
+    return data;
+  }
+
+  async distributeFundsOrderItem(orderItemId: string) {
+    const { data } = await axiosWithAuth<{ message: string }>({
+      url: API_URL.payment(`/stripe/orderItem/distribute-funds`),
+      method: 'POST',
+      data: { orderItemId },
+    });
+    return data;
+  }
 }
 
 export const stripeService = new StripeService();

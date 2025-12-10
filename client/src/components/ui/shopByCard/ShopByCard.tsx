@@ -71,16 +71,17 @@ const ShopByCardComponent = <TData,>({
                       className='hoverEffect h-18 max-h-18 min-h-18 w-18 max-w-18 min-w-18 object-contain will-change-transform group-hover:scale-110'
                       width={72}
                       height={72}
-                      priority
-                      {...(item.images[0]
-                        ? {
-                            placeholder: 'blur',
-                            blurDataURL: generateImgPath(
-                              item.images[0],
-                              categoryImgBlurParams
-                            ),
-                          }
-                        : {})}
+                      loading='eager'
+                      // priority
+                      // {...(item.images[0]
+                      //   ? {
+                      //       placeholder: 'blur',
+                      //       blurDataURL: generateImgPath(
+                      //         item.images[0],
+                      //         categoryImgBlurParams
+                      //       ),
+                      //     }
+                      //   : {})}
                     />
                   </div>
                 ) : (

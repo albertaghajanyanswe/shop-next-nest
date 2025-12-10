@@ -6,6 +6,7 @@ import {
 import { ConfigService } from '@nestjs/config';
 import {
   BillingPeriod,
+  EnumOrderItemStatus,
   EnumOrderStatus,
   EnumSubscriptionStatus,
   EnumSubscriptionType,
@@ -37,9 +38,9 @@ export class StripeService {
   ) {
     this.stripe = new Stripe(
       configService.get<string>(EnvVariables.STRIPE_SECRET_KEY) as string,
-      // {
-      //   apiVersion: '2025-10-29.clover',
-      // },
+      {
+        apiVersion: '2025-10-29.clover',
+      },
     );
   }
 
@@ -660,14 +661,28 @@ export class StripeService {
     return account;
   }
 
-  async createStripeTransfer(amount: number, destinationAccountId: string) {
-    const transfer = await this.stripe.transfers.create({
-      amount: Math.round(amount * 100),
-      currency: 'usd',
-      destination: destinationAccountId,
-    });
+  async createStripeTransfer(
+    amount: number,
+    destinationAccountId: string,
+    sourceTransfer: string,
+    idempotencyKey: string,
+  ) {
+    const transfer = await this.stripe.transfers.create(
+      {
+        amount: amount,
+        currency: 'usd',
+        destination: destinationAccountId,
+        ...(sourceTransfer && { source_transaction: sourceTransfer }),
+      },
+      {
+        idempotencyKey:
+          idempotencyKey ||
+          `transfer-${sourceTransfer}-${destinationAccountId}`,
+      },
+    );
     return transfer;
   }
+
   /**
    * Генерация ссылки для онбординга продавца
    */
@@ -755,7 +770,7 @@ export class StripeService {
     return { url: session.url };
   }
 
-  async distributeFunds(orderId: string) {
+  async distributeFundsForOrder(orderId: string) {
     const order = await this.prisma.order.findUnique({
       where: { id: orderId },
       include: { orderItems: { include: { product: true } } },
@@ -763,30 +778,117 @@ export class StripeService {
 
     if (!order) throw new NotFoundException('Order not found');
 
-    // Группируем по seller
-    const bySeller = new Map<string, { amount: number }>();
+    // group by seller
+    const bySeller = new Map<
+      string,
+      { amount: number; orderItemsIds: string[] }
+    >();
+
+    let isEmpty = true;
     for (const item of order.orderItems) {
-      const amount = Math.round(item.price * item.quantity * 100); // в центах
-      const sellerId = item?.product?.userId as string;
-      if (!bySeller.has(sellerId)) bySeller.set(sellerId, { amount: 0 });
-      bySeller.get(sellerId)!.amount += amount;
+      if (item.status !== EnumOrderItemStatus.TRANSFER_PAYED) {
+        isEmpty = false;
+        const amount = Math.round(item.price * item.quantity * 100);
+        const sellerId = item.product?.userId as string;
+
+        if (!bySeller.has(sellerId)) {
+          bySeller.set(sellerId, { amount: 0, orderItemsIds: [] });
+        }
+
+        const entry = bySeller.get(sellerId)!;
+        entry.amount += amount;
+        entry.orderItemsIds.push(item.id);
+      }
     }
 
-    // Отправляем деньги каждому продавцу (с комиссией платформы)
-    for (const [sellerId, { amount }] of bySeller.entries()) {
+    if (isEmpty) {
+      throw new BadRequestException(
+        'All customers has already received money for this order',
+      );
+    }
+
+    // send money to customers
+
+    for (const [sellerId, { amount, orderItemsIds }] of bySeller.entries()) {
       const seller = await this.prisma.user.findUnique({
         where: { id: sellerId },
       });
+
       if (!seller?.stripeAccountId) continue;
 
-      const transferAmount = Math.round(amount * 0.95); // удерживаем 5% комиссию
-      await this.stripe.transfers.create({
-        amount: transferAmount,
-        currency: 'usd',
-        destination: seller.stripeAccountId,
-        source_transaction: order.stripePaymentIntentId as string, // если нужна связь с платежом
+      const transferAmount = Math.round(amount * 0.95);
+
+      const idempotencyKey = `orderItemsId-${orderItemsIds}`;
+      const transfer = await this.createStripeTransfer(
+        transferAmount,
+        seller.stripeAccountId,
+        order.stripeChargeId as string,
+        idempotencyKey,
+      );
+      console.log('CREATED TRANSFER = ', transfer);
+
+      // save transferId inside orderItems for that seller
+      await this.prisma.orderItem.updateMany({
+        where: { id: { in: orderItemsIds } },
+        data: {
+          stripeTransferId: transfer.id,
+          status: EnumOrderItemStatus.TRANSFER_PAYED,
+        },
       });
     }
+  }
+
+  async distributeFundsForOrderItem(orderItemId: string) {
+    const orderItem = await this.prisma.orderItem.findUnique({
+      where: { id: orderItemId },
+      include: {
+        product: true,
+        order: true,
+      },
+    });
+
+    if (!orderItem) throw new NotFoundException('Order item not found');
+    if (orderItem.status === EnumOrderItemStatus.TRANSFER_PAYED)
+      throw new NotFoundException(
+        'The customer has already received money for this order',
+      );
+    if (!orderItem.product) throw new NotFoundException('Product not found');
+
+    const sellerId = orderItem.product.userId;
+    if (!sellerId) throw new NotFoundException('Seller not found');
+
+    const seller = await this.prisma.user.findUnique({
+      where: { id: sellerId },
+    });
+
+    if (!seller?.stripeAccountId) {
+      // No Stripe account — skip silently or throw
+      throw new BadRequestException(
+        `Customer (ID: ${sellerId}) does not have stripe connected account.`,
+      );
+    }
+
+    // calculate amount in cents
+    const gross = Math.round(orderItem.price * orderItem.quantity * 100);
+    const transferAmount = Math.round(gross * 0.95); // 95% payout
+    const idempotencyKey = `orderItemId-${orderItemId}`;
+
+    const transfer = await this.createStripeTransfer(
+      transferAmount,
+      seller.stripeAccountId,
+      orderItem?.order?.stripeChargeId as string,
+      idempotencyKey,
+    );
+    console.log('CREATED TRANSFER = ', transfer);
+
+    // save transferId inside orderItems for that seller
+    await this.prisma.orderItem.update({
+      where: { id: orderItemId },
+      data: {
+        stripeTransferId: transfer.id,
+        status: EnumOrderItemStatus.TRANSFER_PAYED,
+      },
+    });
   }
 
   async payOneItem(dto: OrderDto, userId: string, order: Order) {
@@ -870,6 +972,7 @@ export class StripeService {
   //   event: Stripe.Event,
   // ): Promise<PaymentWebhookResult | null> {
   public async handleWebhook(event: Stripe.Event) {
+    console.log('\n\n\n ++++ handleWebhook EVENT TYPE = ', event.type);
     switch (event.type) {
       case 'payment_method.attached':
         this.onPaymentMethodAttached(event);
@@ -895,6 +998,15 @@ export class StripeService {
       case 'invoice.payment_failed':
         this.onInvoicePaymentFailed(event);
         break;
+      case 'balance.available':
+        this.onBalanceAvailable(event);
+        break;
+      case 'transfer.created':
+        this.onTransferCreated(event);
+        break;
+      // case 'payment.created':
+      //   this.onPaymentCreated(event);
+      //   break;
       default:
         throw new BadRequestException(`Unknown event type: ${event.type}`);
     }
@@ -1025,7 +1137,7 @@ export class StripeService {
       event,
     );
     const session = event.data.object;
-    console.log('\nsession.metadata = ', session.metadata);
+    console.log('\n onCheckoutSessionCompletedProduct - session = ', session);
     const { userId, orderId } = session.metadata as {
       userId: string;
       orderId: string;
@@ -1051,11 +1163,19 @@ export class StripeService {
       });
     }
 
+    const paymentIntent = await this.stripe.paymentIntents.retrieve(
+      session.payment_intent as string,
+      // { expand: ['latest_charge'] },
+    );
+    console.log('\n\n paymentIntent = ', paymentIntent);
+    const chargeId = paymentIntent.latest_charge as string;
+
     await this.prisma.order.update({
       where: { id: orderId },
       data: {
         status: EnumOrderStatus.SUCCEEDED,
         stripePaymentIntentId: session.payment_intent as string,
+        stripeChargeId: chargeId as string,
       },
     });
   }
@@ -1653,6 +1773,30 @@ export class StripeService {
         stripeDefaultPaymentMethod: event.data.object.id,
       },
     });
+  }
+
+  async onBalanceAvailable(event: Stripe.BalanceAvailableEvent) {
+    console.log('\n\n [Func] WEBHOOK onBalanceAvailable EVENT = ', event);
+  }
+
+  async onTransferCreated(event: Stripe.TransferCreatedEvent) {
+    console.log('\n\n [Func] WEBHOOK onTransferCreated EVENT = ', event);
+    // const transferObj = event.data.object;
+    // const transferId = transferObj.id;
+
+    // const orderItems = await this.prisma.orderItem.findMany({
+    //   where: {
+    //     stripeTransferId: transferId,
+    //   },
+    // });
+    // if (!orderItems.length) return;
+
+    // await this.prisma.orderItem.updateMany({
+    //   where: { stripeTransferId: transferId },
+    //   data: {
+    //     status: EnumOrderItemStatus.TRANSFER_CREATED,
+    //   },
+    // });
   }
 
   async createInvoice(userId: string, planId: EnumSubscriptionType) {

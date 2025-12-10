@@ -344,6 +344,7 @@ model Order {
 
   stripePaymentIntentId String? @map("stripe_payment_intent_id")
   stripeSessionId String? @map("stripe_session_id")
+  stripeChargeId String? @map("stripe_charge_id")
   totalPrice      Float
 
   provider    PaymentProvider
@@ -362,6 +363,8 @@ model Order {
 
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
+
+  payoutCompletedAt DateTime @default(now()) @map("payout_completed_at")
 
   @@map("order")
 }
@@ -385,6 +388,10 @@ model OrderItem {
 
   cachedProductTitle String?
   cachedProductImages String[]
+  status      EnumOrderItemStatus @default(PENDING)
+
+  stripeTransferId String? @map("stripe_payout_transfer_id")
+  payoutCompletedAt DateTime @default(now()) @map("payout_completed_at")
 
   store   Store?  @relation(fields: [storeId], references: [id])
   storeId String? @map("store_id")
@@ -458,8 +465,19 @@ enum EnumOrderStatus {
   REFUNDED
   EXPIRED
   PAUSED
+  PAYED_TO_SELLER
 
   @@map("order_status")
+}
+
+enum EnumOrderItemStatus {
+  PENDING
+  FAILED
+  REFUNDED
+  TRANSFER_CREATED
+  TRANSFER_PAYED
+
+  @@map("order_item_status")
 }
 
 enum CurrencyEnum {
@@ -472,4 +490,5 @@ enum CurrencyEnum {
 enum EnumRole {
   USER
   ADMIN
+  SUPER_ADMIN
 }

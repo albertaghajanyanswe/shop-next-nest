@@ -5,6 +5,8 @@
  * The API description
  * OpenAPI spec version: 0.0.1
  */
+import type { GetOrderItemsDetailsDtoStatus } from './getOrderItemsDetailsDtoStatus';
+import type { GetOrderItemsDetailsDtoStripeTransferId } from './getOrderItemsDetailsDtoStripeTransferId';
 import type { GetUserDto } from './getUserDto';
 import type { GetOrderWithUserDto } from './getOrderWithUserDto';
 
@@ -23,6 +25,12 @@ export interface GetOrderItemsDetailsDto {
   description?: string;
   /** Owner user id */
   userId: string;
+  /** Order item status */
+  status: GetOrderItemsDetailsDtoStatus;
+  /** Distribute funds date timestamp */
+  payoutCompletedAt: string;
+  /** Stripe Transfer ID (optional) */
+  stripeTransferId?: GetOrderItemsDetailsDtoStripeTransferId;
   /** Order item ID */
   id: string;
   /** Creation timestamp */

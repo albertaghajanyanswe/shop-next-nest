@@ -85,13 +85,10 @@ export default function SoldOrders() {
       }))
     : [];
 
-  console.log(' orderItemsData ', orderItemsData);
-  console.log(' formattedOrders ', formattedOrders);
   const [selectedOrderItem, setSelectedOrderItem] =
     useState<GetOrderItemsDetailsDto | null>(null);
 
   const handleRowClick = (order: IOrderItemColumns) => {
-    console.log('order = ', order);
     setSelectedOrderItem(
       orderItemsData?.orderItems?.find(
         (i) => i.id === order.id
@@ -100,8 +97,6 @@ export default function SoldOrders() {
     setIsOpen(true);
   };
 
-  console.log('selectedOrder = ', selectedOrderItem);
-  console.log('user = ', user);
   const [isOpen, setIsOpen] = useState(false);
   return (
     <>
@@ -136,6 +131,7 @@ export default function SoldOrders() {
             isOpen={isOpen}
             setIsOpen={setIsOpen}
             orderItem={selectedOrderItem}
+            user={user}
           />
         )}
       </div>

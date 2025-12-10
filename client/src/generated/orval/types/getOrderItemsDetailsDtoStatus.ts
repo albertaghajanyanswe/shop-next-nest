@@ -7,19 +7,16 @@
  */
 
 /**
- * Order status
+ * Order item status
  */
-export type GetOrderDtoStatus = typeof GetOrderDtoStatus[keyof typeof GetOrderDtoStatus];
+export type GetOrderItemsDetailsDtoStatus = typeof GetOrderItemsDetailsDtoStatus[keyof typeof GetOrderItemsDetailsDtoStatus];
 
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
-export const GetOrderDtoStatus = {
+export const GetOrderItemsDetailsDtoStatus = {
   PENDING: 'PENDING',
-  SUCCEEDED: 'SUCCEEDED',
   FAILED: 'FAILED',
-  CANCELLED: 'CANCELLED',
   REFUNDED: 'REFUNDED',
-  EXPIRED: 'EXPIRED',
-  PAUSED: 'PAUSED',
-  PAYED_TO_SELLER: 'PAYED_TO_SELLER',
+  TRANSFER_CREATED: 'TRANSFER_CREATED',
+  TRANSFER_PAYED: 'TRANSFER_PAYED',
 } as const;

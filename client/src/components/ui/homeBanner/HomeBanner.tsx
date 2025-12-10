@@ -3,7 +3,6 @@ import { ArrowRight } from 'lucide-react';
 import Link from 'next/link';
 import { Button } from '@/components/ui/Button';
 import { PUBLIC_URL } from '@/config/url.config';
-import { SITE_DESCRIPTION } from '@/utils/constants';
 import Image from 'next/image';
 
 function HomeBannerComponent() {
@@ -32,8 +31,8 @@ function HomeBannerComponent() {
                 alt='Banner'
                 priority
                 fetchPriority='high'
-                placeholder='blur'
-                blurDataURL='https://res.cloudinary.com/dvuo50sjj/image/upload/e_blur:1000,f_auto,q_auto,w_2000/v1764674699/banner_wmezby.png'
+                // placeholder='blur'
+                // blurDataURL='https://res.cloudinary.com/dvuo50sjj/image/upload/e_blur:1000,f_auto,q_auto,w_2000/v1764674699/banner_wmezby.png'
               />
 
               <div className='bg-darkColor/20 absolute inset-0'>
@@ -64,31 +63,3 @@ function HomeBannerComponent() {
 
 export const HomeBanner = memo(HomeBannerComponent);
 
-// import { memo } from 'react';
-// import { ArrowRight } from 'lucide-react';
-// import Link from 'next/link';
-// import { Button } from '@/components/ui/Button';
-// import { PUBLIC_URL } from '@/config/url.config';
-// import { SITE_DESCRIPTION } from '@/utils/constants';
-
-// function HeroComponent() {
-//   return (
-//     <div className='mx-auto my-24 flex max-w-4xl flex-col items-center space-y-6 py-8 text-center'>
-//       <h1 className='mb-0 text-4xl font-semibold tracking-tight md:text-5xl'>
-//         Your shopping, your pleasure -{' '}
-//         <span className='text-primary-500'>all in one place</span>
-//       </h1>
-//       <p className='text-muted-foreground mt-3 mb-6 text-lg'>
-//         {SITE_DESCRIPTION}
-//       </p>
-//       <Link href={PUBLIC_URL.shop()}>
-//         <Button variant='primary' className='group'>
-//           Shopping{' '}
-//           <ArrowRight className='ml-2 size-4 transition-all group-hover:ml-3' />
-//         </Button>
-//       </Link>
-//     </div>
-//   );
-// }
-
-// export const Hero = memo(HeroComponent);

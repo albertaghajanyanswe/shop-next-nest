@@ -28,6 +28,13 @@ export class OrderController {
   constructor(private readonly orderService: OrderService) {}
 
   @Auth()
+  @Get()
+  @ApiOkResponse({ type: GetOrderWithItemsDtoAndCount })
+  async getAll(@CurrentUser() user: User, @Query('params') params?: string) {
+    return this.orderService.getAll(user, params);
+  }
+
+  @Auth()
   @Get('/sold')
   @ApiOkResponse({ type: GetOrderWithItemsDtoAndCount })
   async getSoldOrders(
@@ -38,10 +45,13 @@ export class OrderController {
   }
 
   @Auth()
-  @Get()
+  @Get('/allOrders')
   @ApiOkResponse({ type: GetOrderWithItemsDtoAndCount })
-  async getAll(@CurrentUser() user: User, @Query('params') params?: string) {
-    return this.orderService.getAll(user, params);
+  async getAllOrders(
+    @CurrentUser() user: User,
+    @Query('params') params?: string,
+  ) {
+    return this.orderService.getAllOrders(user, params);
   }
 
   @Auth()

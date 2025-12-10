@@ -35,7 +35,7 @@ export function CartItem({ orderItem }: CartItemsProps) {
           <CartActions orderItem={orderItem} />
         </div>
       </div>
-      <CartBuyAction orderItem={orderItem} />
+      {/* <CartBuyAction orderItem={orderItem} /> */}
     </div>
   );
 }

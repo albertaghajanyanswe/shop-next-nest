@@ -6,6 +6,7 @@
  * OpenAPI spec version: 0.0.1
  */
 import type { GetOrderWithUserDtoStripePaymentIntentId } from './getOrderWithUserDtoStripePaymentIntentId';
+import type { GetOrderWithUserDtoStripeChargeId } from './getOrderWithUserDtoStripeChargeId';
 import type { GetOrderWithUserDtoProvider } from './getOrderWithUserDtoProvider';
 import type { GetOrderWithUserDtoStatus } from './getOrderWithUserDtoStatus';
 import type { GetOrderWithUserDtoExternalId } from './getOrderWithUserDtoExternalId';
@@ -18,6 +19,8 @@ export interface GetOrderWithUserDto {
   id: string;
   /** Stripe Payment Intent ID (optional) */
   stripePaymentIntentId?: GetOrderWithUserDtoStripePaymentIntentId;
+  /** Stripe Charge ID (optional) */
+  stripeChargeId?: GetOrderWithUserDtoStripeChargeId;
   /** Total order price */
   totalPrice: number;
   /** Payment provider used for the order */
@@ -36,5 +39,7 @@ export interface GetOrderWithUserDto {
   createdAt: string;
   /** Last update timestamp */
   updatedAt: string;
+  /** Distribute funds date timestamp */
+  payoutCompletedAt: string;
   user: GetUserDto;
 }

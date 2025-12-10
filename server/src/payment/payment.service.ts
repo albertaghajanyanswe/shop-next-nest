@@ -1,5 +1,6 @@
 import {
   BadRequestException,
+  ForbiddenException,
   Injectable,
   NotFoundException,
   UnauthorizedException,
@@ -9,6 +10,7 @@ import { InitSubscriptionPaymentRequest } from './dto';
 import {
   BillingPeriod,
   CurrencyEnum,
+  EnumRole,
   Order,
   PaymentProvider,
   User,
@@ -176,5 +178,19 @@ export class PaymentService {
 
   public async createLoginLink(user: User) {
     return this.stripeService.createLoginLink(user);
+  }
+
+  public async orderPayToCustomer(user: User, orderId: string) {
+    if (!user || user.role !== EnumRole.SUPER_ADMIN) {
+      throw new ForbiddenException('Permission denied.');
+    }
+    return this.stripeService.distributeFundsForOrder(orderId);
+  }
+
+  public async orderItemPayToCustomer(user: User, orderItemId: string) {
+    if (!user || user.role !== EnumRole.SUPER_ADMIN) {
+      throw new ForbiddenException('Permission denied.');
+    }
+    return this.stripeService.distributeFundsForOrderItem(orderItemId);
   }
 }

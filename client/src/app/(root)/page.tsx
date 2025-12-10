@@ -87,7 +87,7 @@ export default async function HomePage() {
   const brands = await getBrands();
   return (
     <>
-      <Home products={products} categories={categories} brands={brands} />;
+      <Home products={products} categories={categories} brands={brands} />
     </>
   );
 }

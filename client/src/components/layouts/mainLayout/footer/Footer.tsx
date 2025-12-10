@@ -11,6 +11,7 @@ import {
   FooterQuickLinks,
   FooterSocialLinks,
 } from './config';
+import QueryString from 'qs';
 
 async function getCategories() {
   // TODO
@@ -90,8 +91,12 @@ export default async function Footer() {
                 return (
                   <li key={category.id}>
                     <Link
-                      className='hover:text-shop-light-green'
-                      href={PUBLIC_URL.category(category.id)}
+                      href={PUBLIC_URL.shop(
+                        QueryString.stringify(
+                          { filter: { categoryId: [category.id] } },
+                          { skipNulls: true }
+                        )
+                      )}
                     >
                       {category.name}
                     </Link>

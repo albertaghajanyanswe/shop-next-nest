@@ -1,5 +1,9 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { EnumOrderStatus, PaymentProvider } from '@prisma/client';
+import {
+  EnumOrderItemStatus,
+  EnumOrderStatus,
+  PaymentProvider,
+} from '@prisma/client';
 import { Type } from 'class-transformer';
 import {
   ArrayMinSize,
@@ -52,6 +56,13 @@ export class GetOrderDto {
     description: 'Stripe Payment Intent ID (optional)',
   })
   stripePaymentIntentId?: string | null;
+
+  @ApiProperty({
+    example: 'ch_1234567890',
+    required: false,
+    description: 'Stripe Charge ID (optional)',
+  })
+  stripeChargeId?: string | null;
 
   @ApiProperty({
     example: 129.99,
@@ -111,6 +122,12 @@ export class GetOrderDto {
     description: 'Last update timestamp',
   })
   updatedAt: Date;
+
+  @ApiProperty({
+    example: '2025-01-05T12:00:00.000Z',
+    description: 'Distribute funds date timestamp',
+  })
+  payoutCompletedAt: Date;
 }
 
 export class OrderItemDto {
@@ -171,6 +188,26 @@ export class OrderItemDto {
   })
   @IsString({ message: 'User ID should be string' })
   userId: string;
+
+  @ApiProperty({
+    example: EnumOrderItemStatus.PENDING,
+    enum: EnumOrderItemStatus,
+    description: 'Order item status',
+  })
+  status: EnumOrderItemStatus;
+
+  @ApiProperty({
+    example: '2025-01-05T12:00:00.000Z',
+    description: 'Distribute funds date timestamp',
+  })
+  payoutCompletedAt: Date;
+
+  @ApiProperty({
+    example: 'pi_1234567890',
+    required: false,
+    description: 'Stripe Transfer ID (optional)',
+  })
+  stripeTransferId?: string | null;
 }
 
 export class GetOrderItemDto extends OrderItemDto {
@@ -225,9 +262,13 @@ export class GetOrderWithUserDto extends GetOrderDto {
   user: GetUserDto;
 }
 
+export class GetOrderItemsWithUserDto extends GetOrderItemDto {
+  @ApiProperty({ type: () => GetUserDto })
+  user: GetUserDto;
+}
 export class GetOrderWithItemsDto extends GetOrderDto {
-  @ApiProperty({ type: () => GetOrderItemDto, isArray: true })
-  orderItems: GetOrderItemDto;
+  @ApiProperty({ type: () => GetOrderItemsWithUserDto, isArray: true })
+  orderItems: GetOrderItemsWithUserDto;
   @ApiProperty({ type: () => GetUserDto })
   user: GetUserDto;
 }
@@ -250,6 +291,7 @@ export class GetOrderItemsDetailsDto extends GetOrderItemDto {
   @ApiProperty({ type: () => GetOrderWithUserDto })
   order: GetOrderWithUserDto;
 }
+
 export class GetOrderItemsDetailsDtoAndCount {
   @ApiProperty({
     type: () => GetOrderItemsDetailsDto,

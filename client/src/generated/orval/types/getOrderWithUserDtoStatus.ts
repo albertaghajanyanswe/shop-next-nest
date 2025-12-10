@@ -21,4 +21,5 @@ export const GetOrderWithUserDtoStatus = {
   REFUNDED: 'REFUNDED',
   EXPIRED: 'EXPIRED',
   PAUSED: 'PAUSED',
+  PAYED_TO_SELLER: 'PAYED_TO_SELLER',
 } as const;

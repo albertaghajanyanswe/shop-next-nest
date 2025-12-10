@@ -7,7 +7,7 @@ import { useMemo } from 'react';
 
 export const useGetOrderById = (orderId: string) => {
   const { data: order, isLoading: isLoadingOrder } = useQuery({
-    queryKey: [QUERY_KEYS.getOrderById, orderId],
+    queryKey: [QUERY_KEYS.getOrderById[0], orderId],
     queryFn: () => orderService.getById(orderId),
   });
 

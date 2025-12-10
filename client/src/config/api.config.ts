@@ -11,6 +11,7 @@ export const API_URL = {
   colors: (url = '') => API_URL.root(`/colors${url}`),
   brands: (url = '') => API_URL.root(`/brands${url}`),
   reviews: (url = '') => API_URL.root(`/reviews${url}`),
+  allOrders: (url = '') => API_URL.root(`/orders/allOrders${url}`),
   orders: (url = '') => API_URL.root(`/orders${url}`),
   soldOrders: (url = '') => API_URL.root(`/orders/sold${url}`),
   orderItems: (url = '') => API_URL.root(`/orders/orderItems${url}`),
