@@ -8,6 +8,7 @@ import Image from 'next/image';
 import { Loader } from '@/components/ui/Loader';
 import { StoreSwitcher } from './StoreSwitcher';
 import { generateImgPath } from '@/utils/imageUtils';
+import { GetStoreDto } from '@/generated/orval/types';
 
 export function Header() {
   const { user, isLoading } = useProfile();
@@ -20,14 +21,15 @@ export function Header() {
         ) : (
           user && (
             <>
-              <StoreSwitcher items={user.stores} />
+              <StoreSwitcher items={user.stores as GetStoreDto[]} />
               <Link
                 href={DASHBOARD_URL.home()}
                 className='flex items-center gap-x-2'
               >
                 <Image
                   src={
-                    generateImgPath(user.picture) || `/images/no-user-image.png`
+                    generateImgPath(user.picture as string) ||
+                    `/images/no-user-image.png`
                   }
                   alt={user.name}
                   width={42}

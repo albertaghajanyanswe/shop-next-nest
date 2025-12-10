@@ -28,9 +28,9 @@ export class StoreDto {
   description?: string;
 
   @ApiProperty({ type: [String], description: 'Store images URLs' })
-  @IsArray()
+  @IsOptional()
   @IsString({ each: true })
-  images: string[];
+  images?: string[];
 
   @ApiProperty({
     example: 'Armenia',
