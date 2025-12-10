@@ -15,6 +15,7 @@ import { GetCategoryDto } from 'src/category/dto/category.dto';
 import { GetColorDto } from 'src/color/dto/color.dto';
 import { GetReviewDto, GetReviewWithUserDto } from 'src/review/dto/review.dto';
 import { GetStoreDto } from 'src/store/dto/store.dto';
+import { GetUserDto } from 'src/user/dto/user.dto';
 
 export class ProductDto {
   @ApiProperty({
@@ -211,6 +212,10 @@ export class GetProductWithDetails extends GetProductDto {
   @ApiProperty({ type: () => GetColorDto, required: false })
   @IsOptional()
   color?: GetColorDto;
+
+  @ApiProperty({ type: () => GetUserDto, required: false })
+  @IsOptional()
+  user?: GetUserDto;
 }
 
 export class GetProductWithDetailsAndCount {

@@ -40,8 +40,13 @@ model User {
 
   stripeAccountId String? @map("stripe_account_id")
 
+  sellerTransfers   TransferLog[] @relation("SellerTransferLogs")
+
   role  EnumRole   @default(USER)
   @@map("user")
+  // TODO - add indexes for all schemas
+  // @@index([id])
+
 }
 
 model Store {
@@ -103,7 +108,7 @@ model Product {
   color   Color? @relation(fields: [colorId], references: [id], onDelete: SetNull)
   colorId String? @map("color_id")
 
-  createdBy User?   @relation("UserProducts", fields: [userId], references: [id], onDelete: Cascade)
+  user User?   @relation("UserProducts", fields: [userId], references: [id], onDelete: Cascade)
   userId    String? @map("user_id")
 
   favoritedBy User[] @relation("UserFavorites")
@@ -361,10 +366,10 @@ model Order {
 
   orderItems OrderItem[]
 
+  transferLogs      TransferLog[]
+
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
-
-  payoutCompletedAt DateTime @default(now()) @map("payout_completed_at")
 
   @@map("order")
 }
@@ -390,11 +395,13 @@ model OrderItem {
   cachedProductImages String[]
   status      EnumOrderItemStatus @default(PENDING)
 
-  stripeTransferId String? @map("stripe_payout_transfer_id")
-  payoutCompletedAt DateTime @default(now()) @map("payout_completed_at")
+  stripeTransferId String? @map("stripe_transfer_id")
+  transferCompletedAt DateTime @default(now()) @map("transfer_completed_at")
 
   store   Store?  @relation(fields: [storeId], references: [id])
   storeId String? @map("store_id")
+
+  transferLogs      TransferLog[]
 
   @@map("order_item")
 }
@@ -414,6 +421,49 @@ model BillingInfo {
 
   stripeTestClockId String? @map("stripe_test_clock_id")
   @@map("billing_info")
+}
+
+model TransferLog {
+  id                String   @id @default(cuid())
+  // Relations
+  orderId           String   @map("order_id")
+  order             Order    @relation(fields: [orderId], references: [id], onDelete: Cascade)
+
+  orderItemId       String    @map("order_item_id")
+  orderItem         OrderItem @relation(fields: [orderItemId], references: [id], onDelete: Cascade)
+
+  sellerId          String   @map("seller_id")
+  seller            User     @relation("SellerTransferLogs", fields: [sellerId], references: [id], onDelete: Cascade)
+
+  // Stripe IDs
+  stripeTransferId  String?   @map("stripe_transfer_id") @unique // уникальный трансфер ID
+  stripeReversalId  String?   @map("stripe_reversal_id") // ID реверса (при refund)
+  stripeRefundId    String?   @map("stripe_refund_id")// ID рефунда покупателю
+
+  // Суммы (в cents)
+  grossAmount       Int      @map("gross_amount")// полная сумма (что платил покупатель)
+  transferAmount    Int      @map("transfer_amount")// сумма для продавца (95%)
+  commission        Int      @map("commission")// комиссия платформы (5%)
+
+  // Статус
+  status            String   // 'SUCCEEDED', 'FAILED', 'REVERSED', 'REFUNDED'
+  errorMessage      String?  @map("error_message")// если FAILED
+
+  // Дополнительно
+  reason            String?  // причина возврата (если refund)
+  metadata          Json?    // дополнительные данные
+
+  // Timestamps
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+
+  // Индексы для быстрого поиска
+  @@index([orderId])
+  @@index([orderItemId])
+  @@index([sellerId])
+  @@index([stripeTransferId])
+  @@index([status])
+  @@index([createdAt])
 }
 
 enum EnumProductState {

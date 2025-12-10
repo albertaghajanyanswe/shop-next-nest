@@ -122,12 +122,6 @@ export class GetOrderDto {
     description: 'Last update timestamp',
   })
   updatedAt: Date;
-
-  @ApiProperty({
-    example: '2025-01-05T12:00:00.000Z',
-    description: 'Distribute funds date timestamp',
-  })
-  payoutCompletedAt: Date;
 }
 
 export class OrderItemDto {
@@ -200,7 +194,7 @@ export class OrderItemDto {
     example: '2025-01-05T12:00:00.000Z',
     description: 'Distribute funds date timestamp',
   })
-  payoutCompletedAt: Date;
+  transferCompletedAt: Date;
 
   @ApiProperty({
     example: 'pi_1234567890',

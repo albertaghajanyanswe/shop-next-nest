@@ -16,6 +16,8 @@ import { Auth } from 'src/auth/decorators/auth.decorator';
 import { ApiOkResponse, ApiOperation } from '@nestjs/swagger';
 import {
   CancelSubscriptionRequest,
+  DistributeOrderDto,
+  DistributeOrderItemDto,
   InitSubscriptionPaymentRequest,
   PaymentHistoryResponse,
 } from './dto';
@@ -130,6 +132,7 @@ export class PaymentController {
   }
 
   @Auth()
+  @ApiOkResponse({ type: DistributeOrderDto })
   @Post('/stripe/order/distribute-funds')
   async orderPayToCustomer(
     @CurrentUser() user: User,
@@ -138,6 +141,7 @@ export class PaymentController {
     return await this.paymentService.orderPayToCustomer(user, dto.orderId);
   }
   @Auth()
+  @ApiOkResponse({ type: DistributeOrderItemDto })
   @Post('/stripe/orderItem/distribute-funds')
   async orderItemPayToCustomer(
     @CurrentUser() user: User,

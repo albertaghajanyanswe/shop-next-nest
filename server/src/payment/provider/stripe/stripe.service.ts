@@ -770,125 +770,365 @@ export class StripeService {
     return { url: session.url };
   }
 
+  // async distributeFundsForOrder(orderId: string) {
+  //   const order = await this.prisma.order.findUnique({
+  //     where: { id: orderId },
+  //     include: { orderItems: { include: { product: true } } },
+  //   });
+
+  //   if (!order) throw new NotFoundException('Order not found');
+
+  //   // group by seller
+  //   const bySeller = new Map<
+  //     string,
+  //     { amount: number; orderItemsIds: string[] }
+  //   >();
+
+  //   let isEmpty = true;
+  //   for (const item of order.orderItems) {
+  //     if (item.status !== EnumOrderItemStatus.TRANSFER_PAYED) {
+  //       isEmpty = false;
+  //       const amount = Math.round(item.price * item.quantity * 100);
+  //       const sellerId = item.product?.userId as string;
+
+  //       if (!bySeller.has(sellerId)) {
+  //         bySeller.set(sellerId, { amount: 0, orderItemsIds: [] });
+  //       }
+
+  //       const entry = bySeller.get(sellerId)!;
+  //       entry.amount += amount;
+  //       entry.orderItemsIds.push(item.id);
+  //     }
+  //   }
+
+  //   if (isEmpty) {
+  //     throw new BadRequestException(
+  //       'All customers has already received money for this order',
+  //     );
+  //   }
+
+  //   // send money to customers
+
+  //   for (const [sellerId, { amount, orderItemsIds }] of bySeller.entries()) {
+  //     const seller = await this.prisma.user.findUnique({
+  //       where: { id: sellerId },
+  //     });
+
+  //     if (!seller?.stripeAccountId) continue;
+
+  //     const transferAmount = Math.round(amount * 0.95);
+
+  //     const idempotencyKey = `orderItemsId-${orderItemsIds}`;
+  //     const transfer = await this.createStripeTransfer(
+  //       transferAmount,
+  //       seller.stripeAccountId,
+  //       order.stripeChargeId as string,
+  //       idempotencyKey,
+  //     );
+  //     console.log('CREATED TRANSFER = ', transfer);
+
+  //     // save transferId inside orderItems for that seller
+  //     await this.prisma.orderItem.updateMany({
+  //       where: { id: { in: orderItemsIds } },
+  //       data: {
+  //         stripeTransferId: transfer.id,
+  //         status: EnumOrderItemStatus.TRANSFER_PAYED,
+  //       },
+  //     });
+  //   }
+  // }
+
+  // async distributeFundsForOrderItem(orderItemId: string) {
+  //   const orderItem = await this.prisma.orderItem.findUnique({
+  //     where: { id: orderItemId },
+  //     include: {
+  //       product: true,
+  //       order: true,
+  //     },
+  //   });
+
+  //   if (!orderItem) throw new NotFoundException('Order item not found');
+  //   if (orderItem.status === EnumOrderItemStatus.TRANSFER_PAYED)
+  //     throw new NotFoundException(
+  //       'The customer has already received money for this order',
+  //     );
+  //   if (!orderItem.product) throw new NotFoundException('Product not found');
+
+  //   const sellerId = orderItem.product.userId;
+  //   if (!sellerId) throw new NotFoundException('Seller not found');
+
+  //   const seller = await this.prisma.user.findUnique({
+  //     where: { id: sellerId },
+  //   });
+
+  //   if (!seller?.stripeAccountId) {
+  //     // No Stripe account — skip silently or throw
+  //     throw new BadRequestException(
+  //       `Customer (ID: ${sellerId}) does not have stripe connected account.`,
+  //     );
+  //   }
+
+  //   // calculate amount in cents
+  //   const gross = Math.round(orderItem.price * orderItem.quantity * 100);
+  //   const transferAmount = Math.round(gross * 0.95); // 95% payout
+  //   const idempotencyKey = `orderItemId-${orderItemId}`;
+
+  //   const transfer = await this.createStripeTransfer(
+  //     transferAmount,
+  //     seller.stripeAccountId,
+  //     orderItem?.order?.stripeChargeId as string,
+  //     idempotencyKey,
+  //   );
+  //   console.log('CREATED TRANSFER = ', transfer);
+
+  //   // save transferId inside orderItems for that seller
+  //   await this.prisma.orderItem.update({
+  //     where: { id: orderItemId },
+  //     data: {
+  //       stripeTransferId: transfer.id,
+  //       status: EnumOrderItemStatus.TRANSFER_PAYED,
+  //     },
+  //   });
+  // }
+
   async distributeFundsForOrder(orderId: string) {
     const order = await this.prisma.order.findUnique({
       where: { id: orderId },
-      include: { orderItems: { include: { product: true } } },
+      include: {
+        orderItems: {
+          include: { product: { include: { user: true } } },
+        },
+      },
     });
 
     if (!order) throw new NotFoundException('Order not found');
 
-    // group by seller
-    const bySeller = new Map<
-      string,
-      { amount: number; orderItemsIds: string[] }
-    >();
+    if (!order.stripeChargeId) {
+      throw new BadRequestException(
+        `Order - ${order.id} does not have a Stripe charge`,
+      );
+    }
 
-    let isEmpty = true;
-    for (const item of order.orderItems) {
-      if (item.status !== EnumOrderItemStatus.TRANSFER_PAYED) {
-        isEmpty = false;
-        const amount = Math.round(item.price * item.quantity * 100);
-        const sellerId = item.product?.userId as string;
+    const itemsToPay = order.orderItems.filter(
+      (item) => item.status !== EnumOrderItemStatus.TRANSFER_PAYED,
+    );
 
-        if (!bySeller.has(sellerId)) {
-          bySeller.set(sellerId, { amount: 0, orderItemsIds: [] });
-        }
+    if (itemsToPay.length === 0) {
+      throw new BadRequestException(
+        'All customers have already received money for this order',
+      );
+    }
 
-        const entry = bySeller.get(sellerId)!;
-        entry.amount += amount;
-        entry.orderItemsIds.push(item.id);
+    const results: {
+      orderItemId: string;
+      sellerId: string;
+      transferId?: string;
+      amount?: number;
+      success: boolean;
+      error?: string;
+    }[] = [];
+
+    for (const item of itemsToPay) {
+      try {
+        const result = await this.distributeFundsForOrderItem(item.id);
+
+        console.log(
+          `[Order ${orderId}], OrderItem ${item.id} transfer processed successfully`,
+        );
+
+        results.push({
+          orderItemId: item.id,
+          sellerId: result.seller.id as string,
+          transferId: result.transferId,
+          amount: result.amount,
+          success: true,
+        });
+      } catch (error) {
+        console.error(
+          `[Order ${orderId}] Failed to process transfer for orderItem ${item.id}:`,
+          error.message,
+        );
+
+        results.push({
+          orderItemId: item.id,
+          sellerId: item.product?.userId || 'unknown',
+          success: false,
+          error: error.message,
+        });
       }
     }
 
-    if (isEmpty) {
-      throw new BadRequestException(
-        'All customers has already received money for this order',
-      );
+    const summary = {
+      orderId,
+      totalItems: itemsToPay.length,
+      successfulTransfers: results.filter((r) => r.success).length,
+      failedTransfers: results.filter((r) => !r.success).length,
+      totalAmount: results
+        .filter((r) => r.success)
+        .reduce((sum, r) => sum + (r.amount || 0), 0),
+      results,
+      timestamp: new Date(),
+    };
+
+    console.log(`[Order ${orderId}] Distribution complete:`, {
+      successful: summary.successfulTransfers,
+      failed: summary.failedTransfers,
+    });
+
+    if (summary.failedTransfers > 0) {
+      console.error(`[Order ${orderId}] Some transfers failed:`, summary);
     }
 
-    // send money to customers
-
-    for (const [sellerId, { amount, orderItemsIds }] of bySeller.entries()) {
-      const seller = await this.prisma.user.findUnique({
-        where: { id: sellerId },
-      });
-
-      if (!seller?.stripeAccountId) continue;
-
-      const transferAmount = Math.round(amount * 0.95);
-
-      const idempotencyKey = `orderItemsId-${orderItemsIds}`;
-      const transfer = await this.createStripeTransfer(
-        transferAmount,
-        seller.stripeAccountId,
-        order.stripeChargeId as string,
-        idempotencyKey,
-      );
-      console.log('CREATED TRANSFER = ', transfer);
-
-      // save transferId inside orderItems for that seller
-      await this.prisma.orderItem.updateMany({
-        where: { id: { in: orderItemsIds } },
-        data: {
-          stripeTransferId: transfer.id,
-          status: EnumOrderItemStatus.TRANSFER_PAYED,
-        },
-      });
-    }
+    return summary;
   }
 
   async distributeFundsForOrderItem(orderItemId: string) {
     const orderItem = await this.prisma.orderItem.findUnique({
       where: { id: orderItemId },
       include: {
-        product: true,
+        product: { include: { user: true } },
         order: true,
       },
     });
 
-    if (!orderItem) throw new NotFoundException('Order item not found');
-    if (orderItem.status === EnumOrderItemStatus.TRANSFER_PAYED)
+    if (!orderItem) throw new NotFoundException(`Order item not found`);
+
+    if (!orderItem.product) {
       throw new NotFoundException(
-        'The customer has already received money for this order',
-      );
-    if (!orderItem.product) throw new NotFoundException('Product not found');
-
-    const sellerId = orderItem.product.userId;
-    if (!sellerId) throw new NotFoundException('Seller not found');
-
-    const seller = await this.prisma.user.findUnique({
-      where: { id: sellerId },
-    });
-
-    if (!seller?.stripeAccountId) {
-      // No Stripe account — skip silently or throw
-      throw new BadRequestException(
-        `Customer (ID: ${sellerId}) does not have stripe connected account.`,
+        `Order item ${orderItem.id} product not found`,
       );
     }
 
-    // calculate amount in cents
-    const gross = Math.round(orderItem.price * orderItem.quantity * 100);
-    const transferAmount = Math.round(gross * 0.95); // 95% payout
-    const idempotencyKey = `orderItemId-${orderItemId}`;
+    if (orderItem.status === EnumOrderItemStatus.TRANSFER_PAYED) {
+      throw new BadRequestException(
+        `The customer has already received money for order item - ${orderItem.id}`,
+      );
+    }
 
-    const transfer = await this.createStripeTransfer(
-      transferAmount,
-      seller.stripeAccountId,
-      orderItem?.order?.stripeChargeId as string,
-      idempotencyKey,
-    );
-    console.log('CREATED TRANSFER = ', transfer);
+    const sellerId = orderItem.product.userId;
+    const seller = orderItem.product.user;
 
-    // save transferId inside orderItems for that seller
-    await this.prisma.orderItem.update({
-      where: { id: orderItemId },
-      data: {
-        stripeTransferId: transfer.id,
-        status: EnumOrderItemStatus.TRANSFER_PAYED,
-      },
-    });
+    if (!seller?.stripeAccountId) {
+      throw new BadRequestException(
+        `Seller (ID: ${sellerId}) does not have a connected Stripe account`,
+      );
+    }
+
+    if (!orderItem.order?.stripeChargeId) {
+      throw new BadRequestException(
+        'Order does not have a Stripe charge associated',
+      );
+    }
+
+    try {
+      const gross = Math.round(orderItem.price * orderItem.quantity * 100);
+      const transferAmount = Math.round(gross * 0.95);
+      const commission = gross - transferAmount;
+
+      const idempotencyKey = `order-item-${orderItemId}`;
+
+      const transfer = await this.createStripeTransfer(
+        transferAmount,
+        seller.stripeAccountId,
+        orderItem.order.stripeChargeId,
+        idempotencyKey,
+      );
+
+      console.log(`Transfer created successfully:`, transfer);
+
+      const updatedOrderItem = await this.prisma.orderItem.update({
+        where: { id: orderItemId },
+        data: {
+          stripeTransferId: transfer.id,
+          status: EnumOrderItemStatus.TRANSFER_PAYED,
+        },
+      });
+
+      const transferLog = await this.prisma.transferLog.create({
+        data: {
+          // Relations
+          orderId: orderItem.orderId!,
+          orderItemId: orderItemId,
+          sellerId: sellerId!,
+
+          // Stripe IDs
+          stripeTransferId: transfer.id,
+          // stripeReversalId: null (будет заполнено при refund)
+          // stripeRefundId: null (будет заполнено при refund)
+
+          // Суммы в cents
+          grossAmount: gross,
+          transferAmount: transferAmount,
+          commission: commission,
+
+          // Статус
+          status: 'SUCCEEDED',
+          errorMessage: null,
+
+          // Дополнительно
+          reason: null, // Заполняется при refund
+          metadata: {
+            productTitle: orderItem.cachedProductTitle,
+            productId: orderItem.productId,
+            quantity: orderItem.quantity,
+            price: orderItem.price,
+          },
+        },
+      });
+
+      return {
+        success: true,
+        transferId: transfer.id,
+        amount: transferAmount / 100,
+        seller: {
+          id: sellerId,
+          name: seller.name,
+          email: seller.email,
+        },
+      };
+    } catch (error) {
+      console.error(
+        `Failed to distribute funds for orderItem ${orderItemId}:`,
+        error,
+      );
+      try {
+        await this.prisma.transferLog.create({
+          data: {
+            // Relations
+            orderId: orderItem.orderId as string,
+            orderItemId: orderItemId,
+            sellerId: sellerId as string,
+
+            // Stripe IDs (нет, т.к. трансфер не создался)
+            stripeTransferId: null,
+            errorMessage: error.message,
+
+            // Суммы
+            grossAmount: Math.round(orderItem.price * orderItem.quantity * 100),
+            transferAmount: 0,
+            commission: 0,
+
+            // Статус
+            status: 'FAILED',
+
+            // Дополнительно
+            metadata: {
+              productTitle: orderItem.product?.title,
+              errorStack: error.stack,
+            },
+          },
+        });
+      } catch (logError) {
+        console.error(
+          `[OrderItem ${orderItemId}] Failed to create TransferLog:`,
+          logError.message,
+        );
+      }
+
+      throw new BadRequestException(
+        `Failed to distribute funds: ${error.message}`,
+      );
+    }
   }
 
   async payOneItem(dto: OrderDto, userId: string, order: Order) {
