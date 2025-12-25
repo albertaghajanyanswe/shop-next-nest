@@ -77,7 +77,7 @@ export default async function ShopPage() {
       />
 
       <Shop
-        products={productsData?.products}
+        initialProducts={productsData?.products}
         categories={categoriesData?.categories}
         brands={brandsData?.brands}
         stores={storesData?.stores}

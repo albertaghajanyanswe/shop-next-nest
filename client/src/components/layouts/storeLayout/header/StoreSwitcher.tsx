@@ -17,7 +17,7 @@ import {
 } from '@/components/ui/Popover';
 import { STORE_URL } from '@/config/url.config';
 import { GetStoreDto } from '@/generated/orval/types';
-import { ChevronsUpDown, Plus, StoreIcon } from 'lucide-react';
+import { ChevronsUpDown, Plus, StoreIcon, Check } from 'lucide-react';
 import { useParams, useRouter } from 'next/navigation';
 import { useState } from 'react';
 
@@ -33,6 +33,7 @@ export function StoreSwitcher({ items }: StoreSwitcherProps) {
   const [currentStore, setCurrentStore] = useState<GetStoreDto | null>(
     items.find((item) => item.id === params.storeId) || null
   );
+
   const onStoreSelect = (store: GetStoreDto) => {
     setIsOpen(false);
     setCurrentStore(store);
@@ -61,16 +62,29 @@ export function StoreSwitcher({ items }: StoreSwitcherProps) {
             <CommandInput placeholder='Search store...' />
             <CommandEmpty>No store found.</CommandEmpty>
             <CommandGroup heading='Stores'>
-              {items.map((store) => (
-                <CommandItem
-                  key={store.id}
-                  onSelect={() => onStoreSelect(store)}
-                  className='text-sm'
-                >
-                  <StoreIcon className='mr-2 size-4' />
-                  <div className='line-clamp-1'>{store.title}</div>
-                </CommandItem>
-              ))}
+              <div className='flex flex-col gap-1'>
+                {items.map((store) => (
+                  <CommandItem
+                    key={store.id}
+                    onSelect={() => onStoreSelect(store)}
+                    className={`cursor-pointer text-sm ${
+                      currentStore?.id === store.id
+                        ? 'bg-accent text-neutral-900'
+                        : ''
+                    }`}
+                  >
+                    <div className='flex w-full items-center justify-between gap-2'>
+                      <div className='flex items-center gap-2'>
+                        <StoreIcon className='size-4 flex-shrink-0' />
+                        <div className='line-clamp-1'>{store.title}</div>
+                      </div>
+                      {currentStore?.id === store.id && (
+                        <Check className='text-shop-light-green h-3 w-3' />
+                      )}
+                    </div>
+                  </CommandItem>
+                ))}
+              </div>
             </CommandGroup>
           </CommandList>
           <CommandSeparator />

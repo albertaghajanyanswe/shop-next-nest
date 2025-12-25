@@ -96,79 +96,85 @@ export default function FiltersContent({
         className='w-full'
       >
         {/* CATEGORIES */}
-        <AccordionItem value='categories'>
-          <AccordionTrigger className='text-md cursor-pointer p-2 text-left font-medium hover:no-underline md:text-lg'>
-            Categories
-          </AccordionTrigger>
-          <AccordionContent className='space-y-2 pt-0'>
-            <ResetFilterButton
-              filterKey='categoryId'
-              resetFilter={resetFilter}
-              selectedCount={localCategoryIds.length}
-            />
-            <div className='thin-scrollbar flex max-h-[250px] flex-col gap-y-1 overflow-y-auto pr-2'>
-              {categories?.map((c) => (
-                <label key={c.id} className='flex items-center gap-2'>
-                  <Checkbox
-                    checked={localCategoryIds.includes(c.id)}
-                    onCheckedChange={() => handleToggle('categoryId', c.id)}
-                  />
-                  {c.name}
-                </label>
-              ))}
-            </div>
-          </AccordionContent>
-        </AccordionItem>
+        {!!categories?.length && (
+          <AccordionItem value='categories'>
+            <AccordionTrigger className='text-md cursor-pointer p-2 text-left font-medium hover:no-underline md:text-lg'>
+              Categories
+            </AccordionTrigger>
+            <AccordionContent className='space-y-2 pt-0'>
+              <ResetFilterButton
+                filterKey='categoryId'
+                resetFilter={resetFilter}
+                selectedCount={localCategoryIds.length}
+              />
+              <div className='thin-scrollbar flex max-h-[250px] flex-col gap-y-1 overflow-y-auto pr-2'>
+                {categories?.map((c) => (
+                  <label key={c.id} className='flex items-center gap-2'>
+                    <Checkbox
+                      checked={localCategoryIds.includes(c.id)}
+                      onCheckedChange={() => handleToggle('categoryId', c.id)}
+                    />
+                    {c.name}
+                  </label>
+                ))}
+              </div>
+            </AccordionContent>
+          </AccordionItem>
+        )}
 
         {/* BRANDS */}
-        <AccordionItem value='brands'>
-          <AccordionTrigger className='text-md cursor-pointer p-2 text-left font-medium hover:no-underline md:text-lg'>
-            Brands
-          </AccordionTrigger>
-          <AccordionContent className='space-y-2 pt-0'>
-            <ResetFilterButton
-              filterKey='brandId'
-              resetFilter={resetFilter}
-              selectedCount={localBrandIds.length}
-            />
-            <div className='thin-scrollbar flex max-h-[250px] flex-col gap-y-1 overflow-y-auto pr-2'>
-              {brands?.map((b) => (
-                <label key={b.id} className='flex items-center gap-2'>
-                  <Checkbox
-                    checked={localBrandIds.includes(b.id)}
-                    onCheckedChange={() => handleToggle('brandId', b.id)}
-                  />
-                  {b.name}
-                </label>
-              ))}
-            </div>
-          </AccordionContent>
-        </AccordionItem>
+        {!!brands?.length && (
+          <AccordionItem value='brands'>
+            <AccordionTrigger className='text-md cursor-pointer p-2 text-left font-medium hover:no-underline md:text-lg'>
+              Brands
+            </AccordionTrigger>
+            <AccordionContent className='space-y-2 pt-0'>
+              <ResetFilterButton
+                filterKey='brandId'
+                resetFilter={resetFilter}
+                selectedCount={localBrandIds.length}
+              />
+              <div className='thin-scrollbar flex max-h-[250px] flex-col gap-y-1 overflow-y-auto pr-2'>
+                {brands?.map((b) => (
+                  <label key={b.id} className='flex items-center gap-2'>
+                    <Checkbox
+                      checked={localBrandIds.includes(b.id)}
+                      onCheckedChange={() => handleToggle('brandId', b.id)}
+                    />
+                    {b.name}
+                  </label>
+                ))}
+              </div>
+            </AccordionContent>
+          </AccordionItem>
+        )}
 
         {/* STORES */}
-        <AccordionItem value='stores'>
-          <AccordionTrigger className='text-md cursor-pointer p-2 text-left font-medium hover:no-underline md:text-lg'>
-            Stores
-          </AccordionTrigger>
-          <AccordionContent className='space-y-2 pt-0'>
-            <ResetFilterButton
-              filterKey='storeId'
-              resetFilter={resetFilter}
-              selectedCount={localStoreIds.length}
-            />
-            <div className='thin-scrollbar flex max-h-[250px] flex-col gap-y-1 overflow-y-auto pr-2'>
-              {stores?.map((s) => (
-                <label key={s.id} className='flex items-center gap-2'>
-                  <Checkbox
-                    checked={localStoreIds.includes(s.id)}
-                    onCheckedChange={() => handleToggle('storeId', s.id)}
-                  />
-                  {s.title}
-                </label>
-              ))}
-            </div>
-          </AccordionContent>
-        </AccordionItem>
+        {!!stores?.length && (
+          <AccordionItem value='stores'>
+            <AccordionTrigger className='text-md cursor-pointer p-2 text-left font-medium hover:no-underline md:text-lg'>
+              Stores
+            </AccordionTrigger>
+            <AccordionContent className='space-y-2 pt-0'>
+              <ResetFilterButton
+                filterKey='storeId'
+                resetFilter={resetFilter}
+                selectedCount={localStoreIds.length}
+              />
+              <div className='thin-scrollbar flex max-h-[250px] flex-col gap-y-1 overflow-y-auto pr-2'>
+                {stores?.map((s) => (
+                  <label key={s.id} className='flex items-center gap-2'>
+                    <Checkbox
+                      checked={localStoreIds.includes(s.id)}
+                      onCheckedChange={() => handleToggle('storeId', s.id)}
+                    />
+                    {s.title}
+                  </label>
+                ))}
+              </div>
+            </AccordionContent>
+          </AccordionItem>
+        )}
 
         {/* PRICE */}
         <AccordionItem value='price'>

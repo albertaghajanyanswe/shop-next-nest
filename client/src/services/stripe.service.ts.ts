@@ -5,6 +5,7 @@ import {
   IPaymentResponse,
   IStripePaymentResponse,
 } from '@/shared/types/order.interface';
+import { GetPlansDto, GetSubscriptionDto } from '@/generated/orval/types';
 
 class StripeService {
   async upgradePlan(planId: string) {
@@ -37,7 +38,7 @@ class StripeService {
   }
 
   async getSubscriptions() {
-    const { data: subscriptions } = await axiosWithAuth({
+    const { data: subscriptions } = await axiosWithAuth<GetSubscriptionDto[]>({
       url: API_URL.payment(`/subscriptions`),
       method: 'GET',
     });
@@ -46,7 +47,7 @@ class StripeService {
   }
 
   async getPlans() {
-    const { data: plans } = await axiosWithAuth({
+    const { data: plans } = await axiosWithAuth<GetPlansDto[]>({
       url: API_URL.payment(`/plans`),
       method: 'GET',
     });

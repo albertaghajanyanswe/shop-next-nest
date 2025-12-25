@@ -33,6 +33,7 @@ export function HeaderCart({ triggerBtnClass }: HeaderCartProps) {
   const { user } = useProfile();
 
   const { orderItems, total } = useCart();
+  console.log('orderItems = ', orderItems)
   const handleClickCheckout = () => {
     if (user) {
       createPaymentMultiple();

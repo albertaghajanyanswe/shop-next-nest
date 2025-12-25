@@ -39,7 +39,5 @@ export interface GetOrderWithUserDto {
   createdAt: string;
   /** Last update timestamp */
   updatedAt: string;
-  /** Distribute funds date timestamp */
-  payoutCompletedAt: string;
   user: GetUserDto;
 }

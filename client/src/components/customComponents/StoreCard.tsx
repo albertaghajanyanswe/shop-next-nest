@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import {
@@ -17,12 +17,25 @@ import {
 } from '@/utils/imageUtils';
 import { GetStoreDto } from '@/generated/orval/types';
 import QueryString from 'qs';
+import { ShowMoreText } from './ShowMoreText';
 
 interface StoreCardProps {
   store: GetStoreDto;
+  showInfo?: boolean;
+  heightClass?: string;
+  imgClass?: string;
+  makeDark?: boolean;
+  expandDesc?: boolean;
 }
 
-export function StoreCard({ store }: StoreCardProps) {
+export function StoreCard({
+  store,
+  showInfo,
+  heightClass = 'h-56',
+  imgClass = 'object-cover',
+  makeDark,
+  expandDesc,
+}: StoreCardProps) {
   const [carouselApi, setCarouselApi] = useState<CarouselApi | null>(null);
   const [activeIndex, setActiveIndex] = useState(0);
 
@@ -41,6 +54,14 @@ export function StoreCard({ store }: StoreCardProps) {
     };
   }, [carouselApi]);
 
+  const getLocationText = useMemo(() => {
+    const parts = [];
+    if (store.country) parts.push(store.country);
+    if (store.city) parts.push(store.city);
+    if (store.address) parts.push(store.address);
+    return parts.join(' • ');
+  }, [store]);
+
   const imageList =
     store?.images?.length > 0
       ? store.images
@@ -51,26 +72,33 @@ export function StoreCard({ store }: StoreCardProps) {
   return (
     <div className='flex flex-col'>
       <div className='group bg-shop-light-bg xs:text-sm relative flex flex-col overflow-hidden rounded-md text-xs'>
-        <div className='relative h-56 w-full'>
+        <div className={`relative ${heightClass} w-full`}>
           <Carousel setApi={setCarouselApi}>
             <CarouselContent>
               {imageList.map((image) => (
                 <CarouselItem key={image}>
                   <Link
-                    href={PUBLIC_URL.shop(
+                    href={PUBLIC_URL.storeShop(
+                      store?.id,
                       QueryString.stringify(
                         { filter: { storeId: [store?.id] } },
                         { skipNulls: true }
                       )
                     )}
+                    // href={PUBLIC_URL.shop(
+                    //   QueryString.stringify(
+                    //     { filter: { storeId: [store?.id] } },
+                    //     { skipNulls: true }
+                    //   )
+                    // )}
                     aria-label='Go to shop'
                   >
-                    <div className='relative h-56 w-full'>
+                    <div className={`relative ${heightClass} w-full`}>
                       <Image
                         src={generateImgPath(image, productImgParams)}
                         alt={store.title}
                         fill
-                        className='h-full w-full object-cover transition-transform duration-500 group-hover:scale-105'
+                        className={`h-full w-full ${imgClass} transition-transform duration-500 group-hover:scale-105`}
                         priority
                         {...(image
                           ? {
@@ -90,7 +118,7 @@ export function StoreCard({ store }: StoreCardProps) {
             </CarouselContent>
           </Carousel>
 
-          {/* Overlay с текстом */}
+          {/* Text absolute */}
           {/* <div className='absolute top-4 left-4 z-10'>
           <p className='text-xl font-semibold text-white'>{store.title}</p>
           {store.description && (
@@ -99,7 +127,7 @@ export function StoreCard({ store }: StoreCardProps) {
             </p>
             )}
             </div> */}
-          {/* Индикаторы */}
+          {/* Indicator */}
           <div className='absolute bottom-2 left-1/2 z-10 flex -translate-x-1/2 gap-2'>
             {store.images.map((_, index) => (
               <button
@@ -113,19 +141,41 @@ export function StoreCard({ store }: StoreCardProps) {
             ))}
           </div>
 
-          {/* Тёмный градиент для читабельности текста — опционально */}
+          {/* Dark gradient for text readability */}
           {/* <div className='pointer-events-none absolute inset-0 bg-gradient-to-b from-black/80 via-black/20 to-black/10' /> */}
-          <div className='pointer-events-none absolute inset-0 bg-gradient-to-b from-black/70 via-black/30 to-black/15' />
+          {makeDark && (
+            <div className='pointer-events-none absolute inset-0 bg-gradient-to-b from-black/70 via-black/30 to-black/15' />
+          )}
         </div>
       </div>
-      <div className='mt-2'>
-        <p className='text-xl font-semibold text-neutral-800'>{store.title}</p>
-        {store.description && (
-          <p className='mt-2 line-clamp-2 text-xs font-medium text-neutral-500'>
-            {store.description}
+      {showInfo && (
+        <div className='mt-2'>
+          <p className='text-xl leading-relaxed font-semibold text-neutral-800'>
+            {store.title}
           </p>
-        )}
-      </div>
+          {store.description &&
+            (expandDesc ? (
+              <ShowMoreText
+                className='text-muted-foreground text-sm'
+                text={store.description}
+              />
+            ) : (
+              <p className='my-2 line-clamp-2 text-sm leading-relaxed font-medium text-neutral-700'>
+                {store.description}
+              </p>
+            ))}
+          {getLocationText && (
+            <p className='text-xs leading-relaxed text-neutral-600'>
+              {getLocationText}
+            </p>
+          )}
+          {store.phone && (
+            <p className='text-xs text-neutral-600'>
+              Phone number: {store.phone}
+            </p>
+          )}
+        </div>
+      )}
     </div>
   );
 }

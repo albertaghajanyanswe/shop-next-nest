@@ -9,7 +9,7 @@ import { DataTable } from '@/components/ui/dataLoading/DataTable';
 import { useQueryParams } from '@/hooks/commons/useQueryParams';
 import { useGetOrders } from '@/hooks/queries/orders/useGetOrder';
 import { CustomPagination } from '@/components/ui/CustomPagination';
-import { GetOrderWithItemsDto } from '@/generated/orval/types';
+import { GetOrderDtoStatus, GetOrderWithItemsDto } from '@/generated/orval/types';
 import DataTableLoading from '@/components/ui/dataLoading/DataTableLoading';
 import { OrderDetailsModal } from '@/components/modals/orderDetailsModal/OrderDetailsModal';
 import { useGetAllOrders } from '@/hooks/queries/orders/useGetAllOrder';
@@ -108,6 +108,9 @@ export default function ManageOrders() {
                 setIsOpen={setIsOpen}
                 order={selectedOrder}
                 user={user}
+                showConfirm={
+                  selectedOrder.status === GetOrderDtoStatus.SUCCEEDED
+                }
               />
             )}
           </>

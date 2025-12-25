@@ -11,10 +11,12 @@ import { useState } from 'react';
 interface SearchInputProps {
   placeholder?: string;
   redirectToShop?: boolean;
+  searchFields?: string[];
 }
 export function SearchInput({
   placeholder = 'Search products...',
   redirectToShop = true,
+  searchFields = ['title', 'description']
 }: SearchInputProps) {
   const pathname = usePathname();
   const { queryParams, setFilteredParams, setFilteredParamsWithPush } =
@@ -27,9 +29,7 @@ export function SearchInput({
       params: {
         ...(queryParams?.params ? queryParams.params : {}),
         search: {
-          ...(queryParams?.params?.search
-            ? queryParams?.params?.search
-            : { fields: ['title', 'description'] }),
+          fields: searchFields,
           value: searchTerm,
         },
         skip: 0,

@@ -57,4 +57,5 @@ export const QUERY_KEYS = {
   getOrderById: ['get-order-by-id'],
   distributeFundsOrder: ['distribute-funds-order'],
   distributeFundsOrderItem: ['distribute-funds-order-item'],
+  contactUs: ['contact-us'],
 };

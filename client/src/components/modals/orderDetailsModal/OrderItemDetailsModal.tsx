@@ -1,7 +1,7 @@
 import React from 'react';
 import { CustomModal } from '@/components/modals/CustomModal';
-import { InfoSection } from './InfoSection';
-import { ItemsTable } from './ItemsTable';
+import { InfoSection } from './components/InfoSection';
+import { ItemsTable } from './components/ItemsTable';
 import { GetOrderItemsDetailsDto, GetUserDto } from '@/generated/orval/types';
 import { formatDateWithHour } from '@/utils/formateDate';
 import { STATUS_COLOR } from '@/utils/colorUtils';
@@ -16,7 +16,7 @@ import {
   TableSectionColumn,
   TableSectionItem,
 } from './OrderDetailsModal';
-import { OrderItemTotalSection } from './OrderItemTotalSection';
+import { OrderItemTotalSection } from './components/OrderItemTotalSection';
 import { formatPrice } from '@/utils/formatPrice';
 
 interface OrderItemDetailsModalProps<T extends TableSectionItem> {
@@ -24,6 +24,7 @@ interface OrderItemDetailsModalProps<T extends TableSectionItem> {
   setIsOpen: (open: boolean) => void;
   orderItem: GetOrderItemsDetailsDto;
   user: GetUserDto;
+  showConfirm?: boolean;
 }
 
 export function OrderItemDetailsModal<T extends TableSectionItem>({
@@ -31,6 +32,7 @@ export function OrderItemDetailsModal<T extends TableSectionItem>({
   setIsOpen,
   orderItem,
   user,
+  showConfirm = false,
 }: OrderItemDetailsModalProps<T>) {
   console.log('OrderItemDetailsModal user ', user);
   const getOrderInfoItems = (): InfoSectionItem[] => {
@@ -111,6 +113,8 @@ export function OrderItemDetailsModal<T extends TableSectionItem>({
         quantity: orderItem.quantity,
         price: `$${orderItem.price.toFixed(2)}`,
         title: orderItem.cachedProductTitle,
+        productId: orderItem.productId,
+        orderItemId: orderItem.id,
       },
     ];
   };
@@ -136,6 +140,7 @@ export function OrderItemDetailsModal<T extends TableSectionItem>({
               columns={getOrderTableColumns()}
               items={getOrderTableItems()}
               user={user}
+              showConfirm={showConfirm}
             />
           </div>
         </div>
@@ -146,6 +151,7 @@ export function OrderItemDetailsModal<T extends TableSectionItem>({
           value={formatPrice(orderItem.price * orderItem.quantity)}
           user={user}
           orderItemId={orderItem.id}
+          showConfirm={showConfirm}
         />
       </div>
     </CustomModal>

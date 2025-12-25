@@ -10,25 +10,29 @@ interface OrderItemTotalSectionProps {
   value: number | string;
   orderItemId?: string;
   user: GetUserDto;
+  showConfirm?: boolean;
 }
 const OrderItemTotalSectionComponent = ({
   title,
   value,
   orderItemId,
   user,
+  showConfirm,
 }: OrderItemTotalSectionProps) => {
   const { distributeFundsOrderItem, isLoadingDistributeFundsOrderItem } =
     useDistributeFundsOrderItem();
-  const isShowDistributeBtn = user.role === 'SUPER_ADMIN' && orderItemId;
+  const isShowDistributeBtn = showConfirm && orderItemId;
   return (
-    <div className={`flex w-full flex-row items-center ${isShowDistributeBtn ? 'justify-between': 'justify-end'} border-t pt-4`}>
+    <div
+      className={`flex w-full flex-row items-center ${isShowDistributeBtn ? 'justify-between' : 'justify-end'} border-t pt-4`}
+    >
       {isShowDistributeBtn && (
         <Button
           disabled={isLoadingDistributeFundsOrderItem}
           onClick={() => distributeFundsOrderItem(orderItemId)}
           variant='primary'
         >
-          Distribute Funds
+          {showConfirm ? 'Confirm' : 'Distribute Funds'}
         </Button>
       )}
       <TotalSection title={title} value={value} />

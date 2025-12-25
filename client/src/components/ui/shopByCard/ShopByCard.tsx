@@ -51,7 +51,7 @@ const ShopByCardComponent = <TData,>({
       </div>
       <div className='flex w-full items-center'>
         {data && data?.length > 0 ? (
-          <div className='xs:grid-cols-5 mt-2 grid w-full grid-cols-3 gap-4 sm:grid-cols-6 md:grid-cols-7 lg:grid-cols-8 xl:grid-cols-10 2xl:grid-cols-12'>
+          <div className='xs:grid-cols-5 mt-2 grid w-full grid-cols-3 gap-4 sm:grid-cols-6 md:grid-cols-7 lg:grid-cols-8 xl:grid-cols-9'>
             {data.map((item) => (
               <Link
                 key={item.id}

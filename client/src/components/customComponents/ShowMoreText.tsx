@@ -23,7 +23,7 @@ export const ShowMoreText: React.FC<IShowMoreTextProps> = ({
       }
       return !prev;
     });
-  const calculatedMaxLength = 448;
+  const calculatedMaxLength = 250;
 
   const isNeedShortenText = text && text.length > calculatedMaxLength;
 

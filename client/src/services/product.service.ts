@@ -24,6 +24,20 @@ class ProductService {
     }
   }
 
+  async getByStoreIdPublic(
+    storeId: string,
+    params?: any | null
+  ): Promise<GetProductWithDetailsAndCount> {
+    const { data } = await axiosClassic<GetProductWithDetailsAndCount>({
+      url: API_URL.products(
+        `/store/${storeId}?params=${encodeURIComponent(JSON.stringify(params))}`
+      ),
+      method: 'GET',
+    });
+
+    return data || { products: [], totalCount: 0 };
+  }
+
   async getByStoreId(
     storeId: string,
     params?: any | null

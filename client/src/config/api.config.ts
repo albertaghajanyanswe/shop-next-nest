@@ -20,4 +20,5 @@ export const API_URL = {
   cloudinaryFiles: (url = '') => API_URL.root(`/cloudinary/files${url}`),
   stripe: (url = '') => API_URL.root(`/stripe${url}`),
   payment: (url = '') => API_URL.root(`/payment${url}`),
+  mailer: (url = '') => API_URL.root(`/mailer${url}`),
 };

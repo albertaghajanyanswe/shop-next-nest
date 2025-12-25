@@ -158,7 +158,7 @@ export const HeaderMenu = React.forwardRef<HTMLElement, HeaderMenuProps>(
                 </NavigationMenuLink>
               </NavigationMenuItem>
 
-              {user.stores.length ? (
+              {user?.stores?.length ? (
                 <NavigationMenuItem className='w-full md:w-auto'>
                   <NavigationMenuLink
                     asChild
@@ -210,7 +210,7 @@ export const HeaderMenu = React.forwardRef<HTMLElement, HeaderMenuProps>(
                     ) : (
                       <Image
                         src={
-                          generateImgPath(user.picture) ||
+                          generateImgPath(user.picture || '') ||
                           '/images/no-user-image.png'
                         }
                         alt={user.name}
@@ -284,7 +284,7 @@ export const HeaderMenu = React.forwardRef<HTMLElement, HeaderMenuProps>(
                 </div>
               </button>
               <div className='ml-auto hidden w-[40%] lg:block'>
-                <SearchInput />
+                <SearchInput searchFields={['id', 'title', 'description']} />
               </div>
               {/* {!isMobile && ( */}
               <div className='hidden sm:inline-flex'>

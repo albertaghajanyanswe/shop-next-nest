@@ -4,7 +4,7 @@ import {
   ImageItemConfig,
   TableSectionColumn,
   TableSectionItem,
-} from './OrderDetailsModal';
+} from '../OrderDetailsModal';
 import { useDistributeFundsOrderItem } from '@/hooks/stripe/useDistributeFundsOrderItem';
 import {
   GetOrderItemsWithUserDtoStatus,
@@ -19,6 +19,7 @@ interface GenericTableProps<T extends TableSectionItem> {
   renderCell?: (item: T, column: TableSectionColumn) => React.ReactNode;
   className?: string;
   user: GetUserDto;
+  showConfirm?: boolean;
 }
 
 function DefaultCellRenderer<T extends TableSectionItem>(
@@ -64,10 +65,12 @@ export function ItemsTable<T extends TableSectionItem>({
   renderCell = DefaultCellRenderer,
   className = '',
   user,
+  showConfirm,
 }: GenericTableProps<T>) {
   const { distributeFundsOrderItem, isLoadingDistributeFundsOrderItem } =
     useDistributeFundsOrderItem();
 
+    console.log('AAAAAA items = ', items)
   return (
     <div className={`space-y-3 ${className}`}>
       <div className='hidden grid-cols-12 gap-4 p-0 text-sm font-semibold text-neutral-700 sm:grid'>
@@ -98,30 +101,42 @@ export function ItemsTable<T extends TableSectionItem>({
               </div>
             ))}
           </div>
-          {user.role === 'SUPER_ADMIN' && item.orderItemId && (
-            <Button
-              disabled={
-                isLoadingDistributeFundsOrderItem ||
-                item.orderItemStatus ===
-                  GetOrderItemsWithUserDtoStatus.TRANSFER_PAYED
-              }
-              onClick={() => {
-                if (
-                  item.orderItemStatus !==
-                  GetOrderItemsWithUserDtoStatus.TRANSFER_PAYED
-                ) {
-                  distributeFundsOrderItem(item.orderItemId);
+          <div className='xs:items-start mt-4 flex flex-col justify-between sm:mt-2 sm:flex-row sm:items-center'>
+            <div className='w-full'>
+              <p className='mb-4 flex w-full flex-row justify-between text-xs sm:mb-0 sm:justify-start'>
+                <b className='text-sm'>Order Item ID:</b>{' '}
+                <span className='ml-2'>{item.id}</span>
+              </p>
+              <p className='mb-4 flex w-full flex-row justify-between text-xs sm:mb-0 sm:justify-start'>
+                <b className='text-sm'>Product ID:</b>{' '}
+                <span className='ml-2'>{item.productId}</span>
+              </p>
+            </div>
+            {item.orderItemId && showConfirm && (
+              <Button
+                disabled={
+                  isLoadingDistributeFundsOrderItem ||
+                  item.orderItemStatus ===
+                    GetOrderItemsWithUserDtoStatus.TRANSFER_PAYED
                 }
-              }}
-              variant='outline'
-            >
-              <CircleDollarSignIcon />
-              {item.orderItemStatus ===
-              GetOrderItemsWithUserDtoStatus.TRANSFER_PAYED
-                ? 'The Customer has already been paid'
-                : 'Pay the customer'}
-            </Button>
-          )}
+                onClick={() => {
+                  if (
+                    item.orderItemStatus !==
+                    GetOrderItemsWithUserDtoStatus.TRANSFER_PAYED
+                  ) {
+                    distributeFundsOrderItem(item.orderItemId);
+                  }
+                }}
+                variant='outline'
+              >
+                <CircleDollarSignIcon />
+                {item.orderItemStatus ===
+                GetOrderItemsWithUserDtoStatus.TRANSFER_PAYED
+                  ? 'Confirmed'
+                  : 'Confirm'}
+              </Button>
+            )}
+          </div>
         </div>
       ))}
     </div>

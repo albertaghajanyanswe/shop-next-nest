@@ -71,7 +71,7 @@ export default function StoresPage({
               {storesData?.stores && storesData?.stores?.length > 0 ? (
                 <div className='mt-2 grid w-full grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 2xl:grid-cols-4'>
                   {storesData?.stores.map((store) => (
-                    <StoreCard key={store.id} store={store} />
+                    <StoreCard key={store.id} store={store} showInfo makeDark />
                   ))}
                 </div>
               ) : (
