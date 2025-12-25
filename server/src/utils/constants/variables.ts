@@ -22,4 +22,9 @@ export const EnvVariables = {
   DB_PORT: 'DB_PORT',
   DB_DATABASE: 'DB_DATABASE',
   DB_URI: 'DB_URI',
+
+  MAIL_HOST: 'MAIL_HOST',
+  MAIL_PORT: 'MAIL_PORT',
+  MAIL_USER: 'MAIL_USER',
+  MAIL_PASSWORD: 'MAIL_PASSWORD',
 };

@@ -21,6 +21,8 @@ import { PrismaService } from './prisma.service';
 import { QueryPayloadBuilderService } from './queryPayloadBuilder/QueryPayloadBuilder';
 import { CloudinaryFileModule } from './cloudinary-file/cloudinary-file.module';
 import { CloudinaryProvider } from './cloudinary-file/cloudinary-file.provider';
+import { MailerModule } from './mailer/mailer.module';
+import { SchedulerModule } from './scheduler/scheduler.module';
 @Module({
   imports: [
     ConfigModule.forRoot(),
@@ -41,6 +43,8 @@ import { CloudinaryProvider } from './cloudinary-file/cloudinary-file.provider';
     PaymentModule,
     BillingInfoModule,
     CloudinaryFileModule,
+    MailerModule,
+    SchedulerModule,
   ],
   controllers: [],
   providers: [PrismaService, SeedService, CloudinaryProvider, QueryPayloadBuilderService],

@@ -15,6 +15,7 @@ import { useQueryParams } from '@/hooks/commons/useQueryParams';
 import { CustomPagination } from '@/components/ui/CustomPagination';
 import Filters from '@/components/customComponents/filters/Filters';
 import LoadingProducts from '@/components/customComponents/loading/LoadingProducts';
+import { StoreCard } from '@/components/customComponents/StoreCard';
 
 interface ShopProps {
   initialProducts?: GetProductWithDetails[];
@@ -22,6 +23,7 @@ interface ShopProps {
   categories?: GetCategoryDto[];
   brands?: GetBrandDto[];
   totalCount?: number;
+  store?: GetStoreDto;
 }
 
 export default function Shop({
@@ -30,6 +32,7 @@ export default function Shop({
   stores,
   categories,
   brands,
+  store,
 }: ShopProps) {
   const { queryParams, changePage, changeLimit } = useQueryParams({
     pageDefaultParams: {
@@ -40,7 +43,7 @@ export default function Shop({
         skip: 0,
         search: {
           value: '',
-          fields: ['title', 'description'],
+          fields: ['id', 'title', 'description'],
         },
       },
     },
@@ -54,7 +57,10 @@ export default function Shop({
     isPending,
   } = useQuery({
     queryKey: [QUERY_KEYS.productShop[0], JSON.stringify(queryParams.params)],
-    queryFn: () => productService.getAll(queryParams.params),
+    queryFn: () =>
+      store
+        ? productService.getByStoreIdPublic(store.id, queryParams.params)
+        : productService.getAll(queryParams.params),
     initialData: { products: initialProducts, totalCount },
     // keepPreviousData: true,
   });
@@ -63,6 +69,19 @@ export default function Shop({
 
   return (
     <>
+      {store && (
+        <div className='mt-4 mb-10 grid grid-cols-12 gap-6 rounded-lg md:items-center md:justify-between'>
+          <div className='col-span-12 lg:col-span-12'>
+            <StoreCard
+              store={store}
+              heightClass='h-80'
+              imgClass='object-contain'
+              showInfo
+              expandDesc
+            />
+          </div>
+        </div>
+      )}
       <div className='grid grid-cols-1 gap-6 py-6 md:grid-cols-[250px_1fr]'>
         <Filters categories={categories} brands={brands} stores={stores} />
         <div className='relative w-full'>
@@ -78,6 +97,7 @@ export default function Shop({
                 }
                 products={productData?.products ?? []}
                 showSearch
+                searchRedirectToShop={false}
               />
 
               {!!productData?.totalCount && (

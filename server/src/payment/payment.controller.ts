@@ -23,6 +23,8 @@ import {
 } from './dto';
 import { OrderDto } from 'src/order/dto/order.dto';
 import type { User } from '@prisma/client';
+import { GetSubscriptionsDto } from './dto/subscriptions.dto';
+import { GetPlansDto } from './dto/plans.dto';
 
 @Controller('payment')
 export class PaymentController {
@@ -74,6 +76,7 @@ export class PaymentController {
     return await this.paymentService.getManagementLink(userId, res);
   }
 
+  @ApiOkResponse({ type: GetSubscriptionsDto, isArray: true })
   @Auth()
   @Get('/subscriptions')
   async getSettings(@CurrentUser('id') userId: string) {
@@ -81,6 +84,7 @@ export class PaymentController {
   }
 
   @Auth()
+  @ApiOkResponse({ type: GetPlansDto, isArray: true })
   @Get('/plans')
   async getPlans(@CurrentUser('id') userId: string) {
     return await this.paymentService.getPlans(userId);

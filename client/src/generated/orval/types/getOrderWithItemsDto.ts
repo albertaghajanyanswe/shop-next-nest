@@ -14,6 +14,7 @@ import type { GetOrderWithItemsDtoProviderMeta } from './getOrderWithItemsDtoPro
 import type { GetOrderWithItemsDtoSubscriptionId } from './getOrderWithItemsDtoSubscriptionId';
 import type { GetOrderItemsWithUserDto } from './getOrderItemsWithUserDto';
 import type { GetUserDto } from './getUserDto';
+import type { GetProductDto } from './getProductDto';
 
 export interface GetOrderWithItemsDto {
   /** Unique order ID */
@@ -40,8 +41,7 @@ export interface GetOrderWithItemsDto {
   createdAt: string;
   /** Last update timestamp */
   updatedAt: string;
-  /** Distribute funds date timestamp */
-  payoutCompletedAt: string;
   orderItems: GetOrderItemsWithUserDto[];
   user: GetUserDto;
+  product: GetProductDto;
 }

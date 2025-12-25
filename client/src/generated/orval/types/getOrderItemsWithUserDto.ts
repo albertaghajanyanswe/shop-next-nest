@@ -7,6 +7,7 @@
  */
 import type { GetOrderItemsWithUserDtoStatus } from './getOrderItemsWithUserDtoStatus';
 import type { GetOrderItemsWithUserDtoStripeTransferId } from './getOrderItemsWithUserDtoStripeTransferId';
+import type { GetOrderItemsWithUserDtoImage } from './getOrderItemsWithUserDtoImage';
 import type { GetUserDto } from './getUserDto';
 
 export interface GetOrderItemsWithUserDto {
@@ -27,9 +28,11 @@ export interface GetOrderItemsWithUserDto {
   /** Order item status */
   status: GetOrderItemsWithUserDtoStatus;
   /** Distribute funds date timestamp */
-  payoutCompletedAt: string;
+  transferCompletedAt: string;
   /** Stripe Transfer ID (optional) */
   stripeTransferId?: GetOrderItemsWithUserDtoStripeTransferId;
+  /** Product image */
+  image?: GetOrderItemsWithUserDtoImage;
   /** Order item ID */
   id: string;
   /** Creation timestamp */

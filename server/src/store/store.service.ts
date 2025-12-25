@@ -30,9 +30,9 @@ export class StoreService {
     return { stores, totalCount };
   }
 
-  async getById(storeId: string, userId: string) {
+  async getById(storeId: string, userId?: string) {
     const store = await this.prisma.store.findUnique({
-      where: { id: storeId, userId },
+      where: { id: storeId, ...(userId ? { userId } : {}) },
     });
     if (!store) {
       throw new NotFoundException(

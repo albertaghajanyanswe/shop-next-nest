@@ -15,6 +15,7 @@ import {
   IsString,
   ValidateNested,
 } from 'class-validator';
+import { GetProductDto } from 'src/product/dto/product.dto';
 import { GetUserDto } from 'src/user/dto/user.dto';
 
 export class OrderDto {
@@ -202,6 +203,14 @@ export class OrderItemDto {
     description: 'Stripe Transfer ID (optional)',
   })
   stripeTransferId?: string | null;
+
+  @ApiProperty({
+    example:
+      'https://res.cloudinary.com/dvuo50sjj/image/upload/v1765401271/products/ewfqa72hrhw7lkzfehif.png',
+    required: false,
+    description: 'Product image',
+  })
+  image?: string | null;
 }
 
 export class GetOrderItemDto extends OrderItemDto {
@@ -265,6 +274,8 @@ export class GetOrderWithItemsDto extends GetOrderDto {
   orderItems: GetOrderItemsWithUserDto;
   @ApiProperty({ type: () => GetUserDto })
   user: GetUserDto;
+  @ApiProperty({ type: () => GetProductDto })
+  product: GetProductDto;
 }
 
 export class GetOrderWithItemsDtoAndCount {

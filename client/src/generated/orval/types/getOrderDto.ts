@@ -38,6 +38,4 @@ export interface GetOrderDto {
   createdAt: string;
   /** Last update timestamp */
   updatedAt: string;
-  /** Distribute funds date timestamp */
-  payoutCompletedAt: string;
 }

@@ -11,6 +11,7 @@ import type { GetCategoryDto } from './getCategoryDto';
 import type { GetBrandDto } from './getBrandDto';
 import type { GetReviewWithUserDto } from './getReviewWithUserDto';
 import type { GetColorDto } from './getColorDto';
+import type { GetUserDto } from './getUserDto';
 
 export interface GetProductWithDetails {
   /** Product ID */
@@ -54,4 +55,5 @@ export interface GetProductWithDetails {
   brand?: GetBrandDto;
   reviews?: GetReviewWithUserDto[];
   color?: GetColorDto;
+  user?: GetUserDto;
 }

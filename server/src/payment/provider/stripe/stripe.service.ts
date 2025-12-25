@@ -736,6 +736,7 @@ export class StripeService {
         product_data: {
           name: item.name || '',
           description: item.description || '',
+          images: item.image ? [item.image] : [],
         },
         unit_amount: Math.round(item.price * 100),
       },
@@ -902,6 +903,9 @@ export class StripeService {
     });
 
     if (!order) throw new NotFoundException('Order not found');
+    if (order.status !== EnumOrderStatus.SUCCEEDED) {
+      throw new NotFoundException('Order payment not succeeded.');
+    }
 
     if (!order.stripeChargeId) {
       throw new BadRequestException(
@@ -992,6 +996,9 @@ export class StripeService {
     });
 
     if (!orderItem) throw new NotFoundException(`Order item not found`);
+    if (orderItem.order?.status !== EnumOrderStatus.SUCCEEDED) {
+      throw new NotFoundException(`Order item payment not succeeded.`);
+    }
 
     if (!orderItem.product) {
       throw new NotFoundException(

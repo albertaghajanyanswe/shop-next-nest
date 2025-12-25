@@ -27,6 +27,15 @@ export class StoreController {
   async getAll(@Query('params') params?: string) {
     return this.storeService.getAll(params);
   }
+
+  @Get(':id')
+  @ApiResponse({ type: GetStoreDto })
+  async getStoreByIdPublic(
+    @Param('id') storeId: string,
+  ) {
+    return this.storeService.getById(storeId);
+  }
+
   @Auth()
   @Get('by-id/:id')
   @ApiResponse({ type: GetStoreDto })

@@ -1,37 +1,18 @@
 'use client';
 import * as React from 'react';
 import { useEffect, useState, useRef, useCallback, useMemo } from 'react';
-import {
-  BookOpenIcon,
-  HeartIcon,
-  InfoIcon,
-  LifeBuoyIcon,
-  LogOut,
-  Menu,
-} from 'lucide-react';
+import { HeartIcon, LogOut, Menu } from 'lucide-react';
 import { Button } from '@/components/ui/Button';
-import {
-  NavigationMenu,
-  NavigationMenuContent,
-  NavigationMenuItem,
-  NavigationMenuLink,
-  NavigationMenuList,
-  NavigationMenuTrigger,
-  navigationMenuTriggerStyle,
-} from '@/components/ui/NavigationMenu';
 import {
   Popover,
   PopoverContent,
   PopoverTrigger,
 } from '@/components/ui/Popover';
 import { cn } from '@/utils/common';
-import type { ComponentProps } from 'react';
 import { Logo } from '../logo/Logo';
-import { SITE_NAME } from '@/utils/constants';
 import { SearchInput } from '../searchInput/SearchInput';
 import { DASHBOARD_URL, PUBLIC_URL, STORE_URL } from '@/config/url.config';
 import Link from 'next/link';
-import { Loader } from '@/components/ui/Loader';
 import { useProfile } from '@/hooks/useProfile';
 import { CreateStoreModal } from '@/components/modals/CreateStoreModal';
 import { HeaderCart } from './headerCart/HeaderCart';
@@ -135,6 +116,14 @@ export const HeaderMenuV2 = React.forwardRef<HTMLElement, HeaderMenuProps>(
             label='Stores'
             linkClass={showMobile}
           />
+          {/* {user?.role === 'SUPER_ADMIN' && (
+            <HeaderNavLink
+              href={PUBLIC_URL.manageOrders()}
+              isActive={pathName === PUBLIC_URL.manageOrders()}
+              label='Manage Orders'
+              linkClass={showMobile}
+            />
+          )} */}
           {!isLoadingUser && user?.stores?.length ? (
             <HeaderNavLink
               href={STORE_URL.home(user.stores[0].id)}
@@ -194,6 +183,14 @@ export const HeaderMenuV2 = React.forwardRef<HTMLElement, HeaderMenuProps>(
             label='Stores'
             linkClass={showDesktop}
           />
+          {/* {user?.role === 'SUPER_ADMIN' && (
+            <HeaderNavLink
+              href={PUBLIC_URL.manageOrders()}
+              isActive={pathName === PUBLIC_URL.manageOrders()}
+              label='Manage Orders'
+              linkClass={showDesktop}
+            />
+          )} */}
           {user?.stores?.length ? (
             <HeaderNavLink
               href={STORE_URL.home(user.stores[0].id)}
@@ -227,7 +224,7 @@ export const HeaderMenuV2 = React.forwardRef<HTMLElement, HeaderMenuProps>(
           <HeaderCart triggerBtnClass='' />
 
           {user && (
-            <HeaderNavLinkUserAvatar user={user} url={DASHBOARD_URL.home()} />
+            <HeaderNavLinkUserAvatar user={user} url={DASHBOARD_URL.settings()} />
           )}
 
           {!isLoadingUser && !user && (
@@ -283,7 +280,7 @@ export const HeaderMenuV2 = React.forwardRef<HTMLElement, HeaderMenuProps>(
             {/* Search */}
             {pathName !== PUBLIC_URL.shop() && (
               <div className='order-2 hidden w-full flex-1 px-4 md:flex'>
-                <SearchInput />
+                <SearchInput searchFields={['id', 'title', 'description']} />
               </div>
             )}
 

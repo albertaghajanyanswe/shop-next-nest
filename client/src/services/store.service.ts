@@ -24,7 +24,7 @@ class StoreService {
   }
 
   async getById(id: string) {
-    const { data } = await axiosWithAuth<IStore>({
+    const { data } = await axiosWithAuth<GetStoreDto>({
       url: API_URL.stores(`/by-id/${id}`),
       method: 'GET',
     });
@@ -32,8 +32,17 @@ class StoreService {
     return data;
   }
 
+  async getByIdPublic(id: string) {
+    const { data } = await axiosClassic<GetStoreDto>({
+      url: API_URL.stores(`/${id}`),
+      method: 'GET',
+    });
+
+    return data;
+  }
+
   async create(data: ICreateStore) {
-    const { data: createdStore } = await axiosWithAuth<IStore>({
+    const { data: createdStore } = await axiosWithAuth<GetStoreDto>({
       url: API_URL.stores(``),
       method: 'POST',
       data,
@@ -43,7 +52,7 @@ class StoreService {
   }
 
   async update(id: string, data: IUpdateStore) {
-    const { data: updatedStore } = await axiosWithAuth<IStore>({
+    const { data: updatedStore } = await axiosWithAuth<GetStoreDto>({
       url: API_URL.stores(`/${id}`),
       method: 'PUT',
       data,

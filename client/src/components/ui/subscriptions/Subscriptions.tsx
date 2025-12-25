@@ -21,6 +21,7 @@ import { useGetSubscriptions } from '@/hooks/stripe/useGetSubscriptions';
 import { useCancelUpgrade } from '@/hooks/stripe/useCancelUpgrade';
 import { EnumSubscriptionStatus } from '@/shared/types/stripe.interface';
 import { useTestClock } from '@/hooks/stripe/useTestClock';
+import { GetPlansDto, GetPlansDtoPlanId } from '@/generated/orval/types';
 
 const PLAN_FEATURES = {
   FREE: ['1 Store', '10 Products'],
@@ -80,55 +81,50 @@ export default function SubscriptionCards() {
       (p) => p.planId === 'ADVANCED_ANNUAL'
     );
     const monthlyPlan = advancedPlanLit.find((p) => p.planId === 'ADVANCED');
-    const bigPrice = monthlyPlan.price * 12;
-    const discounted = ((bigPrice - yearlyPlan.price) / bigPrice) * 100;
+    const bigPrice = monthlyPlan!.price * 12;
+    const discounted = ((bigPrice - yearlyPlan!.price) / bigPrice) * 100;
     return Math.round(discounted);
   }, [plans]);
 
-  const getPriceBlock = (plan) => {
+  const getPriceBlock = (plan: GetPlansDto) => {
     if (period === 'monthly' || plan.planId === 'FREE') {
       return (
-        <>
+        <div className='h-16 text-neutral-900'>
           <p className='text-3xl font-semibold lg:text-4xl'>
             ${plan.price}
-            <span className='text-muted-foreground text-sm font-semibold'>
+            <span className='text-sm font-medium text-neutral-700'>
               /monthly
             </span>
           </p>
-          <span className='h-4 text-xs'></span>
-        </>
+          <p className='text-xs sm:min-h-4'></p>
+        </div>
       );
     }
 
     const monthlyPlanId = plan.planId.split('_')[0];
     const monthlyPlan = plans?.find((p) => p.planId === monthlyPlanId);
-    const bigPrice = monthlyPlan.price * 12;
+    const bigPrice = monthlyPlan!.price * 12;
     const discounted = Math.round(((bigPrice - plan.price) / bigPrice) * 100);
 
     return (
-      <>
+      <div className='text-neutral-900'>
         <div className='flex flex-row items-baseline gap-2'>
-          {plan.price > 0 && (
-            <span className='text-muted-foreground text-sm font-semibold line-through'>
-              ${monthlyPlan.price * 12}
-              <span className='text-muted-foreground font-semibold'>
-                /annual
-              </span>
-            </span>
-          )}
-          <span className='text-primary text-3xl font-semibold lg:text-4xl'>
+          <span className='text-3xl font-semibold text-neutral-900 lg:text-4xl'>
             ${plan.price}
-            <span className='text-muted-foreground text-sm font-semibold'>
+            <span className='text-sm font-medium text-neutral-700'>
               /annual
             </span>
           </span>
         </div>
         {plan.price > 0 && (
-          <span className='text-xs font-semibold text-green-600'>
+          <span className='text-shop-light-green text-xs font-semibold'>
+            <span className='text-shop-red mr-2 text-sm font-semibold line-through'>
+              ${monthlyPlan!.price * 12}
+            </span>
             Save ${discounted}%
           </span>
         )}
-      </>
+      </div>
     );
   };
 
@@ -136,7 +132,10 @@ export default function SubscriptionCards() {
     return planId.replace('_ANNUAL', '');
   };
 
-  const handleSubscriptionSubmit = async (planId, isCancelNextPlan) => {
+  const handleSubscriptionSubmit = async (
+    planId: GetPlansDtoPlanId,
+    isCancelNextPlan: boolean
+  ) => {
     if (activeSubscription?.planId === planId) {
       return;
     }
@@ -149,7 +148,7 @@ export default function SubscriptionCards() {
     }
   };
 
-  const getChangePlanText = (planItem) => {
+  const getChangePlanText = (planItem: GetPlansDto) => {
     const userHadOnlyFreeSub = !subscriptions?.some(
       (i) => i.planId !== 'FREE' && i.status !== EnumSubscriptionStatus.PENDING
     );
@@ -186,10 +185,12 @@ export default function SubscriptionCards() {
   };
 
   return (
-    <div className='space-y-6'>
+    <div className='bg-shop-light-bg space-y-6 rounded-lg p-6'>
       {/* Toggle period */}
       <div className='flex items-center justify-center space-x-2'>
-        <Label htmlFor='period'>Monthly</Label>
+        <Label className='text-neutral-900' htmlFor='period'>
+          Monthly
+        </Label>
         <Switch
           id='period'
           checked={period === 'annual'}
@@ -197,9 +198,9 @@ export default function SubscriptionCards() {
             setPeriod(checked ? 'annual' : 'monthly')
           }
         />
-        <Label htmlFor='period'>
+        <Label className='text-neutral-900' htmlFor='period'>
           Annual{' '}
-          <span className='font-semibold text-green-700'>
+          <span className='text-shop-light-green font-semibold'>
             (save {calculateDiscount()}%)
           </span>
         </Label>
@@ -207,24 +208,28 @@ export default function SubscriptionCards() {
 
       {/* Cards */}
       <Button
-        className='tbodymd twa-font-medium twa-underline twa-normal-case twa-p-[0px] custom-link-btn link-primary'
-        variant='secondary'
+        className='font-medium'
+        variant='primary'
         onClick={handleManagePlan}
       >
         Manage Plan
       </Button>
 
-      <div className='grid gap-6 md:grid-cols-3'>
-        {filteredPlans?.length > 0 &&
+      <div className='grid gap-6 md:grid-cols-2 xl:grid-cols-3'>
+        {filteredPlans &&
+          filteredPlans?.length > 0 &&
           filteredPlans.map((plan) => (
-            <Card key={plan.planId} className='flex flex-col'>
-              <CardHeader>
-                <CardTitle className='flex items-center justify-between'>
+            <Card
+              key={plan.planId}
+              className={`relative flex flex-col overflow-hidden border-none bg-white shadow-none ${plan.isPopular ? 'bg-gradient-to-r from-emerald-200 to-lime-200' : ''}`}
+            >
+              <CardHeader className='text-neutral-900'>
+                <CardTitle className='flex h-6 items-center justify-between text-neutral-900'>
                   {getPlanName(plan.planId)}
                   {plan.planId.includes('ADVANCED') && (
-                    <span className='bg-primary rounded-full px-2 py-1 text-xs text-white'>
+                    <p className='w-21 text-neutral900 bg-emerald-800 absolute top-0 right-0 flex items-center justify-center rounded-bl-full px-[10px] py-[4px] text-xs font-semibold text-white'>
                       Popular
-                    </span>
+                    </p>
                   )}
                 </CardTitle>
                 {getPriceBlock(plan)}
@@ -234,8 +239,11 @@ export default function SubscriptionCards() {
                 <ul className='space-y-2'>
                   {PLAN_FEATURES[plan.planId as keyof typeof PLAN_FEATURES].map(
                     (feature) => (
-                      <li key={feature} className='flex items-center text-sm'>
-                        <Check className='mr-2 h-4 w-4 text-green-500' />
+                      <li
+                        key={feature}
+                        className='flex items-center text-sm text-neutral-900'
+                      >
+                        <Check className='text-shop-light-green mr-2 h-4 w-4' />
                         {feature}
                       </li>
                     )
@@ -247,7 +255,7 @@ export default function SubscriptionCards() {
                 <Button
                   disabled={activeSubscription?.planId === plan.planId}
                   className={`w-full ${activeSubscription?.planId === plan.planId ? 'cursor-not-allowed' : ''}`}
-                  variant={plan.popular ? 'default' : 'outline'}
+                  variant={plan.isPopular ? 'primary' : 'outline'}
                   onClick={() =>
                     handleSubscriptionSubmit(
                       plan.planId,

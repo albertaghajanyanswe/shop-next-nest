@@ -33,6 +33,15 @@ export class ProductController {
     return this.productService.getAll(params);
   }
 
+  @Get('store/:storeId')
+  @ApiOkResponse({ type: GetProductWithDetailsAndCount })
+  async getByStoreIdPublic(
+    @Param('storeId') storeId: string,
+    @Query('params') params?: string,
+  ) {
+    return this.productService.getByStoreId(storeId, params);
+  }
+
   @AuthAndOwner(StoreService, 'storeId')
   @Get('by-storeId/:storeId')
   @ApiOkResponse({ type: GetProductWithDetails, isArray: true })

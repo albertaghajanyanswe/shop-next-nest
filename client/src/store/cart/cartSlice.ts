@@ -17,11 +17,10 @@ export const cartSlice = createSlice({
       const isExist = state.orderItems.some(
         (item) => item.product.id === action.payload.product.id
       );
-
       if (!isExist) {
         state.orderItems.push({
           ...action.payload,
-          id: state.orderItems.length.toString(),
+          id: action.payload.product.id,
         });
       }
     },

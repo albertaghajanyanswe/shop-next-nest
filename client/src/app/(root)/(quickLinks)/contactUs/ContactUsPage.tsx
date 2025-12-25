@@ -15,6 +15,7 @@ import { Heading } from '@/components/ui/Heading';
 import { Button } from '@/components/ui/Button';
 import Breadcrumbs from '@/components/customComponents/Breadcrumbs';
 import PageHeader from '@/components/customComponents/PageHeader';
+import { useContactUs } from '@/hooks/queries/mailer/useContactUs';
 
 interface ContactFormInput {
   name: string;
@@ -23,6 +24,8 @@ interface ContactFormInput {
 }
 
 export default function ContactUsPage() {
+  const { sendContactUs, isLoadingContactUs } = useContactUs();
+
   const form = useForm<ContactFormInput>({
     mode: 'onChange',
     defaultValues: {
@@ -36,7 +39,8 @@ export default function ContactUsPage() {
 
   const onSubmit: SubmitHandler<ContactFormInput> = (data) => {
     console.log('SEND CONTACT MESSAGE', data);
-    // API
+    sendContactUs(data);
+    form.reset();
   };
 
   return (
@@ -117,7 +121,7 @@ export default function ContactUsPage() {
 
               <Button
                 variant='primary'
-                disabled={!isFormDirty}
+                disabled={!isFormDirty || isLoadingContactUs}
                 className='mt-4'
               >
                 Send Message

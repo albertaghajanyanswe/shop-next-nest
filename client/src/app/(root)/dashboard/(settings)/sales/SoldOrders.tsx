@@ -1,6 +1,5 @@
 'use client';
 
-import { PUBLIC_URL } from '@/config/url.config';
 import { saveTokenStorage } from '@/services/auth/auth-token.service';
 import { authService } from '@/services/auth/auth.service';
 import { QUERY_KEYS } from '@/shared/queryConstants';
@@ -9,28 +8,10 @@ import { useRouter, useSearchParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { IOrderItemColumns, OrderItemColumns } from './OrderItemColumns';
 import { useProfile } from '@/hooks/useProfile';
-import { EnumOrderStatus } from '@/shared/types/order.interface';
-import { formatPrice } from '@/utils/formatPrice';
-import { formatDateWithHour, formateDate } from '@/utils/formateDate';
-import { Button } from '@/components/ui/Button';
-import { LogOut } from 'lucide-react';
 import { DataTable } from '@/components/ui/dataLoading/DataTable';
 import { useQueryParams } from '@/hooks/commons/useQueryParams';
-import { useGetOrders } from '@/hooks/queries/orders/useGetOrder';
 import { CustomPagination } from '@/components/ui/CustomPagination';
-import { useGetSoldOrders } from '@/hooks/queries/orders/useGetSoldOrder';
-import {
-  GetOrderItemsDetailsDto,
-  GetOrderWithItemsDto,
-} from '@/generated/orval/types';
-import { CustomModal } from '@/components/modals/CustomModal';
-import { STATUS_COLOR } from '@/utils/colorUtils';
-import Image from 'next/image';
-import {
-  categoryImgBlurParams,
-  categoryImgParams,
-  generateImgPath,
-} from '@/utils/imageUtils';
+import { GetOrderItemsDetailsDto } from '@/generated/orval/types';
 import { useGetOrderItems } from '@/hooks/queries/orders/useGetOrderItems';
 import { OrderItemDetailsModal } from '@/components/modals/orderDetailsModal/OrderItemDetailsModal';
 
@@ -132,6 +113,7 @@ export default function SoldOrders() {
             setIsOpen={setIsOpen}
             orderItem={selectedOrderItem}
             user={user}
+            showConfirm
           />
         )}
       </div>

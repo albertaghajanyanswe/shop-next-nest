@@ -64,11 +64,16 @@ export class OrderService {
       const payload = this.queryBuilderService.build({
         queryParams: params || '',
       });
+      const { where, ...rest } = payload;
       const orders = await this.prisma.order.findMany({
         orderBy: {
           createdAt: 'desc',
         },
-        ...payload,
+        where: {
+          ...where,
+          OR: [{ subscriptionId: null }, { subscriptionId: '' }],
+        },
+        ...rest,
         include: {
           user: true,
           orderItems: {
@@ -79,7 +84,10 @@ export class OrderService {
         },
       });
       const totalCount = await this.prisma.order.count({
-        where: payload.where,
+        where: {
+          ...payload.where,
+          OR: [{ subscriptionId: null }, { subscriptionId: '' }],
+        },
       });
       return { orders, totalCount };
     } catch (err) {
@@ -104,6 +112,7 @@ export class OrderService {
         price: true,
         cachedProductTitle: true,
         cachedProductImages: true,
+        productId: true,
 
         user: {
           select: {
