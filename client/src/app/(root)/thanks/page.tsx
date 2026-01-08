@@ -20,7 +20,7 @@ export default function Thanks() {
         Thank you for your trust. Your order has been placed successfully.
       </p>
       <Link href={PUBLIC_URL.home()}>
-        <Button variant='primary' className='group'>
+        <Button variant='default' className='group'>
           Home{' '}
           <ArrowRight className='ml-2 size-4 transition-all group-hover:ml-3' />
         </Button>

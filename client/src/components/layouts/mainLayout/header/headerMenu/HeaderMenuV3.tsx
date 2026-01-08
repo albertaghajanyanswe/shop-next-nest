@@ -244,7 +244,7 @@ export const HeaderMenuV3 = React.forwardRef<HTMLElement, HeaderMenuProps>(
           </>
           {!user && (
             <Link href={PUBLIC_URL.auth()}>
-              <Button variant='primary' className='w-full'>
+              <Button variant='default' className='w-full'>
                 <LogOut className='mr-2 size-4 text-white' />
                 Login
               </Button>
@@ -669,7 +669,7 @@ HeaderMenuV3.displayName = 'HeaderMenu';
 //             </>
 //           ) : (
 //             <Link href={PUBLIC_URL.auth()}>
-//               <Button variant='primary' className='w-full'>
+//               <Button variant='default' className='w-full'>
 //                 <LogOut className='mr-2 size-4 text-white' />
 //                 Login
 //               </Button>

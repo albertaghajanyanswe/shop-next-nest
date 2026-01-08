@@ -33,7 +33,7 @@ export function HeaderCart({ triggerBtnClass }: HeaderCartProps) {
   const { user } = useProfile();
 
   const { orderItems, total } = useCart();
-  console.log('orderItems = ', orderItems)
+  console.log('orderItems = ', orderItems);
   const handleClickCheckout = () => {
     if (user) {
       createPaymentMultiple();
@@ -92,7 +92,7 @@ export function HeaderCart({ triggerBtnClass }: HeaderCartProps) {
             </div>
             <Button
               onClick={handleClickCheckout}
-              variant='primary'
+              variant='default'
               disabled={isLoadingCreateMultiple}
               className='w-full'
             >

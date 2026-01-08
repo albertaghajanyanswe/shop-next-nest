@@ -68,7 +68,7 @@ export function CreateStoreModal({ children }: PropsWithChildren<unknown>) {
               )}
             />
             <div className='flex justify-end'>
-              <Button variant='primary' disabled={isLoadingCreate}>
+              <Button variant='default' disabled={isLoadingCreate}>
                 Create
               </Button>
             </div>

@@ -26,7 +26,7 @@ export const StripeActionBlock: React.FC<StripeActionBlockProps> = ({
       </div>
       <Button
         disabled={btnDisabled}
-        variant='primary'
+        variant='default'
         onClick={onButtonClick}
         className='rounded-md px-4 py-2 font-medium'
       >

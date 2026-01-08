@@ -224,12 +224,15 @@ export const HeaderMenuV2 = React.forwardRef<HTMLElement, HeaderMenuProps>(
           <HeaderCart triggerBtnClass='' />
 
           {user && (
-            <HeaderNavLinkUserAvatar user={user} url={DASHBOARD_URL.settings()} />
+            <HeaderNavLinkUserAvatar
+              user={user}
+              url={DASHBOARD_URL.settings()}
+            />
           )}
 
           {!isLoadingUser && !user && (
             <Link href={PUBLIC_URL.auth()}>
-              <Button variant='primary' className='w-full'>
+              <Button variant='default' className='w-full'>
                 <LogOut className='mr-2 size-4 text-white' />
                 Login
               </Button>

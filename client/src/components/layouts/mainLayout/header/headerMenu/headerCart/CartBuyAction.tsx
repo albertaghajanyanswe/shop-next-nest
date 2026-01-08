@@ -26,7 +26,7 @@ export function CartBuyAction({ orderItem }: CartActionsProps) {
     <div className='flex items-center justify-between gap-2'>
       <Button
         onClick={handleClickBuy}
-        variant='primary'
+        variant='default'
         disabled={isLoadingCreate}
         className='w-full'
       >

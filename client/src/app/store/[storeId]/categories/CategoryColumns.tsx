@@ -30,6 +30,7 @@ const CategoryActionsCell = ({
 }) => {
   const { deleteCategory, isLoadingDelete } = useDeleteCategory();
 
+  console.log('row = ', row)
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>

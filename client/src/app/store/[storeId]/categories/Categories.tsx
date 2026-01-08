@@ -51,7 +51,8 @@ export function Categories() {
         images: category.images || [],
         image: category?.images?.[0] || '',
         storeId: category.storeId as string,
-        isCurrentUserAdmin: user?.role === 'ADMIN',
+        isCurrentUserAdmin:
+          user?.role === 'ADMIN' || user?.role === 'SUPER_ADMIN',
       }))
     : [];
 
@@ -68,7 +69,7 @@ export function Categories() {
           />
           <div className='flex items-center gap-x-4'>
             <Link href={STORE_URL.categoryCreate(storeId)}>
-              <Button variant='primary'>
+              <Button variant='default'>
                 <Plus className='size-4' />
                 Create
               </Button>

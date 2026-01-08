@@ -66,7 +66,7 @@ export function CategoryForm({ category }: CategoryFormProps) {
             confirmText='Delete'
             cancelText='Cancel'
           >
-            <Button variant='primary' size='icon' disabled={isLoadingDelete}>
+            <Button variant='default' size='icon' disabled={isLoadingDelete}>
               <Trash2 className='size-4' />
             </Button>
           </ConfirmModal>
@@ -137,7 +137,7 @@ export function CategoryForm({ category }: CategoryFormProps) {
               )}
             />
           </div>
-          <Button variant='primary' disabled={isLoading || !isFormDirty}>
+          <Button variant='default' disabled={isLoading || !isFormDirty}>
             {action}
           </Button>
         </form>

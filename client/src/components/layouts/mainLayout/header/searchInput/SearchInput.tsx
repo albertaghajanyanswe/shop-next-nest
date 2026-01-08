@@ -16,7 +16,7 @@ interface SearchInputProps {
 export function SearchInput({
   placeholder = 'Search products...',
   redirectToShop = true,
-  searchFields = ['title', 'description']
+  searchFields = ['title', 'description'],
 }: SearchInputProps) {
   const pathname = usePathname();
   const { queryParams, setFilteredParams, setFilteredParamsWithPush } =
@@ -52,7 +52,7 @@ export function SearchInput({
       <Button
         aria-label='Search products'
         className='rounded-l-none'
-        variant='primary'
+        variant='default'
         onClick={handleSearch}
       >
         <Search className='size-4' />

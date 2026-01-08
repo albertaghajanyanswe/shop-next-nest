@@ -182,7 +182,7 @@ export class SeedService implements OnApplicationBootstrap {
         ],
       },
       {
-        name: 'Garden Tools',
+        name: 'Instruments',
         images: [
           'https://res.cloudinary.com/dvuo50sjj/image/upload/v1765047347/garden-tools_qquzvs.jpg',
         ],
@@ -197,12 +197,6 @@ export class SeedService implements OnApplicationBootstrap {
         name: 'Baby Toys',
         images: [
           'https://res.cloudinary.com/dvuo50sjj/image/upload/v1765047609/baby-toys_sjv93g.avif',
-        ],
-      },
-      {
-        name: 'Musical Instruments',
-        images: [
-          'https://res.cloudinary.com/dvuo50sjj/image/upload/v1765047346/musicle-intruments_cs7cuc.avif',
         ],
       },
       {

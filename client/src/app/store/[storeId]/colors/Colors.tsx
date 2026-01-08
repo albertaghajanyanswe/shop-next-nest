@@ -58,7 +58,7 @@ export function Colors() {
           />
           <div className='flex items-center gap-x-4'>
             <Link href={STORE_URL.colorCreate(storeId)}>
-              <Button variant='primary'>
+              <Button variant='default'>
                 <Plus className='size-4' />
                 Create
               </Button>

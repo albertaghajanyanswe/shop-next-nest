@@ -59,7 +59,7 @@ export function Settings() {
           cancelText='Cancel'
         >
           <Button
-            variant='primary'
+            variant='default'
             size='icon'
             disabled={isLoadingDelete || store?.isDefaultStore}
           >
@@ -204,7 +204,7 @@ export function Settings() {
             )}
           />
 
-          <Button variant='primary' disabled={isLoadingUpdate || !isFormDirty}>
+          <Button variant='default' disabled={isLoadingUpdate || !isFormDirty}>
             Save changes
           </Button>
         </form>

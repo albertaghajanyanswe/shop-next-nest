@@ -30,7 +30,7 @@ export default function AddToCardButton({
 
   return (
     <Button
-      variant='primary'
+      variant='default'
       size='lg'
       className={cn('flex-1', className)}
       onClick={handleClick}

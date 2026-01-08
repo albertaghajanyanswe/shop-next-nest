@@ -226,7 +226,7 @@ export const HeaderMenu = React.forwardRef<HTMLElement, HeaderMenuProps>(
           ) : (
             // <NavigationMenuItem className={isMobile ? 'mt-4 w-full' : 'ml-6'}>
             <Link href={PUBLIC_URL.auth()}>
-              <Button variant='primary' className='w-full'>
+              <Button variant='default' className='w-full'>
                 <LogOut className='mr-2 size-4 text-white' />
                 Login
               </Button>

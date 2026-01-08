@@ -28,7 +28,7 @@ export function OwnerGuard(
       const entity = await this.entityService.getById(id);
       if (!entity) throw new ForbiddenException('Entity not found');
 
-      if (user.role === 'ADMIN') return true;
+      if (user.role === 'ADMIN' || user.role === 'SUPER_ADMIN') return true;
 
       if (entity.userId !== user.id)
         throw new ForbiddenException('You do not own this entity');

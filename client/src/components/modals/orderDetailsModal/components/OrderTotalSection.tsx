@@ -32,7 +32,7 @@ const OrderTotalSectionComponent = ({
         <Button
           disabled={isLoadingDistributeFundsOrder}
           onClick={() => distributeFundsOrder(orderId)}
-          variant='primary'
+          variant='default'
         >
           <CircleDollarSignIcon />
           {showConfirm ? 'Confirm' : 'Distribute Funds'}

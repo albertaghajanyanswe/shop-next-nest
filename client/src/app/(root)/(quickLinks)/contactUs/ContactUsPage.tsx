@@ -120,7 +120,7 @@ export default function ContactUsPage() {
               />
 
               <Button
-                variant='primary'
+                variant='default'
                 disabled={!isFormDirty || isLoadingContactUs}
                 className='mt-4'
               >

@@ -81,7 +81,7 @@ export function StoreCard({
                     href={PUBLIC_URL.storeShop(
                       store?.id,
                       QueryString.stringify(
-                        { filter: { storeId: [store?.id] } },
+                        // { filter: { storeId: [store?.id] } },
                         { skipNulls: true }
                       )
                     )}

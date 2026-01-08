@@ -73,7 +73,7 @@ export default async function ShopPage() {
     <div className='global-container'>
       <Breadcrumbs
         items={[{ title: 'Home', href: '/' }, { title: 'Shop' }]}
-        classNames='mt-4'
+        classNames='mt-6'
       />
 
       <Shop

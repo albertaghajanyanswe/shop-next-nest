@@ -115,7 +115,7 @@ export default async function Footer() {
             </p>
             <div className='flex flex-col space-y-4'>
               <Input placeholder='Enter your email' />
-              <Button variant='primary' size='lg' disabled>
+              <Button variant='default' size='lg' disabled>
                 Subscribe
               </Button>
             </div>

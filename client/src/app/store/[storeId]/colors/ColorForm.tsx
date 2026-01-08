@@ -65,7 +65,7 @@ export function ColorForm({ color }: ColorFormProps) {
             confirmText='Delete'
             cancelText='Cancel'
           >
-            <Button variant='primary' size='icon' disabled={isLoadingDelete}>
+            <Button variant='default' size='icon' disabled={isLoadingDelete}>
               <Trash2 className='size-4' />
             </Button>
           </ConfirmModal>
@@ -115,7 +115,7 @@ export function ColorForm({ color }: ColorFormProps) {
               )}
             />
           </div>
-          <Button variant='primary' disabled={isLoading || !isFormDirty}>
+          <Button variant='default' disabled={isLoading || !isFormDirty}>
             {action}
           </Button>
         </form>

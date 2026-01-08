@@ -64,7 +64,8 @@ export class CategoryService {
     return this.prisma.category.update({
       where: {
         id,
-        ...(user.role !== EnumRole.ADMIN && { userId: user.id }),
+        ...(user.role !== EnumRole.ADMIN &&
+          user.role !== EnumRole.SUPER_ADMIN && { userId: user.id }),
       },
       data: dto,
     });
@@ -78,7 +79,8 @@ export class CategoryService {
     return this.prisma.category.delete({
       where: {
         id,
-        ...(user.role !== EnumRole.ADMIN && { userId: user.id }),
+        ...(user.role !== EnumRole.ADMIN &&
+          user.role !== EnumRole.SUPER_ADMIN && { userId: user.id }),
       },
     });
   }

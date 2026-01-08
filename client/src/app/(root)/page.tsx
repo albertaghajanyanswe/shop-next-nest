@@ -61,7 +61,7 @@ async function getCategories() {
   // TODO
   const categories = (
     (await categoryService.getAll({
-      limit: 9,
+      limit: 8,
       skip: 0,
       sort: { field: 'rating', order: 'desc' },
     })) || []
@@ -74,7 +74,7 @@ async function getBrands() {
 
   const brands = (
     (await brandService.getAll({
-      limit: 9,
+      limit: 8,
       skip: 0,
       sort: { field: 'rating', order: 'desc' },
     })) || []

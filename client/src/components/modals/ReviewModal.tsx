@@ -91,7 +91,7 @@ export function ReviewModal({
               )}
             />
             <div className='flex justify-end'>
-              <Button variant='primary' disabled={isLoadingCreate}>
+              <Button variant='default' disabled={isLoadingCreate}>
                 {isLoadingCreate ? 'Creating...' : 'Create Review'}
               </Button>
             </div>

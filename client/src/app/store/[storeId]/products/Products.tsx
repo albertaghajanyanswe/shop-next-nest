@@ -18,26 +18,21 @@ export function Products() {
   const params = useParams<{ storeId: string }>();
   const storeId = params.storeId;
 
-  const {
-    queryParams,
-    changePage,
-    changeLimit,
-    changeSearch,
-    changeSort,
-  } = useQueryParams({
-    pageDefaultParams: {
-      params: {
-        sort: { field: 'createdAt', order: 'desc' },
-        filter: {},
-        limit: 10,
-        skip: 0,
-        search: {
-          value: '',
-          fields: ['title', 'description'],
+  const { queryParams, changePage, changeLimit, changeSearch, changeSort } =
+    useQueryParams({
+      pageDefaultParams: {
+        params: {
+          sort: { field: 'createdAt', order: 'desc' },
+          filter: {},
+          limit: 10,
+          skip: 0,
+          search: {
+            value: '',
+            fields: ['title', 'description'],
+          },
         },
       },
-    },
-  });
+    });
 
   const { productsData, isLoadingProductsData } =
     useGetStoreProducts(queryParams);
@@ -71,7 +66,7 @@ export function Products() {
           />
           <div className='flex items-center gap-x-4'>
             <Link href={STORE_URL.productCreate(storeId)}>
-              <Button variant='primary'>
+              <Button variant='default'>
                 <Plus className='size-4' />
                 Create
               </Button>

@@ -64,7 +64,8 @@ export class BrandService {
     return this.prisma.brand.update({
       where: {
         id,
-        ...(user.role !== EnumRole.ADMIN && { userId: user.id }),
+        ...(user.role !== EnumRole.ADMIN &&
+          user.role !== EnumRole.SUPER_ADMIN && { userId: user.id }),
       },
       data: dto,
     });

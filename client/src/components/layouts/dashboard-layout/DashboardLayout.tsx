@@ -104,17 +104,16 @@ export function DashboardLayout({ children }: PropsWithChildren<unknown>) {
               <span className='text-sm text-neutral-700'>{user.email}</span>
             </div>
           </Card>
-
+          {!collapsed && (
+            <div className='mb-4 rounded-md bg-gradient-to-r from-emerald-200 to-lime-200 p-2 text-sm text-neutral-900'>
+              <div className='flex items-center gap-2'>
+                <ArrowUpCircle className='h-6 min-h-6 w-6 min-w-6 text-purple-600' />
+                <span>Upgrade your plan to unlock Premium features</span>
+              </div>
+            </div>
+          )}
           {/* Horizontal Scroll Menu */}
           <div className='overflow-x-auto'>
-            {!collapsed && (
-              <div className='mb-4 rounded-md bg-gradient-to-r from-emerald-200 to-lime-200 p-2 text-sm text-neutral-900'>
-                <div className='flex items-center gap-2'>
-                  <ArrowUpCircle className='h-6 min-h-6 w-6 min-w-6 text-purple-600' />
-                  <span>Upgrade your plan to unlock Premium features</span>
-                </div>
-              </div>
-            )}
             <div className='mb-2 flex gap-2'>
               {menuItems(user).map((route) => {
                 return (
@@ -123,7 +122,7 @@ export function DashboardLayout({ children }: PropsWithChildren<unknown>) {
                       key={route.value}
                       route={route}
                       showOnlyIcon={false}
-                      className='h-9 text-sm whitespace-nowrap rounded-md'
+                      className='h-9 rounded-md text-sm whitespace-nowrap'
                     />
                   )
                 );
@@ -216,7 +215,7 @@ export function DashboardLayout({ children }: PropsWithChildren<unknown>) {
                           key={route.value}
                           route={route}
                           showOnlyIcon={collapsed}
-                          className='h-9 text-sm whitespace-nowrap rounded-md'
+                          className='h-9 rounded-md text-sm whitespace-nowrap'
                         />
                       )
                     );

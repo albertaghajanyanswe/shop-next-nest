@@ -11,7 +11,7 @@ function HomeBannerComponent() {
       <div className='relative w-full'>
         <div className='overflow-hidden'>
           <div className='-ml-4 flex'>
-            <div className='relative h-auto max-h-[600px] min-h-[350px] w-full min-w-0 shrink-0 grow-0 basis-full px-0 lg:min-h-[550px]'>
+            <div className='relative h-auto max-h-[450px] min-h-[300px] w-full min-w-0 shrink-0 grow-0 basis-full px-0 lg:min-h-[450px]'>
               {/* <Image
                 // src='/images/banner.png'
                 src='https://res.cloudinary.com/dvuo50sjj/image/upload/v1764674699/banner_wmezby.png'

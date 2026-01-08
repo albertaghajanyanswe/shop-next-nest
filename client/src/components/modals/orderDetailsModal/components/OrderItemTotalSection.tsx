@@ -30,7 +30,7 @@ const OrderItemTotalSectionComponent = ({
         <Button
           disabled={isLoadingDistributeFundsOrderItem}
           onClick={() => distributeFundsOrderItem(orderItemId)}
-          variant='primary'
+          variant='default'
         >
           {showConfirm ? 'Confirm' : 'Distribute Funds'}
         </Button>

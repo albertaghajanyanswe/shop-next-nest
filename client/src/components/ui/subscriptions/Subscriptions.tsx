@@ -209,7 +209,7 @@ export default function SubscriptionCards() {
       {/* Cards */}
       <Button
         className='font-medium'
-        variant='primary'
+        variant='default'
         onClick={handleManagePlan}
       >
         Manage Plan
@@ -227,7 +227,7 @@ export default function SubscriptionCards() {
                 <CardTitle className='flex h-6 items-center justify-between text-neutral-900'>
                   {getPlanName(plan.planId)}
                   {plan.planId.includes('ADVANCED') && (
-                    <p className='w-21 text-neutral900 bg-emerald-800 absolute top-0 right-0 flex items-center justify-center rounded-bl-full px-[10px] py-[4px] text-xs font-semibold text-white'>
+                    <p className='text-neutral900 absolute top-0 right-0 flex w-21 items-center justify-center rounded-bl-full bg-emerald-800 px-[10px] py-[4px] text-xs font-semibold text-white'>
                       Popular
                     </p>
                   )}

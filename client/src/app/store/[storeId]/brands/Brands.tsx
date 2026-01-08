@@ -48,7 +48,7 @@ export function Brands() {
           storeId: brand.storeId,
           images: brand.images,
           image: brand?.images?.[0],
-          isCurrentUserAdmin: user?.role === 'ADMIN',
+          isCurrentUserAdmin: user?.role === 'ADMIN' || user?.role === 'SUPER_ADMIN',
         }))
       : [];
 
@@ -65,7 +65,7 @@ export function Brands() {
           />
           <div className='flex items-center gap-x-4'>
             <Link href={STORE_URL.brandCreate(storeId)}>
-              <Button variant='primary'>
+              <Button variant='default'>
                 <Plus className='size-4' />
                 Create
               </Button>
