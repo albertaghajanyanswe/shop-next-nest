@@ -44,7 +44,7 @@ function ProductCardInfoUnMemo({
       </p>
       <div className='flex flex-col'>
         {isShopPage ? (
-          <p className='text-shop-light-green text-xs sm:text-sm'>
+          <p className='text-shop-light-green xs:block hidden text-xs sm:text-sm'>
             {product.store?.title}
           </p>
         ) : (
@@ -55,14 +55,14 @@ function ProductCardInfoUnMemo({
                 { skipNulls: true }
               )
             )}
-            className='text-shop-light-green text-xs hover:underline sm:text-sm'
+            className='text-shop-light-green xs:block hidden text-xs hover:underline sm:text-sm'
             aria-label='Go to shop'
           >
             {product.store?.title}
           </Link>
         )}
         {isShopPage ? (
-          <p className='text-shop-light-green text-xs sm:text-sm'>
+          <p className='text-shop-light-green xs:block hidden text-xs sm:text-sm'>
             {product.category?.name}
           </p>
         ) : (
@@ -73,7 +73,7 @@ function ProductCardInfoUnMemo({
                 { skipNulls: true }
               )
             )}
-            className='text-shop-light-green text-xs hover:underline sm:text-sm'
+            className='text-shop-light-green xs:block hidden text-xs hover:underline sm:text-sm'
             aria-label='Go to shop'
           >
             {product.category?.name}

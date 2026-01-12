@@ -26,7 +26,7 @@ export default function Auth() {
   return (
     <div className='grid min-h-screen grid-cols-1 lg:grid-cols-2'>
       <div
-        className={`relative flex flex-col items-center justify-center overflow-hidden border-none bg-white bg-gradient-to-r from-emerald-200 to-lime-100 p-6 shadow-none`}
+        className={`hidden lg:flex relative flex-col items-center justify-center overflow-hidden border-none bg-white bg-gradient-to-r from-emerald-200 to-lime-100 p-6 shadow-none`}
       >
         <h1 className='max-w-[80%] text-center text-3xl'>
           Your smart shopping starts here...

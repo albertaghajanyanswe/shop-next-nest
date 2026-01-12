@@ -65,7 +65,7 @@ export function ProductCard({ product }: ProductCardProps) {
             {product.images.map((image) => (
               <CarouselItem key={image}>
                 <Link href={PUBLIC_URL.product(product.id)}>
-                  <div className='relative h-56 w-full'>
+                  <div className='relative h-44 xs:h-56 w-full'>
                     <Image
                       src={generateImgPath(image, productImgParams)}
                       alt={`${product.title}`}
@@ -124,7 +124,7 @@ export function ProductCard({ product }: ProductCardProps) {
         className='xs:top-2 xs:right-2 absolute top-1 right-1'
         btnVariant='outline'
       />
-      <Badge className='text-xs xs:top-2 xs:left-2 absolute top-1 left-1 bg-red-500/80 font-semibold shadow-none hover:bg-emerald-700/80'>
+      <Badge className='text-xs xs:top-2 xs:left-2 absolute top-1 left-1 bg-red-500/80 font-semibold shadow-none hover:bg-red-500/80'>
         In stock • {product.quantity}
       </Badge>
     </div>

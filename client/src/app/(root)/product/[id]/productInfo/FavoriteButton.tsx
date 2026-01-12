@@ -7,6 +7,7 @@ import { QUERY_KEYS } from '@/shared/queryConstants';
 import { GetProductWithDetails } from '@/generated/orval/types';
 import { memo } from 'react';
 import toast from 'react-hot-toast';
+import { CustomTooltip } from '@/components/ui/CustomTooltip';
 
 interface FavoriteButtonProps {
   product: GetProductWithDetails;
@@ -50,26 +51,28 @@ function FavoriteButton({
     toggleFavorite();
   };
   return (
-    <Button
-      variant={btnVariant}
-      size={onlyIcon ? 'icon' : 'default'}
-      onClick={handleToggleFavorite}
-      disabled={isPending}
-      className={className}
-      aria-label='Toggle favorite'
-    >
-      {isExists ? (
-        onlyIcon ? (
-          <AiFillHeart className='text-shop-btn-dark-green size-5' />
+    <CustomTooltip text='Add to favorites'>
+      <Button
+        variant={btnVariant}
+        size={onlyIcon ? 'icon' : 'default'}
+        onClick={handleToggleFavorite}
+        disabled={isPending}
+        className={className}
+        aria-label='Toggle favorite'
+      >
+        {isExists ? (
+          onlyIcon ? (
+            <AiFillHeart className='text-shop-btn-dark-green size-5' />
+          ) : (
+            <>Remove From Favorites</>
+          )
+        ) : onlyIcon ? (
+          <AiOutlineHeart className='size-5' />
         ) : (
-          <>Remove From Favorites</>
-        )
-      ) : onlyIcon ? (
-        <AiOutlineHeart className='size-5' />
-      ) : (
-        <>Add To Favorites</>
-      )}
-    </Button>
+          <>Add To Favorites</>
+        )}
+      </Button>
+    </CustomTooltip>
   );
 }
 

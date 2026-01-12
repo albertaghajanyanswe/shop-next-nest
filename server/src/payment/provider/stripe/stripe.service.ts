@@ -13,6 +13,7 @@ import {
   Order,
   PaymentProvider,
   Plan,
+  Prisma,
   Subscription,
   User,
 } from '@prisma/client';
@@ -730,71 +731,83 @@ export class StripeService {
   }
 
   async pay(dto: OrderDto, userId: string) {
-    const items = dto.orderItems;
+    return this.prisma.$transaction(async (tx) => {
+      const order = await this.orderService.createOrderWithTx(dto, userId, tx);
 
-    if (!items || !items.length) {
-      throw new BadRequestException('No items in order');
-    }
-    const order = await this.orderService.createOrder(dto, userId);
+      const items = dto.orderItems;
 
-    const productIds = items.map((item) => item.productId);
+      if (!items?.length) {
+        throw new BadRequestException('No items in order');
+      }
 
-    const products = await this.prisma.product.findMany({
-      where: { id: { in: productIds } },
-      select: {
-        id: true,
-        title: true,
-        description: true,
-        images: true,
-        price: true,
-        quantity: true,
-      },
-    });
+      const productIds = items.map((i) => i.productId);
 
-    const productMap = validateOrderItemsAvailability(items, products);
-
-    const lineItems = items.map((item) => {
-      const product = productMap.get(item.productId)!;
-
-      return {
-        price_data: {
-          currency: 'usd',
-          product_data: {
-            name: product.title,
-            description: product.description || '',
-            images: product.images?.length ? product.images : [],
-          },
-          unit_amount: Math.round(product.price * 100),
+      const products = await tx.product.findMany({
+        where: { id: { in: productIds } },
+        select: {
+          id: true,
+          title: true,
+          description: true,
+          images: true,
+          price: true,
+          quantity: true,
         },
-        quantity: item.quantity,
-      };
-    });
+      });
 
-    const session = await this.stripe.checkout.sessions.create({
-      payment_method_types: ['card'],
-      line_items: lineItems,
-      mode: 'payment',
-      success_url: `${process.env.CLIENT_URL}/payment/success`,
-      cancel_url: `${process.env.CLIENT_URL}/payment/cancel`,
-      metadata: {
-        userId,
-        orderId: order!.id,
-      },
-      expires_at: Math.floor(Date.now() / 1000) + 60, // 1 hour
-    });
+      const productMap = validateOrderItemsAvailability(items, products);
 
-    await this.prisma.order.update({
-      where: { id: order!.id },
-      data: {
-        stripeSessionId: session.id,
-        stripePaymentIntentId:
-          typeof session.payment_intent === 'string'
-            ? session.payment_intent
-            : session.payment_intent?.id,
-      },
-    });
+      for (const item of items) {
+        await tx.product.update({
+          where: { id: item.productId },
+          data: {
+            quantity: { decrement: item.quantity },
+          },
+        });
+      }
 
-    return { url: session.url };
+      const lineItems = items.map((item) => {
+        const product = productMap.get(item.productId)!;
+
+        return {
+          price_data: {
+            currency: 'usd',
+            product_data: {
+              name: product.title,
+              description: product.description || '',
+              images: product.images ?? [],
+            },
+            unit_amount: Math.round(product.price * 100),
+          },
+          quantity: item.quantity,
+        };
+      });
+
+      const session = await this.stripe.checkout.sessions.create({
+        payment_method_types: ['card'],
+        line_items: lineItems,
+        mode: 'payment',
+        success_url: `${process.env.CLIENT_URL}/payment/success`,
+        cancel_url: `${process.env.CLIENT_URL}/payment/cancel`,
+        metadata: {
+          userId,
+          orderId: order!.id,
+        },
+        expires_at: Math.floor(Date.now() / 1000) + 60 * 60,
+      });
+
+      await tx.order.update({
+        where: { id: order!.id },
+        data: {
+          stripeSessionId: session.id,
+          stripePaymentIntentId:
+            typeof session.payment_intent === 'string'
+              ? session.payment_intent
+              : session.payment_intent?.id,
+        },
+      });
+
+      return { url: session.url };
+    });
   }
 
   // async distributeFundsForOrder(orderId: string) {
@@ -1059,7 +1072,7 @@ export class StripeService {
     }
 
     try {
-      const gross = Math.round(orderItem.price * orderItem.quantity * 100);
+      const gross = Math.round(orderItem.price * orderItem.quantity);
       const transferAmount = Math.round(gross * 0.95);
       const commission = gross - transferAmount;
 
@@ -1142,7 +1155,7 @@ export class StripeService {
             errorMessage: error.message,
 
             // Суммы
-            grossAmount: Math.round(orderItem.price * orderItem.quantity * 100),
+            grossAmount: Math.round(orderItem.price * orderItem.quantity),
             transferAmount: 0,
             commission: 0,
 
@@ -1285,6 +1298,9 @@ export class StripeService {
       case 'transfer.created':
         this.onTransferCreated(event);
         break;
+      case 'payment_intent.payment_failed':
+        this.onPaymentIntentPaymentFailed(event);
+        break;
       // case 'payment.created':
       //   this.onPaymentCreated(event);
       //   break;
@@ -1414,11 +1430,89 @@ export class StripeService {
     console.log('\n\n [Func] WEBHOOK onCheckoutSessionExpired event = ', event);
     const session = event.data.object as Stripe.Checkout.Session;
 
-    await this.prisma.order.update({
-      where: { id: session?.metadata?.orderId },
-      data: { status: EnumOrderStatus.EXPIRED },
+    const order = await this.prisma.order.findUnique({
+      where: { id: session.metadata!.orderId },
+      include: { orderItems: true },
     });
-    return;
+
+    if (order) {
+      for (const item of order.orderItems) {
+        await this.prisma.product.update({
+          where: { id: item.productId! },
+          data: {
+            quantity: { increment: item.quantity },
+          },
+        });
+      }
+
+      await this.prisma.order.update({
+        where: { id: order.id },
+        data: { status: EnumOrderStatus.EXPIRED },
+      });
+      await this.prisma.orderItem.update({
+        where: { id: order.id },
+        data: { status: EnumOrderItemStatus.EXPIRED },
+      });
+    }
+  }
+
+  async onPaymentIntentPaymentFailed(
+    event: Stripe.PaymentIntentPaymentFailedEvent,
+  ) {
+    console.log(
+      '\n\n [Func] WEBHOOK onPaymentIntentPaymentFailed event = ',
+      event,
+    );
+
+    const paymentIntent = event.data.object as Stripe.PaymentIntent;
+    console.log('paymentIntent = ', paymentIntent);
+
+    // Получаем checkout session через paymentIntent
+    const sessions = await this.stripe.checkout.sessions.list({
+      payment_intent: paymentIntent.id,
+      limit: 1,
+    });
+
+    const session = sessions.data[0];
+    const orderId = session?.metadata?.orderId;
+    console.log('orderId = ', orderId);
+
+    if (!orderId) return { received: true };
+
+    // Берем заказ и все его orderItems
+    const order = await this.prisma.order.findUnique({
+      where: { id: orderId },
+      include: { orderItems: { include: { product: true } } },
+    });
+
+    if (!order || !order.orderItems.length) return { received: true };
+
+    // Создаем transferLog для каждого orderItem
+    for (const orderItem of order.orderItems) {
+      const sellerId = orderItem.product!.userId!; // предполагаем, что product.userId есть
+
+      await this.prisma.transferLog.create({
+        data: {
+          orderId: order.id,
+          orderItemId: orderItem.id,
+          sellerId: sellerId,
+          grossAmount: orderItem.price * orderItem.quantity, // цена * количество
+          transferAmount: 0, // т.к. failed
+          commission: 0, // т.к. failed
+          status: 'FAILED', // статус failed
+          reason: paymentIntent.last_payment_error?.message || 'Payment failed',
+          errorMessage: paymentIntent.last_payment_error?.message || null,
+          metadata: {
+            productTitle: orderItem.cachedProductTitle,
+            productId: orderItem.productId,
+            quantity: orderItem.quantity,
+            price: orderItem.price,
+          },
+        },
+      });
+    }
+
+    // return { received: true };
   }
 
   async onCheckoutSessionCompletedProduct(

@@ -7,7 +7,7 @@ import {
 import { PrismaService } from 'src/prisma.service';
 import { OrderDto } from './dto/order.dto';
 import { EnumRole, PaymentProvider } from '@prisma/client';
-import type { User } from '@prisma/client';
+import type { Prisma, User } from '@prisma/client';
 import { QueryPayloadBuilderService } from 'src/queryPayloadBuilder/QueryPayloadBuilder';
 
 @Injectable()
@@ -259,5 +259,62 @@ export class OrderService {
     } catch (error) {
       console.log('error ', error);
     }
+  }
+
+  async createOrderWithTx(
+    dto: OrderDto,
+    userId: string,
+    tx: Prisma.TransactionClient,
+  ) {
+    const orderItems: any[] = [];
+
+    for (const item of dto.orderItems) {
+      const product = await tx.product.findUnique({
+        where: { id: item.productId },
+        select: {
+          title: true,
+          images: true,
+        },
+      });
+
+      if (!product) {
+        throw new BadRequestException(`Product ${item.productId} not found`);
+      }
+
+      orderItems.push({
+        quantity: item.quantity,
+        price: item.price,
+        cachedProductTitle: product.title,
+        cachedProductImages: product.images,
+        product: {
+          connect: { id: item.productId },
+        },
+        store: {
+          connect: { id: item.storeId },
+        },
+        user: {
+          connect: { id: item.userId },
+        },
+      });
+    }
+
+    const totalPrice = dto.orderItems.reduce(
+      (acc, item) => acc + item.price * item.quantity,
+      0,
+    );
+
+    return tx.order.create({
+      data: {
+        status: dto.status,
+        totalPrice,
+        provider: PaymentProvider.STRIPE,
+        user: {
+          connect: { id: userId },
+        },
+        orderItems: {
+          create: orderItems,
+        },
+      },
+    });
   }
 }

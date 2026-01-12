@@ -20,7 +20,7 @@ export class CategoryService {
     console.log('PAYLOAD = ', payload);
     const categories = await this.prisma.category.findMany({
       orderBy: {
-        createdAt: 'desc',
+        rating: 'desc',
       },
       ...payload,
     });

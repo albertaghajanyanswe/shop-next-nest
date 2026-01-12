@@ -18,4 +18,5 @@ export const GetOrderItemsWithUserDtoStatus = {
   FAILED: 'FAILED',
   REFUNDED: 'REFUNDED',
   CONFIRMED: 'CONFIRMED',
+  EXPIRED: 'EXPIRED',
 } as const;

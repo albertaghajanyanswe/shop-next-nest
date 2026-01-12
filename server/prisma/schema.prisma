@@ -527,6 +527,7 @@ enum EnumOrderItemStatus {
   FAILED
   REFUNDED
   CONFIRMED
+  EXPIRED
 
   @@map("order_item_status")
 }

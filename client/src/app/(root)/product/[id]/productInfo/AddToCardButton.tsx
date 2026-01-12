@@ -34,6 +34,7 @@ export default function AddToCardButton({
       size='lg'
       className={cn('flex-1', className)}
       onClick={handleClick}
+      disabled={product.quantity === 0}
     >
       <ShoppingCart />
       {currentElement ? 'Remove from card' : 'Add to card'}
