@@ -25,15 +25,6 @@ class StoreService {
 
   async getById(id: string) {
     const { data } = await axiosWithAuth<GetStoreDto>({
-      url: API_URL.stores(`/by-id/${id}`),
-      method: 'GET',
-    });
-
-    return data;
-  }
-
-  async getByIdPublic(id: string) {
-    const { data } = await axiosClassic<GetStoreDto>({
       url: API_URL.stores(`/${id}`),
       method: 'GET',
     });

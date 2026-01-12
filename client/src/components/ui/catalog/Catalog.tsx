@@ -26,6 +26,7 @@ export function Catalog({
   showSearch = false,
   searchRedirectToShop = true,
 }: ICatalog) {
+  console.log('AAAAA products in Catalog = ', products);
   return (
     <>
       <div className='mb-4 md:flex md:items-center md:justify-between'>

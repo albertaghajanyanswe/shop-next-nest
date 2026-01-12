@@ -128,17 +128,9 @@ export class QueryPayloadBuilderService {
     if (userId) where.userId = userId;
     if (storeId) where.storeId = storeId;
 
-    console.log('QUERY = ', queryParams);
     if (!queryParams) return { where };
     const { sort, filter, limit, skip, search } =
       this.safeJsonParser(queryParams);
-    console.log('build query payload = ', {
-      sort,
-      filter,
-      limit,
-      skip,
-      search,
-    });
 
     // фильтры
     if (filter) {
@@ -172,7 +164,7 @@ export class QueryPayloadBuilderService {
         orderBy = { [sort.field]: order };
       }
     }
-    console.log('PAYLOAD - ', {
+    console.log('QUERY - PAYLOAD - ', {
       where,
       ...(limit && { take: +limit }),
       ...(skip ? { skip: +skip } : { skip: 0 }),

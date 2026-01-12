@@ -28,6 +28,10 @@ export interface GetProductWithDetails {
   price: number;
   /** Old price */
   oldPrice?: number;
+  /** Product quantity */
+  quantity: number;
+  /** Is original */
+  isOriginal: boolean;
   /** Product images URLs */
   images: string[];
   /** Product state */

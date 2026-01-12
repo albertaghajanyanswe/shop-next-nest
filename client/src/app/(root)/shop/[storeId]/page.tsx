@@ -70,7 +70,7 @@ async function getProducts(storeId: string) {
 
 async function getStore(storeId: string) {
   // TODO
-  const store = await storeService.getByIdPublic(storeId);
+  const store = await storeService.getById(storeId);
   return store;
 }
 

@@ -6,7 +6,6 @@ import {
   IsOptional,
   IsString,
 } from 'class-validator';
-import { GetCategoryDto } from 'src/category/dto/category.dto';
 
 export class BrandDto {
   @ApiProperty({
@@ -18,6 +17,15 @@ export class BrandDto {
     message: 'Brand name is required',
   })
   name: string;
+
+  @ApiProperty({
+    required: true,
+    example: 'Dell',
+    description: 'Product brand description',
+  })
+  @IsString()
+  @IsOptional()
+  description?: string;
 
   @ApiProperty({
     required: true,

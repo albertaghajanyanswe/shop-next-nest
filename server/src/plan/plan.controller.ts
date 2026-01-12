@@ -22,7 +22,7 @@ export class PlanController {
     description: 'Retrieve a subscription plan by its unique identifier.',
   })
   @ApiOkResponse({ type: GetPlanDto })
-  @Get('by-id/:id')
+  @Get(':id')
   async getById(@Param('id') id: string) {
     return this.planService.getById(id);
   }

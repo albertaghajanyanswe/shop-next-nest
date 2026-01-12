@@ -21,7 +21,7 @@ import {
 import { Input } from '../ui/formElements/Input';
 import { Button } from '../ui/Button';
 
-export function CreateStoreModal({ children }: PropsWithChildren<unknown>) {
+export function CreateStoreModal({ children, disabledTrigger = false }: PropsWithChildren<unknown> & { disabledTrigger?: boolean }) {
   const [isOpen, setIsOpen] = useState(false);
   const { createStore, isLoadingCreate } = useCreateStore();
 
@@ -39,7 +39,7 @@ export function CreateStoreModal({ children }: PropsWithChildren<unknown>) {
 
   return (
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
-      <DialogTrigger className='w-full'>{children}</DialogTrigger>
+      <DialogTrigger disabled={disabledTrigger} className='w-full'>{children}</DialogTrigger>
       <DialogContent>
         <DialogHeader>
           <DialogTitle>Create Store</DialogTitle>

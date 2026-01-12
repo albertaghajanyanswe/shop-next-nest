@@ -18,6 +18,7 @@ export class UserService {
           },
         },
         orders: true,
+        subscription: true,
       },
     });
     return user;

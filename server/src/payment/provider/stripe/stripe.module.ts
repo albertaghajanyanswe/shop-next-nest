@@ -5,6 +5,8 @@ import { UserService } from 'src/user/user.service';
 import { ConfigService } from '@nestjs/config';
 import { BillingInfoService } from 'src/billing-info/billing-info.service';
 import { SubscriptionService } from 'src/subscription/subscription.service';
+import { OrderService } from 'src/order/order.service';
+import { QueryPayloadBuilderService } from 'src/queryPayloadBuilder/QueryPayloadBuilder';
 
 @Module({
   controllers: [],
@@ -14,7 +16,9 @@ import { SubscriptionService } from 'src/subscription/subscription.service';
     UserService,
     ConfigService,
     BillingInfoService,
-    SubscriptionService
+    SubscriptionService,
+    OrderService,
+    QueryPayloadBuilderService
   ],
   exports: [StripeService],
 })

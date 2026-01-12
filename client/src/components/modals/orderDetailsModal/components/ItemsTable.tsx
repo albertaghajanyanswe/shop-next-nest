@@ -117,12 +117,12 @@ export function ItemsTable<T extends TableSectionItem>({
                 disabled={
                   isLoadingDistributeFundsOrderItem ||
                   item.orderItemStatus ===
-                    GetOrderItemsWithUserDtoStatus.TRANSFER_PAYED
+                    GetOrderItemsWithUserDtoStatus.CONFIRMED
                 }
                 onClick={() => {
                   if (
                     item.orderItemStatus !==
-                    GetOrderItemsWithUserDtoStatus.TRANSFER_PAYED
+                    GetOrderItemsWithUserDtoStatus.CONFIRMED
                   ) {
                     distributeFundsOrderItem(item.orderItemId);
                   }
@@ -131,7 +131,7 @@ export function ItemsTable<T extends TableSectionItem>({
               >
                 <CircleDollarSignIcon />
                 {item.orderItemStatus ===
-                GetOrderItemsWithUserDtoStatus.TRANSFER_PAYED
+                GetOrderItemsWithUserDtoStatus.CONFIRMED
                   ? 'Confirmed'
                   : 'Confirm'}
               </Button>

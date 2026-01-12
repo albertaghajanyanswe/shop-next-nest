@@ -22,6 +22,7 @@ import { CurrentUser } from 'src/user/decorators/user.decorator';
 import { ApiOkResponse } from '@nestjs/swagger';
 import { AuthAndOwner } from 'src/auth/decorators/owner.decorator';
 import { StoreService } from 'src/store/store.service';
+import { AuthAndOwnerAndCanCreateProduct } from 'src/auth/decorators/owner.can-create-product.decorator';
 
 @Controller('products')
 export class ProductController {
@@ -53,13 +54,7 @@ export class ProductController {
     return this.productService.getByStoreId(storeId, params);
   }
 
-  @Get('by-id/:id')
-  @ApiOkResponse({ type: GetProductWithDetails })
-  async getById(@Param('id') id: string) {
-    return this.productService.getById(id);
-  }
-
-  @Get('product-by-id/:id')
+  @Get('product-page/:id')
   @ApiOkResponse({ type: GetProductWithDetails })
   async getProductById(@Param('id') id: string) {
     return this.productService.getProductById(id);
@@ -71,15 +66,21 @@ export class ProductController {
     return this.productService.getSimilar(id, params);
   }
 
-  @Get('most-popular')
+  @Get('/most-popular')
   @ApiOkResponse({ type: GetProductWithDetails, isArray: true })
   async getMostPopular(@Query('params') params?: string) {
     return this.productService.getMostPopular(params);
   }
 
+  @Get(':id')
+  @ApiOkResponse({ type: GetProductWithDetails })
+  async getById(@Param('id') id: string) {
+    return this.productService.getById(id);
+  }
+
   @UsePipes(new ValidationPipe())
   @HttpCode(200)
-  @AuthAndOwner(StoreService, 'storeId')
+  @AuthAndOwnerAndCanCreateProduct(StoreService, 'storeId')
   @Post(':storeId')
   @ApiOkResponse({ type: GetProductDto })
   async create(

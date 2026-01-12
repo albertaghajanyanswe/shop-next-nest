@@ -25,7 +25,7 @@ class BrandService {
 
   async getById(id: string) {
     const { data } = await axiosClassic<GetBrandDto>({
-      url: API_URL.brands(`/by-id/${id}`),
+      url: API_URL.brands(`/${id}`),
       method: 'GET',
     });
 

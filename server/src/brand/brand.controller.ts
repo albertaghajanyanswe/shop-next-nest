@@ -42,7 +42,7 @@ export class BrandController {
     return this.brandService.getByStoreId(storeId);
   }
 
-  @Get('by-id/:id')
+  @Get(':id')
   @ApiOkResponse({ type: GetBrandDto })
   async getById(@Param('id') id: string) {
     return this.brandService.getById(id);

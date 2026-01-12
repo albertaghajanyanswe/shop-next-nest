@@ -28,7 +28,7 @@ class CategoryService {
 
   async getById(id: string) {
     const { data } = await axiosClassic<GetCategoryDto>({
-      url: API_URL.categories(`/by-id/${id}`),
+      url: API_URL.categories(`/${id}`),
       method: 'GET',
     });
 

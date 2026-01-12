@@ -6,7 +6,6 @@ import {
   HttpCode,
   Post,
   Res,
-  UnauthorizedException,
   UsePipes,
   ValidationPipe,
 } from '@nestjs/common';
@@ -29,17 +28,6 @@ import { GetPlansDto } from './dto/plans.dto';
 @Controller('payment')
 export class PaymentController {
   constructor(private readonly paymentService: PaymentService) {}
-
-  @ApiOperation({
-    summary: 'Get payment history',
-    description: 'Retrieve the order history for the authenticated user.',
-  })
-  @ApiOkResponse({ type: [PaymentHistoryResponse] })
-  @Auth()
-  @Get()
-  public async getOrders(@CurrentUser('id') userId: string) {
-    return await this.paymentService.getOrders(userId);
-  }
 
   @Auth()
   @Post('/sub-upgrade')

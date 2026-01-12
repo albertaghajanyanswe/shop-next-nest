@@ -47,6 +47,19 @@ export class ProductDto {
 
   @ApiProperty({
     required: true,
+    description: 'Product quantity',
+    example: 3,
+  })
+  @IsNumber({}, { message: 'Quantity must be a number' })
+  @IsNotEmpty({ message: 'Quantity cannot be empty' })
+  quantity: number;
+
+  @ApiProperty({ example: true, description: 'Is Original' })
+  @IsBoolean()
+  isOriginal: boolean;
+
+  @ApiProperty({
+    required: true,
     description: 'Product images',
     example: ['/server-uploads/products/1763382867638-iphone 14 pro.jpeg'],
   })
@@ -122,6 +135,14 @@ export class GetProductDto {
   @IsOptional()
   @IsNumber()
   oldPrice?: number;
+
+  @ApiProperty({ example: 3, description: 'Product quantity' })
+  @IsNumber()
+  quantity: number;
+
+  @ApiProperty({ example: true, description: 'Is original' })
+  @IsBoolean()
+  isOriginal: boolean;
 
   @ApiProperty({ type: [String], description: 'Product images URLs' })
   @IsArray()

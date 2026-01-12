@@ -196,7 +196,7 @@ export const HeaderMenuV3 = React.forwardRef<HTMLElement, HeaderMenuProps>(
                     role='button'
                     className='hover:bg-accent hover:text-accent-foreground w-full cursor-pointer rounded-md px-4 py-2 text-sm font-medium'
                   >
-                    Create store
+                    Create store 1
                   </div>
                 </CreateStoreModal>
               )
@@ -304,7 +304,7 @@ export const HeaderMenuV3 = React.forwardRef<HTMLElement, HeaderMenuProps>(
                     role='button'
                     className='hover:bg-accent hover:text-accent-foreground w-full cursor-pointer rounded-md px-4 py-2 text-sm font-medium'
                   >
-                    Create store
+                    Create store 1
                   </div>
                 </CreateStoreModal>
               )

@@ -43,10 +43,10 @@ export class GetSubscriptionsDto {
   period: BillingPeriod;
 
   @ApiProperty({ description: 'Subscription store limit' })
-  storeLimit: Number;
+  storeLimit: number;
 
   @ApiProperty({ description: 'Subscription product limit' })
-  productLimit: Date;
+  productLimit: number;
 
   @ApiProperty({ description: 'Stripe customer id' })
   customerId: String;

@@ -11,6 +11,7 @@ import type { GetReviewDto } from './getReviewDto';
 import type { GetOrderDto } from './getOrderDto';
 import type { GetBillingInfoDto } from './getBillingInfoDto';
 import type { GetSubscriptionDto } from './getSubscriptionDto';
+import type { GetSubscriptionsDto } from './getSubscriptionsDto';
 
 export interface GetUserDto {
   /** User ID */
@@ -55,4 +56,6 @@ export interface GetUserDto {
   stripeAccountId?: string;
   /** User role */
   role: string;
+  /** User subscriptions */
+  subscriptions?: GetSubscriptionsDto[];
 }

@@ -40,7 +40,7 @@ export const useCheckoutStripeMultipleItems = () => {
       },
       onError: (error) => {
         console.log('error ', error);
-        toast.error('Checkout failed');
+        toast.error(`${error?.response?.data?.message}`);
       },
     });
 

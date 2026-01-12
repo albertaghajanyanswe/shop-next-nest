@@ -5,9 +5,6 @@
  * The API description
  * OpenAPI spec version: 0.0.1
  */
-import type { GetSubscriptionDtoNextBillingDate } from './getSubscriptionDtoNextBillingDate';
-import type { GetSubscriptionDtoStoreLimit } from './getSubscriptionDtoStoreLimit';
-import type { GetSubscriptionDtoProductLimit } from './getSubscriptionDtoProductLimit';
 import type { GetSubscriptionDtoCancelledReason } from './getSubscriptionDtoCancelledReason';
 import type { GetSubscriptionDtoPausedAt } from './getSubscriptionDtoPausedAt';
 
@@ -19,7 +16,7 @@ export interface GetSubscriptionDto {
   /** Subscription created at date */
   createdAt: string;
   /** Subscription next billing date */
-  nextBillingDate: GetSubscriptionDtoNextBillingDate;
+  nextBillingDate: string;
   /** Subscription start date */
   startDate: string;
   /** Subscription end date */
@@ -29,9 +26,9 @@ export interface GetSubscriptionDto {
   /** Subscription period */
   period: string;
   /** Store limit for the plan */
-  storeLimit: GetSubscriptionDtoStoreLimit;
+  storeLimit: number;
   /** Product limit for the plan */
-  productLimit: GetSubscriptionDtoProductLimit;
+  productLimit: number;
   /** Subscription customer ID */
   customerId: string;
   /** Subscription user ID */

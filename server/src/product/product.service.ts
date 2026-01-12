@@ -26,6 +26,7 @@ export class ProductService {
         color: true,
         store: true,
         brand: true,
+        reviews: true,
       },
     });
     const totalCount = await this.prisma.product.count({
@@ -103,6 +104,7 @@ export class ProductService {
   }
 
   async getMostPopular(params?: string) {
+    console.log('\n\n getMostPopular params = ', params);
     const payload = this.queryBuilderService.build({
       queryParams: params || '',
     });
@@ -120,7 +122,7 @@ export class ProductService {
       ...(payload.skip ? { skip: payload.skip } : {}),
     });
 
-    console.log('mostPopularProducts.length = ', mostPopularProducts.length);
+    console.log('\n\n mostPopularProducts.length = ', mostPopularProducts.length);
     if (!mostPopularProducts.length) {
       return this.prisma.product.findMany({
         ...(payload.take ? { take: payload.take } : {}),

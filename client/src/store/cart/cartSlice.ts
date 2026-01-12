@@ -38,7 +38,9 @@ export const cartSlice = createSlice({
         if (type === 'minus') {
           item.quantity--;
         } else {
-          item.quantity++;
+          item.quantity < item.product.quantity
+            ? item.quantity++
+            : item.quantity;
         }
       }
     },

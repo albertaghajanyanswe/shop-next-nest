@@ -54,7 +54,7 @@ class ProductService {
 
   async getById(id: string) {
     const { data } = await axiosClassic<GetProductWithDetails>({
-      url: API_URL.products(`/by-id/${id}`),
+      url: API_URL.products(`/${id}`),
       method: 'GET',
     });
 
@@ -62,7 +62,7 @@ class ProductService {
   }
   async getProductById(id: string) {
     const { data } = await axiosClassic<GetProductWithDetails>({
-      url: API_URL.products(`/product-by-id/${id}`),
+      url: API_URL.products(`/product-page/${id}`),
       method: 'GET',
     });
     return data;
@@ -76,10 +76,9 @@ class ProductService {
         ),
         method: 'GET',
       });
-
       return data;
     } catch (error) {
-      console.log(error);
+      console.log('error = ', error);
     }
   }
 

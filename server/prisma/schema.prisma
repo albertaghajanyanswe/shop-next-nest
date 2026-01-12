@@ -118,6 +118,8 @@ model Product {
 
   isPublished Boolean @default(true)
   isBlocked   Boolean @default(false)
+  isOriginal   Boolean @default(true)
+  quantity    Int     @default(1)
 
   @@map("product")
 }
@@ -515,7 +517,7 @@ enum EnumOrderStatus {
   REFUNDED
   EXPIRED
   PAUSED
-  PAYED_TO_SELLER
+  CONFIRMED
 
   @@map("order_status")
 }
@@ -524,8 +526,7 @@ enum EnumOrderItemStatus {
   PENDING
   FAILED
   REFUNDED
-  TRANSFER_CREATED
-  TRANSFER_PAYED
+  CONFIRMED
 
   @@map("order_item_status")
 }

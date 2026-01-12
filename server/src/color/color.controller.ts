@@ -36,7 +36,7 @@ export class ColorController {
   }
 
   @Auth()
-  @Get('by-id/:id')
+  @Get(':id')
   @ApiOkResponse({ type: GetColorDto })
   async getById(@Param('id') id: string) {
     return this.colorService.getById(id);

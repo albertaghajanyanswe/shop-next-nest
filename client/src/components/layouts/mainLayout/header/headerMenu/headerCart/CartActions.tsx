@@ -16,6 +16,7 @@ function CartActions({ orderItem }: CartActionsProps) {
   const { orderItems } = useCart();
   const quantity = orderItems.find((i) => i.id === orderItem.id)?.quantity;
 
+  console.log('orderItem = ', orderItem);
   const handleMinus = () => {
     if (orderItem.quantity <= 1) {
       removeFromCard({
@@ -56,6 +57,7 @@ function CartActions({ orderItem }: CartActionsProps) {
               aria-label='Plus quantity'
               variant='ghost'
               size='icon'
+              disabled={orderItem.quantity >= orderItem.product.quantity}
               onClick={() =>
                 changeQuantity({
                   id: orderItem.id,

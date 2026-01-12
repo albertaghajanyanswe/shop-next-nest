@@ -73,33 +73,6 @@ export class PaymentService {
       throw new NotFoundException('Plan not found');
     }
 
-    // const order = await this.prismaService.order.create({
-    //   data: {
-    //     totalPrice: plan.price,
-    //     provider,
-    //     user: {
-    //       connect: {
-    //         id: user.id,
-    //       },
-    //     },
-    //     // subscription: {
-    //     //   create: {
-    //     //     user: {
-    //     //       connect: {
-    //     //         id: user.id,
-    //     //       },
-    //     //     },
-    //     //     plan: {
-    //     //       connect: {
-    //     //         id: plan.id,
-    //     //       },
-    //     //     },
-    //     //     period: plan.period,
-    //     //   },
-    //     // },
-    //   },
-    // });
-
     let payment;
 
     switch (provider) {
@@ -112,15 +85,6 @@ export class PaymentService {
       default:
         payment = this.stripeService.upgradeSubscription(user, plan);
     }
-
-    // await this.prismaService.order.update({
-    //   where: {
-    //     id: order.id,
-    //   },
-    //   data: {
-    //     providerMeta: payment,
-    //   },
-    // });
     return payment;
   }
 
@@ -158,8 +122,8 @@ export class PaymentService {
   }
 
   public async pay(dto: OrderDto, userId: string) {
-    const order = await this.orderService.createOrder(dto, userId);
-    return this.stripeService.pay(dto, userId, order as Order);
+    // const order = await this.orderService.createOrder(dto, userId);
+    return this.stripeService.pay(dto, userId);
   }
 
   public async createConnectAccountStripe(user: User) {

@@ -4,9 +4,11 @@ export const PUBLIC_URL = {
   home: () => PUBLIC_URL.root(`/`),
   auth: () => PUBLIC_URL.root(`/auth`),
   shop: (query = '') => PUBLIC_URL.root(`/shop${query ? `?${query}` : ''}`),
-  storeShop: (storeId: string, query = '') => PUBLIC_URL.root(`/shop/${storeId}${query ? `?${query}` : ''}`),
+  storeShop: (storeId: string, query = '') =>
+    PUBLIC_URL.root(`/shop/${storeId}${query ? `?${query}` : ''}`),
   stores: (query = '') => PUBLIC_URL.root(`/stores${query ? `?${query}` : ''}`),
-  manageOrders: (query = '') => PUBLIC_URL.root(`/manageOrders${query ? `?${query}` : ''}`),
+  manageOrders: (query = '') =>
+    PUBLIC_URL.root(`/manageOrders${query ? `?${query}` : ''}`),
 
   product: (id = '') => PUBLIC_URL.root(`/product/${id}`),
   category: (id = '') => PUBLIC_URL.root(`/category/${id}`),
@@ -45,7 +47,7 @@ export const STORE_URL = {
   categoryCreate: (storeId = '') =>
     STORE_URL.root(`/${storeId}/categories/create`),
   categoryEdit: (storeId = '', categoryId = '') =>
-    STORE_URL.root(`/${storeId}/categories/${categoryId}`),
+    STORE_URL.root(`/${storeId ? `${storeId}/` : ''}categories/${categoryId}`),
 
   colors: (storeId = '') => STORE_URL.root(`/${storeId}/colors`),
   colorCreate: (storeId = '') => STORE_URL.root(`/${storeId}/colors/create`),
@@ -55,7 +57,7 @@ export const STORE_URL = {
   brands: (storeId = '') => STORE_URL.root(`/${storeId}/brands`),
   brandCreate: (storeId = '') => STORE_URL.root(`/${storeId}/brands/create`),
   brandEdit: (storeId = '', brandId = '') =>
-    STORE_URL.root(`/${storeId}/brands/${brandId}`),
+    STORE_URL.root(`/${storeId ? `${storeId}/` : ''}brands/${brandId}`),
 
   reviews: (storeId = '') => STORE_URL.root(`/${storeId}/reviews`),
 

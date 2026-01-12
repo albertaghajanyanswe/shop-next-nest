@@ -41,7 +41,7 @@ export class CategoryController {
     return this.categoryService.getAll(params);
   }
 
-  @Get('by-id/:id')
+  @Get(':id')
   @ApiOkResponse({ type: GetCategoryDto })
   async getById(@Param('id') id: string) {
     return this.categoryService.getById(id);

@@ -30,7 +30,7 @@ export interface GetSubscriptionsDto {
   /** Subscription store limit */
   storeLimit: number;
   /** Subscription product limit */
-  productLimit: string;
+  productLimit: number;
   /** Stripe customer id */
   customerId: string;
   /** Subscription user id */

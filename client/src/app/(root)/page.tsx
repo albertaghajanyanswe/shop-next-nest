@@ -9,7 +9,6 @@ import { generateMeta, POPULAR_KEYWORDS } from '@/components/meta/Meta';
 
 export async function generateMetadata(): Promise<Metadata> {
   const products = await getProducts();
-
   const topBrands = Array.from(
     new Set(
       products?.map((p) => p.brand?.name).filter((x): x is string => Boolean(x))

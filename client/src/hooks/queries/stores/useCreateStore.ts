@@ -20,8 +20,8 @@ export function useCreateStore() {
       toast.success('Store created successfully.');
       router.push(STORE_URL.home(store.id));
     },
-    onError: () => {
-      toast.error('Failed to create store.');
+    onError: (error) => {
+      toast.error(error?.response?.data?.message || 'Error creating store.');
     },
   });
 

@@ -23,7 +23,6 @@ export class BrandService {
       },
       ...payload,
     });
-    console.log('brands  ', brands);
     const totalCount = await this.prisma.brand.count({
       where: payload.where,
     });

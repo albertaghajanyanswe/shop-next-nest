@@ -44,7 +44,7 @@ export class GetSubscriptionDto {
   })
   @IsDate()
   @IsOptional()
-  nextBillingDate?: Date | null;
+  nextBillingDate?: Date;
 
   @ApiProperty({
     description: 'Subscription start date',
@@ -82,14 +82,14 @@ export class GetSubscriptionDto {
     example: 10,
   })
   @IsNumber()
-  public storeLimit: number | null;
+  public storeLimit: number;
 
   @ApiProperty({
     description: 'Product limit for the plan',
     example: 100,
   })
   @IsNumber()
-  public productLimit: number | null;
+  public productLimit: number;
 
   @ApiProperty({
     description: 'Subscription customer ID',

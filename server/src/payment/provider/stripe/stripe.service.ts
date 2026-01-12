@@ -26,6 +26,8 @@ import { EnvVariables } from 'src/utils/constants/variables';
 import { CreatePlanType } from 'src/payment/dto';
 import { PaymentWebhookResult } from 'src/payment/interfaces';
 import { SubscriptionService } from 'src/subscription/subscription.service';
+import { validateOrderItemsAvailability } from 'src/utils/productAvailableHelper';
+import { OrderService } from 'src/order/order.service';
 
 @Injectable()
 export class StripeService {
@@ -35,6 +37,7 @@ export class StripeService {
     private configService: ConfigService,
     private userService: UserService,
     private subscriptionService: SubscriptionService,
+    private orderService: OrderService,
   ) {
     this.stripe = new Stripe(
       configService.get<string>(EnvVariables.STRIPE_SECRET_KEY) as string,
@@ -505,8 +508,8 @@ export class StripeService {
           {
             userId: user.id,
             planId,
-            storeLimit: subscriptionSettings.storeLimit,
-            productLimit: subscriptionSettings.productLimit,
+            storeLimit: subscriptionSettings.storeLimit!,
+            productLimit: subscriptionSettings.productLimit!,
             status: EnumSubscriptionStatus.ACTIVE,
             customerId: customer.stripeCustomerId as string,
             createdAt: new Date(),
@@ -535,8 +538,8 @@ export class StripeService {
         {
           userId: user.id,
           planId,
-          storeLimit: subscriptionSettings.storeLimit,
-          productLimit: subscriptionSettings.productLimit,
+          storeLimit: subscriptionSettings.storeLimit!,
+          productLimit: subscriptionSettings.productLimit!,
           status: EnumSubscriptionStatus.PENDING,
           customerId: customer.stripeCustomerId as string,
           createdAt: new Date(),
@@ -726,24 +729,47 @@ export class StripeService {
     // return accountLink;
   }
 
-  async pay(dto: OrderDto, userId: string, order: Order) {
+  async pay(dto: OrderDto, userId: string) {
     const items = dto.orderItems;
-    if (!items.length) throw new BadRequestException('No items in order');
 
-    const lineItems = items.map((item) => ({
-      price_data: {
-        currency: 'usd',
-        product_data: {
-          name: item.name || '',
-          description: item.description || '',
-          images: item.image ? [item.image] : [],
-        },
-        unit_amount: Math.round(item.price * 100),
+    if (!items || !items.length) {
+      throw new BadRequestException('No items in order');
+    }
+    const order = await this.orderService.createOrder(dto, userId);
+
+    const productIds = items.map((item) => item.productId);
+
+    const products = await this.prisma.product.findMany({
+      where: { id: { in: productIds } },
+      select: {
+        id: true,
+        title: true,
+        description: true,
+        images: true,
+        price: true,
+        quantity: true,
       },
-      quantity: item.quantity,
-    }));
+    });
 
-    // Создаем одну checkout session на основной Stripe аккаунт
+    const productMap = validateOrderItemsAvailability(items, products);
+
+    const lineItems = items.map((item) => {
+      const product = productMap.get(item.productId)!;
+
+      return {
+        price_data: {
+          currency: 'usd',
+          product_data: {
+            name: product.title,
+            description: product.description || '',
+            images: product.images?.length ? product.images : [],
+          },
+          unit_amount: Math.round(product.price * 100),
+        },
+        quantity: item.quantity,
+      };
+    });
+
     const session = await this.stripe.checkout.sessions.create({
       payment_method_types: ['card'],
       line_items: lineItems,
@@ -752,13 +778,13 @@ export class StripeService {
       cancel_url: `${process.env.CLIENT_URL}/payment/cancel`,
       metadata: {
         userId,
-        orderId: order.id,
+        orderId: order!.id,
       },
+      expires_at: Math.floor(Date.now() / 1000) + 60, // 1 hour
     });
 
-    // Сохраняем sessionId в заказе для вебхуков
     await this.prisma.order.update({
-      where: { id: order.id },
+      where: { id: order!.id },
       data: {
         stripeSessionId: session.id,
         stripePaymentIntentId:
@@ -787,7 +813,7 @@ export class StripeService {
 
   //   let isEmpty = true;
   //   for (const item of order.orderItems) {
-  //     if (item.status !== EnumOrderItemStatus.TRANSFER_PAYED) {
+  //     if (item.status !== EnumOrderItemStatus.CONFIRMED) {
   //       isEmpty = false;
   //       const amount = Math.round(item.price * item.quantity * 100);
   //       const sellerId = item.product?.userId as string;
@@ -833,7 +859,7 @@ export class StripeService {
   //       where: { id: { in: orderItemsIds } },
   //       data: {
   //         stripeTransferId: transfer.id,
-  //         status: EnumOrderItemStatus.TRANSFER_PAYED,
+  //         status: EnumOrderItemStatus.CONFIRMED,
   //       },
   //     });
   //   }
@@ -849,7 +875,7 @@ export class StripeService {
   //   });
 
   //   if (!orderItem) throw new NotFoundException('Order item not found');
-  //   if (orderItem.status === EnumOrderItemStatus.TRANSFER_PAYED)
+  //   if (orderItem.status === EnumOrderItemStatus.CONFIRMED)
   //     throw new NotFoundException(
   //       'The customer has already received money for this order',
   //     );
@@ -887,7 +913,7 @@ export class StripeService {
   //     where: { id: orderItemId },
   //     data: {
   //       stripeTransferId: transfer.id,
-  //       status: EnumOrderItemStatus.TRANSFER_PAYED,
+  //       status: EnumOrderItemStatus.CONFIRMED,
   //     },
   //   });
   // }
@@ -914,7 +940,7 @@ export class StripeService {
     }
 
     const itemsToPay = order.orderItems.filter(
-      (item) => item.status !== EnumOrderItemStatus.TRANSFER_PAYED,
+      (item) => item.status !== EnumOrderItemStatus.CONFIRMED,
     );
 
     if (itemsToPay.length === 0) {
@@ -982,7 +1008,12 @@ export class StripeService {
     if (summary.failedTransfers > 0) {
       console.error(`[Order ${orderId}] Some transfers failed:`, summary);
     }
-
+    if (summary.failedTransfers === 0) {
+      await this.prisma.order.update({
+        where: { id: orderId },
+        data: { status: EnumOrderStatus.CONFIRMED },
+      });
+    }
     return summary;
   }
 
@@ -1006,7 +1037,7 @@ export class StripeService {
       );
     }
 
-    if (orderItem.status === EnumOrderItemStatus.TRANSFER_PAYED) {
+    if (orderItem.status === EnumOrderItemStatus.CONFIRMED) {
       throw new BadRequestException(
         `The customer has already received money for order item - ${orderItem.id}`,
       );
@@ -1047,7 +1078,7 @@ export class StripeService {
         where: { id: orderItemId },
         data: {
           stripeTransferId: transfer.id,
-          status: EnumOrderItemStatus.TRANSFER_PAYED,
+          status: EnumOrderItemStatus.CONFIRMED,
         },
       });
 
@@ -1063,17 +1094,17 @@ export class StripeService {
           // stripeReversalId: null (будет заполнено при refund)
           // stripeRefundId: null (будет заполнено при refund)
 
-          // Суммы в cents
+          // price in cents
           grossAmount: gross,
           transferAmount: transferAmount,
           commission: commission,
 
-          // Статус
+          // status
           status: 'SUCCEEDED',
           errorMessage: null,
 
-          // Дополнительно
-          reason: null, // Заполняется при refund
+          // additional info
+          reason: null, // Fill if refund
           metadata: {
             productTitle: orderItem.cachedProductTitle,
             productId: orderItem.productId,
@@ -1230,6 +1261,9 @@ export class StripeService {
       case 'checkout.session.completed':
         this.onCheckoutSessionCompleted(event);
         break;
+      case 'checkout.session.expired':
+        this.onCheckoutSessionExpired(event);
+        break;
       case 'invoice.payment_succeeded':
         this.onInvoicePaymentSucceeded(event);
         break;
@@ -1376,6 +1410,17 @@ export class StripeService {
     return;
   }
 
+  async onCheckoutSessionExpired(event: Stripe.CheckoutSessionExpiredEvent) {
+    console.log('\n\n [Func] WEBHOOK onCheckoutSessionExpired event = ', event);
+    const session = event.data.object as Stripe.Checkout.Session;
+
+    await this.prisma.order.update({
+      where: { id: session?.metadata?.orderId },
+      data: { status: EnumOrderStatus.EXPIRED },
+    });
+    return;
+  }
+
   async onCheckoutSessionCompletedProduct(
     event: Stripe.CheckoutSessionCompletedEvent,
   ) {
@@ -1518,8 +1563,8 @@ export class StripeService {
               userId,
               status: EnumSubscriptionStatus.ACTIVE,
               planId: planId,
-              storeLimit: subscriptionSettings.storeLimit,
-              productLimit: subscriptionSettings.productLimit,
+              storeLimit: subscriptionSettings.storeLimit!,
+              productLimit: subscriptionSettings.productLimit!,
               period: subscriptionSettings.period,
               customerId: session.customer as string,
               createdAt: new Date(),
@@ -1602,8 +1647,8 @@ export class StripeService {
     await this.subscriptionService.updateSubscriptionAndOrder(
       {
         status: EnumSubscriptionStatus.ACTIVE,
-        storeLimit: subscriptionSettings.storeLimit,
-        productLimit: subscriptionSettings.productLimit,
+        storeLimit: subscriptionSettings.storeLimit!,
+        productLimit: subscriptionSettings.productLimit!,
         stripeSubscriptionId: session.subscription as string,
         nextBillingDate,
         trialEndAt:
@@ -1744,8 +1789,8 @@ export class StripeService {
               createdAt: new Date(),
               nextBillingDate,
               period: plan.period,
-              storeLimit: plan.storeLimit,
-              productLimit: plan.productLimit,
+              storeLimit: plan.storeLimit!,
+              productLimit: plan.productLimit!,
             },
             user as User,
             plan,
@@ -1762,9 +1807,9 @@ export class StripeService {
           await this.subscriptionService.updateSubscriptionAndOrder(
             {
               status: EnumSubscriptionStatus.ACTIVE,
-              storeLimit: plan.storeLimit,
-              productLimit: plan.productLimit,
-              nextBillingDate: null,
+              storeLimit: plan.storeLimit!,
+              productLimit: plan.productLimit!,
+              nextBillingDate: undefined,
             },
             newSub.order.id as string,
             { status: EnumOrderStatus.SUCCEEDED },
@@ -1837,9 +1882,9 @@ export class StripeService {
             {
               planId: EnumSubscriptionType.FREE,
               status: EnumSubscriptionStatus.ACTIVE,
-              nextBillingDate: null,
-              storeLimit: freePlan?.storeLimit,
-              productLimit: freePlan?.productLimit,
+              nextBillingDate: undefined,
+              storeLimit: freePlan?.storeLimit!,
+              productLimit: freePlan?.productLimit!,
             },
             newSub.order.id as string,
             { status: EnumOrderStatus.SUCCEEDED },
@@ -1897,8 +1942,8 @@ export class StripeService {
             userId: sub.userId,
             status: EnumSubscriptionStatus.ACTIVE,
             planId: EnumSubscriptionType.FREE,
-            storeLimit: subscriptionSettings.storeLimit,
-            productLimit: subscriptionSettings.productLimit,
+            storeLimit: subscriptionSettings.storeLimit!,
+            productLimit: subscriptionSettings.productLimit!,
             period: subscriptionSettings.period,
             customerId: customer?.stripeCustomerId as string,
             createdAt: new Date(),
@@ -1963,7 +2008,7 @@ export class StripeService {
             sub.nextBillingDate.getTime() +
               (date.getTime() - sub.pausedAt.getTime()),
           )
-        : null;
+        : undefined;
     console.log('11.11.11 Update Sub');
 
     await this.subscriptionService.updateSubscriptionAndOrder(
@@ -2098,7 +2143,7 @@ export class StripeService {
 
     if (!price?.recurring) {
       console.warn('No recurring price found');
-      return null;
+      return undefined;
     }
 
     const start = subscription.billing_cycle_anchor * 1000;

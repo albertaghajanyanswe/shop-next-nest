@@ -3,6 +3,7 @@ import { EnumRole } from '@prisma/client';
 import { IsArray, IsEnum, IsOptional, IsString } from 'class-validator';
 import { GetBillingInfoDto } from 'src/billing-info/dto/billingInfo.dto';
 import { GetOrderDto } from 'src/order/dto/order.dto';
+import { GetSubscriptionsDto } from 'src/payment/dto/subscriptions.dto';
 import { GetProductDto } from 'src/product/dto/product.dto';
 import { GetReviewDto } from 'src/review/dto/review.dto';
 import { GetStoreDto } from 'src/store/dto/store.dto';
@@ -36,7 +37,8 @@ export class GetUserDto {
   name: string;
 
   @ApiProperty({
-    example: 'https://res.cloudinary.com/dvuo50sjj/image/upload/w_500,q_auto,f_auto/v1764687769/products/mfhyojzhx8drdd6zlzwf.webp',
+    example:
+      'https://res.cloudinary.com/dvuo50sjj/image/upload/w_500,q_auto,f_auto/v1764687769/products/mfhyojzhx8drdd6zlzwf.webp',
     description: 'Profile picture URL',
     required: false,
   })
@@ -163,4 +165,13 @@ export class GetUserDto {
   @IsOptional()
   @IsEnum(EnumRole)
   public role: EnumRole;
+
+  @ApiProperty({
+    type: () => [GetSubscriptionsDto],
+    required: false,
+    description: 'User subscriptions',
+  })
+  @IsOptional()
+  @IsArray()
+  subscriptions?: GetSubscriptionsDto[];
 }

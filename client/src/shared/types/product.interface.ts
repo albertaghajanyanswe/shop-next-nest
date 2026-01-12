@@ -27,6 +27,8 @@ export interface IProduct {
   storeId: string;
   state: GetProductWithDetailsState;
   userId: string;
+  isOriginal: boolean;
+  quantity: number;
 }
 
 export interface IProductInput

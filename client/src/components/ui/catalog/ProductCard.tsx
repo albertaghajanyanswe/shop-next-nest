@@ -21,6 +21,8 @@ import { ProductCardInfo } from './ProductCardInfo';
 import { GetProductWithDetails } from '@/generated/orval/types';
 import { useCart } from '@/hooks/queries/useCart';
 import CartActions from '@/components/layouts/mainLayout/header/headerMenu/headerCart/CartActions';
+import { CircleOff } from 'lucide-react';
+import { Badge } from '../Badge';
 
 interface ProductCardProps {
   product: GetProductWithDetails;
@@ -31,7 +33,12 @@ export function ProductCard({ product }: ProductCardProps) {
   const [activeIndex, setActiveIndex] = useState(0);
   const { orderItems } = useCart();
   const isProductInCard = orderItems.find((p) => p.product.id === product.id);
-
+  const rating = product.reviews
+    ? Math.round(
+        product.reviews.reduce((acc, review) => acc + review.rating, 0) /
+          product.reviews.length
+      ) || 0
+    : 0;
   useEffect(() => {
     if (!carouselApi) return;
 
@@ -47,8 +54,11 @@ export function ProductCard({ product }: ProductCardProps) {
     };
   }, [carouselApi]);
 
+  const outOfStock = product.quantity === 0;
   return (
-    <div className='group border-shop-dark-green/15 xs:text-sm relative flex flex-col rounded-md border bg-white text-xs'>
+    <div
+      className={`group border-shop-dark-green/15 xs:text-sm relative flex flex-col rounded-md border bg-white text-xs ${outOfStock ? 'opacity-70' : ''}`}
+    >
       <div className='group bg-shop_light_bg relative overflow-hidden'>
         <Carousel setApi={setCarouselApi}>
           <CarouselContent>
@@ -74,6 +84,12 @@ export function ProductCard({ product }: ProductCardProps) {
                       //   : {})}
                       // sizes='(max-width: 768px) 100vw, 400px'
                     />
+                    {outOfStock && (
+                      <div className='bg-primary/70 absolute top-[40%] flex h-12 w-full items-center justify-center text-lg font-semibold text-white'>
+                        <CircleOff className='mr-2' />
+                        Out of stock
+                      </div>
+                    )}
                   </div>
                 </Link>
               </CarouselItem>
@@ -108,6 +124,9 @@ export function ProductCard({ product }: ProductCardProps) {
         className='xs:top-2 xs:right-2 absolute top-1 right-1'
         btnVariant='outline'
       />
+      <Badge className='text-xs xs:top-2 xs:left-2 absolute top-1 left-1 bg-red-500/80 font-semibold shadow-none hover:bg-emerald-700/80'>
+        In stock • {product.quantity}
+      </Badge>
     </div>
   );
 }

@@ -9,6 +9,8 @@
 export interface BrandDto {
   /** Product brand */
   name: string;
+  /** Product brand description */
+  description: string;
   /** Category images */
   images: string[];
 }

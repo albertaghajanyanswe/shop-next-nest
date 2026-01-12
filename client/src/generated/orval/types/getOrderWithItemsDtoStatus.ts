@@ -21,5 +21,5 @@ export const GetOrderWithItemsDtoStatus = {
   REFUNDED: 'REFUNDED',
   EXPIRED: 'EXPIRED',
   PAUSED: 'PAUSED',
-  PAYED_TO_SELLER: 'PAYED_TO_SELLER',
+  CONFIRMED: 'CONFIRMED',
 } as const;

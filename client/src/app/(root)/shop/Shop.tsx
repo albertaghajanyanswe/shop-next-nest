@@ -49,7 +49,7 @@ export default function Shop({
     },
   });
 
-  console.log('queryParams = ', queryParams);
+  // console.log('SHOP queryParams = ', queryParams);
 
   const {
     data: productData,

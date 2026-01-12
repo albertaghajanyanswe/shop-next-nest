@@ -13,6 +13,10 @@ export interface ProductDto {
   description: string;
   /** Product price */
   price: number;
+  /** Product quantity */
+  quantity: number;
+  /** Is Original */
+  isOriginal: boolean;
   /** Product images */
   images: string[];
   /** Product category id */

@@ -49,6 +49,9 @@ export default function Filters({ categories, brands, stores }: FilterProps) {
     queryParams.params.filter ?? {}
   );
 
+  // console.log('Filters queryParams = ', queryParams);
+  // console.log('Filters currentFilter = ', currentFilter);
+
   const toggleFilter = (field: string, value: string) => {
     const arr = new Set(currentFilter[field] ?? []);
     if (arr.has(value)) {

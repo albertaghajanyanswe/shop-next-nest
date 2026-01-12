@@ -24,8 +24,8 @@ export const useCreateProduct = () => {
       toast.success('Product created successfully.');
       router.push(STORE_URL.products(storeId));
     },
-    onError: () => {
-      toast.error('Failed to create product.');
+    onError: (error) => {
+      toast.error(error?.response?.data?.message || 'Failed to create product.');
     },
   });
 

@@ -20,6 +20,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/Select';
+import { Switch } from '@/components/ui/Switch';
 import { Textarea } from '@/components/ui/Textarea';
 import {
   GetBrandDto,
@@ -31,6 +32,7 @@ import {
 import { useCreateProduct } from '@/hooks/queries/products/useCreateProduct';
 import { useDeleteProduct } from '@/hooks/queries/products/useDeleteProduct';
 import { useUpdateProduct } from '@/hooks/queries/products/useUpdateProduct';
+import { useProfile } from '@/hooks/useProfile';
 import { IProductInput } from '@/shared/types/product.interface';
 import { Trash2 } from 'lucide-react';
 import { useMemo } from 'react';
@@ -59,6 +61,8 @@ export function ProductForm({
   colors,
   brands,
 }: ProductFormProps) {
+  const { user, isLoading: isLoadingUser, canCreateProduct } = useProfile();
+
   const { createProduct, isLoadingCreate } = useCreateProduct();
   const { updateProduct, isLoadingUpdate } = useUpdateProduct();
   const { deleteProduct, isLoadingDelete } = useDeleteProduct();
@@ -80,6 +84,8 @@ export function ProductForm({
       colorId: product?.color?.id || '',
       brandId: product?.brand?.id || '',
       state: product?.state || GetProductWithDetailsState.NEW,
+      quantity: product?.quantity || 1,
+      isOriginal: product?.isOriginal ?? true,
     },
   });
 
@@ -87,9 +93,11 @@ export function ProductForm({
   const isLoading = isLoadingUpdate || isLoadingCreate;
   const onSubmit: SubmitHandler<IProductInput> = (data) => {
     data.price = Number(data.price);
+    data.quantity = Number(data.quantity);
+    console.log('data ', data);
     if (product) {
       updateProduct(data);
-    } else {
+    } else if (canCreateProduct) {
       createProduct(data);
     }
   };
@@ -360,38 +368,63 @@ export function ProductForm({
             />
           </div>
 
-          <FormField
-            control={form.control}
-            name='state'
-            rules={{ required: 'State is required' }}
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>State</FormLabel>
-                <Select
-                  disabled={isLoading}
-                  onValueChange={field.onChange}
-                  defaultValue={field.value as unknown as string}
-                >
+          <div className='grid items-start gap-4 sm:grid-cols-2'>
+            <FormField
+              control={form.control}
+              name='state'
+              rules={{ required: 'State is required' }}
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>State</FormLabel>
+                  <Select
+                    disabled={isLoading}
+                    onValueChange={field.onChange}
+                    defaultValue={field.value as unknown as string}
+                  >
+                    <FormControl>
+                      <SelectTrigger className='w-full'>
+                        <SelectValue placeholder='Select a state' />
+                      </SelectTrigger>
+                    </FormControl>
+                    <SelectContent>
+                      {[
+                        { id: 'NEW', title: 'New' },
+                        { id: 'USED', title: 'Used' },
+                      ].map((state) => (
+                        <SelectItem key={state.id} value={state.id}>
+                          {state.title}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
+            <FormField
+              control={form.control}
+              name='quantity'
+              rules={{
+                required: 'Quantity is required',
+              }}
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Quantity</FormLabel>
                   <FormControl>
-                    <SelectTrigger className='w-full'>
-                      <SelectValue placeholder='Select a state' />
-                    </SelectTrigger>
+                    <Input
+                      type='number'
+                      placeholder='Quantity'
+                      disabled={isLoading}
+                      {...field}
+                    />
                   </FormControl>
-                  <SelectContent>
-                    {[
-                      { id: 'NEW', title: 'New' },
-                      { id: 'USED', title: 'Used' },
-                    ].map((state) => (
-                      <SelectItem key={state.id} value={state.id}>
-                        {state.title}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+          </div>
+
           <FormField
             control={form.control}
             name='description'
@@ -410,8 +443,30 @@ export function ProductForm({
               </FormItem>
             )}
           />
+          <FormField
+            control={form.control}
+            name='isOriginal'
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Is Original</FormLabel>
+                <FormControl>
+                  <Switch
+                    id='isOriginal'
+                    {...field}
+                    checked={field.value}
+                    onCheckedChange={field.onChange}
+                    disabled={isLoading}
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
 
-          <Button variant='default' disabled={isLoading || !isFormDirty}>
+          <Button
+            variant='default'
+            disabled={isLoading || !isFormDirty || !canCreateProduct}
+          >
             {action}
           </Button>
         </form>

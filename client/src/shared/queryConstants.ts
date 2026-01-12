@@ -12,7 +12,7 @@ export const QUERY_KEYS = {
   updateProduct: ['update-product'],
   deleteProduct: ['delete-product'],
   getStoreProducts: ['get-store-products'],
-  getProductById: ['get-product-by-id'],
+  getProductById: ['get-product-page'],
   createColor: ['create-color'],
   updateColor: ['update-color'],
   deleteColor: ['delete-color'],

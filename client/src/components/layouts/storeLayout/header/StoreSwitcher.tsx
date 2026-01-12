@@ -17,6 +17,7 @@ import {
 } from '@/components/ui/Popover';
 import { STORE_URL } from '@/config/url.config';
 import { GetStoreDto } from '@/generated/orval/types';
+import { useProfile } from '@/hooks/useProfile';
 import { ChevronsUpDown, Plus, StoreIcon, Check } from 'lucide-react';
 import { useParams, useRouter } from 'next/navigation';
 import { useState } from 'react';
@@ -28,6 +29,7 @@ interface StoreSwitcherProps {
 export function StoreSwitcher({ items }: StoreSwitcherProps) {
   const router = useRouter();
   const params = useParams<{ storeId: string }>();
+  const { user, isLoading: isLoadingUser, canCreateStore } = useProfile();
 
   const [isOpen, setIsOpen] = useState(false);
   const [currentStore, setCurrentStore] = useState<GetStoreDto | null>(
@@ -90,8 +92,8 @@ export function StoreSwitcher({ items }: StoreSwitcherProps) {
           <CommandSeparator />
           <CommandList>
             <CommandGroup>
-              <CreateStoreModal>
-                <CommandItem>
+              <CreateStoreModal disabledTrigger={!canCreateStore}>
+                <CommandItem disabled={!canCreateStore} className='cursor-pointer text-sm'>
                   <Plus className='mr-2 size-4' />
                   Create Store
                 </CommandItem>
