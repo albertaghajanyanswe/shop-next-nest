@@ -13,7 +13,7 @@ export const useCheckoutStripeMultipleItems = () => {
   const { reset } = useActions();
   const router = useRouter();
 
-  console.log('----cart items = ', orderItems)
+  console.log('\n Cart items = ', orderItems);
   const { mutate: createPaymentMultiple, isPending: isLoadingCreateMultiple } =
     useMutation({
       mutationKey: [QUERY_KEYS.payStripe],

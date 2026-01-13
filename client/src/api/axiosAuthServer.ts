@@ -6,7 +6,7 @@ export async function AxiosAuthServer() {
   const cookiesStore = await cookies();
 
   const token = cookiesStore.get('accessToken')?.value;
-  console.log('++++++Token:', token);
+  console.log('Server Token:', token);
   return axios.create({
     baseURL: `${API_BASE}/api`,
     headers: {

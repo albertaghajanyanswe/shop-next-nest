@@ -32,9 +32,9 @@ export async function generateMetadata(): Promise<Metadata> {
 export default async function PaymentPage({
   params,
 }: {
-  params: { orderId: string };
+  params: Promise<{ orderId: string }>;
 }) {
-  const { orderId } = params;
+  const { orderId } = await params;
 
   return (
     <div className='global-container'>
