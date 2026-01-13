@@ -260,6 +260,7 @@ export const HeaderMenuV2 = React.forwardRef<HTMLElement, HeaderMenuProps>(
                     className='group hover:bg-accent hover:text-accent-foreground h-9 w-9'
                     variant='ghost'
                     size='icon'
+                    aria-label='Open Menu'
                   >
                     <Menu />
                   </Button>

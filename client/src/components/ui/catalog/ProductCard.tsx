@@ -67,11 +67,13 @@ export function ProductCard({ product }: ProductCardProps) {
                 <Link href={PUBLIC_URL.product(product.id)}>
                   <div className='relative h-44 xs:h-56 w-full'>
                     <Image
+                      // src={image}
                       src={generateImgPath(image, productImgParams)}
                       alt={`${product.title}`}
                       className='bg-shop-light-bg xs:p-2 h-40 w-full object-contain p-1 transition-transform duration-500 group-hover:scale-105'
                       fill
                       loading='eager'
+                      // fetchPriority='high'
                       // priority
                       // {...(image
                       //   ? {

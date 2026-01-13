@@ -51,7 +51,9 @@ function FavoriteButton({
     toggleFavorite();
   };
   return (
-    <CustomTooltip text='Add to favorites'>
+    <CustomTooltip
+      text={isExists ? 'Remove from favorites' : 'Add to favorites'}
+    >
       <Button
         variant={btnVariant}
         size={onlyIcon ? 'icon' : 'default'}
