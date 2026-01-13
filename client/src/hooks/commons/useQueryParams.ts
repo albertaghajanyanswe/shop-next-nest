@@ -29,7 +29,7 @@ export const useQueryParams = ({
     const res = {
       params: {
         sort: (parsed.sort as unknown as iSort) ??
-          pageDefaultParams?.params.sort ?? { field: 'id', order: 'asc' },
+          pageDefaultParams?.params.sort ?? { field: 'createdAt', order: 'desc' },
         filter:
           (parsed.filter as iFilter) ?? pageDefaultParams?.params.filter ?? {},
         limit: parsed.limit

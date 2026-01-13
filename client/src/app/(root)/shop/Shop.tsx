@@ -97,6 +97,7 @@ export default function Shop({
                 }
                 products={productData?.products ?? []}
                 showSearch
+                showSort
                 searchRedirectToShop={false}
               />
 

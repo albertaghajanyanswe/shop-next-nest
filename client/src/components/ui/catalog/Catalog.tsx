@@ -4,6 +4,7 @@ import { GetProductWithDetails } from '@/generated/orval/types';
 import { LoaderCircle } from 'lucide-react';
 import NoProductsFound from '@/components/customComponents/loading/NoProductsFound';
 import { SearchInput } from '@/components/layouts/mainLayout/header/searchInput/SearchInput';
+import { SortSelect } from '@/components/customComponents/filters/SortSelect';
 
 export interface ICatalog {
   title: string;
@@ -13,6 +14,7 @@ export interface ICatalog {
   link?: string;
   products: GetProductWithDetails[] | undefined;
   showSearch?: boolean;
+  showSort?: boolean;
   searchRedirectToShop?: boolean;
 }
 
@@ -24,6 +26,7 @@ export function Catalog({
   link,
   products,
   showSearch = false,
+  showSort = false,
   searchRedirectToShop = true,
 }: ICatalog) {
   console.log('AAAAA products in Catalog = ', products);
@@ -32,15 +35,15 @@ export function Catalog({
       <div className='mb-4 md:flex md:items-center md:justify-between'>
         <div className='w-full px-0'>
           <p className='text-2xl font-semibold'>{title}</p>
-          {showSearch && (
-            <div className='mt-4'>
+          <div className='mt-4 flex flex-col sm:flex-row items-center gap-2'>
+            {showSearch && (
               <SearchInput
                 searchFields={['id', 'title', 'description']}
                 redirectToShop={searchRedirectToShop}
               />
-            </div>
-          )}
-
+            )}
+            {showSort && <SortSelect triggerClassName='w-full sm:w-[220px]' />}
+          </div>
           {description && (
             <p className='text-muted-foreground mt-2 text-sm'>
               <span className='text-xs font-medium'>{descriptionLabel}</span>{' '}
