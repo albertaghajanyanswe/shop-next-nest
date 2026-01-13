@@ -18,12 +18,9 @@ import {
   DistributeOrderDto,
   DistributeOrderItemDto,
   InitSubscriptionPaymentRequest,
-  PaymentHistoryResponse,
 } from './dto';
 import { OrderDto } from 'src/order/dto/order.dto';
 import type { User } from '@prisma/client';
-import { GetSubscriptionsDto } from './dto/subscriptions.dto';
-import { GetPlansDto } from './dto/plans.dto';
 
 @Controller('payment')
 export class PaymentController {
@@ -42,7 +39,7 @@ export class PaymentController {
   }
 
   @Auth()
-  @Post('/stripe/sub-cancel-upgrade')
+  @Post('/sub-cancel-upgrade')
   async cancelUpgrade(
     @Body() dto: CancelSubscriptionRequest,
     @CurrentUser('id') userId: string,
@@ -59,23 +56,9 @@ export class PaymentController {
   }
 
   @Auth()
-  @Get('/stripe/sub-get-management-link')
+  @Get('/sub-get-management-link')
   async getManagementLink(@CurrentUser('id') userId: string, @Res() res) {
     return await this.paymentService.getManagementLink(userId, res);
-  }
-
-  @ApiOkResponse({ type: GetSubscriptionsDto, isArray: true })
-  @Auth()
-  @Get('/subscriptions')
-  async getSettings(@CurrentUser('id') userId: string) {
-    return await this.paymentService.getSubscriptions(userId);
-  }
-
-  @Auth()
-  @ApiOkResponse({ type: GetPlansDto, isArray: true })
-  @Get('/plans')
-  async getPlans(@CurrentUser('id') userId: string) {
-    return await this.paymentService.getPlans(userId);
   }
 
   @UsePipes(new ValidationPipe())
@@ -91,14 +74,14 @@ export class PaymentController {
 
   @UsePipes(new ValidationPipe())
   @HttpCode(200)
-  @Post('/stripe/create-connect-account')
+  @Post('/create-connect-account')
   @Auth()
   async createConnectAccountStripe(@CurrentUser() user: User) {
     return this.paymentService.createConnectAccountStripe(user);
   }
 
   @Auth()
-  @Post('/stripe/simulate-test-clock')
+  @Post('/simulate-test-clock')
   async simulateStripeTestClockAdvance(
     @Body() dto: { numberOfDays: number },
     @CurrentUser('id') userId: string,
@@ -118,14 +101,14 @@ export class PaymentController {
   }
 
   @Auth()
-  @Get('/stripe/create-login-link')
+  @Get('/create-login-link')
   async createLoginLink(@CurrentUser() user: User) {
     return await this.paymentService.createLoginLink(user);
   }
 
   @Auth()
   @ApiOkResponse({ type: DistributeOrderDto })
-  @Post('/stripe/order/distribute-funds')
+  @Post('/order/distribute-funds')
   async orderPayToCustomer(
     @CurrentUser() user: User,
     @Body() dto: { orderId: string },
@@ -134,7 +117,7 @@ export class PaymentController {
   }
   @Auth()
   @ApiOkResponse({ type: DistributeOrderItemDto })
-  @Post('/stripe/orderItem/distribute-funds')
+  @Post('/orderItem/distribute-funds')
   async orderItemPayToCustomer(
     @CurrentUser() user: User,
     @Body() dto: { orderItemId: string },

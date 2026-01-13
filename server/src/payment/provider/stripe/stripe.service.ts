@@ -2109,7 +2109,7 @@ export class StripeService {
       {
         status: EnumSubscriptionStatus.ACTIVE,
         nextBillingDate: nextBillingDate,
-        pausedAt: null,
+        pausedAt: undefined,
       },
       sub?.order?.id as string,
       { status: EnumOrderStatus.SUCCEEDED },
@@ -2218,16 +2218,6 @@ export class StripeService {
       },
     });
     return invoice.url;
-  }
-
-  async getAvailablePlans() {
-    const model = this.prisma.plan.fields;
-    const select = excludeFields(model, ['stripePriceId', 'stripeProductId']);
-
-    return this.prisma.plan.findMany({
-      orderBy: { price: 'asc' },
-      select,
-    });
   }
 
   calculateNextBillingDate(subscription: Stripe.Subscription) {

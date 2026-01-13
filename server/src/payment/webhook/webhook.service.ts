@@ -1,14 +1,9 @@
-import {
-  BadRequestException,
-  Injectable,
-  UnauthorizedException,
-} from '@nestjs/common';
+import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { StripeService } from '../provider/stripe/stripe.service';
 import Stripe from 'stripe';
 import { YoomoneyService } from '../provider/yoomoney/yoomoney.service';
 import { YookassaWebhookDto } from './dto';
 import { PaymentHandler } from '../payment.handler';
-import { ok } from 'assert';
 
 @Injectable()
 export class WebhookService {
@@ -48,14 +43,5 @@ export class WebhookService {
     }
     await this.stripeService.handleWebhook(event as Stripe.Event);
     return { ok: true };
-    // TODO: implement processing the result
-    // const result = await this.stripeService.handleWebhook(
-    //   event as Stripe.Event,
-    // );
-
-    // if (!result) {
-    //   return { ok: true };
-    // }
-    // return await this.paymentHandler.processResult(result);
   }
 }

@@ -13,135 +13,80 @@ import {
   IsString,
 } from 'class-validator';
 
-export class GetSubscriptionDto {
+export class GetSubscriptionsDto {
   @ApiProperty({
-    description: 'Subscription unique identifier from Stripe',
-    example: 'TKyCIBiPTFs6Lq',
+    example: 'clx12abcx0000c0prod111',
+    description: 'Subscription ID',
   })
-  @IsString()
-  @IsOptional()
-  public stripeSubscriptionId?: string;
+  id: string;
+
+  @ApiProperty({ description: 'Stripe Subscription Id' })
+  stripeSubscriptionId: string;
 
   @ApiProperty({
     description: 'Subscription status',
-    example: EnumSubscriptionStatus.PENDING,
+    enum: EnumSubscriptionStatus,
   })
-  @IsOptional()
   @IsEnum(EnumSubscriptionStatus)
-  public status: EnumSubscriptionStatus;
+  status: EnumSubscriptionStatus;
 
-  @ApiProperty({
-    description: 'Subscription created at date',
-    example: '2023-01-01T00:00:00.000Z',
-  })
-  @IsDate()
-  @IsOptional()
-  public createdAt?: Date;
+  @ApiProperty({ description: 'Start date timestamp' })
+  startDate: Date;
 
-  @ApiProperty({
-    description: 'Subscription next billing date',
-    example: '2023-01-01T00:00:00.000Z',
-  })
-  @IsDate()
-  @IsOptional()
-  nextBillingDate?: Date;
+  @ApiProperty({ description: 'End date timestamp' })
+  endDate: Date;
 
-  @ApiProperty({
-    description: 'Subscription start date',
-    example: '2023-01-01T00:00:00.000Z',
-  })
-  @IsString()
-  @IsOptional()
-  public startDate?: string;
+  @ApiProperty({ description: 'Next billing date timestamp' })
+  nextBillingDate: Date;
 
-  @ApiProperty({
-    description: 'Subscription end date',
-    example: '2023-01-01T00:00:00.000Z',
-  })
-  @IsString()
-  @IsOptional()
-  public endDate?: string;
-
-  @ApiProperty({
-    description: 'Subscription trial end date',
-    example: '2023-01-01T00:00:00.000Z',
-  })
-  @IsDate()
-  @IsOptional()
-  public trialEndAt?: Date;
+  @ApiProperty({ description: 'Trial end date timestamp' })
+  trialEndAt: Date;
 
   @ApiProperty({
     description: 'Subscription period',
-    example: BillingPeriod.MONTHLY,
+    enum: BillingPeriod,
   })
   @IsEnum(BillingPeriod)
-  public period: BillingPeriod;
+  period: BillingPeriod;
+
+  @ApiProperty({ description: 'Subscription store limit' })
+  storeLimit: number;
+
+  @ApiProperty({ description: 'Subscription product limit' })
+  productLimit: number;
+
+  @ApiProperty({ description: 'Stripe customer id' })
+  customerId: string;
+
+  @ApiProperty({ description: 'Subscription user id' })
+  userId: string;
 
   @ApiProperty({
-    description: 'Store limit for the plan',
-    example: 10,
-  })
-  @IsNumber()
-  public storeLimit: number;
-
-  @ApiProperty({
-    description: 'Product limit for the plan',
-    example: 100,
-  })
-  @IsNumber()
-  public productLimit: number;
-
-  @ApiProperty({
-    description: 'Subscription customer ID',
-    example: 'TKyCIBiPTFs6Lq',
-  })
-  @IsString()
-  @IsOptional()
-  public customerId?: string;
-
-  @ApiProperty({
-    description: 'Subscription user ID',
-    example: 'TKyCIBiPTFs6Lq',
-  })
-  @IsString()
-  public userId: string;
-
-  @ApiProperty({
-    description: 'Subscription plan ID',
-    example: EnumSubscriptionType.FREE,
+    description: 'Subscription planId',
+    enum: EnumSubscriptionType,
   })
   @IsEnum(EnumSubscriptionType)
-  public planId: EnumSubscriptionType;
+  planId: EnumSubscriptionType;
 
   @ApiProperty({
-    description: 'Subscription next plan ID',
-    example: EnumSubscriptionType.FREE,
+    description: 'Subscription next planId',
+    enum: EnumSubscriptionType,
   })
   @IsEnum(EnumSubscriptionType)
-  @IsOptional()
-  public nextPlanId?: EnumSubscriptionType;
+  nextPlanId: EnumSubscriptionType;
 
-  @ApiProperty({
-    description: 'Subscription canceled date',
-    example: '2023-01-01T00:00:00.000Z',
-  })
-  @IsDate()
-  @IsOptional()
-  public cancelledAt?: Date;
+  @ApiProperty({ description: 'Cancelled date timestamp' })
+  cancelledAt: Date;
 
-  @ApiProperty({
-    description: 'Subscription canceled reason',
-    example: {},
-  })
-  @IsJSON()
-  @IsOptional()
-  public cancelledReason?: object;
+  @ApiProperty({ description: 'Cancelled reason text' })
+  cancelledReason: string;
 
-  @ApiProperty({
-    description: 'Subscription paused date',
-    example: '2023-01-01T00:00:00.000Z',
-  })
-  @IsDate()
-  @IsOptional()
-  public pausedAt?: Date | null;
+  @ApiProperty({ description: 'Paused date timestamp' })
+  pausedAt: Date;
+
+  @ApiProperty({ description: 'Created date timestamp' })
+  createdAt: Date;
+
+  @ApiProperty({ description: 'Updated date timestamp' })
+  updatedAt: Date;
 }

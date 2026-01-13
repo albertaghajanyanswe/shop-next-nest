@@ -1,63 +1,55 @@
 import { ApiProperty } from '@nestjs/swagger';
+import { BillingPeriod, EnumSubscriptionType } from '@prisma/client';
+import { IsEnum } from 'class-validator';
 
-export class GetPlanDto {
+export class GetPlansDto {
   @ApiProperty({
-    description: 'Unique identifier for the plan',
-    example: '2Nrfjrfr45frer',
+    example: 'clx12abcx0000c0prod111',
+    description: 'Plan ID',
   })
-  public id: string;
-
-  @ApiProperty({
-    description: 'Name of the plan',
-    example: 'Premium',
-  })
-  public title: string;
+  id: string;
 
   @ApiProperty({
-    description: 'Description of the plan',
-    example: 'Best plan for growing businesses',
+    description: 'Plan planId',
+    enum: EnumSubscriptionType,
   })
-  public description: string;
+  @IsEnum(EnumSubscriptionType)
+  planId: EnumSubscriptionType;
+
+  @ApiProperty({ description: 'Plan desc' })
+  description: string;
+
+  @ApiProperty({ description: 'Plan price' })
+  price: Number;
 
   @ApiProperty({
-    description: 'Monthly price of the plan in USD',
-    example: 29.99,
+    description: 'Subscription period',
+    enum: BillingPeriod,
   })
-  public monthlyPrice: number;
+  @IsEnum(BillingPeriod)
+  period: BillingPeriod;
 
-  @ApiProperty({
-    description: 'Annual price of the plan in USD',
-    example: 299.99,
-  })
-  public annualPrice: number;
+  @ApiProperty({ description: 'Plan store limit' })
+  storeLimit: Number;
 
-  @ApiProperty({
-    description: 'Store limit for the plan',
-    example: 10,
-  })
-  public storeLimit: number | null;
+  @ApiProperty({ description: 'Plan product limit' })
+  productLimit: Date;
 
-  @ApiProperty({
-    description: 'Product limit for the plan',
-    example: 100,
-  })
-  public productLimit: number | null;
+  @ApiProperty({ description: 'Plan is popular flag' })
+  isPopular: boolean;
 
-  @ApiProperty({
-    description: 'Features included in the plan',
-    example: [
-      'Unlimited access to content',
-      'Priority customer support',
-      'Advanced analytics',
-    ],
-    isArray: true,
-    type: String,
-  })
-  public features: string[];
+  @ApiProperty({ description: 'Stripe product id' })
+  stripeProductId: String;
 
-  @ApiProperty({
-    description: 'Indicates if the plan is marked as popular',
-    example: true,
-  })
-  public isPopular: boolean;
+  @ApiProperty({ description: 'Stripe price id' })
+  stripePriceId: String;
+
+  @ApiProperty({ description: 'Plan features list' })
+  features: String[];
+
+  @ApiProperty({ description: 'Created date timestamp' })
+  createdAt: Date;
+
+  @ApiProperty({ description: 'Updated date timestamp' })
+  updatedAt: Date;
 }

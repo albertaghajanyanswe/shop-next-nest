@@ -47,7 +47,7 @@ export const QUERY_KEYS = {
   getManagementLink: ['get-management-link'],
   createLoginLink: ['create-login-link'],
   getPlans: ['get-plans'],
-  connectAccount: ['create-connect-account-stripe'],
+  connectAccount: ['create-connect-account'],
   payStripe: ['pay-stripe'],
   testClock: ['test-clock'],
   getAllOrders: ['get-all-orders'],

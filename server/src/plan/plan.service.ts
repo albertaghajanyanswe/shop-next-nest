@@ -1,14 +1,28 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import {
+  Injectable,
+  NotFoundException,
+  UnauthorizedException,
+} from '@nestjs/common';
 import { PrismaService } from 'src/prisma.service';
+import { excludeFields } from 'src/utils/types/stripe';
 
 @Injectable()
 export class PlanService {
   constructor(private prisma: PrismaService) {}
 
-  async getAll() {
-    const plans = await this.prisma.plan.findMany({
+  private async getAvailablePlans() {
+    const model = this.prisma.plan.fields;
+    const select = excludeFields(model, ['stripePriceId', 'stripeProductId']);
+
+    return this.prisma.plan.findMany({
       orderBy: { price: 'asc' },
+      select,
     });
+  }
+
+  public async getAll(userId: string) {
+    if (!userId) throw new UnauthorizedException();
+    const plans = await this.getAvailablePlans();
     return plans;
   }
 

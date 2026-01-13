@@ -107,20 +107,6 @@ export class PaymentService {
     return res.json({ url: portalSession.url });
   }
 
-  public async getSubscriptions(userId: string) {
-    if (!userId) throw new UnauthorizedException();
-    const subscriptions = await this.prismaService.subscription.findMany({
-      where: { userId },
-    });
-    return subscriptions;
-  }
-
-  public async getPlans(userId: string) {
-    if (!userId) throw new UnauthorizedException();
-    const plans = await this.stripeService.getAvailablePlans();
-    return plans;
-  }
-
   public async pay(dto: OrderDto, userId: string) {
     // const order = await this.orderService.createOrder(dto, userId);
     return this.stripeService.pay(dto, userId);

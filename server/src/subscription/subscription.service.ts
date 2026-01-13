@@ -1,6 +1,10 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import {
+  Injectable,
+  NotFoundException,
+  UnauthorizedException,
+} from '@nestjs/common';
 import { PrismaService } from 'src/prisma.service';
-import { GetSubscriptionDto } from './dto/subscription.dto';
+import { GetSubscriptionsDto } from './dto/subscription.dto';
 import {
   EnumOrderStatus,
   EnumSubscriptionType,
@@ -15,8 +19,11 @@ import { UpdateOrderDto } from './dto/update.order.dto';
 export class SubscriptionService {
   constructor(private prisma: PrismaService) {}
 
-  async getAll() {
-    const subscriptions = await this.prisma.subscription.findMany();
+  public async getAll(userId: string) {
+    if (!userId) throw new UnauthorizedException();
+    const subscriptions = await this.prisma.subscription.findMany({
+      where: { userId },
+    });
     return subscriptions;
   }
 
@@ -31,7 +38,7 @@ export class SubscriptionService {
   }
 
   async createSubscriptionAndOrder(
-    data: GetSubscriptionDto,
+    data: Partial<GetSubscriptionsDto>,
     user: User,
     plan: Plan,
     provider: PaymentProvider,
@@ -49,7 +56,7 @@ export class SubscriptionService {
         },
         subscription: {
           create: {
-            ...data,
+            ...data as GetSubscriptionsDto,
           },
         },
       },
@@ -62,7 +69,7 @@ export class SubscriptionService {
   }
 
   async updateSubscriptionAndOrder(
-    getSubscriptionDto: Partial<GetSubscriptionDto>,
+    getSubscriptionDto: Partial<GetSubscriptionsDto>,
     orderId: string,
     orderDto: Partial<UpdateOrderDto>,
   ) {

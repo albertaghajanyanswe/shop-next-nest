@@ -1,6 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { EnumOrderStatus, PaymentProvider } from '@prisma/client';
-import { GetPlanDto } from 'src/plan/dto/plan.dto';
+import { GetPlansDto } from 'src/plan/dto/plan.dto';
 
 export class PaymentHistoryResponse {
   @ApiProperty({
@@ -36,10 +36,10 @@ export class PaymentHistoryResponse {
 
   @ApiProperty({
     description: 'Details of the plan associated with the order',
-    type: () => GetPlanDto,
+    type: () => GetPlansDto,
     nullable: true,
   })
-  public plan: GetPlanDto | null;
+  public plan: GetPlansDto | null;
 
   @ApiProperty({
     description: 'Payment provider used for the order',

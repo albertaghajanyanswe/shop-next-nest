@@ -126,7 +126,7 @@ export function ProductCard({ product }: ProductCardProps) {
         className='xs:top-2 xs:right-2 absolute top-1 right-1'
         btnVariant='outline'
       />
-      <Badge className='text-xs xs:top-2 xs:left-2 absolute top-1 left-1 bg-red-500/80 font-semibold shadow-none hover:bg-red-500/80'>
+      <Badge className='text-xs xs:top-2 xs:left-2 absolute top-1 left-1 bg-red-500/70 font-semibold shadow-none hover:bg-red-500/70'>
         In stock • {product.quantity}
       </Badge>
     </div>
