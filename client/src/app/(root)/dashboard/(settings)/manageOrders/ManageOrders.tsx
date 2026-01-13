@@ -107,7 +107,6 @@ export default function ManageOrders() {
                 isOpen={isOpen}
                 setIsOpen={setIsOpen}
                 order={selectedOrder}
-                user={user}
                 showConfirm={
                   selectedOrder.status === GetOrderDtoStatus.SUCCEEDED
                 }

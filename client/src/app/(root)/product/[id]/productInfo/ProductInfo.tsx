@@ -10,6 +10,7 @@ import ProductInfoAction from './ProductInfoAction';
 import { Badge } from '@/components/ui/Badge';
 import { Crown, Sparkle, Sparkles } from 'lucide-react';
 import { ProductRating } from './ProductRating';
+import EditProductButton from './EditProductButton';
 
 export interface ProductInfoProps {
   product: GetProductWithDetails;
@@ -27,11 +28,11 @@ export default function ProductInfo({ product }: ProductInfoProps) {
       <div className='space-y-2'>
         <div className='flex flex-row gap-2'>
           {product.isOriginal && (
-            <Badge className='text-primary flex w-fit flex-row items-center rounded-full bg-emerald-700/10 px-3 py-1 text-sm font-medium shadow-none hover:bg-emerald-700/10'>
+            <Badge className='text-primary flex w-fit flex-row items-center rounded-full bg-emerald-700/10 px-3 py-1 text-xs font-medium shadow-none hover:bg-emerald-700/10'>
               <Crown className='mr-1 h-4 w-4' /> Original
             </Badge>
           )}
-          <Badge className='flex w-fit flex-row items-center rounded-full bg-red-700/10 px-3 py-1 text-sm font-medium text-shop-red shadow-none hover:bg-red-700/10'>
+          <Badge className='text-shop-red flex w-fit flex-row items-center rounded-full bg-red-700/10 px-3 py-1 text-xs font-medium shadow-none hover:bg-red-700/10'>
             <Sparkles className='mr-1 h-4 w-4' /> Quantity:{' '}
             <span className='text-shop-red ml-2'>{product.quantity}</span>
           </Badge>
@@ -76,7 +77,7 @@ export default function ProductInfo({ product }: ProductInfoProps) {
           <h3 className='font-medium text-neutral-700'>Color:</h3>
           <div className='flex flex-row items-center justify-center gap-x-2'>
             <div
-              className='size-6 rounded-full'
+              className='size-6 rounded-full border border-neutral-300'
               style={{ backgroundColor: product.color?.value }}
             />
             <p className='text-muted-foreground text-sm font-medium'>
@@ -84,10 +85,25 @@ export default function ProductInfo({ product }: ProductInfoProps) {
             </p>
           </div>
         </div>
-        <ProductRating productReviews={product.reviews || []} leftTitle='Average rating: '/>
+        <ProductRating
+          productReviews={product.reviews || []}
+          leftTitle='Average rating: '
+        />
         <div className='mt-6 flex items-start gap-x-2'>
           <ProductInfoAction product={product} />
         </div>
+        <FavoriteButton
+          product={product}
+          className='flex w-full'
+          // className='xs:top-2 xs:right-2 absolute top-1 right-1'
+          btnVariant='outline'
+          onlyIcon={false}
+        />
+        <EditProductButton
+          product={product}
+          className='flex w-full'
+          onlyIcon={false}
+        />
       </div>
     </div>
   );

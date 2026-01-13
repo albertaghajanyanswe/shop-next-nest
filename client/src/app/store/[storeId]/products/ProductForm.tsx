@@ -84,7 +84,7 @@ export function ProductForm({
       colorId: product?.color?.id || '',
       brandId: product?.brand?.id || '',
       state: product?.state || GetProductWithDetailsState.NEW,
-      quantity: product?.quantity || 1,
+      quantity: product?.quantity || 0,
       isOriginal: product?.isOriginal ?? true,
     },
   });

@@ -182,7 +182,7 @@ export class OrderService {
       },
       include: {
         user: true,
-        orderItems: true,
+        orderItems: { include: { user: true } },
       },
     });
 

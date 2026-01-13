@@ -1,3 +1,4 @@
+'use client'
 import React from 'react';
 import { CustomModal } from '@/components/modals/CustomModal';
 import { InfoSection } from './components/InfoSection';
@@ -16,7 +17,7 @@ import {
 } from '@/utils/imageUtils';
 import { OrderTotalSection } from './components/OrderTotalSection';
 import { formatPrice } from '@/utils/formatPrice';
-import { OrderDetailsModalContent } from './OrderDetailsModalContent';
+import { useProfile } from '@/hooks/useProfile';
 
 export type CellType = 'text' | 'image';
 
@@ -47,18 +48,15 @@ export interface ImageItemConfig {
 }
 
 interface OrderDetailsModalProps<T extends TableSectionItem> {
-  isOpen: boolean;
-  setIsOpen: (open: boolean) => void;
   order: GetOrderWithItemsDto;
-  showConfirm: boolean;
+  showConfirm?: boolean;
 }
 
-export function OrderDetailsModal<T extends TableSectionItem>({
-  isOpen,
-  setIsOpen,
+export function OrderDetailsModalContent<T extends TableSectionItem>({
   order,
   showConfirm = false,
 }: OrderDetailsModalProps<T>) {
+  const { user } = useProfile();
   console.log('ORDER = ', order);
   const getOrderInfoItems = (): InfoSectionItem[] => {
     if (!order) return [];
@@ -150,16 +148,36 @@ export function OrderDetailsModal<T extends TableSectionItem>({
   };
 
   return (
-    <CustomModal
-      title={`Order Details`}
-      open={isOpen}
-      onOpenChange={setIsOpen}
-      size='xl'
-    >
-      <OrderDetailsModalContent
-        order={order}
+    <div className='space-y-4'>
+      {/* Customer Info */}
+      <InfoSection
+        items={getOrderInfoItems()}
+        className='border-b-shop-green-hover border-b'
+      />
+
+      {/* Items Table */}
+      {getOrderTableItems().length > 0 && (
+        <div>
+          <h3 className='mb-2 font-semibold'>Items</h3>
+          <div className='max-h-[250px] overflow-y-scroll'>
+            <ItemsTable
+              columns={getOrderTableColumns()}
+              items={getOrderTableItems()}
+              user={user!}
+              showConfirm={showConfirm}
+            />
+          </div>
+        </div>
+      )}
+
+      {/* Total */}
+      <OrderTotalSection
+        title='Total'
+        value={formatPrice(order?.totalPrice)}
+        orderId={order.id}
+        user={user!}
         showConfirm={showConfirm}
       />
-    </CustomModal>
+    </div>
   );
 }

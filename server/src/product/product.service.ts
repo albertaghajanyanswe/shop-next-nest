@@ -217,6 +217,7 @@ export class ProductService {
         colorId: dto.colorId,
         brandId: dto.brandId,
         oldPrice: product.price,
+        quantity: dto.quantity,
         // isPublished: dto.isPublished,
         // isBlocked: dto.isBlocked,
       },

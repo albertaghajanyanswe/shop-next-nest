@@ -30,7 +30,7 @@ function DefaultCellRenderer<T extends TableSectionItem>(
 
   if (column.type === 'text') {
     return (
-      <span className='text-sm font-medium text-neutral-700'>{value}</span>
+      <span className={`text-sm font-medium ${column.key === 'price' ? 'text-shop-red' : 'text-neutral-700'}`}>{value}</span>
     );
   }
 
@@ -70,7 +70,6 @@ export function ItemsTable<T extends TableSectionItem>({
   const { distributeFundsOrderItem, isLoadingDistributeFundsOrderItem } =
     useDistributeFundsOrderItem();
 
-    console.log('AAAAAA items = ', items)
   return (
     <div className={`space-y-3 ${className}`}>
       <div className='hidden grid-cols-12 gap-4 p-0 text-sm font-semibold text-neutral-700 sm:grid'>

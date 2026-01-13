@@ -13,7 +13,7 @@ import {
 import { authService } from '@/services/auth/auth.service';
 import { EnvVariables } from '@/shared/envVariables';
 
-const API_BASE =
+export const API_BASE =
   process.env.NODE_ENV === 'production' ||
   process.env.NODE_ENV === 'development'
     ? typeof window === 'undefined'

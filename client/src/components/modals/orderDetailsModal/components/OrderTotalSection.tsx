@@ -22,7 +22,7 @@ const OrderTotalSectionComponent = ({
   const { distributeFundsOrder, isLoadingDistributeFundsOrder } =
     useDistributeFundsOrder();
   const isShowConfirmBtn =
-    user.role === 'SUPER_ADMIN' && orderId && showConfirm;
+    user?.role === 'SUPER_ADMIN' && orderId && showConfirm;
 
   return (
     <div

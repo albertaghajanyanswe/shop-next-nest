@@ -50,31 +50,41 @@ function FavoriteButton({
     }
     toggleFavorite();
   };
-  return (
+  const button = (
+    <Button
+      variant={btnVariant}
+      size={onlyIcon ? 'icon' : 'default'}
+      onClick={handleToggleFavorite}
+      disabled={isPending}
+      className={className}
+      aria-label='Toggle favorite'
+    >
+      {isExists ? (
+        <>
+          <AiFillHeart className='text-primary size-4' />
+          {!onlyIcon && (
+            <span className='text-neutral-900'>Remove from favorites</span>
+          )}
+        </>
+      ) : (
+        <>
+          <AiOutlineHeart className='size-4' />
+          {!onlyIcon && (
+            <span className='text-neutral-900'>Add to favorites</span>
+          )}
+        </>
+      )}
+    </Button>
+  );
+
+  return onlyIcon ? (
     <CustomTooltip
       text={isExists ? 'Remove from favorites' : 'Add to favorites'}
     >
-      <Button
-        variant={btnVariant}
-        size={onlyIcon ? 'icon' : 'default'}
-        onClick={handleToggleFavorite}
-        disabled={isPending}
-        className={className}
-        aria-label='Toggle favorite'
-      >
-        {isExists ? (
-          onlyIcon ? (
-            <AiFillHeart className='text-shop-btn-dark-green size-5' />
-          ) : (
-            <>Remove From Favorites</>
-          )
-        ) : onlyIcon ? (
-          <AiOutlineHeart className='size-5' />
-        ) : (
-          <>Add To Favorites</>
-        )}
-      </Button>
+      {button}
     </CustomTooltip>
+  ) : (
+    button
   );
 }
 

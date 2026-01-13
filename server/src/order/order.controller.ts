@@ -51,9 +51,11 @@ export class OrderController {
     return this.orderService.getOrderItems(user, params);
   }
 
+  @Auth()
   @Get('/:id')
   @ApiOkResponse({ type: GetOrderWithItemsDto, isArray: true })
   async getById(@CurrentUser() user: User, @Param('id') id: string) {
+    console.log('\n\n ---USER = ', user)
     return this.orderService.getById(user, id);
   }
 }

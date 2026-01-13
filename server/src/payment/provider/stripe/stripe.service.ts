@@ -786,8 +786,8 @@ export class StripeService {
         payment_method_types: ['card'],
         line_items: lineItems,
         mode: 'payment',
-        success_url: `${process.env.CLIENT_URL}/payment/success`,
-        cancel_url: `${process.env.CLIENT_URL}/payment/cancel`,
+        success_url: `${process.env.CLIENT_URL}/payment/success/${order!.id}`,
+        cancel_url: `${process.env.CLIENT_URL}/payment/cancel/${order!.id}`,
         metadata: {
           userId,
           orderId: order!.id,
@@ -1235,8 +1235,8 @@ export class StripeService {
         payment_method_types: ['card'],
         line_items: lineItems,
         mode: 'payment',
-        success_url: `${process.env.CLIENT_URL}/payment/success`,
-        cancel_url: `${process.env.CLIENT_URL}/payment/cancel`,
+        success_url: `${process.env.CLIENT_URL}/payment/success/${order.id}`,
+        cancel_url: `${process.env.CLIENT_URL}/payment/cancel/orderId=${order.id}`,
         payment_intent_data: {
           application_fee_amount: Math.round(
             0.05 *

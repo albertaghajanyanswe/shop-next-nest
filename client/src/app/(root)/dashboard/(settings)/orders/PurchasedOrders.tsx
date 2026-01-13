@@ -109,7 +109,6 @@ export default function PurchasedOrders() {
                 isOpen={isOpen}
                 setIsOpen={setIsOpen}
                 order={selectedOrder}
-                user={user}
                 showConfirm={
                   selectedOrder.status === GetOrderDtoStatus.SUCCEEDED
                 }
