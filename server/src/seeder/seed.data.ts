@@ -9,27 +9,27 @@ export const CATEGORIES_SEEDS = [
   {
     name: 'Tablets',
     images: [
-      'https://res.cloudinary.com/dvuo50sjj/image/upload/v1765025304/category-tablet_oqkjle.jpg',
+      'https://res.cloudinary.com/dvuo50sjj/image/upload/v1767638664/categories/gcjjbuo7zmjq29iqisxm.webp',
     ],
   },
   {
     name: 'Notebooks',
     images: [
-      'https://res.cloudinary.com/dvuo50sjj/image/upload/v1765025303/category-notebook_mj90qf.avif',
+      'https://res.cloudinary.com/dvuo50sjj/image/upload/v1767636768/categories/zren60vsbpg81g2ndrz9.png',
     ],
     rating: 14,
   },
   {
     name: 'Computers',
     images: [
-      'https://res.cloudinary.com/dvuo50sjj/image/upload/v1765047348/desktop-pcs_zh5l57.png',
+      'https://res.cloudinary.com/dvuo50sjj/image/upload/v1767637244/categories/uuaasivkxqpqd7f4klqa.webp',
     ],
     rating: 10,
   },
   {
     name: 'Monitors',
     images: [
-      'https://res.cloudinary.com/dvuo50sjj/image/upload/v1765049968/monitors_c9hx2t.png',
+      'https://res.cloudinary.com/dvuo50sjj/image/upload/v1767637491/categories/tplfcnaqpcll5btsmjpv.webp',
     ],
     rating: 10,
   },
@@ -42,7 +42,7 @@ export const CATEGORIES_SEEDS = [
   {
     name: 'Gaming Consoles',
     images: [
-      'https://res.cloudinary.com/dvuo50sjj/image/upload/v1765047346/ps5_rqpy1o.avif',
+      'https://res.cloudinary.com/dvuo50sjj/image/upload/v1767639900/categories/mpkvk2kosolgpwvqla9i.webp',
     ],
   },
   {
@@ -54,7 +54,7 @@ export const CATEGORIES_SEEDS = [
   {
     name: 'Smart Watches',
     images: [
-      'https://res.cloudinary.com/dvuo50sjj/image/upload/v1765025304/category-smart-watch_xanfpn.jpg',
+      'https://res.cloudinary.com/dvuo50sjj/image/upload/v1767637623/categories/pnuw4vaozfg4rwef45on.webp',
     ],
     rating: 10,
   },
@@ -95,7 +95,7 @@ export const CATEGORIES_SEEDS = [
   {
     name: 'Vacuum Cleaners',
     images: [
-      'https://res.cloudinary.com/dvuo50sjj/image/upload/v1765047346/vacum-cleaner_iqhvlj.webp',
+      'https://res.cloudinary.com/dvuo50sjj/image/upload/v1767640068/categories/ynbzct4rfn9fkdmvi72u.webp',
     ],
   },
   {
@@ -125,27 +125,27 @@ export const CATEGORIES_SEEDS = [
   {
     name: 'Men Clothing',
     images: [
-      'https://res.cloudinary.com/dvuo50sjj/image/upload/v1765047345/men-clothing_u67cts.avif',
+      'https://res.cloudinary.com/dvuo50sjj/image/upload/v1767637838/categories/tbio3dy3dssyyktvcuxq.webp',
     ],
     rating: 10,
   },
   {
     name: 'Women Clothing',
     images: [
-      'https://res.cloudinary.com/dvuo50sjj/image/upload/v1765047346/women-clothing_fj3j6q.jpg',
+      'https://res.cloudinary.com/dvuo50sjj/image/upload/v1767637930/categories/akein43z1pgbkk157nk5.webp',
     ],
     rating: 10,
   },
   {
     name: 'Kids Clothing',
     images: [
-      'https://res.cloudinary.com/dvuo50sjj/image/upload/v1765047348/kids-clothing_xqj5my.jpg',
+      'https://res.cloudinary.com/dvuo50sjj/image/upload/v1767640362/categories/qmclkdqfxpy4r7f70zyq.webp',
     ],
   },
   {
     name: 'Auto Accessories',
     images: [
-      'https://res.cloudinary.com/dvuo50sjj/image/upload/v1765047610/car-accessories_krbh3z.jpg',
+      'https://res.cloudinary.com/dvuo50sjj/image/upload/v1767638235/categories/sv0r7b0sd5gmxqpws2uv.webp',
     ],
     rating: 10,
   },
@@ -159,19 +159,19 @@ export const CATEGORIES_SEEDS = [
   {
     name: 'Home Furniture',
     images: [
-      'https://res.cloudinary.com/dvuo50sjj/image/upload/v1765047345/home-forniture_zhqnge.avif',
+      'https://res.cloudinary.com/dvuo50sjj/image/upload/v1767640283/categories/n0jxwxarsz62t64oyovt.webp',
     ],
   },
   {
     name: 'Lighting',
     images: [
-      'https://res.cloudinary.com/dvuo50sjj/image/upload/v1765047346/lighting_hfyrxi.jpg',
+      'https://res.cloudinary.com/dvuo50sjj/image/upload/v1767638544/categories/pocffdjwnhfheyalopzk.webp',
     ],
   },
   {
     name: 'Instruments',
     images: [
-      'https://res.cloudinary.com/dvuo50sjj/image/upload/v1765047347/garden-tools_qquzvs.jpg',
+      'https://res.cloudinary.com/dvuo50sjj/image/upload/v1767891960/categories/djzpghetkmf0mow6lz8a.webp',
     ],
   },
   {
@@ -183,7 +183,7 @@ export const CATEGORIES_SEEDS = [
   {
     name: 'Baby Toys',
     images: [
-      'https://res.cloudinary.com/dvuo50sjj/image/upload/v1765047609/baby-toys_sjv93g.avif',
+      'https://res.cloudinary.com/dvuo50sjj/image/upload/v1767639651/categories/rfver5axmisbmtisjtsk.webp',
     ],
   },
   {
@@ -195,7 +195,7 @@ export const CATEGORIES_SEEDS = [
   {
     name: 'Cosmetics',
     images: [
-      'https://res.cloudinary.com/dvuo50sjj/image/upload/v1765047347/cosmetics_dk0kf4.jpg',
+      'https://res.cloudinary.com/dvuo50sjj/image/upload/v1767640137/categories/untiwfyi1usbyn0uhhih.webp',
     ],
   },
   {
@@ -213,7 +213,7 @@ export const CATEGORIES_SEEDS = [
   {
     name: 'Other',
     images: [
-      'https://res.cloudinary.com/dvuo50sjj/image/upload/v1765025304/category-other_gjtkri.avif',
+      'https://res.cloudinary.com/dvuo50sjj/image/upload/v1767640992/categories/qvzxgfma7qjjhqjfiz32.webp',
     ],
   },
 ];
@@ -222,41 +222,41 @@ export const BRANDS_SEEDS = [
   {
     name: 'Apple',
     images: [
-      'https://res.cloudinary.com/dvuo50sjj/image/upload/v1765048919/brand-apple_xbdyeq.png',
+      'https://res.cloudinary.com/dvuo50sjj/image/upload/v1767642133/brands/wiaejtlkxgheqlz2tvew.webp',
     ],
     rating: 15,
   },
   {
     name: 'Samsung',
     images: [
-      'https://res.cloudinary.com/dvuo50sjj/image/upload/v1765048928/samsung_pobgu3.webp',
+      'https://res.cloudinary.com/dvuo50sjj/image/upload/v1767642438/brands/ke85pvqoqw6pfwjxikg0.webp',
     ],
     rating: 10,
   },
   {
     name: 'Xiaomi',
     images: [
-      'https://res.cloudinary.com/dvuo50sjj/image/upload/v1765048930/xiaomi_yawxct.png',
+      'https://res.cloudinary.com/dvuo50sjj/image/upload/v1767642283/brands/tx1fsvjxsbq4h97p1bxc.webp',
     ],
     rating: 10,
   },
   {
     name: 'Huawei',
     images: [
-      'https://res.cloudinary.com/dvuo50sjj/image/upload/v1765048936/huawei_sw4fi5.jpg',
+      'https://res.cloudinary.com/dvuo50sjj/image/upload/v1767642352/brands/ssctznjdkigzutmjo8ny.webp',
     ],
     rating: 10,
   },
   {
     name: 'Sony',
     images: [
-      'https://res.cloudinary.com/dvuo50sjj/image/upload/v1765048928/sony_voh1tc.png',
+      'https://res.cloudinary.com/dvuo50sjj/image/upload/v1767643615/brands/dbcrf8y7zmjkrsqzejuu.webp',
     ],
   },
   {
     name: 'LG',
     images: [
-      'https://res.cloudinary.com/dvuo50sjj/image/upload/v1765048925/lg_ceoziu.webp',
+      'https://res.cloudinary.com/dvuo50sjj/image/upload/v1767642950/brands/j50us7pzgszi1nl6msjs.webp',
     ],
   },
   {
@@ -274,13 +274,13 @@ export const BRANDS_SEEDS = [
   {
     name: 'HP',
     images: [
-      'https://res.cloudinary.com/dvuo50sjj/image/upload/v1765048934/hp_amvsid.jpg',
+      'https://res.cloudinary.com/dvuo50sjj/image/upload/v1767643408/brands/qgijxkimcplyxwx3svki.webp',
     ],
   },
   {
     name: 'Acer',
     images: [
-      'https://res.cloudinary.com/dvuo50sjj/image/upload/v1765048936/acer_a1glwl.jpg',
+      'https://res.cloudinary.com/dvuo50sjj/image/upload/v1767643351/brands/bwboe3ot0tch8khxfob3.webp',
     ],
   },
   {
@@ -298,7 +298,7 @@ export const BRANDS_SEEDS = [
   {
     name: 'Google',
     images: [
-      'https://res.cloudinary.com/dvuo50sjj/image/upload/v1765048922/google_adpptv.png',
+      'https://res.cloudinary.com/dvuo50sjj/image/upload/v1767642990/brands/bbfvn9k5bzya1aqdwqwc.webp',
     ],
   },
   {
@@ -310,19 +310,19 @@ export const BRANDS_SEEDS = [
   {
     name: 'Microsoft',
     images: [
-      'https://res.cloudinary.com/dvuo50sjj/image/upload/v1765048926/microsoft_mbk1rm.png',
+      'https://res.cloudinary.com/dvuo50sjj/image/upload/v1767643512/brands/terx8wpxesix4wofnpbn.webp',
     ],
   },
   {
     name: 'Philips',
     images: [
-      'https://res.cloudinary.com/dvuo50sjj/image/upload/v1765048933/philips_uztxyq.jpg',
+      'https://res.cloudinary.com/dvuo50sjj/image/upload/v1767643056/brands/jszcvwg5i3ig266thxw2.webp',
     ],
   },
   {
     name: 'Panasonic',
     images: [
-      'https://res.cloudinary.com/dvuo50sjj/image/upload/v1765048935/panasonic_zseg8l.png',
+      'https://res.cloudinary.com/dvuo50sjj/image/upload/v1767643225/brands/ukjehtbsbcvh3ruhnhs4.webp',
     ],
   },
   {
@@ -335,13 +335,13 @@ export const BRANDS_SEEDS = [
   {
     name: 'Adidas',
     images: [
-      'https://res.cloudinary.com/dvuo50sjj/image/upload/v1765048917/adidas_q9sv7x.png',
+      'https://res.cloudinary.com/dvuo50sjj/image/upload/v1767643705/brands/rvswhb38oklgzdxfcjvy.webp',
     ],
   },
   {
     name: 'Puma',
     images: [
-      'https://res.cloudinary.com/dvuo50sjj/image/upload/v1765048928/puma_kxqfxg.png',
+      'https://res.cloudinary.com/dvuo50sjj/image/upload/v1767643823/brands/eigigzzgwdhrz1bcrqtv.webp',
     ],
     rating: 7,
   },
@@ -360,37 +360,37 @@ export const BRANDS_SEEDS = [
   {
     name: 'Gucci',
     images: [
-      'https://res.cloudinary.com/dvuo50sjj/image/upload/v1765048923/gucci_qumz9l.webp',
+      'https://res.cloudinary.com/dvuo50sjj/image/upload/v1767643456/brands/uhqx3pr1zw0puwtxhclp.webp',
     ],
   },
   {
     name: 'Toyota',
     images: [
-      'https://res.cloudinary.com/dvuo50sjj/image/upload/v1765048929/toyota_hhkdk6.webp',
+      'https://res.cloudinary.com/dvuo50sjj/image/upload/v1767642822/brands/phvykzztqfmbewwvjmrf.webp',
     ],
   },
   {
     name: 'BMW',
     images: [
-      'https://res.cloudinary.com/dvuo50sjj/image/upload/v1765048918/bmw_cspxrt.png',
+      'https://res.cloudinary.com/dvuo50sjj/image/upload/v1767642516/brands/rk8wgvxgsu9ovct8dnet.webp',
     ],
   },
   {
     name: 'Mercedes-Benz',
     images: [
-      'https://res.cloudinary.com/dvuo50sjj/image/upload/v1765048937/mercedes_tzsjpz.jpg',
+      'https://res.cloudinary.com/dvuo50sjj/image/upload/v1767643126/brands/fmtvmmc675msiwqrhctt.webp',
     ],
   },
   {
     name: 'Audi',
     images: [
-      'https://res.cloudinary.com/dvuo50sjj/image/upload/v1765048918/audi_qk9mmc.jpg',
+      'https://res.cloudinary.com/dvuo50sjj/image/upload/v1767642656/brands/zyla8faklftcgtu4raac.webp',
     ],
   },
   {
     name: 'Volkswagen',
     images: [
-      'https://res.cloudinary.com/dvuo50sjj/image/upload/v1765048935/volkswagen_pnqw0t.jpg',
+      'https://res.cloudinary.com/dvuo50sjj/image/upload/v1767642611/brands/uy3gxop2rjfi78e2hv18.webp',
     ],
   },
   {
@@ -402,19 +402,19 @@ export const BRANDS_SEEDS = [
   {
     name: 'Hyundai',
     images: [
-      'https://res.cloudinary.com/dvuo50sjj/image/upload/v1765048924/hyundai_yp9woj.png',
+      'https://res.cloudinary.com/dvuo50sjj/image/upload/v1767642913/brands/wroz0llqrerm078bzpji.webp',
     ],
   },
   {
     name: 'Kia',
     images: [
-      'https://res.cloudinary.com/dvuo50sjj/image/upload/v1765048925/kia_lrfu6m.jpg',
+      'https://res.cloudinary.com/dvuo50sjj/image/upload/v1767642867/brands/nxj6cujtvcdfm2lnmirh.webp',
     ],
   },
   {
     name: 'Bosch',
     images: [
-      'https://res.cloudinary.com/dvuo50sjj/image/upload/v1765048933/bosch_fk2dsa.jpg',
+      'https://res.cloudinary.com/dvuo50sjj/image/upload/v1767643292/brands/sllkokwmtxufvbfbvgep.webp',
     ],
   },
   {
@@ -432,13 +432,13 @@ export const BRANDS_SEEDS = [
   {
     name: 'Electrolux',
     images: [
-      'https://res.cloudinary.com/dvuo50sjj/image/upload/v1765048921/elektrolux_uo38du.png',
+      'https://res.cloudinary.com/dvuo50sjj/image/upload/v1767642723/brands/ch8qqq78jme3mlrcixki.webp',
     ],
   },
   {
     name: 'Casio',
     images: [
-      'https://res.cloudinary.com/dvuo50sjj/image/upload/v1765048920/casio_v3ocfc.png',
+      'https://res.cloudinary.com/dvuo50sjj/image/upload/v1767643184/brands/raisc8mgj1bfx3fqs3m1.webp',
     ],
   },
 ];
