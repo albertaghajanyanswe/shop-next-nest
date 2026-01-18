@@ -14,15 +14,23 @@ import {
   type User,
 } from '@prisma/client';
 import { UpdateOrderDto } from './dto/update.order.dto';
+import { ProductService } from 'src/product/product.service';
+import { excludeFields } from 'src/utils/types/stripe';
 
 @Injectable()
 export class SubscriptionService {
-  constructor(private prisma: PrismaService) {}
+  constructor(
+    private prisma: PrismaService,
+    private readonly productService: ProductService,
+  ) {}
 
   public async getAll(userId: string) {
     if (!userId) throw new UnauthorizedException();
+    const model = this.prisma.subscription.fields;
+    const select = excludeFields(model, ['stripeSubscriptionId', 'customerId']);
     const subscriptions = await this.prisma.subscription.findMany({
       where: { userId },
+      select
     });
     return subscriptions;
   }
@@ -56,7 +64,7 @@ export class SubscriptionService {
         },
         subscription: {
           create: {
-            ...data as GetSubscriptionsDto,
+            ...(data as GetSubscriptionsDto),
           },
         },
       },
@@ -65,6 +73,11 @@ export class SubscriptionService {
       },
     });
     const { subscription, ...rest } = order;
+
+    await this.productService.enforceProductLimit(
+      user.id,
+      subscription as GetSubscriptionsDto,
+    );
     return { order: rest, subscription };
   }
 

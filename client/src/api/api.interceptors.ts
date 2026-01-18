@@ -12,6 +12,7 @@ import {
 } from '@/services/auth/auth-token.service';
 import { authService } from '@/services/auth/auth.service';
 import { EnvVariables } from '@/shared/envVariables';
+import { PUBLIC_URL } from '@/config/url.config';
 
 export const API_BASE =
   process.env.NODE_ENV === 'production' ||
@@ -49,6 +50,8 @@ axiosWithAuth.interceptors.response.use(
   async (error: any) => {
     const originalRequest: AxiosRequestConfig & { _isRetry?: boolean } =
       error.config;
+
+      console.log('\n\n\n TOKEN  error.response', error.response);
     if (
       (error.response?.status === 401 ||
         errorCatch(error) === 'Unauthorized' ||
@@ -59,14 +62,16 @@ axiosWithAuth.interceptors.response.use(
     ) {
       originalRequest._isRetry = true;
       try {
-        console.log('interceptors - getNewTokens');
+        console.log('TOKEN interceptors - getNewTokens');
         await authService.getNewTokens();
         return axiosWithAuth.request(originalRequest);
       } catch (error) {
+        console.log('TOKEN error  ', error);
         if (
           errorCatch(error) === 'jwt expired' ||
           errorCatch(error) === 'Unauthorized' ||
-          errorCatch(error) === 'User not found'
+          errorCatch(error) === 'User not found' ||
+          errorCatch(error) === 'Refresh token is missing'
         ) {
           removeFromStorage();
         }

@@ -55,6 +55,9 @@ export default function ManageOrders() {
         totalPrice: order.totalPrice,
         type: order.subscriptionId ? 'Subscription' : 'Product',
         itemsCount: order?.orderItems?.length || 0,
+        itemsNames: order.orderItems
+          .map((item) => item.cachedProductTitle + ' (x' + item.quantity + ')')
+          .join(',  '),
       }))
     : [];
 

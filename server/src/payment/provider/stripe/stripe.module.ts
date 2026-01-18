@@ -7,6 +7,8 @@ import { BillingInfoService } from 'src/billing-info/billing-info.service';
 import { SubscriptionService } from 'src/subscription/subscription.service';
 import { OrderService } from 'src/order/order.service';
 import { QueryPayloadBuilderService } from 'src/queryPayloadBuilder/QueryPayloadBuilder';
+import { ProductService } from 'src/product/product.service';
+import { CloudinaryFileService } from 'src/cloudinary-file/cloudinary-file.service';
 
 @Module({
   controllers: [],
@@ -18,7 +20,9 @@ import { QueryPayloadBuilderService } from 'src/queryPayloadBuilder/QueryPayload
     BillingInfoService,
     SubscriptionService,
     OrderService,
-    QueryPayloadBuilderService
+    QueryPayloadBuilderService,
+    ProductService,
+    CloudinaryFileService
   ],
   exports: [StripeService],
 })

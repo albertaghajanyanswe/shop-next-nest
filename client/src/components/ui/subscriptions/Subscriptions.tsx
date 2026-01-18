@@ -276,11 +276,14 @@ export default function SubscriptionCards() {
         <Button variant='outline' onClick={() => runTestClock(9)}>
           Clock 9 d
         </Button>
-        <Button variant='outline' onClick={() => runTestClock(50)}>
-          Clock 50 d
+        <Button variant='outline' onClick={() => runTestClock(40)}>
+          Clock 40 d
         </Button>
-        <Button variant='outline' onClick={() => runTestClock(367)}>
-          Clock 367 d
+        <Button variant='outline' onClick={() => runTestClock(120)}>
+          Clock 120 d
+        </Button>
+        <Button variant='outline' onClick={() => runTestClock(365)}>
+          Clock 365 d
         </Button>
       </div>
     </div>

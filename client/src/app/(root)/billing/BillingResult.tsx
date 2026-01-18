@@ -15,7 +15,7 @@ export default function BillingResult() {
   const isCancel = searchParams.get('cancel') === 'true';
   const planId = searchParams.get('planId');
   return (
-    <div className='mt-[64px] flex h-full w-full items-center justify-center'>
+    <div className='my-6 xs:my-24 flex h-full w-full items-center justify-center'>
       <div className='max-w-sm rounded-lg border border-gray-200 bg-white p-6 shadow-sm dark:border-gray-700 dark:bg-gray-800'>
         {isSuccess && !isDowngrade && !isCancel && (
           <h5 className='mb-4 text-2xl font-semibold text-green-700'>

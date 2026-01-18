@@ -28,6 +28,7 @@ export interface IProduct {
   state: GetProductWithDetailsState;
   userId: string;
   isOriginal: boolean;
+  isPublished: boolean;
   quantity: number;
 }
 

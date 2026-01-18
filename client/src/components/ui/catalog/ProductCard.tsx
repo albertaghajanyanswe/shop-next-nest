@@ -21,7 +21,7 @@ import { ProductCardInfo } from './ProductCardInfo';
 import { GetProductWithDetails } from '@/generated/orval/types';
 import { useCart } from '@/hooks/queries/useCart';
 import CartActions from '@/components/layouts/mainLayout/header/headerMenu/headerCart/CartActions';
-import { CircleOff } from 'lucide-react';
+import { CircleOff, Flame } from 'lucide-react';
 import { Badge } from '../Badge';
 
 interface ProductCardProps {
@@ -65,7 +65,7 @@ export function ProductCard({ product }: ProductCardProps) {
             {product.images.map((image) => (
               <CarouselItem key={image}>
                 <Link href={PUBLIC_URL.product(product.id)}>
-                  <div className='relative h-44 xs:h-56 w-full'>
+                  <div className='xs:h-56 relative h-44 w-full'>
                     <Image
                       // src={image}
                       src={generateImgPath(image, productImgParams)}
@@ -126,9 +126,14 @@ export function ProductCard({ product }: ProductCardProps) {
         className='xs:top-2 xs:right-2 absolute top-1 right-1'
         btnVariant='outline'
       />
-      <Badge className='text-xs xs:top-2 xs:left-2 absolute top-1 left-1 bg-red-500/70 font-semibold shadow-none hover:bg-red-500/70'>
+      <Badge className='xs:top-2 xs:left-2 absolute top-1 left-1 bg-red-500/70 text-xs font-semibold shadow-none hover:bg-red-500/70'>
         In stock • {product.quantity}
       </Badge>
+      {/* {product.price &&
+        product.oldPrice &&
+        product.price < product.oldPrice && (
+          <Flame className='xs:top-2 xs:right-12 absolute top-1 right-12 h-9 w-9 p-1 text-xs font-semibold text-red-500 shadow-none' />
+        )} */}
     </div>
   );
 }

@@ -63,6 +63,7 @@ export default function SoldOrders() {
         status: orderItem.order.status,
         price: orderItem.price,
         quantity: orderItem.quantity,
+        itemName: orderItem.cachedProductTitle,
       }))
     : [];
 

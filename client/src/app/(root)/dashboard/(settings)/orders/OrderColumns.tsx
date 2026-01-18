@@ -11,6 +11,7 @@ export interface IOrderColumns {
   totalPrice: number;
   type: string;
   itemsCount: number;
+  itemsNames: string;
 }
 
 export const orderColumns: ColumnDef<IOrderColumns>[] = [
@@ -40,6 +41,38 @@ export const orderColumns: ColumnDef<IOrderColumns>[] = [
           {row.original.id}
         </p>
       );
+    },
+  },
+  {
+    accessorKey: 'itemsCount',
+    meta: {
+      textClassName: 'truncate overflow-hidden text-ellipsis whitespace-nowrap',
+    },
+    header: ({ column }) => {
+      return (
+        <Button variant='ghost' className='p-0 px-0 has-[>svg]:px-0'>
+          Count
+        </Button>
+      );
+    },
+    cell: ({ row }) => {
+      return row.original.itemsCount;
+    },
+  },
+  {
+    accessorKey: 'itemsNames',
+    meta: {
+      textClassName: 'text-wrap text-xs',
+    },
+    header: ({ column }) => {
+      return (
+        <Button variant='ghost' className='p-0 px-0 has-[>svg]:px-0'>
+          Items Names
+        </Button>
+      );
+    },
+    cell: ({ row }) => {
+      return row.original.itemsNames;
     },
   },
   {
@@ -89,29 +122,13 @@ export const orderColumns: ColumnDef<IOrderColumns>[] = [
           className='p-0 px-0 has-[>svg]:px-0'
           onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
         >
-          Total price
+          Price
           <ArrowUpDown className='ml-2 size-4' />
         </Button>
       );
     },
     cell: ({ row }) => {
       return formatPrice(row.original.totalPrice);
-    },
-  },
-  {
-    accessorKey: 'itemsCount',
-    meta: {
-      textClassName: 'truncate overflow-hidden text-ellipsis whitespace-nowrap',
-    },
-    header: ({ column }) => {
-      return (
-        <Button variant='ghost' className='p-0 px-0 has-[>svg]:px-0'>
-          Items Count
-        </Button>
-      );
-    },
-    cell: ({ row }) => {
-      return row.original.itemsCount;
     },
   },
   {

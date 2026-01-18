@@ -58,6 +58,10 @@ export class ProductDto {
   @IsBoolean()
   isOriginal: boolean;
 
+  @ApiProperty({ example: true, description: 'Is Published' })
+  @IsBoolean()
+  isPublished: boolean;
+
   @ApiProperty({
     required: true,
     description: 'Product images',

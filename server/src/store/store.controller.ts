@@ -37,7 +37,8 @@ export class StoreController {
 
   @UsePipes(new ValidationPipe())
   @HttpCode(200)
-  @AuthAndCanCreateStore()
+  // @AuthAndCanCreateStore()
+  @Auth()
   @Post()
   @ApiResponse({ type: GetStoreDto })
   async create(@CurrentUser('id') userId: string, @Body() dto: StoreDto) {

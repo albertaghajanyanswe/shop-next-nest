@@ -10,6 +10,7 @@ export interface IOrderItemColumns {
   status: string;
   price: number;
   quantity: number;
+  itemName: string;
 }
 
 export const OrderItemColumns: ColumnDef<IOrderItemColumns>[] = [
@@ -41,7 +42,22 @@ export const OrderItemColumns: ColumnDef<IOrderItemColumns>[] = [
       );
     },
   },
-
+  {
+    accessorKey: 'itemName',
+    meta: {
+      textClassName: 'text-wrap text-xs',
+    },
+    header: ({ column }) => {
+      return (
+        <Button variant='ghost' className='p-0 px-0 has-[>svg]:px-0'>
+          Name
+        </Button>
+      );
+    },
+    cell: ({ row }) => {
+      return row.original.itemName;
+    },
+  },
   {
     accessorKey: 'status',
     meta: {

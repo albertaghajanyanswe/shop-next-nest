@@ -85,7 +85,8 @@ export function ProductForm({
       brandId: product?.brand?.id || '',
       state: product?.state || GetProductWithDetailsState.NEW,
       quantity: product?.quantity || 0,
-      isOriginal: product?.isOriginal ?? true,
+      isOriginal: product?.isOriginal ?? false,
+      isPublished: product?.isPublished ?? true,
     },
   });
 
@@ -245,7 +246,7 @@ export function ProductForm({
             <FormField
               control={form.control}
               name='colorId'
-              rules={{ required: 'Color is required' }}
+              // rules={{ required: 'Color is required' }}
               render={({ field, fieldState }) => (
                 <FormItem>
                   <FormLabel>Color</FormLabel>
@@ -443,25 +444,46 @@ export function ProductForm({
               </FormItem>
             )}
           />
-          <FormField
-            control={form.control}
-            name='isOriginal'
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Is Original</FormLabel>
-                <FormControl>
-                  <Switch
-                    id='isOriginal'
-                    {...field}
-                    checked={field.value}
-                    onCheckedChange={field.onChange}
-                    disabled={isLoading}
-                  />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
+          <div className='grid items-start gap-4 sm:grid-cols-3'>
+            <FormField
+              control={form.control}
+              name='isOriginal'
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Is Original</FormLabel>
+                  <FormControl>
+                    <Switch
+                      id='isOriginal'
+                      {...field}
+                      checked={field.value}
+                      onCheckedChange={field.onChange}
+                      disabled={isLoading}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name='isPublished'
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Is Published</FormLabel>
+                  <FormControl>
+                    <Switch
+                      id='isPublished'
+                      {...field}
+                      checked={field.value}
+                      onCheckedChange={field.onChange}
+                      disabled={isLoading}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+          </div>
 
           <Button
             variant='default'

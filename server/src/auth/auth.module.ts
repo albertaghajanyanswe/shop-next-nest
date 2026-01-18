@@ -13,6 +13,8 @@ import { getJwtConfig } from 'src/config';
 import { SubscriptionService } from 'src/subscription/subscription.service';
 import { OrderService } from 'src/order/order.service';
 import { QueryPayloadBuilderService } from 'src/queryPayloadBuilder/QueryPayloadBuilder';
+import { ProductService } from 'src/product/product.service';
+import { CloudinaryFileService } from 'src/cloudinary-file/cloudinary-file.service';
 
 @Module({
   imports: [
@@ -34,7 +36,9 @@ import { QueryPayloadBuilderService } from 'src/queryPayloadBuilder/QueryPayload
     StripeService,
     SubscriptionService,
     OrderService,
-    QueryPayloadBuilderService
+    QueryPayloadBuilderService,
+    ProductService,
+    CloudinaryFileService
   ],
 })
 export class AuthModule {}

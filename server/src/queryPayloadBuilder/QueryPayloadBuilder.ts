@@ -33,7 +33,7 @@ export class QueryPayloadBuilderService {
       const { limit, skip, sort, filter, search } = JSON.parse(params);
       return { limit, skip, sort, filter, search };
     } catch (err) {
-      console.log('\n\n safeJsonParser err ', err);
+      console.log('\n\n safeJsonParser err - ', err);
       return {
         limit: null,
         skip: null,

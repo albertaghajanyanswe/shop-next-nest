@@ -3,6 +3,7 @@ import { PrismaService } from 'src/prisma.service';
 import { ProductDto } from './dto/product.dto';
 import { QueryPayloadBuilderService } from 'src/queryPayloadBuilder/QueryPayloadBuilder';
 import { CloudinaryFileService } from 'src/cloudinary-file/cloudinary-file.service';
+import { GetSubscriptionsDto } from 'src/subscription/dto/subscription.dto';
 
 @Injectable()
 export class ProductService {
@@ -20,7 +21,8 @@ export class ProductService {
       orderBy: {
         createdAt: 'desc',
       },
-      ...payload,
+      where: { ...payload.where, isPublished: true },
+      // ...payload,
       include: {
         category: true,
         color: true,
@@ -122,7 +124,10 @@ export class ProductService {
       ...(payload.skip ? { skip: payload.skip } : {}),
     });
 
-    console.log('\n\n mostPopularProducts.length = ', mostPopularProducts.length);
+    console.log(
+      '\n\n mostPopularProducts.length = ',
+      mostPopularProducts.length,
+    );
     if (!mostPopularProducts.length) {
       return this.prisma.product.findMany({
         ...(payload.take ? { take: payload.take } : {}),
@@ -133,7 +138,7 @@ export class ProductService {
         include: {
           category: true,
           brand: true,
-          store: true
+          store: true,
         },
       });
     }
@@ -148,7 +153,7 @@ export class ProductService {
       include: {
         category: true,
         brand: true,
-        store: true
+        store: true,
       },
       ...(payload.take ? { take: payload.take } : {}),
       ...(payload.skip ? { skip: payload.skip } : {}),
@@ -196,10 +201,13 @@ export class ProductService {
         price: dto.price,
         images: dto.images,
         categoryId: dto.categoryId,
-        colorId: dto.colorId || '',
+        ...(dto?.colorId && { colorId: dto.colorId }),
         brandId: dto.brandId || '',
         storeId,
         userId,
+        isOriginal: dto.isOriginal,
+        isPublished: dto.isPublished,
+        quantity: dto.quantity,
       },
     });
   }
@@ -218,7 +226,8 @@ export class ProductService {
         brandId: dto.brandId,
         oldPrice: product.price,
         quantity: dto.quantity,
-        // isPublished: dto.isPublished,
+        isPublished: dto.isPublished,
+        isOriginal: dto.isOriginal,
         // isBlocked: dto.isBlocked,
       },
     });
@@ -230,6 +239,47 @@ export class ProductService {
 
     return this.prisma.product.delete({
       where: { id },
+    });
+  }
+
+  async enforceProductLimit(userId: string, subscription: GetSubscriptionsDto) {
+    const limit = subscription?.productLimit || Infinity;
+
+    if (limit === Infinity || limit === -1) {
+      return;
+    }
+
+    const publishedProducts = await this.prisma.product.findMany({
+      where: {
+        userId,
+        isPublished: true,
+      },
+      orderBy: [
+        { totalViews: 'desc' },
+        { createdAt: 'asc' },
+      ],
+      select: {
+        id: true,
+      },
+    });
+
+    if (publishedProducts.length <= limit) {
+      return;
+    }
+
+    const allowedIds = publishedProducts.slice(0, limit).map((p) => p.id);
+
+    await this.prisma.product.updateMany({
+      where: {
+        userId,
+        isPublished: true,
+        id: {
+          notIn: allowedIds,
+        },
+      },
+      data: {
+        isPublished: false,
+      },
     });
   }
 }

@@ -1264,6 +1264,7 @@ export class StripeService {
   // ): Promise<PaymentWebhookResult | null> {
   public async handleWebhook(event: Stripe.Event) {
     console.log('\n\n\n ++++ handleWebhook EVENT TYPE = ', event.type);
+    console.log('\n ++++ handleWebhook EVENT = ', event);
     switch (event.type) {
       case 'payment_method.attached':
         this.onPaymentMethodAttached(event);
@@ -1562,6 +1563,7 @@ export class StripeService {
         status: EnumOrderStatus.SUCCEEDED,
         stripePaymentIntentId: session.payment_intent as string,
         stripeChargeId: chargeId as string,
+        providerMeta: JSON.parse(JSON.stringify(event.data.object)),
       },
     });
   }

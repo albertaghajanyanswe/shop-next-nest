@@ -9,6 +9,7 @@ import { OrderDto } from './dto/order.dto';
 import { EnumRole, PaymentProvider } from '@prisma/client';
 import type { Prisma, User } from '@prisma/client';
 import { QueryPayloadBuilderService } from 'src/queryPayloadBuilder/QueryPayloadBuilder';
+import { excludeFields } from 'src/utils/types/stripe';
 
 @Injectable()
 export class OrderService {
@@ -17,6 +18,15 @@ export class OrderService {
     private readonly queryBuilderService: QueryPayloadBuilderService,
   ) {}
 
+  excludeFieldsFromOrder = () => {
+    const model = this.prisma.order.fields;
+    return excludeFields(model, [
+      'stripePaymentIntentId',
+      'stripeChargeId',
+      'providerMeta',
+      'stripeSessionId',
+    ]);
+  };
   async getAll(user: User, params?: string) {
     const payload = this.queryBuilderService.build({
       queryParams: params || '',
@@ -58,6 +68,7 @@ export class OrderService {
         queryParams: params || '',
       });
       const { where, ...rest } = payload;
+
       const orders = await this.prisma.order.findMany({
         orderBy: {
           createdAt: 'desc',
