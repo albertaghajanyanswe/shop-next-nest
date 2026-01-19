@@ -11,7 +11,7 @@ import { IReviewInput } from '@/shared/types/review.interface';
 class ReviewService {
   async getByStoreId(storeId: string, params?: iParams) {
     const { data } = await axiosWithAuth<GetReviewWithUserDtoAndCount>({
-      url: `${API_URL.reviews(`/by-storeId/${storeId}`)}?params=${encodeURIComponent(JSON.stringify(params))}`,
+      url: `${API_URL.reviews(`/store/${storeId}`)}?params=${encodeURIComponent(JSON.stringify(params))}`,
       method: 'GET',
     });
 

@@ -19,7 +19,7 @@ class CategoryService {
 
   async getByStoreId(storeId: string) {
     const { data } = await axiosWithAuth<GetCategoryDto[]>({
-      url: API_URL.categories(`/by-storeId/${storeId}`),
+      url: API_URL.categories(`/store/${storeId}`),
       method: 'GET',
     });
 

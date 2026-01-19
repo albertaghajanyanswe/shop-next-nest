@@ -27,7 +27,7 @@ export class OrderService {
       'stripeSessionId',
     ]);
   };
-  async getAll(user: User, params?: string) {
+  async getOrders(user: User, params?: string) {
     const payload = this.queryBuilderService.build({
       queryParams: params || '',
       userId: user.id,

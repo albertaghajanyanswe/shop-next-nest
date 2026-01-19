@@ -16,7 +16,7 @@ class BrandService {
 
   async getByStoreId(storeId: string) {
     const { data } = await axiosWithAuth<GetBrandDto[]>({
-      url: API_URL.brands(`/by-storeId/${storeId}`),
+      url: API_URL.brands(`/store/${storeId}`),
       method: 'GET',
     });
 

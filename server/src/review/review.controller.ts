@@ -28,7 +28,7 @@ export class ReviewController {
   constructor(private readonly reviewService: ReviewService) {}
 
   @AuthAndOwner(StoreService, 'storeId')
-  @Get('by-storeId/:storeId')
+  @Get('store/:storeId')
   @ApiOkResponse({ type: GetReviewWithUserDtoAndCount, isArray: true })
   async getByStoreId(
     @Param('storeId') storeId: string,

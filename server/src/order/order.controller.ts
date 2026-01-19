@@ -17,8 +17,8 @@ export class OrderController {
   @Auth()
   @Get()
   @ApiOkResponse({ type: GetOrderWithItemsDtoAndCount })
-  async getAll(@CurrentUser() user: User, @Query('params') params?: string) {
-    return this.orderService.getAll(user, params);
+  async getOrders(@CurrentUser() user: User, @Query('params') params?: string) {
+    return this.orderService.getOrders(user, params);
   }
 
   @Auth()

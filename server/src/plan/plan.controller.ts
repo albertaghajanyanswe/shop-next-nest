@@ -9,7 +9,10 @@ import { CurrentUser } from 'src/user/decorators/user.decorator';
 export class PlanController {
   constructor(private readonly planService: PlanService) {}
 
-  @Auth()
+  @ApiOperation({
+    summary: 'Get all plans',
+    description: 'Retrieve all subscription plans.',
+  })
   @ApiOkResponse({ type: GetPlansDto, isArray: true })
   @Get('')
   async getPlans(@CurrentUser('id') userId: string) {

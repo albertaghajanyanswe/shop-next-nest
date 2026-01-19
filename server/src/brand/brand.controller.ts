@@ -33,7 +33,7 @@ export class BrandController {
   }
 
   @AuthAndOwner(StoreService, 'storeId')
-  @Get('by-storeId/:storeId')
+  @Get('store/:storeId')
   @ApiOkResponse({
     type: GetBrandDto,
     isArray: true,

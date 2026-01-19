@@ -2,7 +2,6 @@
 
 import { useState } from 'react';
 import { useAuthForm } from './useAuthForm';
-import Image from 'next/image';
 import {
   Card,
   CardContent,
@@ -15,8 +14,6 @@ import { Form } from '@/components/ui/formElements/Form';
 import { Button } from '@/components/ui/Button';
 import { AuthFields } from './AuthFields';
 import { Social } from './Social';
-import Link from 'next/link';
-import { PUBLIC_URL } from '@/config/url.config';
 import { Logo } from '@/components/layouts/mainLayout/header/logo/Logo';
 
 export default function Auth() {
@@ -38,14 +35,6 @@ export default function Auth() {
           carefully selected items for everyday life.
         </p>
       </div>
-      {/* <div className='bg-primary-50 hidden h-full items-center justify-center lg:flex'>
-        <Image
-          src={'/images/myStore_logo.svg'}
-          alt='auth'
-          width={450}
-          height={450}
-        />
-      </div> */}
       <div className='flex h-full flex-col items-center justify-center'>
         <Card className='flex w-[500px] flex-col items-center justify-center border-none bg-white shadow-none'>
           <Logo classNames='sm:text-4xl' />

@@ -29,7 +29,7 @@ export class CategoryController {
   constructor(private readonly categoryService: CategoryService) {}
 
   @AuthAndOwner(StoreService, 'storeId')
-  @Get('by-storeId/:storeId')
+  @Get('store/:storeId')
   @ApiOkResponse({ type: GetCategoryDto, isArray: true })
   async getByStoreId(@Param('storeId') storeId: string) {
     return this.categoryService.getByStoreId(storeId);

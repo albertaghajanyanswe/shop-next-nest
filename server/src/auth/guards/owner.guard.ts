@@ -31,7 +31,9 @@ export function OwnerGuard(
       if (user.role === 'ADMIN' || user.role === 'SUPER_ADMIN') return true;
 
       if (entity.userId !== user.id)
-        throw new ForbiddenException('You do not own this entity');
+        throw new ForbiddenException(
+          'Permission denied, You are not the owner of this entity.',
+        );
 
       return true;
     }
