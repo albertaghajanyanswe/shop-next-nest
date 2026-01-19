@@ -12,6 +12,7 @@ import {
 import { SITE_NAME } from '@/utils/constants';
 import Breadcrumbs from '@/components/customComponents/Breadcrumbs';
 import { PUBLIC_URL } from '@/config/url.config';
+import { cache } from 'react';
 
 export async function generateMetadata({
   params,
@@ -19,12 +20,7 @@ export async function generateMetadata({
   params: Promise<{ storeId: string }>;
 }): Promise<Metadata> {
   const { storeId } = await params;
-
-  // TODO
-  const productsData = await productService.getByStoreIdPublic(storeId, {
-    limit: 10,
-    skip: 0,
-  });
+  const productsData = await getProducts(storeId, { limit: 10, skip: 0 });
 
   const topBrands = Array.from(
     new Set(
@@ -46,7 +42,7 @@ export async function generateMetadata({
   const description = `Explore all products at ${SITE_NAME} — ${categoryList} and more from top brands. Shop the latest deals today.`;
 
   const meta = generateMeta({
-    title: `${SITE_NAME} | Shop`,
+    title: `${productsData?.products?.[0]?.store?.title || SITE_NAME} | Shop`,
     description,
     image: COlLAGE_IMG,
     isPublic: true,
@@ -56,17 +52,18 @@ export async function generateMetadata({
     url: `${process.env.NEXT_PUBLIC_CLIENT_URL}/${PUBLIC_URL.storeShop(storeId)}`,
   });
 
-  console.log('META = ', meta);
   return meta;
 }
 
 export const revalidate = 60;
 
-async function getProducts(storeId: string) {
-  // TODO
-  const products = await productService.getByStoreIdPublic(storeId);
-  return products;
-}
+const getProducts = cache(
+  async (storeId: string, params?: { limit?: number; skip?: number }) => {
+    //TODO
+    const products = await productService.getByStoreIdPublic(storeId, params);
+    return products;
+  }
+);
 
 async function getStore(storeId: string) {
   // TODO
@@ -80,16 +77,20 @@ export default async function ShopPage({
   params: Promise<{ storeId: string }>;
 }) {
   const { storeId } = await params;
-  const productsData = await getProducts(storeId);
-  const store = await getStore(storeId);
-  const [categoriesData, brandsData] = await Promise.all([
+  const [store, productsData, categoriesData, brandsData] = await Promise.all([
+    getStore(storeId),
+    getProducts(storeId),
     categoryService.getAll(),
     brandService.getAll(),
   ]);
   return (
     <div className='global-container'>
       <Breadcrumbs
-        items={[{ title: 'Home', href: '/' }, { title: 'Shop' }]}
+        items={[
+          { title: 'Home', href: '/' },
+          { title: 'Shop', href: PUBLIC_URL.shop() },
+          { title: store?.title || 'Store' },
+        ]}
         classNames='mt-4'
       />
 

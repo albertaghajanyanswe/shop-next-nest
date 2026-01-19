@@ -1,7 +1,6 @@
 'use client';
 
-import { useSearchParams } from 'next/navigation';
-import { useQuery } from '@tanstack/react-query';
+import { keepPreviousData, useQuery } from '@tanstack/react-query';
 import { Catalog } from '@/components/ui/catalog/Catalog';
 import { productService } from '@/services/product.service';
 import { QUERY_KEYS } from '@/shared/queryConstants';
@@ -16,6 +15,7 @@ import { CustomPagination } from '@/components/ui/CustomPagination';
 import Filters from '@/components/customComponents/filters/Filters';
 import LoadingProducts from '@/components/customComponents/loading/LoadingProducts';
 import { StoreCard } from '@/components/customComponents/StoreCard';
+import { useMemo } from 'react';
 
 interface ShopProps {
   initialProducts?: GetProductWithDetails[];
@@ -49,23 +49,29 @@ export default function Shop({
     },
   });
 
-  // console.log('SHOP queryParams = ', queryParams);
-
   const {
     data: productData,
     isLoading,
     isPending,
   } = useQuery({
-    queryKey: [QUERY_KEYS.productShop[0], JSON.stringify(queryParams.params)],
+    queryKey: [QUERY_KEYS.productShop[0], queryParams.params],
     queryFn: () =>
       store
         ? productService.getByStoreIdPublic(store.id, queryParams.params)
         : productService.getAll(queryParams.params),
-    initialData: { products: initialProducts, totalCount },
+    initialData: initialProducts
+      ? { products: initialProducts, totalCount }
+      : undefined,
+    placeholderData: keepPreviousData
     // keepPreviousData: true,
   });
 
   const loading = isLoading || isPending;
+
+  const catalogTitle = useMemo(() => {
+    const q = queryParams.params.search?.value;
+    return q ? `Search by query ${q}` : 'Product catalog';
+  }, [queryParams.params.search?.value]);
 
   return (
     <>
@@ -74,8 +80,6 @@ export default function Shop({
           <div className='col-span-12 lg:col-span-12'>
             <StoreCard
               store={store}
-              heightClass='h-80'
-              imgClass='object-contain'
               showInfo
               expandDesc
             />
@@ -90,11 +94,7 @@ export default function Shop({
           ) : (
             <>
               <Catalog
-                title={
-                  queryParams?.params?.search?.value
-                    ? `Search by query ${queryParams?.params?.search?.value}`
-                    : 'Product catalog'
-                }
+                title={catalogTitle}
                 products={productData?.products ?? []}
                 showSearch
                 showSort

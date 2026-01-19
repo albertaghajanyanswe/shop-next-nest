@@ -1,14 +1,13 @@
 import Link from 'next/link';
 import { PUBLIC_URL } from '@/config/url.config';
 import { formatPrice } from '@/utils/formatPrice';
-import AddToCardButton from './AddToCardButton';
 import FavoriteButton from './FavoriteButton';
 import { GetProductWithDetails } from '@/generated/orval/types';
 import QueryString from 'qs';
 import { ShowMoreText } from '@/components/customComponents/ShowMoreText';
 import ProductInfoAction from './ProductInfoAction';
 import { Badge } from '@/components/ui/Badge';
-import { Crown, Sparkle, Sparkles } from 'lucide-react';
+import { Crown, Sparkles } from 'lucide-react';
 import { ProductRating } from './ProductRating';
 import EditProductButton from './EditProductButton';
 
@@ -17,12 +16,6 @@ export interface ProductInfoProps {
 }
 
 export default function ProductInfo({ product }: ProductInfoProps) {
-  const rating = product.reviews
-    ? Math.round(
-        product.reviews.reduce((acc, review) => acc + review.rating, 0) /
-          product.reviews.length
-      ) || 0
-    : 0;
   return (
     <div className='relative flex w-full flex-col gap-3 md:rounded-md md:border md:border-neutral-100 md:p-6'>
       <div className='space-y-2'>
@@ -73,18 +66,20 @@ export default function ProductInfo({ product }: ProductInfoProps) {
           </Link>
         </div>
 
-        <div className='flex items-center gap-x-4'>
-          <h3 className='font-medium text-neutral-700'>Color:</h3>
-          <div className='flex flex-row items-center justify-center gap-x-2'>
-            <div
-              className='size-6 rounded-full border border-neutral-300'
-              style={{ backgroundColor: product.color?.value }}
-            />
-            <p className='text-muted-foreground text-sm font-medium'>
-              {product.color?.name}
-            </p>
+        {product.color?.name && (
+          <div className='flex items-center gap-x-4'>
+            <h3 className='font-medium text-neutral-700'>Color:</h3>
+            <div className='flex flex-row items-center justify-center gap-x-2'>
+              <div
+                className='size-6 rounded-full border border-neutral-300'
+                style={{ backgroundColor: product.color?.value }}
+              />
+              <p className='text-muted-foreground text-sm font-medium'>
+                {product.color?.name}
+              </p>
+            </div>
           </div>
-        </div>
+        )}
         <ProductRating
           productReviews={product.reviews || []}
           leftTitle='Average rating: '
@@ -93,7 +88,7 @@ export default function ProductInfo({ product }: ProductInfoProps) {
           <ProductInfoAction product={product} />
         </div>
         <FavoriteButton
-          product={product}
+          productId={product.id}
           className='flex w-full'
           // className='xs:top-2 xs:right-2 absolute top-1 right-1'
           btnVariant='outline'

@@ -1,10 +1,10 @@
 import Link from 'next/link';
-import { ProductCard } from '@/components/ui/catalog/ProductCard';
+import ProductCard from '@/components/ui/catalog/ProductCard';
 import { GetProductWithDetails } from '@/generated/orval/types';
-import { LoaderCircle } from 'lucide-react';
 import NoProductsFound from '@/components/customComponents/loading/NoProductsFound';
 import { SearchInput } from '@/components/layouts/mainLayout/header/searchInput/SearchInput';
 import { SortSelect } from '@/components/customComponents/filters/SortSelect';
+import { SORT_PRODUCT_OPTIONS } from '@/utils/sortConstants';
 
 export interface ICatalog {
   title: string;
@@ -29,20 +29,25 @@ export function Catalog({
   showSort = false,
   searchRedirectToShop = true,
 }: ICatalog) {
-  console.log('AAAAA products in Catalog = ', products);
+
   return (
     <>
       <div className='mb-4 md:flex md:items-center md:justify-between'>
         <div className='w-full px-0'>
           <p className='text-2xl font-semibold'>{title}</p>
-          <div className='mt-4 flex flex-col sm:flex-row items-center gap-2'>
+          <div className='mt-4 flex flex-col items-center gap-2 sm:flex-row'>
             {showSearch && (
               <SearchInput
                 searchFields={['id', 'title', 'description']}
                 redirectToShop={searchRedirectToShop}
               />
             )}
-            {showSort && <SortSelect triggerClassName='w-full sm:w-[220px]' />}
+            {showSort && (
+              <SortSelect
+                triggerClassName='w-full sm:w-[220px]'
+                options={SORT_PRODUCT_OPTIONS}
+              />
+            )}
           </div>
           {description && (
             <p className='text-muted-foreground mt-2 text-sm'>

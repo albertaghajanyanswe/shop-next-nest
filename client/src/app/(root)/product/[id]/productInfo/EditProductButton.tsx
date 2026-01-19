@@ -2,7 +2,6 @@ import { Button } from '@/components/ui/Button';
 import { CustomTooltip } from '@/components/ui/CustomTooltip';
 import { STORE_URL } from '@/config/url.config';
 import { GetProductWithDetails } from '@/generated/orval/types';
-import { useProfile } from '@/hooks/useProfile';
 import { Pencil } from 'lucide-react';
 import Link from 'next/link';
 import { memo } from 'react';
@@ -17,10 +16,7 @@ function EditProductButton({
   className = '',
   onlyIcon = true,
 }: EditProductButtonProps) {
-  const { user } = useProfile();
-  const handleEdit = () => {
-    // Handle edit product action
-  };
+
   const button = (
     <Link
       className={className}
@@ -29,7 +25,6 @@ function EditProductButton({
       <Button
         variant='outline'
         size={onlyIcon ? 'icon' : 'default'}
-        // onClick={handleEdit}
         aria-label='Edit product'
         className='w-full'
       >

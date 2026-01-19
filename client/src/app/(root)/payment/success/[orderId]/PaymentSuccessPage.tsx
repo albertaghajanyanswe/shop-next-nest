@@ -4,7 +4,11 @@ import { OrderDetailsModalContent } from '@/components/modals/orderDetailsModal/
 import { useGetOrderById } from '@/hooks/queries/orders/useGetOrderById';
 import { memo } from 'react';
 
-function PaymentSuccessPage({ orderId }: { orderId: string }) {
+interface PaymentSuccessPageProps {
+  orderId: string;
+}
+
+function PaymentSuccessPage({ orderId }: PaymentSuccessPageProps) {
   const { order, isLoadingOrder } = useGetOrderById(orderId);
 
   return order && !isLoadingOrder ? (

@@ -22,19 +22,19 @@ import { ShowMoreText } from './ShowMoreText';
 interface StoreCardProps {
   store: GetStoreDto;
   showInfo?: boolean;
-  heightClass?: string;
-  imgClass?: string;
   makeDark?: boolean;
   expandDesc?: boolean;
+  heightClass?: string;
+  imgClass?: string;
 }
 
 export function StoreCard({
   store,
   showInfo,
-  heightClass = 'h-56',
-  imgClass = 'object-cover',
   makeDark,
   expandDesc,
+  heightClass = 'h-60 sm:h-80',
+  imgClass = 'object-cover lg:object-contain',
 }: StoreCardProps) {
   const [carouselApi, setCarouselApi] = useState<CarouselApi | null>(null);
   const [activeIndex, setActiveIndex] = useState(0);

@@ -2,9 +2,6 @@ import { Controller, Get, Param } from '@nestjs/common';
 import { PlanService } from './plan.service';
 import { ApiOkResponse, ApiOperation } from '@nestjs/swagger';
 import { GetPlansDto } from './dto/plan.dto';
-import { Auth } from 'src/auth/decorators/auth.decorator';
-import { CurrentUser } from 'src/user/decorators/user.decorator';
-
 @Controller('plans')
 export class PlanController {
   constructor(private readonly planService: PlanService) {}
@@ -15,8 +12,8 @@ export class PlanController {
   })
   @ApiOkResponse({ type: GetPlansDto, isArray: true })
   @Get('')
-  async getPlans(@CurrentUser('id') userId: string) {
-    return await this.planService.getAll(userId);
+  async getPlans() {
+    return await this.planService.getAll();
   }
 
   @ApiOperation({

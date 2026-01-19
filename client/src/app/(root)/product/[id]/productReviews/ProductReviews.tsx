@@ -10,6 +10,7 @@ import { Rating } from 'react-simple-star-rating';
 import { GetProductWithDetails } from '@/generated/orval/types';
 import { formatDateWithHour } from '@/utils/formateDate';
 import NoDataFound from '@/components/customComponents/loading/NoDataFound';
+import { ShowMoreText } from '@/components/customComponents/ShowMoreText';
 
 export interface ProductReviewsProps {
   product: GetProductWithDetails;
@@ -70,8 +71,12 @@ export default function ProductReviews({ product }: ProductReviewsProps) {
                       height={40}
                       className='h-10 w-10 rounded-full'
                     />
-                    <div className='text-muted-foreground text-xs font-normal'>
-                      {review.text}
+                    <div>
+                      <ShowMoreText
+                        className='text-muted-foreground text-sm'
+                        text={review.text}
+                        maxLength={150}
+                      />
                     </div>
                   </div>
                 </div>
@@ -81,6 +86,7 @@ export default function ProductReviews({ product }: ProductReviewsProps) {
                   <Button
                     variant='ghost'
                     className='text-red-500 hover:bg-red-500/5'
+                    disabled={isLoadingDelete}
                   >
                     <Trash2 className='size-4 text-red-500 hover:text-red-600' />
                   </Button>

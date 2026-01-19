@@ -1,6 +1,8 @@
+import { SortOrder } from '@/utils/sortConstants';
+
 export interface iSort {
   field: string;
-  order: 'asc' | 'desc' | '';
+  order: SortOrder | '';
 }
 
 export interface iFilter {

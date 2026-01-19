@@ -1,43 +1,63 @@
 import { Metadata } from 'next';
-import { productService } from '@/services/product.service';
+import { cache } from 'react';
+
 import Shop from './Shop';
-import { EnvVariables } from '@/shared/envVariables';
+import Breadcrumbs from '@/components/customComponents/Breadcrumbs';
+
+import { productService } from '@/services/product.service';
 import { categoryService } from '@/services/category.service';
 import { brandService } from '@/services/brandService';
 import { storeService } from '@/services/store.service';
+
 import {
   COlLAGE_IMG,
   generateMeta,
   POPULAR_KEYWORDS,
 } from '@/components/meta/Meta';
+
 import { SITE_NAME } from '@/utils/constants';
-import Breadcrumbs from '@/components/customComponents/Breadcrumbs';
 import { PUBLIC_URL } from '@/config/url.config';
 
+export const revalidate = 60;
+
+/**
+ * Caching fetch products for metadata and page
+ */
+const getProductsCached = cache(
+  async (params?: { limit?: number; skip?: number }) => {
+    return productService.getAll(params);
+  }
+);
+
+/**
+ * Metadata
+ */
 export async function generateMetadata(): Promise<Metadata> {
-  // TODO
-  const productsData = await productService.getAll({ limit: 10, skip: 0 });
+  const productsData = await getProductsCached({ limit: 10, skip: 0 });
+
+  const products = productsData?.products ?? [];
 
   const topBrands = Array.from(
     new Set(
-      productsData?.products
-        ?.map((p) => p.brand?.name)
-        .filter((x): x is string => Boolean(x))
+      products.map((p) => p.brand?.name).filter((x): x is string => Boolean(x))
     )
   ).slice(0, 5);
 
   const topCategories = Array.from(
     new Set(
-      productsData?.products
-        ?.map((p) => p.category?.name)
+      products
+        .map((p) => p.category?.name)
         .filter((x): x is string => Boolean(x))
     )
   ).slice(0, 5);
+
   const categoryList = topCategories.join(', ');
 
-  const description = `Explore all products at ${SITE_NAME} — ${categoryList} and more from top brands. Shop the latest deals today.`;
+  const description = `Explore all products at ${SITE_NAME} — ${
+    categoryList || 'top categories'
+  } and more from top brands. Shop the latest deals today.`;
 
-  const meta = generateMeta({
+  return generateMeta({
     title: `${SITE_NAME} | Shop`,
     description,
     image: COlLAGE_IMG,
@@ -47,28 +67,20 @@ export async function generateMetadata(): Promise<Metadata> {
     ogType: 'website',
     url: `${process.env.NEXT_PUBLIC_CLIENT_URL}/${PUBLIC_URL.shop()}`,
   });
-
-  console.log('META = ', meta);
-  return meta;
 }
 
-export const revalidate = 60;
-
-async function getProducts() {
-  // TODO
-  const products = await productService.getAll();
-  return products;
-}
-
+/**
+ * Page
+ */
 export default async function ShopPage() {
-  const productsData = await getProducts();
+  const [productsData, categoriesData, brandsData, storesData] =
+    await Promise.all([
+      getProductsCached(),
+      categoryService.getAll(),
+      brandService.getAll(),
+      storeService.getAll(),
+    ]);
 
-  // TODO
-  const [categoriesData, brandsData, storesData] = await Promise.all([
-    categoryService.getAll(),
-    brandService.getAll(),
-    storeService.getAll(),
-  ]);
   return (
     <div className='global-container'>
       <Breadcrumbs

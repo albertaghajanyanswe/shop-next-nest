@@ -6,13 +6,13 @@ import { QUERY_KEYS } from '@/shared/queryConstants';
 import { useQuery } from '@tanstack/react-query';
 import ProductGallery from './product-gallery/ProductGallery';
 import ProductInfo from './productInfo/ProductInfo';
-import ProductReviews from './productReviews/ProductReviews';
 import { GetProductWithDetails } from '@/generated/orval/types';
 import {
   CustomTabs,
   TabItem,
 } from '@/components/customComponents/customTabs/CustomTabs';
-import { useMemo } from 'react';
+import { useMemo, lazy, Suspense } from 'react';
+const ProductReviews = lazy(() => import('./productReviews/ProductReviews'));
 
 export interface ProductProps {
   initialProduct: GetProductWithDetails;
@@ -32,12 +32,26 @@ export default function Product({
     enabled: !!id,
   });
 
+  const LazyTabContent = ({ children }: { children: React.ReactNode }) => (
+    <Suspense
+      fallback={
+        <div className='py-4 text-center text-gray-500'>Loading...</div>
+      }
+    >
+      {children}
+    </Suspense>
+  );
+
   const tabs: TabItem[] = useMemo(() => {
     return [
       {
         id: 'review',
         label: 'Reviews',
-        content: <ProductReviews product={product} />,
+        content: (
+          <LazyTabContent>
+            <ProductReviews product={product} />
+          </LazyTabContent>
+        ),
       },
       {
         id: 'info',

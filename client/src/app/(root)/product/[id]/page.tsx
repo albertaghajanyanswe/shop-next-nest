@@ -9,14 +9,14 @@ import { PUBLIC_URL } from '@/config/url.config';
 
 export const revalidate = 60;
 
-export async function generateStaticParams() {
-  // TODO
-  const productsData = await productService.getAll();
-  const res = productsData?.products
-    ? productsData?.products?.map((product) => ({ id: product.id }))
-    : [];
-  return res;
-}
+// export async function generateStaticParams() {
+//   // TODO
+//   const productsData = await productService.getAll();
+//   const res = productsData?.products
+//     ? productsData?.products?.map((product) => ({ id: product.id }))
+//     : [];
+//   return res;
+// }
 
 async function getProducts(id: string) {
   try {

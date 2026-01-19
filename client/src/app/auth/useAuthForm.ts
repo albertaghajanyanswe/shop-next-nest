@@ -30,9 +30,9 @@ export function useAuthForm(isReg: boolean) {
     mutationFn: (data: RegisterDto) =>
       authService.main(isReg ? 'register' : 'login', data),
     onSuccess: () => {
-      form.reset();
       toast.success('Login success');
       router.replace(DASHBOARD_URL.home());
+      form.reset();
     },
     onError: (error) => {
       console.log('error = ', error);

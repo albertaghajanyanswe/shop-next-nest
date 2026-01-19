@@ -80,7 +80,6 @@ export const useQueryParams = ({
 
   const changeFilterObject = useCallback(
     (newFilter: iFilter) => {
-      console.log('\n\n -----changeFilterObject');
       replaceRoutePath({
         ...queryParams.params,
         filter: newFilter,
@@ -100,8 +99,6 @@ export const useQueryParams = ({
   };
   const changeLimit = useCallback(
     (limit: number) => {
-      console.log('\n\n -----changeLimit');
-
       setFilteredParams({
         params: {
           ...queryParams.params,
@@ -115,8 +112,6 @@ export const useQueryParams = ({
 
   const changeSort = useCallback(
     (sort: iSort) => {
-      console.log('\n\n -----changeSort');
-
       setFilteredParams({
         params: {
           ...queryParams.params,
@@ -130,8 +125,6 @@ export const useQueryParams = ({
 
   const changeSearch = useCallback(
     (value: string) => {
-      console.log('\n\n -----changeSearch');
-
       setFilteredParams({
         params: {
           ...queryParams.params,

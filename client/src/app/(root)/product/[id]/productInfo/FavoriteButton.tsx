@@ -1,16 +1,15 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { AiFillHeart, AiOutlineHeart } from 'react-icons/ai';
-import { Button, buttonVariants } from '@/components/ui/Button';
+import { Button } from '@/components/ui/Button';
 import { useProfile } from '@/hooks/useProfile';
 import { userService } from '@/services/user.service';
 import { QUERY_KEYS } from '@/shared/queryConstants';
-import { GetProductWithDetails } from '@/generated/orval/types';
 import { memo } from 'react';
 import toast from 'react-hot-toast';
 import { CustomTooltip } from '@/components/ui/CustomTooltip';
 
 interface FavoriteButtonProps {
-  product: GetProductWithDetails;
+  productId: string;
   className?: string;
   btnVariant?:
     | 'default'
@@ -27,22 +26,23 @@ interface FavoriteButtonProps {
 }
 
 function FavoriteButton({
-  product,
+  productId,
   className = '',
   btnVariant = 'secondary',
   onlyIcon = true,
 }: FavoriteButtonProps) {
+
   const { user } = useProfile();
   const queryClient = useQueryClient();
   const { mutate: toggleFavorite, isPending } = useMutation({
     mutationKey: QUERY_KEYS.toggleFavorite,
-    mutationFn: () => userService.toggleFavorite(product.id),
+    mutationFn: () => userService.toggleFavorite(productId),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: QUERY_KEYS.profile });
     },
   });
 
-  const isExists = user?.favorites?.some((p) => p.id === product.id);
+  const isExists = user?.favorites?.some((p) => p.id === productId);
 
   const handleToggleFavorite = () => {
     if (!user) {

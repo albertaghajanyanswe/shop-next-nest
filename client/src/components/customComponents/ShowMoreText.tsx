@@ -6,6 +6,7 @@ export interface IShowMoreTextProps {
   className?: string;
   onShowMore?: () => void;
   btnClass?: string;
+  maxLength?: number;
 }
 
 export const ShowMoreText: React.FC<IShowMoreTextProps> = ({
@@ -13,6 +14,7 @@ export const ShowMoreText: React.FC<IShowMoreTextProps> = ({
   className = '',
   onShowMore = () => null,
   btnClass = '',
+  maxLength = 250,
 }) => {
   const [showFull, setShowFull] = useState(false);
 
@@ -23,17 +25,16 @@ export const ShowMoreText: React.FC<IShowMoreTextProps> = ({
       }
       return !prev;
     });
-  const calculatedMaxLength = 250;
 
-  const isNeedShortenText = text && text.length > calculatedMaxLength;
+  const isNeedShortenText = text && text.length > maxLength;
 
   const displayText = (() => {
     if (!isNeedShortenText) return text;
 
-    return text.length > calculatedMaxLength
+    return text.length > maxLength
       ? showFull
         ? text
-        : `${text.slice(0, calculatedMaxLength)}\n...`
+        : `${text.slice(0, maxLength)}\n...`
       : text;
   })();
 
