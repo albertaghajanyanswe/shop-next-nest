@@ -222,7 +222,7 @@ export class ProductService {
         price: dto.price,
         images: dto.images,
         categoryId: dto.categoryId,
-        colorId: dto.colorId,
+        ...(dto?.colorId && { colorId: dto.colorId }),
         brandId: dto.brandId,
         oldPrice: product.price,
         quantity: dto.quantity,

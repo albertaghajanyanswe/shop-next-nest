@@ -20,8 +20,7 @@ export class PlanService {
     });
   }
 
-  public async getAll(userId: string) {
-    if (!userId) throw new UnauthorizedException();
+  public async getAll() {
     const plans = await this.getAvailablePlans();
     return plans;
   }
