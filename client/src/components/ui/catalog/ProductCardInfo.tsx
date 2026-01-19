@@ -31,7 +31,7 @@ function ProductCardInfoUnMemo({
             key={index}
             aria-label={`Go to slide ${index + 1}`}
             className={`h-2 w-2 cursor-pointer rounded-full p-[2px] transition ${
-              activeIndex === index ? 'bg-gray-800' : 'bg-gray-300'
+              activeIndex === index ? 'bg-black' : 'bg-neutral-300'
             }`}
           />
         ))}

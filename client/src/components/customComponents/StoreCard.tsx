@@ -134,7 +134,7 @@ export function StoreCard({
                 key={index}
                 onClick={() => carouselApi?.scrollTo(index)}
                 className={`h-2 w-2 rounded-full transition ${
-                  activeIndex === index ? 'bg-white' : 'bg-gray-300/70'
+                  activeIndex === index ? 'bg-black' : 'bg-white'
                 }`}
                 aria-label={`Go to slide ${index + 1}`}
               />
