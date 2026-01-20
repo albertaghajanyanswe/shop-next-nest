@@ -28,6 +28,16 @@
 ## Project setup
 
 ```bash
+- install postgres
+- install prisma
+- create db, name - mystore-dev
+- create .env file like .env.example
+$ npx prisma db push
+$ npx prisma generate
+$ npm run start:dev
+```
+
+```bash
 $ npm install
 ```
 
