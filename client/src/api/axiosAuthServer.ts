@@ -14,3 +14,9 @@ export async function AxiosAuthServer() {
     },
   });
 }
+
+export async function fetchAxiosAuthServer<T>(url: string): Promise<T> {
+  const api = await AxiosAuthServer();
+  const { data } = await api<T>({ url, method: 'GET' });
+  return data;
+}

@@ -10,7 +10,6 @@ import type { GetProductDto } from './getProductDto';
 import type { GetReviewDto } from './getReviewDto';
 import type { GetOrderDto } from './getOrderDto';
 import type { GetBillingInfoDto } from './getBillingInfoDto';
-import type { GetSubscriptionDto } from './getSubscriptionDto';
 import type { GetSubscriptionsDto } from './getSubscriptionsDto';
 
 export interface GetUserDto {
@@ -51,11 +50,9 @@ export interface GetUserDto {
   /** Billing information */
   billingInfo?: GetBillingInfoDto;
   /** User subscriptions */
-  subscription?: GetSubscriptionDto[];
+  subscription?: GetSubscriptionsDto[];
   /** Stripe account ID */
   stripeAccountId?: string;
   /** User role */
   role: string;
-  /** User subscriptions */
-  subscriptions?: GetSubscriptionsDto[];
 }

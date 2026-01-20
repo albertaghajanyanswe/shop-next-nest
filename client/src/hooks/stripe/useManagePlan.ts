@@ -7,6 +7,11 @@ export const useManagePlan = () => {
   const { data: managePlan, isLoading: isLoadingManagePlan } = useQuery({
     queryKey: [QUERY_KEYS.getManagementLink],
     queryFn: () => stripeService.getManagementLink(),
+    onSuccess: () => {
+      toast.success('Login success');
+      router.replace(DASHBOARD_URL.home());
+      form.reset();
+    },
   });
 
   return useMemo(

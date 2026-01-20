@@ -17,6 +17,8 @@ export interface ProductDto {
   quantity: number;
   /** Is Original */
   isOriginal: boolean;
+  /** Is Published */
+  isPublished: boolean;
   /** Product images */
   images: string[];
   /** Product category id */

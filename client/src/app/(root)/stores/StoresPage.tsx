@@ -1,6 +1,6 @@
 'use client';
 
-import { useQuery } from '@tanstack/react-query';
+import { keepPreviousData, useQuery } from '@tanstack/react-query';
 import { QUERY_KEYS } from '@/shared/queryConstants';
 import { GetStoreDto } from '@/generated/orval/types';
 import { useQueryParams } from '@/hooks/commons/useQueryParams';
@@ -35,8 +35,6 @@ export default function StoresPage({
     },
   });
 
-  console.log('queryParams = ', queryParams);
-
   const {
     data: storesData,
     isLoading,
@@ -45,7 +43,7 @@ export default function StoresPage({
     queryKey: [QUERY_KEYS.getAllStores[0], JSON.stringify(queryParams.params)],
     queryFn: () => storeService.getAll(queryParams.params),
     initialData: { stores, totalCount },
-    // keepPreviousData: true,
+    placeholderData: keepPreviousData,
   });
 
   const loading = isLoading || isPending;

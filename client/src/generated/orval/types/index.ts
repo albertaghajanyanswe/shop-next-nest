@@ -94,6 +94,7 @@ export * from './loginDto';
 export * from './orderControllerGetAllOrdersParams';
 export * from './orderControllerGetAllParams';
 export * from './orderControllerGetOrderItemsParams';
+export * from './orderControllerGetOrdersParams';
 export * from './orderControllerGetSoldOrdersParams';
 export * from './orderDto';
 export * from './productControllerGetAllParams';

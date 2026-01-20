@@ -1,4 +1,5 @@
 import { Button } from '@/components/ui/Button';
+import { ColumnSortableHeader } from '@/components/ui/dataLoading/ColumnSortableHeader';
 import { formatDateWithHour } from '@/utils/formateDate';
 import { formatPrice } from '@/utils/formatPrice';
 import { ColumnDef } from '@tanstack/react-table';
@@ -25,14 +26,12 @@ export const orderColumns: ColumnDef<IOrderColumns>[] = [
 
     header: ({ column }) => {
       return (
-        <Button
-          className='p-0 px-0 has-[>svg]:px-0'
-          variant='ghost'
+        <ColumnSortableHeader
+          label='Order number'
           onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
-        >
-          Order number
-          <ArrowUpDown className='ml-2 size-4' />
-        </Button>
+          column={column}
+          showSortIcon
+        />
       );
     },
     cell: ({ row }) => {
@@ -97,14 +96,12 @@ export const orderColumns: ColumnDef<IOrderColumns>[] = [
     },
     header: ({ column }) => {
       return (
-        <Button
-          variant='ghost'
-          className='p-0 px-0 has-[>svg]:px-0'
+        <ColumnSortableHeader
+          label='Status'
           onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
-        >
-          Status
-          <ArrowUpDown className='ml-2 size-4' />
-        </Button>
+          column={column}
+          showSortIcon
+        />
       );
     },
   },
@@ -117,14 +114,12 @@ export const orderColumns: ColumnDef<IOrderColumns>[] = [
     },
     header: ({ column }) => {
       return (
-        <Button
-          variant='ghost'
-          className='p-0 px-0 has-[>svg]:px-0'
+        <ColumnSortableHeader
+          label='Price'
           onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
-        >
-          Price
-          <ArrowUpDown className='ml-2 size-4' />
-        </Button>
+          column={column}
+          showSortIcon
+        />
       );
     },
     cell: ({ row }) => {
@@ -139,14 +134,12 @@ export const orderColumns: ColumnDef<IOrderColumns>[] = [
     },
     header: ({ column }) => {
       return (
-        <Button
-          variant='ghost'
-          className='p-0 px-0 has-[>svg]:px-0'
+        <ColumnSortableHeader
+          label='Created date'
           onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
-        >
-          Created date
-          <ArrowUpDown className='ml-2 size-4' />
-        </Button>
+          column={column}
+          showSortIcon
+        />
       );
     },
     cell: ({ row }) => {
