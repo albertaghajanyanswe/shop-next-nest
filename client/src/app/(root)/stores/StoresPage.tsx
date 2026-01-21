@@ -4,7 +4,7 @@ import { keepPreviousData, useQuery } from '@tanstack/react-query';
 import { QUERY_KEYS } from '@/shared/queryConstants';
 import { GetStoreDto } from '@/generated/orval/types';
 import { useQueryParams } from '@/hooks/commons/useQueryParams';
-import { CustomPagination } from '@/components/ui/CustomPagination';
+import { CustomPagination } from '@/components/customComponents/CustomPagination';
 import LoadingProducts from '@/components/customComponents/loading/LoadingProducts';
 import { storeService } from '@/services/store.service';
 import { StoreCard } from '@/components/customComponents/StoreCard';

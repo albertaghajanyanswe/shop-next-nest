@@ -12,16 +12,13 @@ import {
 import AddToCardButton from '@/app/(root)/product/[id]/productInfo/AddToCardButton';
 import FavoriteButton from '@/app/(root)/product/[id]/productInfo/FavoriteButton';
 import { PUBLIC_URL } from '@/config/url.config';
-import {
-  generateImgPath,
-  productImgParams,
-} from '@/utils/imageUtils';
+import { generateImgPath, productImgParams } from '@/utils/imageUtils';
 import { ProductCardInfo } from './ProductCardInfo';
 import { GetProductWithDetails } from '@/generated/orval/types';
 import { useCart } from '@/hooks/queries/useCart';
 import CartActions from '@/components/layouts/mainLayout/header/headerMenu/headerCart/CartActions';
 import { CircleOff, Flame } from 'lucide-react';
-import { Badge } from '../Badge';
+import { Badge } from '../../ui/Badge';
 
 interface ProductCardProps {
   product: GetProductWithDetails;

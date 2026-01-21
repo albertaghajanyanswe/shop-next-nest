@@ -7,7 +7,7 @@ import { PUBLIC_URL } from '@/config/url.config';
 import QueryString from 'qs';
 import { hashStringToColors } from '@/utils/common';
 
-export interface IShopByCard<TData> {
+export interface IShopByCard {
   title: string;
   description?: string;
   linkTitle?: string;
@@ -16,14 +16,14 @@ export interface IShopByCard<TData> {
   filterKey: string;
 }
 
-const ShopByCardComponent = <TData,>({
+const ShopByCardComponent = ({
   title,
   description,
   linkTitle,
   linkClb,
   data,
   filterKey,
-}: IShopByCard<TData>) => {
+}: IShopByCard) => {
   return (
     <div className='m-auto'>
       <div className='mb-4 md:flex md:items-center md:justify-between'>

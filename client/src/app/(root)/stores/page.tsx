@@ -25,7 +25,7 @@ export async function generateMetadata(): Promise<Metadata> {
   const description = `Explore all products at ${SITE_NAME} — from ${storesList} top stores.`;
 
   const meta = generateMeta({
-    title: `${SITE_NAME} | Shop`,
+    title: `${SITE_NAME} | Stores`,
     description,
     image: COlLAGE_IMG,
     isPublic: true,
@@ -35,7 +35,6 @@ export async function generateMetadata(): Promise<Metadata> {
     url: `${process.env.NEXT_PUBLIC_CLIENT_URL}/${PUBLIC_URL.stores()}`,
   });
 
-  console.log('META = ', meta);
   return meta;
 }
 

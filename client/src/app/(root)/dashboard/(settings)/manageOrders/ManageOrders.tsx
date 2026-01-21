@@ -5,7 +5,7 @@ import { IOrderColumns, orderColumns } from './OrderColumns';
 import { useProfile } from '@/hooks/useProfile';
 import { DataTable } from '@/components/ui/dataLoading/DataTable';
 import { useQueryParams } from '@/hooks/commons/useQueryParams';
-import { CustomPagination } from '@/components/ui/CustomPagination';
+import { CustomPagination } from '@/components/customComponents/CustomPagination';
 import {
   GetOrderDtoStatus,
   GetOrderWithItemsDto,

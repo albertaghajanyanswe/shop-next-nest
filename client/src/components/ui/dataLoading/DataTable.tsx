@@ -45,10 +45,10 @@ interface DataTableProps<TData, TValue> {
   data: TData[];
   filterKey?: string;
   totalCount: number;
-  limit: number;
-  skip: number;
-  onPageChange: (p: number) => void;
-  onLimitChange: (l: number) => void;
+  limit?: number;
+  skip?: number;
+  onPageChange?: (p: number) => void;
+  onLimitChange?: (l: number) => void;
   onChangeSearch: (value: string, fields?: string[]) => void;
   onChangeSort: (sortObj: iSort) => void;
   queryParams: iFilterParams;

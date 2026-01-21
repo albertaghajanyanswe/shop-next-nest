@@ -13,7 +13,7 @@ import { colorColumns } from './ColorColumns';
 import { formateDate } from '@/utils/formateDate';
 import { IColorColumn } from '@/shared/types/color.interface';
 import { useQueryParams } from '@/hooks/commons/useQueryParams';
-import { CustomPagination } from '@/components/ui/CustomPagination';
+import { CustomPagination } from '@/components/customComponents/CustomPagination';
 
 export function Colors() {
   const params = useParams<{ storeId: string }>();
@@ -72,10 +72,6 @@ export function Colors() {
           data={formattedColors}
           filterKey='name'
           totalCount={colorsData?.totalCount as number}
-          limit={queryParams?.params?.limit as number}
-          skip={queryParams?.params?.skip as number}
-          onPageChange={changePage}
-          onLimitChange={changeLimit}
           queryParams={queryParams}
           onChangeSearch={changeSearch}
           onChangeSort={changeSort}

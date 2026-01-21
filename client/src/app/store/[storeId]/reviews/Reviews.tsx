@@ -8,7 +8,7 @@ import { formateDate } from '@/utils/formateDate';
 import { useGetReviews } from '@/hooks/queries/reviews/useGetReviews';
 import { IReviewColumn, reviewColumns } from './ReviewColumns';
 import { useQueryParams } from '@/hooks/commons/useQueryParams';
-import { CustomPagination } from '@/components/ui/CustomPagination';
+import { CustomPagination } from '@/components/customComponents/CustomPagination';
 
 export function Reviews() {
   const params = useParams<{ storeId: string }>();
@@ -61,10 +61,6 @@ export function Reviews() {
           data={formattedReviews}
           filterKey='username'
           totalCount={reviewsData?.totalCount as number}
-          limit={queryParams?.params?.limit as number}
-          skip={queryParams?.params?.skip as number}
-          onPageChange={changePage}
-          onLimitChange={changeLimit}
           queryParams={queryParams}
           onChangeSearch={changeSearch}
           onChangeSort={changeSort}

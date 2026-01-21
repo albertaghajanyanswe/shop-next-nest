@@ -12,7 +12,7 @@ import {
 import { PaymentService } from './payment.service';
 import { CurrentUser } from 'src/user/decorators/user.decorator';
 import { Auth } from 'src/auth/decorators/auth.decorator';
-import { ApiOkResponse, ApiOperation } from '@nestjs/swagger';
+import { ApiOkResponse } from '@nestjs/swagger';
 import {
   CancelSubscriptionRequest,
   DistributeOrderDto,
@@ -69,6 +69,9 @@ export class PaymentController {
     @Body() dto: OrderDto,
     @CurrentUser('id') userId: string,
   ) {
+    if (process.env.ALLOW_PURCHASE !== 'true') {
+      throw new BadRequestException('Purchase products not allowed.');
+    }
     return this.paymentService.pay(dto, userId);
   }
 

@@ -5,7 +5,7 @@ import { IOrderItemColumns, OrderItemColumns } from './OrderItemColumns';
 import { useProfile } from '@/hooks/useProfile';
 import { DataTable } from '@/components/ui/dataLoading/DataTable';
 import { useQueryParams } from '@/hooks/commons/useQueryParams';
-import { CustomPagination } from '@/components/ui/CustomPagination';
+import { CustomPagination } from '@/components/customComponents/CustomPagination';
 import { GetOrderItemsDetailsDto } from '@/generated/orval/types';
 import { useGetOrderItems } from '@/hooks/queries/orders/useGetOrderItems';
 import { OrderItemDetailsModal } from '@/components/modals/orderDetailsModal/OrderItemDetailsModal';

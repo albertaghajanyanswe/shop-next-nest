@@ -9,6 +9,7 @@ interface MetaProps {
   keywords?: string[];
   author?: string;
   ogType?: 'website' | 'article';
+  other?: any;
 }
 
 /**
@@ -25,6 +26,7 @@ export function generateMeta(props: MetaProps): Metadata {
     keywords = [],
     author = '',
     ogType = 'website',
+    other = {},
   } = props;
 
   const fullUrl = url.startsWith('http')
@@ -48,6 +50,7 @@ export function generateMeta(props: MetaProps): Metadata {
     alternates: {
       canonical: fullUrl,
     },
+    other,
   };
 
   if (isPublic) {

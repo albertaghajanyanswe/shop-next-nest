@@ -11,7 +11,7 @@ import Link from 'next/link';
 import { useParams, useSearchParams } from 'next/navigation';
 import { productColumns } from './ProductColumns';
 import { useQueryParams } from '@/hooks/commons/useQueryParams';
-import { CustomPagination } from '@/components/ui/CustomPagination';
+import { CustomPagination } from '@/components/customComponents/CustomPagination';
 import QueryString from 'qs';
 
 export function Products() {
@@ -80,10 +80,6 @@ export function Products() {
           data={formattedProducts}
           filterKey='title'
           totalCount={productsData?.totalCount as number}
-          limit={queryParams?.params?.limit as number}
-          skip={queryParams?.params?.skip as number}
-          onPageChange={changePage}
-          onLimitChange={changeLimit}
           queryParams={queryParams}
           onChangeSearch={changeSearch}
           onChangeSort={changeSort}

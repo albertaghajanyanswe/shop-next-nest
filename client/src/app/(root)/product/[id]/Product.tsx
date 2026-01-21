@@ -1,10 +1,10 @@
 'use client';
 
-import { Catalog } from '@/components/ui/catalog/Catalog';
+import { Catalog } from '@/components/customComponents/catalog/Catalog';
 import { productService } from '@/services/product.service';
 import { QUERY_KEYS } from '@/shared/queryConstants';
 import { useQuery } from '@tanstack/react-query';
-import ProductGallery from './product-gallery/ProductGallery';
+import ProductGallery from './productGallery/ProductGallery';
 import ProductInfo from './productInfo/ProductInfo';
 import { GetProductWithDetails } from '@/generated/orval/types';
 import {

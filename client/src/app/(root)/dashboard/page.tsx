@@ -1,6 +1,6 @@
 import { NO_INDEX_PAGE } from '@/utils/constants';
 import { Metadata } from 'next';
-import { DashboardLayout } from '@/components/layouts/dashboard-layout/DashboardLayout';
+import { DashboardLayout } from '@/components/layouts/dashboardLayout/DashboardLayout';
 
 export const metadata: Metadata = {
   title: 'Dashboard',

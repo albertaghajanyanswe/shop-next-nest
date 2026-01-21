@@ -1,7 +1,7 @@
 'use client';
 
 import NoDataFound from '@/components/customComponents/loading/NoDataFound';
-import { Catalog } from '@/components/ui/catalog/Catalog';
+import { Catalog } from '@/components/customComponents/catalog/Catalog';
 import { useProfile } from '@/hooks/useProfile';
 
 export default function Favorites() {

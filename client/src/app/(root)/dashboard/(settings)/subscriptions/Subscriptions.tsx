@@ -1,5 +1,5 @@
 import { fetchAxiosAuthServer } from '@/api/axiosAuthServer';
-import SubscriptionCards from '@/components/ui/subscriptions/Subscriptions';
+import SubscriptionCards from '@/components/customComponents/subscriptions/Subscriptions';
 import { API_URL } from '@/config/api.config';
 import { GetPlansDto, GetSubscriptionDto } from '@/generated/orval/types';
 

@@ -11,12 +11,13 @@ import { GetProductWithDetails } from '@/generated/orval/types';
 import { formatDateWithHour } from '@/utils/formateDate';
 import NoDataFound from '@/components/customComponents/loading/NoDataFound';
 import { ShowMoreText } from '@/components/customComponents/ShowMoreText';
+import { memo } from 'react';
 
 export interface ProductReviewsProps {
   product: GetProductWithDetails;
 }
 
-export default function ProductReviews({ product }: ProductReviewsProps) {
+function ProductReviews({ product }: ProductReviewsProps) {
   const { user } = useProfile();
   const { deleteReview, isLoadingDelete } = useDeleteReview();
 
@@ -101,3 +102,5 @@ export default function ProductReviews({ product }: ProductReviewsProps) {
     </div>
   );
 }
+
+export default memo(ProductReviews);

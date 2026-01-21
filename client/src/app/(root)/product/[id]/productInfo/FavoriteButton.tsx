@@ -6,7 +6,7 @@ import { userService } from '@/services/user.service';
 import { QUERY_KEYS } from '@/shared/queryConstants';
 import { memo } from 'react';
 import toast from 'react-hot-toast';
-import { CustomTooltip } from '@/components/ui/CustomTooltip';
+import { CustomTooltip } from '@/components/customComponents/CustomTooltip';
 
 interface FavoriteButtonProps {
   productId: string;
@@ -31,7 +31,6 @@ function FavoriteButton({
   btnVariant = 'secondary',
   onlyIcon = true,
 }: FavoriteButtonProps) {
-
   const { user } = useProfile();
   const queryClient = useQueryClient();
   const { mutate: toggleFavorite, isPending } = useMutation({

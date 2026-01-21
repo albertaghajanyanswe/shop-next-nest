@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import ProductCard from '@/components/ui/catalog/ProductCard';
+import ProductCard from '@/components/customComponents/catalog/ProductCard';
 import { GetProductWithDetails } from '@/generated/orval/types';
 import NoProductsFound from '@/components/customComponents/loading/NoProductsFound';
 import { SearchInput } from '@/components/layouts/mainLayout/header/searchInput/SearchInput';
@@ -29,7 +29,6 @@ export function Catalog({
   showSort = false,
   searchRedirectToShop = true,
 }: ICatalog) {
-
   return (
     <>
       <div className='mb-4 md:flex md:items-center md:justify-between'>

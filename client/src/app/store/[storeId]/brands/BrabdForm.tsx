@@ -16,13 +16,6 @@ import { IBrandInput } from '@/shared/types/brand.interface';
 import { useCreateBrand } from '@/hooks/queries/brands/useCreateBrand';
 import { useUpdateBrand } from '@/hooks/queries/brands/useUpdateBrand';
 import { useDeleteBrand } from '@/hooks/queries/brands/useDeleteBrand';
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from '@/components/ui/Select';
 import { GetBrandDto, GetCategoryDto } from '@/generated/orval/types';
 import { Textarea } from '@/components/ui/Textarea';
 import { ImageUpload } from '@/components/ui/formElements/image-upload/ImageUpload';

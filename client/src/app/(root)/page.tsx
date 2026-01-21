@@ -6,6 +6,7 @@ import { brandService } from '@/services/brandService';
 import { GetBrandDto, GetCategoryDto } from '@/generated/orval/types';
 import { SITE_NAME } from '@/utils/constants';
 import { generateMeta, POPULAR_KEYWORDS } from '@/components/meta/Meta';
+import { cache } from 'react';
 
 export async function generateMetadata(): Promise<Metadata> {
   const products = await getProducts();
@@ -42,7 +43,7 @@ export async function generateMetadata(): Promise<Metadata> {
 
 export const revalidate = 60;
 
-async function getProducts() {
+export const getProducts = cache(async () => {
   // TODO
   // const isDevOrProd =
   //   process.env.NODE_ENV === 'production' ||
@@ -52,9 +53,9 @@ async function getProducts() {
   // }
 
   const products =
-    (await productService.getMostPopular({ limit: 8, skip: 0 })) || [];
+    (await productService.getMostPopular({ limit: 20, skip: 0 })) || [];
   return products;
-}
+});
 
 async function getCategories() {
   // TODO
@@ -70,7 +71,6 @@ async function getCategories() {
 
 async function getBrands() {
   // TODO
-
   const brands = (
     (await brandService.getAll({
       limit: 8,
@@ -81,9 +81,11 @@ async function getBrands() {
   return brands as GetBrandDto[];
 }
 export default async function HomePage() {
-  const products = await getProducts();
-  const categories = await getCategories();
-  const brands = await getBrands();
+  const [products, categories, brands] = await Promise.all([
+    getProducts(),
+    getCategories(),
+    getBrands(),
+  ]);
   return (
     <>
       <Home products={products} categories={categories} brands={brands} />

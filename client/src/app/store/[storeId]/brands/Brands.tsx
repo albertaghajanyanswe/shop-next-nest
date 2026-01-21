@@ -14,7 +14,7 @@ import { useParams } from 'next/navigation';
 import { brandColumns } from './BrandColumns';
 import { useProfile } from '@/hooks/useProfile';
 import { useQueryParams } from '@/hooks/commons/useQueryParams';
-import { CustomPagination } from '@/components/ui/CustomPagination';
+import { CustomPagination } from '@/components/customComponents/CustomPagination';
 
 export function Brands() {
   const params = useParams<{ storeId: string }>();
@@ -48,7 +48,8 @@ export function Brands() {
           storeId: brand.storeId,
           images: brand.images,
           image: brand?.images?.[0],
-          isCurrentUserAdmin: user?.role === 'ADMIN' || user?.role === 'SUPER_ADMIN',
+          isCurrentUserAdmin:
+            user?.role === 'ADMIN' || user?.role === 'SUPER_ADMIN',
         }))
       : [];
 
@@ -79,10 +80,8 @@ export function Brands() {
           data={formattedBrands}
           filterKey='name'
           totalCount={brandsData?.totalCount as number}
-          limit={queryParams?.params?.limit as number}
-          skip={queryParams?.params?.skip as number}
-          onPageChange={changePage}
-          onLimitChange={changeLimit}
+          // onPageChange={changePage}
+          // onLimitChange={changeLimit}
           queryParams={queryParams}
           onChangeSearch={changeSearch}
           onChangeSort={changeSort}

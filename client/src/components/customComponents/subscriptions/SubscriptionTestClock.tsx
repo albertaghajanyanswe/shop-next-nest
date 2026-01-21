@@ -1,5 +1,5 @@
 import { useTestClock } from '@/hooks/stripe/useTestClock';
-import { Button } from '../Button';
+import { Button } from '../../ui/Button';
 import { memo } from 'react';
 
 const SubscriptionTestClock = () => {

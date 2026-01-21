@@ -14,7 +14,7 @@ import { useGetCategories } from '@/hooks/queries/categories/useGetCategories';
 import { ICategoryColumn } from '@/shared/types/category.interface';
 import { useProfile } from '@/hooks/useProfile';
 import { useQueryParams } from '@/hooks/commons/useQueryParams';
-import { CustomPagination } from '@/components/ui/CustomPagination';
+import { CustomPagination } from '@/components/customComponents/CustomPagination';
 
 export function Categories() {
   const params = useParams<{ storeId: string }>();
@@ -83,10 +83,6 @@ export function Categories() {
           data={formattedCategories}
           filterKey='name'
           totalCount={categoriesData?.totalCount as number}
-          limit={queryParams?.params?.limit as number}
-          skip={queryParams?.params?.skip as number}
-          onPageChange={changePage}
-          onLimitChange={changeLimit}
           queryParams={queryParams}
           onChangeSearch={changeSearch}
           onChangeSort={changeSort}

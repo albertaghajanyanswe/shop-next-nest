@@ -20,6 +20,8 @@ import { ShoppingCartIcon, X } from 'lucide-react';
 import { Separator } from '@/components/ui/Separator';
 import Link from 'next/link';
 import { Badge } from '@/components/ui/Badge';
+import { EnvVariables } from '@/shared/envVariables';
+import toast from 'react-hot-toast';
 
 interface HeaderCartProps {
   triggerBtnClass?: string;
@@ -35,6 +37,9 @@ export function HeaderCart({ triggerBtnClass }: HeaderCartProps) {
   const { orderItems, total } = useCart();
   const handleClickCheckout = () => {
     if (user) {
+      if (!EnvVariables.NEXT_PUBLIC_ALLOW_PURCHASE) {
+        toast.error('Purchase not allowed.');
+      }
       createPaymentMultiple();
     } else {
       router.push(PUBLIC_URL.auth());
@@ -89,14 +94,16 @@ export function HeaderCart({ triggerBtnClass }: HeaderCartProps) {
               <span className='text-muted-foreground'>Total amount:</span>
               <span className='text-shop-red ml-2'>{formatPrice(total)}</span>
             </div>
-            <Button
-              onClick={handleClickCheckout}
-              variant='default'
-              disabled={isLoadingCreateMultiple}
-              className='w-full'
-            >
-              Checkout
-            </Button>
+            {EnvVariables.NEXT_PUBLIC_ALLOW_PURCHASE && (
+              <Button
+                onClick={handleClickCheckout}
+                variant='default'
+                disabled={isLoadingCreateMultiple}
+                className='w-full'
+              >
+                Checkout
+              </Button>
+            )}
           </>
         ) : null}
       </SheetContent>

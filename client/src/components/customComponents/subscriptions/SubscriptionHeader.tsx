@@ -3,8 +3,8 @@ import {
   GetPlansDtoPeriod,
   GetPlansDtoPlanId,
 } from '@/generated/orval/types';
-import { Label } from '../Label';
-import { Switch } from '../Switch';
+import { Label } from '../../ui/Label';
+import { Switch } from '../../ui/Switch';
 import { memo, useCallback } from 'react';
 
 interface ISubscriptionHeaderProps {

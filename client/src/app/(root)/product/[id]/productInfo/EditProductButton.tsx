@@ -1,5 +1,5 @@
 import { Button } from '@/components/ui/Button';
-import { CustomTooltip } from '@/components/ui/CustomTooltip';
+import { CustomTooltip } from '@/components/customComponents/CustomTooltip';
 import { STORE_URL } from '@/config/url.config';
 import { GetProductWithDetails } from '@/generated/orval/types';
 import { Pencil } from 'lucide-react';
@@ -16,7 +16,6 @@ function EditProductButton({
   className = '',
   onlyIcon = true,
 }: EditProductButtonProps) {
-
   const button = (
     <Link
       className={className}

@@ -1,7 +1,7 @@
 'use client';
 
 import { keepPreviousData, useQuery } from '@tanstack/react-query';
-import { Catalog } from '@/components/ui/catalog/Catalog';
+import { Catalog } from '@/components/customComponents/catalog/Catalog';
 import { productService } from '@/services/product.service';
 import { QUERY_KEYS } from '@/shared/queryConstants';
 import {
@@ -11,7 +11,7 @@ import {
   GetStoreDto,
 } from '@/generated/orval/types';
 import { useQueryParams } from '@/hooks/commons/useQueryParams';
-import { CustomPagination } from '@/components/ui/CustomPagination';
+import { CustomPagination } from '@/components/customComponents/CustomPagination';
 import Filters from '@/components/customComponents/filters/Filters';
 import LoadingProducts from '@/components/customComponents/loading/LoadingProducts';
 import { StoreCard } from '@/components/customComponents/StoreCard';
@@ -62,7 +62,7 @@ export default function Shop({
     initialData: initialProducts
       ? { products: initialProducts, totalCount }
       : undefined,
-    placeholderData: keepPreviousData
+    placeholderData: keepPreviousData,
     // keepPreviousData: true,
   });
 
@@ -78,11 +78,7 @@ export default function Shop({
       {store && (
         <div className='mt-4 mb-10 grid grid-cols-12 gap-6 rounded-lg md:items-center md:justify-between'>
           <div className='col-span-12 lg:col-span-12'>
-            <StoreCard
-              store={store}
-              showInfo
-              expandDesc
-            />
+            <StoreCard store={store} showInfo expandDesc />
           </div>
         </div>
       )}
