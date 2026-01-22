@@ -3,7 +3,7 @@ import { memo } from 'react';
 import LoadingDots from './LoadingDots';
 
 interface LoadingProductsProps {
-  entityName: string
+  entityName: string;
 }
 export const LoadingProducts = ({ entityName }: LoadingProductsProps) => {
   return (

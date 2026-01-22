@@ -93,7 +93,10 @@ export function StoreSwitcher({ items }: StoreSwitcherProps) {
           <CommandList>
             <CommandGroup>
               <CreateStoreModal disabledTrigger={!canCreateStore}>
-                <CommandItem disabled={!canCreateStore} className='cursor-pointer text-sm'>
+                <CommandItem
+                  disabled={!canCreateStore}
+                  className='cursor-pointer text-sm'
+                >
                   <Plus className='mr-2 size-4' />
                   Create Store
                 </CommandItem>

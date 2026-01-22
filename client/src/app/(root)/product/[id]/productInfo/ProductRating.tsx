@@ -3,7 +3,7 @@ import { GetReviewWithUserDto } from '@/generated/orval/types';
 export const ProductRating = ({
   productReviews,
   leftTitle,
-  className=''
+  className = '',
 }: {
   productReviews: GetReviewWithUserDto[];
   leftTitle?: string;
@@ -17,7 +17,9 @@ export const ProductRating = ({
     : 0;
   return (
     <div className={`flex items-center gap-x-4 ${className}`}>
-      {leftTitle && <h3 className='font-medium text-neutral-700'>{leftTitle}</h3>}
+      {leftTitle && (
+        <h3 className='font-medium text-neutral-700'>{leftTitle}</h3>
+      )}
       <div className='text-sm'>
         ⭐ {rating.toFixed(1) || ' '}
         <span className='text-muted-foreground'>{` • ${productReviews?.length} reviews`}</span>

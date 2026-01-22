@@ -38,7 +38,7 @@ export default function OrderCard({ order }: OrderCardProps) {
         {(order.orderItems || []).map((item) => (
           <div
             key={item.id}
-            className='flex flex-1 min-w-[72px] flex-col items-center rounded-md border bg-white p-1 shadow-sm'
+            className='flex min-w-[72px] flex-1 flex-col items-center rounded-md border bg-white p-1 shadow-sm'
             aria-label={`Order item ${item.cachedProductTitle}`}
           >
             <div className='relative h-12 w-12 overflow-hidden rounded-md border bg-gray-50'>

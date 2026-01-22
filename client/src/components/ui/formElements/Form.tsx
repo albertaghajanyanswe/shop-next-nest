@@ -47,7 +47,7 @@ interface FormFieldProps<
   TName extends FieldPath<TFieldValues>,
 > extends Omit<ControllerProps<TFieldValues, TName>, 'render' | 'name'> {
   name: TName;
-  render: (props: { field: any, fieldState: any }) => React.ReactElement; // <<< ключевой момент
+  render: (props: { field: any; fieldState: any }) => React.ReactElement; // <<< ключевой момент
 }
 
 function FormField<

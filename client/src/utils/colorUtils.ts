@@ -1,4 +1,4 @@
-import { GetOrderDtoStatus } from "@/generated/orval/types";
+import { GetOrderDtoStatus } from '@/generated/orval/types';
 
 type RGB = { r: number; g: number; b: number };
 type HSL = { h: number; s: number; l: number };
@@ -98,7 +98,6 @@ export const formatRgba = (rgb: RGB, a = 1): string => {
 export const formatHsla = (hsl: HSL, a = 1): string => {
   return `hsla(${hsl.h}, ${hsl.s}%, ${hsl.l}%, ${a})`;
 };
-
 
 export const STATUS_COLOR: Record<GetOrderDtoStatus, string> = {
   PENDING: 'text-yellow-600',

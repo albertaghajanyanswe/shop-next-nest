@@ -60,17 +60,17 @@ export default function BillingResult() {
     <div className='xs:my-24 my-6 flex h-full w-full items-center justify-center px-4'>
       <div className='w-full max-w-sm rounded-lg border border-gray-200 bg-white p-6 shadow-sm dark:border-gray-700 dark:bg-gray-800'>
         {/* Icon */}
-        <div className='mb-4 flex justify-center items-center'>
+        <div className='mb-4 flex items-center justify-center'>
           {message.icon === 'success' ? (
             <CheckCircle className='h-8 w-8 text-emerald-600' />
           ) : (
-            <AlertCircle className='h-8 w-8 text-shop-red' />
+            <AlertCircle className='text-shop-red h-8 w-8' />
           )}
         </div>
 
         {/* Title */}
         <h5
-          className={`mb-4 text-2xl font-semibold place-self-center ${
+          className={`mb-4 place-self-center text-2xl font-semibold ${
             message.icon === 'success' ? 'text-green-700' : 'text-shop-red'
           }`}
         >
@@ -78,7 +78,7 @@ export default function BillingResult() {
         </h5>
 
         {/* Description */}
-        <p className='text-muted-foreground font-normal text-center'>
+        <p className='text-muted-foreground text-center font-normal'>
           {message.icon === 'success' && planId ? (
             <>
               {message.description.split('{planId}')[0]}

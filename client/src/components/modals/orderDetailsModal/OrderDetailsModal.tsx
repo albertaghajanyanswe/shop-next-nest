@@ -156,10 +156,7 @@ export function OrderDetailsModal<T extends TableSectionItem>({
       onOpenChange={setIsOpen}
       size='xl'
     >
-      <OrderDetailsModalContent
-        order={order}
-        showConfirm={showConfirm}
-      />
+      <OrderDetailsModalContent order={order} showConfirm={showConfirm} />
     </CustomModal>
   );
 }

@@ -51,7 +51,7 @@ axiosWithAuth.interceptors.response.use(
     const originalRequest: AxiosRequestConfig & { _isRetry?: boolean } =
       error.config;
 
-      console.log('\n\n\n TOKEN  error.response', error.response);
+    console.log('\n\n\n TOKEN  error.response', error.response);
     if (
       (error.response?.status === 401 ||
         errorCatch(error) === 'Unauthorized' ||

@@ -30,7 +30,11 @@ function DefaultCellRenderer<T extends TableSectionItem>(
 
   if (column.type === 'text') {
     return (
-      <span className={`text-sm font-medium ${column.key === 'price' ? 'text-shop-red' : 'text-neutral-700'}`}>{value}</span>
+      <span
+        className={`text-sm font-medium ${column.key === 'price' ? 'text-shop-red' : 'text-neutral-700'}`}
+      >
+        {value}
+      </span>
     );
   }
 

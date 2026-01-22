@@ -20,7 +20,7 @@ export function CartItem({ orderItem }: CartItemsProps) {
           <Image
             src={generateImgPath(orderItem.product.images[0])}
             alt={orderItem.product.title}
-            className='contain min-h-20 min-w-20 h-28 w-28 overflow-hidden rounded-md object-contain'
+            className='contain h-28 min-h-20 w-28 min-w-20 overflow-hidden rounded-md object-contain'
             width={112}
             height={112}
           />

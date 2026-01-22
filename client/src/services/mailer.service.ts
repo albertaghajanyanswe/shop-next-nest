@@ -10,7 +10,7 @@ class MailerService {
     const res = await axiosClassic<ContactUsDto>({
       url: API_URL.mailer(`/contact-us`),
       method: 'POST',
-      data
+      data,
     });
 
     return res;

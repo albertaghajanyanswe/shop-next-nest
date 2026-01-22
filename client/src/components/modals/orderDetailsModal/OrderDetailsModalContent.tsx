@@ -1,4 +1,4 @@
-'use client'
+'use client';
 import React from 'react';
 import { CustomModal } from '@/components/modals/CustomModal';
 import { InfoSection } from './components/InfoSection';

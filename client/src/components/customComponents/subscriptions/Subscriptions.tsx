@@ -34,7 +34,9 @@ export default function SubscriptionCards({
   plans,
   subscriptions,
 }: ISubscriptionCardsProps) {
-  const [period, setPeriod] = useState<GetPlansDtoPeriod>(GetPlansDtoPeriod.MONTHLY);
+  const [period, setPeriod] = useState<GetPlansDtoPeriod>(
+    GetPlansDtoPeriod.MONTHLY
+  );
 
   // Selectors
   const activeSubscription = useMemo(

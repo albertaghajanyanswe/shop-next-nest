@@ -10,7 +10,6 @@ import { useDebounce } from '@/hooks/commons/useDebounce';
 import { Search, X } from 'lucide-react';
 import { Input } from '@/components/ui/formElements/Input';
 
-
 type SearchInputProps = {
   value: string;
   onChange: (value: string) => void;

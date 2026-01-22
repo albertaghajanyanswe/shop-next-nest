@@ -23,13 +23,13 @@ export default function Auth() {
   return (
     <div className='grid min-h-screen grid-cols-1 lg:grid-cols-2'>
       <div
-        className={`hidden lg:flex relative flex-col items-center justify-center overflow-hidden border-none bg-white bg-gradient-to-r from-emerald-200 to-lime-100 p-6 shadow-none`}
+        className={`relative hidden flex-col items-center justify-center overflow-hidden border-none bg-white bg-gradient-to-r from-emerald-200 to-lime-100 p-6 shadow-none lg:flex`}
       >
         <h1 className='max-w-[80%] text-center text-3xl'>
           Your smart shopping starts here...
         </h1>
 
-        <p className='mt-6 text-center text-md text-neutral-700'>
+        <p className='text-md mt-6 text-center text-neutral-700'>
           Discover quality products, trusted brands, and great deals — all in
           one place. Enjoy a smooth shopping experience, clear pricing, and
           carefully selected items for everyday life.

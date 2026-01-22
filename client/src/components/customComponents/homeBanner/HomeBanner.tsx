@@ -62,4 +62,3 @@ function HomeBannerComponent() {
 }
 
 export const HomeBanner = memo(HomeBannerComponent);
-

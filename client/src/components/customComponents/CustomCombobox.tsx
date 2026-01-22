@@ -99,7 +99,7 @@ export function CustomComboBox({
           {/* Clear selection — ВСЕГДА НИЗ */}
           <div className='border-t'>
             <Button
-            variant='ghost'
+              variant='ghost'
               onClick={() => {
                 onChange(null);
                 setOpen(false);

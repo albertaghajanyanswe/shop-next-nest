@@ -23,5 +23,4 @@ export const API_URL = {
   mailer: (url = '') => API_URL.root(`/mailer${url}`),
   subscriptions: (url = '') => API_URL.root(`/subscriptions${url}`),
   plans: (url = '') => API_URL.root(`/plans${url}`),
-
 };
