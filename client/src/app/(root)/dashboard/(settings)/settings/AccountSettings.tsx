@@ -20,7 +20,6 @@ export default function AccountSettings() {
   const handleLoginStripeDashboard = async () => {
     if (!user?.stripeAccountId || isLoadingConnectAccount) return;
     const loginLinkObj = await stripeService.getLoginUrl();
-    console.log('loginLinkObj = ', loginLinkObj);
     window.open(loginLinkObj.loginLink, '_blank', 'noopener,noreferrer');
   };
 

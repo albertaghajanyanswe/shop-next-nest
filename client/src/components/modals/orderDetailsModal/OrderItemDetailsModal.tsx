@@ -34,7 +34,6 @@ export function OrderItemDetailsModal<T extends TableSectionItem>({
   user,
   showConfirm = false,
 }: OrderItemDetailsModalProps<T>) {
-  console.log('OrderItemDetailsModal user ', user);
   const getOrderInfoItems = (): InfoSectionItem[] => {
     if (!orderItem) return [];
 

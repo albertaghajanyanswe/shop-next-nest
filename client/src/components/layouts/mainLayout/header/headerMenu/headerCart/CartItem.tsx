@@ -12,7 +12,6 @@ interface CartItemsProps {
 }
 
 export function CartItem({ orderItem }: CartItemsProps) {
-  console.log('orderItem = ', orderItem);
   return (
     <div className='d-flex flex-col'>
       <div className='mb-5 flex items-center'>

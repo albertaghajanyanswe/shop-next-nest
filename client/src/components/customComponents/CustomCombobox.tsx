@@ -44,7 +44,6 @@ export function CustomComboBox({
   maxVisibleOptions = 5,
   error = '',
 }: ComboBoxProps) {
-  console.log('ERROR = ', error);
   const [open, setOpen] = React.useState(false);
 
   const selectedName = options.find((o) => o.id === value)?.name;

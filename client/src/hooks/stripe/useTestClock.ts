@@ -12,7 +12,7 @@ export function useTestClock() {
     onSuccess: () => {
       console.log('Test clock success');
     },
-    onError: (err) => {
+    onError: (err: any) => {
       console.log('Failed to run test clock advance. ', err);
       toast.error(
         `Failed to run test clock advance. ${err?.response?.data?.message}`

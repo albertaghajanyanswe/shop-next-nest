@@ -95,7 +95,6 @@ export function ProductForm({
   const onSubmit: SubmitHandler<IProductInput> = (data) => {
     data.price = Number(data.price);
     data.quantity = Number(data.quantity);
-    console.log('data ', data);
     if (product) {
       updateProduct(data);
     } else if (canCreateProduct) {
@@ -156,7 +155,6 @@ export function ProductForm({
             name='images'
             rules={{ required: 'Upload at least one image' }}
             render={({ field }) => {
-              console.log('FIELD = ', field);
               return (
                 <FormItem className='mt-4'>
                   <FormLabel>Images</FormLabel>

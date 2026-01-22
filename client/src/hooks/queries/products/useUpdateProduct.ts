@@ -1,17 +1,13 @@
 import { useMemo } from 'react';
 import toast from 'react-hot-toast';
-import { useParams, useRouter } from 'next/navigation';
+import { useParams } from 'next/navigation';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { STORE_URL } from '@/config/url.config';
 import { productService } from '@/services/product.service';
 import { QUERY_KEYS } from '@/shared/queryConstants';
 import { IProductInput } from '@/shared/types/product.interface';
-import { EnvVariables } from '@/shared/envVariables';
 
 export const useUpdateProduct = () => {
   const params = useParams<{ productId: string; storeId: string }>();
-  console.log('PARAMS = ', params);
-  console.log('ENV ', process.env.NODE_ENV);
   const productId = params.productId;
   const storeId = params.storeId;
   const queryClient = useQueryClient();

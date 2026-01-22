@@ -13,7 +13,6 @@ export const useCheckoutStripeMultipleItems = () => {
   const { reset } = useActions();
   const router = useRouter();
 
-  console.log('\n Cart items = ', orderItems);
   const { mutate: createPaymentMultiple, isPending: isLoadingCreateMultiple } =
     useMutation({
       mutationKey: [QUERY_KEYS.payStripe],
@@ -38,8 +37,7 @@ export const useCheckoutStripeMultipleItems = () => {
         router.push(data.url);
         reset();
       },
-      onError: (error) => {
-        console.log('error ', error);
+      onError: (error: any) => {
         toast.error(`${error?.response?.data?.message}`);
       },
     });

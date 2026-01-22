@@ -38,7 +38,6 @@ export default function ContactUsPage() {
   const isFormDirty = Object.keys(form.formState.dirtyFields).length > 0;
 
   const onSubmit: SubmitHandler<ContactFormInput> = (data) => {
-    console.log('SEND CONTACT MESSAGE', data);
     sendContactUs(data);
     form.reset();
   };

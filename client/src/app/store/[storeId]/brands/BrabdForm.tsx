@@ -25,7 +25,7 @@ interface BrandFormProps {
   categories: GetCategoryDto[];
 }
 
-export function BrandForm({ brand, categories }: BrandFormProps) {
+export function BrandForm({ brand }: BrandFormProps) {
   const { createBrand, isLoadingCreate } = useCreateBrand();
   const { updateBrand, isLoadingUpdate } = useUpdateBrand();
   const { deleteBrand, isLoadingDelete } = useDeleteBrand();
@@ -84,7 +84,6 @@ export function BrandForm({ brand, categories }: BrandFormProps) {
               name='images'
               rules={{ required: 'Upload at least one image' }}
               render={({ field }) => {
-                console.log('FIELD = ', field);
                 return (
                   <FormItem className='mt-4'>
                     <FormLabel>Images</FormLabel>
@@ -137,35 +136,6 @@ export function BrandForm({ brand, categories }: BrandFormProps) {
                 </FormItem>
               )}
             />
-            {/* <FormField
-              control={form.control}
-              name='categoryId'
-              rules={{ required: 'Category is required' }}
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Category</FormLabel>
-                  <Select
-                    disabled={isLoading}
-                    onValueChange={field.onChange}
-                    defaultValue={field.value}
-                  >
-                    <FormControl>
-                      <SelectTrigger className='w-full'>
-                        <SelectValue placeholder='Select a category' />
-                      </SelectTrigger>
-                    </FormControl>
-                    <SelectContent>
-                      {categories.map((category) => (
-                        <SelectItem key={category.id} value={category.id}>
-                          {category.name}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
-                  <FormMessage />
-                </FormItem>
-              )}
-            /> */}
           </div>
           <Button variant='default' disabled={isLoading || !isFormDirty}>
             {action}

@@ -27,7 +27,6 @@ export function Settings() {
   const { store, updateStore, isLoadingUpdate } = useUpdateStore();
   const { deleteStore, isLoadingDelete } = useDeleteStore();
 
-  console.log('STORE ', store);
   const form = useForm<IUpdateStore>({
     mode: 'onChange',
     values: {
@@ -40,7 +39,6 @@ export function Settings() {
       phone: store?.phone || '',
     },
   });
-  console.log('form ', form.formState.dirtyFields);
 
   const isFormDirty = Object.keys(form.formState.dirtyFields).length > 0;
   const onSubmit: SubmitHandler<IUpdateStore> = (data) => {
@@ -77,7 +75,6 @@ export function Settings() {
             name='images'
             rules={{ required: 'Upload at least one image' }}
             render={({ field }) => {
-              console.log('FIELD = ', field);
               return (
                 <FormItem className='mt-4'>
                   <FormLabel>Images</FormLabel>

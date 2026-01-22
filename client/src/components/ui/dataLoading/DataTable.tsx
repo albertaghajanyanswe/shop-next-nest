@@ -76,7 +76,6 @@ export function DataTable<TData extends WithId, TValue>({
       setIsFirst(false);
       return;
     }
-    console.log('debouncedSearch = ', debouncedSearch);
     onChangeSearch(debouncedSearch);
   }, [debouncedSearch]);
   // ---------- STABLE SORTING ----------

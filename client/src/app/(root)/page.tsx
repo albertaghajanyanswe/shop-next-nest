@@ -37,7 +37,6 @@ export async function generateMetadata(): Promise<Metadata> {
     url: process.env.NEXT_PUBLIC_CLIENT_URL,
   });
 
-  console.log('META = ', meta);
   return meta;
 }
 

@@ -57,7 +57,6 @@ export function OrderDetailsModalContent<T extends TableSectionItem>({
   showConfirm = false,
 }: OrderDetailsModalProps<T>) {
   const { user } = useProfile();
-  console.log('ORDER = ', order);
   const getOrderInfoItems = (): InfoSectionItem[] => {
     if (!order) return [];
 

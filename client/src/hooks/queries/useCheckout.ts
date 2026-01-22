@@ -33,7 +33,6 @@ export const useCheckout = () => {
       reset();
     },
     onError: (error) => {
-      console.log('error ', error);
       toast.error('Checkout failed');
     },
   });

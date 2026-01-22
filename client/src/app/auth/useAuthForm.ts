@@ -35,7 +35,6 @@ export function useAuthForm(isReg: boolean) {
       form.reset();
     },
     onError: (error) => {
-      console.log('error = ', error);
       toast.error(
         error.response?.data?.message || error.message || 'Error while login'
       );

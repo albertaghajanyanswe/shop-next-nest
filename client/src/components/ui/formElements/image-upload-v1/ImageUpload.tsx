@@ -15,7 +15,6 @@ export function ImageUpload({ isDisabled, onChange, value }: ImageUploadProps) {
   const { handleButtonClick, handleFileChange, isUploading, fileInputRef } =
     useUpload({ onChange, folder: 'products' });
 
-  console.log(value);
   return (
     <div>
       <div className='grid grid-cols-2 gap-4 sm:grid-cols-3 xl:grid-cols-6'>

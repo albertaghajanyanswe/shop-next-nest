@@ -22,9 +22,6 @@ export const API_BASE =
       : process.env.NEXT_PUBLIC_CLIENT_URL
     : process.env.NEXT_PUBLIC_SERVER_SERVICE;
 
-console.log('APP_ENV = ', process.env.APP_ENV);
-console.log('API_BASE = ', process.env.API_BASE);
-
 const options: CreateAxiosDefaults = {
   baseURL: `${API_BASE}/api`,
   headers: getContentType(),
@@ -51,7 +48,6 @@ axiosWithAuth.interceptors.response.use(
     const originalRequest: AxiosRequestConfig & { _isRetry?: boolean } =
       error.config;
 
-    console.log('\n\n\n TOKEN  error.response', error.response);
     if (
       (error.response?.status === 401 ||
         errorCatch(error) === 'Unauthorized' ||
@@ -62,11 +58,9 @@ axiosWithAuth.interceptors.response.use(
     ) {
       originalRequest._isRetry = true;
       try {
-        console.log('TOKEN interceptors - getNewTokens');
         await authService.getNewTokens();
         return axiosWithAuth.request(originalRequest);
       } catch (error) {
-        console.log('TOKEN error  ', error);
         if (
           errorCatch(error) === 'jwt expired' ||
           errorCatch(error) === 'Unauthorized' ||

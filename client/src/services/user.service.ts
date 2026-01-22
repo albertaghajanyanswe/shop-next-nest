@@ -4,9 +4,7 @@ import { GetUserDto } from '@/generated/orval/types';
 import { IUser } from '@/shared/types/user.interface';
 
 class UserService {
-  constructor() {
-    console.log('\n\n\n\n *********NODE_ENV = ', process.env.NODE_ENV);
-  }
+  constructor() {}
   async getProfile() {
     const { data } = await axiosWithAuth<GetUserDto>({
       url: API_URL.users(`/profile`),

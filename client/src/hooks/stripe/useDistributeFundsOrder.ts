@@ -21,7 +21,7 @@ export function useDistributeFundsOrder() {
       });
       console.log('result = ', result);
     },
-    onError: (error) => {
+    onError: (error: any) => {
       console.log('ERR = ', error);
       toast.error(
         error?.response?.data?.message ||

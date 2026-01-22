@@ -40,8 +40,6 @@ export function ColorForm({ color }: ColorFormProps) {
     },
   });
 
-  console.log('\n\n\n form values', form.getValues());
-  console.log('color', color);
   const isFormDirty = Object.keys(form.formState.dirtyFields).length > 0;
   const isLoading = isLoadingUpdate || isLoadingCreate;
 

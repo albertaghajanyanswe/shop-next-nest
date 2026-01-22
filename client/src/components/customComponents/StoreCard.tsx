@@ -68,7 +68,6 @@ export function StoreCard({
       : [
           'https://res.cloudinary.com/dvuo50sjj/image/upload/v1764779570/store-cover_yqsclu.png',
         ];
-  console.log('STORE = ', store);
   return (
     <div className='flex flex-col'>
       <div className='group bg-shop-light-bg xs:text-sm relative flex flex-col overflow-hidden rounded-md text-xs'>

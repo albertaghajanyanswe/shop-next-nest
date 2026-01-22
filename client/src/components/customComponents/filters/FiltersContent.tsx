@@ -97,7 +97,6 @@ export default function FiltersContent({
     setLocalStoreIds([]);
     resetFilter('storeId');
   };
-  console.log('FiltersContent currentFilter = ', currentFilter);
 
   return (
     <div className='space-y-6'>

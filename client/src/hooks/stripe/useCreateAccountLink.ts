@@ -11,7 +11,6 @@ export function useCreateAccountLink() {
       mutationFn: (email: string) =>
         stripeService.createStripeAccountLink(email),
       onSuccess: (createLinkRes) => {
-        console.log('createLinkRes = ', createLinkRes);
         if (createLinkRes?.url) {
           window.location.href = createLinkRes.url;
         }
