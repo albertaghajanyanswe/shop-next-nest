@@ -23,6 +23,7 @@ import { CloudinaryFileModule } from './cloudinary-file/cloudinary-file.module';
 import { CloudinaryProvider } from './cloudinary-file/cloudinary-file.provider';
 import { MailerModule } from './mailer/mailer.module';
 import { SchedulerModule } from './scheduler/scheduler.module';
+import { HealthModule } from './health/health.module';
 @Module({
   imports: [
     ConfigModule.forRoot(),
@@ -45,6 +46,7 @@ import { SchedulerModule } from './scheduler/scheduler.module';
     CloudinaryFileModule,
     MailerModule,
     SchedulerModule,
+    HealthModule,
   ],
   controllers: [],
   providers: [PrismaService, SeedService, CloudinaryProvider, QueryPayloadBuilderService],

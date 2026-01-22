@@ -39,7 +39,7 @@ export default function Shop({
       params: {
         sort: { field: 'createdAt', order: 'desc' },
         filter: {},
-        limit: 10,
+        limit: 20,
         skip: 0,
         search: {
           value: '',

@@ -18,15 +18,14 @@
     "test:cov": "jest --coverage",
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
     "test:e2e": "jest --config ./test/jest-e2e.json",
-    "migrate:dev": "prisma migrate dev",
+    "migrate:dev": "npx prisma migrate dev",
     "migrate:dev:create": "prisma migrate dev --create-only",
     "migrate:deploy": "npx prisma migrate deploy",
     "migrate:reset": "npx prisma migrate reset",
     "migrate:resolve": "npx prisma migrate resolve",
     "prisma:studio": "npx prisma studio",
     "prisma:push": "npx prisma db push",
-    "prisma:generate": "npx prisma generate",
-    "prisma:migrate": "npx prisma migrate deploy"
+    "prisma:generate": "npx prisma generate"
   },
   "dependencies": {
     "@a2seven/yoo-checkout": "^1.1.4",
@@ -40,6 +39,7 @@
     "@nestjs/schedule": "^6.1.0",
     "@nestjs/serve-static": "^5.0.3",
     "@nestjs/swagger": "^11.2.1",
+    "@nestjs/terminus": "^11.0.0",
     "@prisma/client": "^6.19.0",
     "@react-email/components": "^1.0.2",
     "app-root-path": "^3.1.0",
