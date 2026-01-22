@@ -63,7 +63,6 @@ export default function Shop({
       ? { products: initialProducts, totalCount }
       : undefined,
     placeholderData: keepPreviousData,
-    // keepPreviousData: true,
   });
 
   const loading = isLoading || isPending;

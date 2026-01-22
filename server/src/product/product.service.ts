@@ -13,16 +13,22 @@ export class ProductService {
     private readonly cloudinaryFileService: CloudinaryFileService,
   ) {}
 
+  getDefaultWhere() {
+    return {
+      isPublished: true
+    }
+  }
   async getAll(params?: string) {
     const payload = this.queryBuilderService.build({
       queryParams: params || '',
     });
+    const { where, ...rest } = payload
     const products = await this.prisma.product.findMany({
       orderBy: {
         createdAt: 'desc',
       },
-      where: { ...payload.where, isPublished: true },
-      // ...payload,
+      where: { ...where, ...this.getDefaultWhere() },
+      ...rest,
       include: {
         category: true,
         color: true,
@@ -252,7 +258,7 @@ export class ProductService {
     const publishedProducts = await this.prisma.product.findMany({
       where: {
         userId,
-        isPublished: true,
+        ...this.getDefaultWhere(),
       },
       orderBy: [{ totalViews: 'desc' }, { createdAt: 'asc' }],
       select: {
@@ -269,7 +275,7 @@ export class ProductService {
     await this.prisma.product.updateMany({
       where: {
         userId,
-        isPublished: true,
+        ...this.getDefaultWhere(),
         id: {
           notIn: allowedIds,
         },

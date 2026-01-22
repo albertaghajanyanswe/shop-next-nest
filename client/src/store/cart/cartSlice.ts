@@ -33,16 +33,18 @@ export const cartSlice = createSlice({
 
     changeQuantity: (state, action: PayloadAction<IChangeQuantityPayload>) => {
       const { id, type } = action.payload;
-      const item = state.orderItems.find((item) => item.id === id);
-      if (item) {
-        if (type === 'minus') {
-          item.quantity--;
-        } else {
-          item.quantity < item.product.quantity
-            ? item.quantity++
-            : item.quantity;
-        }
+
+      const item = state.orderItems.find((i) => i.id === id);
+      if (!item) return;
+
+      const max = item.product.quantity;
+
+      if (type === 'minus') {
+        item.quantity = Math.max(1, item.quantity - 1);
+        return;
       }
+
+      item.quantity = Math.min(max, item.quantity + 1);
     },
 
     reset: (state) => {

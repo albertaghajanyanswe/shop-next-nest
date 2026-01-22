@@ -62,7 +62,6 @@ export function CustomPagination({
 
     params.set('skip', String(newSkip));
     params.set('limit', String(limit));
-    onPageChange;
     return `?${params.toString()}`;
   };
 

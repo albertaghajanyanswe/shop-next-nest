@@ -154,7 +154,7 @@ export class OrderService {
 
     const where = {
       orderItems: {
-        some: { product: { userId: user.id } }, // здесь обязательно наличие хотя бы одного товара пользователя
+        some: { product: { userId: user.id } },
       },
       ...payload.where,
     };

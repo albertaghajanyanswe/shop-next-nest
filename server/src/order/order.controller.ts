@@ -21,15 +21,15 @@ export class OrderController {
     return this.orderService.getOrders(user, params);
   }
 
-  @Auth()
-  @Get('/sold')
-  @ApiOkResponse({ type: GetOrderWithItemsDtoAndCount })
-  async getSoldOrders(
-    @CurrentUser() user: User,
-    @Query('params') params?: string,
-  ) {
-    return this.orderService.getSoldOrders(user, params);
-  }
+  // @Auth()
+  // @Get('/sold')
+  // @ApiOkResponse({ type: GetOrderWithItemsDtoAndCount })
+  // async getSoldOrders(
+  //   @CurrentUser() user: User,
+  //   @Query('params') params?: string,
+  // ) {
+  //   return this.orderService.getSoldOrders(user, params);
+  // }
 
   @Auth()
   @Get('/allOrders')
