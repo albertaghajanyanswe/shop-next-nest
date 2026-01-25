@@ -11,9 +11,15 @@ export const getAccessToken = () => {
   return accessToken || null;
 };
 
+/*
+ * TODO - Cookie temporary solution
+ * Need to add domain in any NODE_ENV
+ */
 export const saveTokenStorage = (accessToken: string) => {
   Cookies.set(EnumTokens.ACCESS_TOKEN, accessToken, {
-    domain: process.env.APP_DOMAIN,
+    ...(process.env.NODE_ENV === 'production'
+      ? { domain: process.env.APP_DOMAIN }
+      : {}),
     sameSite: 'strict',
     expires: 1,
   });

@@ -35,7 +35,9 @@ async function bootstrap() {
   // });
   try {
     await app.listen(process.env.PORT ?? 4000);
-    logger.log(`Server is running on port ${process.env.PORT ?? 4000}`);
+    logger.log(
+      `Server is running on port ${process.env.PORT ?? 4000}, NODE_ENV - ${process.env.NODE_ENV}`,
+    );
   } catch (error) {
     logger.error(`Failed to start server: ${error.message}`, error);
     process.exit(1);

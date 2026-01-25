@@ -22,6 +22,7 @@ export const API_BASE =
       : process.env.NEXT_PUBLIC_CLIENT_URL
     : process.env.NEXT_PUBLIC_SERVER_SERVICE;
 
+  console.log('\n\n API_BASE = ', API_BASE)
 const options: CreateAxiosDefaults = {
   baseURL: `${API_BASE}/api`,
   headers: getContentType(),

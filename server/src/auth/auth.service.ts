@@ -127,21 +127,35 @@ export class AuthService {
   addRefreshTokenToResponse(res: Response, refreshToken: string) {
     const expiresIn = new Date();
     expiresIn.setDate(expiresIn.getDate() + this.EXPIRE_DAY_REFRESH_TOKEN);
+    /*
+     * TODO - Cookie temporary solution
+     * 1. Need to add domain in any NODE_ENV
+     * 2. secure always set true for prod
+     */
     res.cookie(this.REFRESH_TOKEN_NAME, refreshToken, {
       httpOnly: true,
-      domain: this.configService.get<string>(EnvVariables.SERVER_DOMAIN),
-      secure: true,
+      ...(process.env.NODE_ENV === 'production'
+        ? { domain: this.configService.get<string>(EnvVariables.SERVER_DOMAIN) }
+        : {}),
+      secure: process.env.NODE_ENV === 'production' ? true : false,
       expires: expiresIn,
       sameSite: process.env.NODE_ENV === 'production' ? 'lax' : 'none',
     });
   }
 
   removeRefreshTokenToResponse(res: Response) {
+    /*
+     * TODO - Cookie temporary solution
+     * 1. Need to add domain in any NODE_ENV
+     * 2. secure always set true for prod
+     */
     res.cookie(this.REFRESH_TOKEN_NAME, '', {
       httpOnly: true,
-      domain: this.configService.get<string>(EnvVariables.SERVER_DOMAIN),
+      ...(process.env.NODE_ENV === 'production'
+        ? { domain: this.configService.get<string>(EnvVariables.SERVER_DOMAIN) }
+        : {}),
       expires: new Date(0),
-      secure: true,
+      secure: process.env.NODE_ENV === 'production' ? true : false,
       sameSite: process.env.NODE_ENV === 'production' ? 'lax' : 'none',
     });
   }
