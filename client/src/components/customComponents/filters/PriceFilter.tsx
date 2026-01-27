@@ -6,16 +6,18 @@ import { useDebounce } from '@/hooks/commons/useDebounce';
 
 interface PriceFilterProps {
   onChange: ({ min, max }: { min: number; max: number }) => void;
+  min: number;
+  max: number;
 }
 
-export function PriceFilter({ onChange }: PriceFilterProps) {
+export function PriceFilter({ onChange, min, max }: PriceFilterProps) {
   // --- Applied values ---
   const [minValue, setMinValue] = useState(0);
   const [maxValue, setMaxValue] = useState(1000000);
 
   // --- Local input values (not applied yet) ---
-  const [minInput, setMinInput] = useState(0);
-  const [maxInput, setMaxInput] = useState(1000000);
+  const [minInput, setMinInput] = useState(min ||0);
+  const [maxInput, setMaxInput] = useState(max || 1000000);
 
   // debounce only applied values
   const debMin = useDebounce(minValue, 1000);

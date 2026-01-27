@@ -145,6 +145,8 @@ export default function FiltersContent({
           </AccordionTrigger>
           <AccordionContent className='px-2 pt-4'>
             <PriceFilter
+              min={currentFilter?.price_gte}
+              max={currentFilter?.price_lte}
               onChange={(range) => updatePrice([range.min, range.max])}
             />
           </AccordionContent>

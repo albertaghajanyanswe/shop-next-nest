@@ -65,11 +65,13 @@ export default function Filters({ categories, brands, stores }: FilterProps) {
   };
 
   const updatePrice = (values: number[]) => {
-    changeFilterObject({
+    const updatedFilter = {
       ...currentFilter,
       ...(values[0] !== undefined && { price_gte: +values[0] }),
       ...(values[1] !== undefined && { price_lte: +values[1] }),
-    });
+    };
+    setCurrentFilter(updatedFilter);
+    changeFilterObject(updatedFilter);
   };
 
   const resetFilter = (field: string) => {
