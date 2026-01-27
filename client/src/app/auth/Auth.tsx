@@ -36,7 +36,7 @@ export default function Auth() {
         </p>
       </div>
       <div className='flex h-full flex-col items-center justify-center'>
-        <Card className='flex w-full sm:w-[500px] p-4 sm:p-0 flex-col items-center justify-center border-none bg-white shadow-none'>
+        <Card className='flex w-full flex-col items-center justify-center border-none bg-white p-4 shadow-none sm:w-[500px] sm:p-0'>
           <Logo classNames='sm:text-4xl' />
 
           <CardHeader className='flex w-full flex-col items-center justify-center pb-5'>

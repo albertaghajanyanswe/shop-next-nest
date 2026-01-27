@@ -17,7 +17,7 @@ export function CustomAccordion({ items }: { items: FAQItem[] }) {
     <Accordion type='single' collapsible className='w-full'>
       {items.map((item, index) => (
         <AccordionItem key={index} value={`faq-${index}`}>
-          <AccordionTrigger className='px-1 sm:px-4 py-4 text-left text-sm sm:text-lg font-medium hover:no-underline'>
+          <AccordionTrigger className='px-1 py-4 text-left text-sm font-medium hover:no-underline sm:px-4 sm:text-lg'>
             {item.title}
           </AccordionTrigger>
 
