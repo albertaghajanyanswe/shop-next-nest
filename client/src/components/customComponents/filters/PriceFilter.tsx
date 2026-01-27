@@ -16,7 +16,7 @@ export function PriceFilter({ onChange, min, max }: PriceFilterProps) {
   const [maxValue, setMaxValue] = useState(1000000);
 
   // --- Local input values (not applied yet) ---
-  const [minInput, setMinInput] = useState(min ||0);
+  const [minInput, setMinInput] = useState(min || 0);
   const [maxInput, setMaxInput] = useState(max || 1000000);
 
   // debounce only applied values
