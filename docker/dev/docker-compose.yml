@@ -8,7 +8,7 @@ services:
       - "8080:80"
     volumes:
       - ./nginx.conf:/etc/nginx/nginx.conf:ro
-      - ../../server/server-uploads:/usr/src/app/server-uploads
+      - images:/etc/nginx/images
 
     depends_on:
       - server
@@ -33,29 +33,29 @@ services:
       timeout: 5s
       retries: 5
       start_period: 10s
-    # ports:
-    #   - 5433:5432
+    ports:
+      - 5433:5432
     volumes:
       - db_data:/var/lib/postgresql/data
     networks:
       - app-connect
 
-  prisma-studio:
-    container_name: prisma-studio
-    image: node:18-alpine
-    working_dir: /usr/src/app
-    volumes:
-      - ./:/usr/src/app
-    ports:
-      - "5556:5555"
-    environment:
-      - DATABASE_URL=postgresql://postgres:postgres@db:5432/mystore-dev
-      - NODE_ENV=development
-    depends_on:
-      - db
-    command: npx prisma studio --host 0.0.0.0 --port 5555
-    networks:
-      - app-connect
+  # prisma-studio:
+  #   container_name: prisma-studio
+  #   image: node:18-alpine
+  #   working_dir: /usr/src/app
+  #   volumes:
+  #     - ./:/usr/src/app
+  #   ports:
+  #     - "5556:5555"
+  #   environment:
+  #     - DATABASE_URL=postgresql://postgres:postgres@db:5432/mystore-dev
+  #     - NODE_ENV=development
+  #   depends_on:
+  #     - db
+  #   command: npx prisma studio --host 0.0.0.0 --port 5555
+  #   networks:
+  #     - app-connect
 
   server:
     container_name: shop-backend
@@ -66,39 +66,25 @@ services:
     # uncomment network_mode variable to be able to run docker in localhost +
     # network_mode: host
     ports:
-      - "4000"
+      - "4000:4000"
       - "5555:5555"
     depends_on:
       db:
         condition: service_healthy
     env_file:
       - ../../server/.env.dev
-    #volumes:
-    #  - /opt/<projectName>/logs/server:/usr/src/app/log
-    # environment:
-    #   CLIENT_URL: ${CLIENT_URL}
-    #   SERVER_URL: ${SERVER_URL}
-    #   SERVER_DOMAIN: ${SERVER_DOMAIN}
-    #   GOOGLE_CLIENT_ID: ${GOOGLE_CLIENT_ID}
-    #   GOOGLE_CLIENT_SECRET: ${GOOGLE_CLIENT_SECRET}
-    #   JWT_SECRET: ${JWT_SECRET}
-    #   JWT_EXPIRES_IN: ${JWT_EXPIRES_IN}
-    #   YOOKASSA_SHOP_ID: ${YOOKASSA_SHOP_ID}
-    #   YOOKASSA_SECRET_KEY: ${YOOKASSA_SECRET_KEY}
-    #   STRIPE_PUBLIC_KEY: ${STRIPE_PUBLIC_KEY}
-    #   STRIPE_SECRET_KEY: ${STRIPE_SECRET_KEY}
-    #   STRIPE_WEBHOOK_SECRET: ${STRIPE_WEBHOOK_SECRET}
-    #   DB_USER: ${DB_USER}
-    #   DB_PASSWORD: ${DB_PASSWORD}
-    #   DB_DATABASE: ${DB_DATABASE}
-    #   DB_HOST: ${DB_HOST}
-    #   DB_PORT: ${DB_PORT}
-    #   DB_URI: ${DB_URI}
-    #   NODE_ENV: development
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:4000/api/health"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+      start_period: 15s
     volumes:
-      # - ../../server:/usr/src/app
-      - ../../server/server-uploads:/usr/src/app/server-uploads
-
+      - ../../server:/usr/src/app
+      - /usr/src/app/node_modules
+      # - uploads:/usr/src/app/server-uploads
+      # - ../../server/server-uploads:/usr/src/app/server-uploads
+      - images:/usr/src/app/server-uploads
     networks:
       - app-connect
   ui:
@@ -127,14 +113,17 @@ services:
     #   NEXT_PUBLIC_SERVER_URL: ${NEXT_PUBLIC_SERVER_URL}
     networks:
       - app-connect
+    # depends_on:
+    #   - server
     depends_on:
-      - server
+      server:
+        condition: service_healthy
     # volumes:
     #   - uploads:/usr/src/app/server-uploads
 
 volumes:
   db_data:
-  uploads:
+  images:
 
 networks:
   app-connect:

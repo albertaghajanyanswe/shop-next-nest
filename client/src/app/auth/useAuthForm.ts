@@ -1,6 +1,6 @@
 'use client';
 import { ErrorResponse } from '@/api/api.interceptors';
-import { DASHBOARD_URL } from '@/config/url.config';
+import { DASHBOARD_URL, PUBLIC_URL } from '@/config/url.config';
 import { AuthResponseDto, RegisterDto } from '@/generated/orval/types';
 import { authService } from '@/services/auth/auth.service';
 import { QUERY_KEYS } from '@/shared/queryConstants';
@@ -31,7 +31,7 @@ export function useAuthForm(isReg: boolean) {
       authService.main(isReg ? 'register' : 'login', data),
     onSuccess: () => {
       toast.success('Login success');
-      router.replace(DASHBOARD_URL.home());
+      router.replace(PUBLIC_URL.root());
       form.reset();
     },
     onError: (error) => {

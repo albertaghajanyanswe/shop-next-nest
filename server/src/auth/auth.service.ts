@@ -29,6 +29,7 @@ export class AuthService {
   ) {}
 
   async login(loginDto: LoginDto) {
+    console.log('\n\n LOGIN');
     const user = await this.validateUser(loginDto);
     const tokens = this.issueTokens(user.id);
     return { user, ...tokens };
@@ -124,6 +125,12 @@ export class AuthService {
     return { user, ...tokens };
   }
 
+  checkSecureCookie() {
+    return (
+      process.env.NODE_ENV === 'production' ||
+      process.env.SERVER_DOMAIN === 'localhost'
+    );
+  }
   addRefreshTokenToResponse(res: Response, refreshToken: string) {
     const expiresIn = new Date();
     expiresIn.setDate(expiresIn.getDate() + this.EXPIRE_DAY_REFRESH_TOKEN);
@@ -134,12 +141,12 @@ export class AuthService {
      */
     res.cookie(this.REFRESH_TOKEN_NAME, refreshToken, {
       httpOnly: true,
-      ...(process.env.NODE_ENV === 'production'
+      ...(this.checkSecureCookie()
         ? { domain: this.configService.get<string>(EnvVariables.SERVER_DOMAIN) }
         : {}),
-      secure: process.env.NODE_ENV === 'production' ? true : false,
+      secure: this.checkSecureCookie() ? true : false,
       expires: expiresIn,
-      sameSite: process.env.NODE_ENV === 'production' ? 'lax' : 'none',
+      sameSite: this.checkSecureCookie() ? 'lax' : 'none',
     });
   }
 
@@ -151,12 +158,12 @@ export class AuthService {
      */
     res.cookie(this.REFRESH_TOKEN_NAME, '', {
       httpOnly: true,
-      ...(process.env.NODE_ENV === 'production'
+      ...(this.checkSecureCookie()
         ? { domain: this.configService.get<string>(EnvVariables.SERVER_DOMAIN) }
         : {}),
       expires: new Date(0),
-      secure: process.env.NODE_ENV === 'production' ? true : false,
-      sameSite: process.env.NODE_ENV === 'production' ? 'lax' : 'none',
+      secure: this.checkSecureCookie() ? true : false,
+      sameSite: this.checkSecureCookie() ? 'lax' : 'none',
     });
   }
 }

@@ -35,7 +35,7 @@ export function CustomTabs({
           <TabsTrigger
             key={tab.id}
             value={tab.id}
-            className={`cursor-pointer ${triggerClassName}`}
+            className={`cursor-pointer ${triggerClassName} text-xs sm:text-sm px-1 sm:px-2 whitespace-break-spaces`}
           >
             {tab.label}
           </TabsTrigger>

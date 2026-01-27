@@ -1,32 +1,45 @@
-# FROM node:23.11.0
-FROM node:22
+FROM node:22-alpine
+
 WORKDIR /usr/src/app
 
-# Установите postgresql-client
-RUN apt-get update && apt-get install -y postgresql-client && rm -rf /var/lib/apt/lists/*
+# Установим postgresql-client и bash
+# RUN apt-get update && apt-get install -y postgresql-client bash && rm -rf /var/lib/apt/lists/*
 
-# Копируем package.json и schema
+RUN apk add --no-cache \
+  bash \
+  curl \
+  openssl \
+  postgresql16-client \
+  libc6-compat
+
+# Копируем package.json и Prisma schema
 COPY package*.json ./
 COPY prisma ./prisma
 
 # Устанавливаем зависимости
+RUN npm ci
 
 # Копируем весь код
-
-RUN npm ci --silent
-# Генерируем Prisma Client
-# RUN npx prisma generate
-
 COPY . .
-# Устанавливаем NestJS CLI
+
+# Устанавливаем Nest CLI
 RUN npm install -g @nestjs/cli
 
+# Копируем entrypoint
 COPY docker-entrypoint.sh /usr/local/bin/
 RUN chmod +x /usr/local/bin/docker-entrypoint.sh
 
-ENTRYPOINT ["docker-entrypoint.sh"]
+# Создаём пользователя для безопасности
+# RUN addgroup --system --gid 1001 nodejs
+# RUN adduser --system --uid 1001 nestjs
+# USER root
 
+# Порты NestJS
 EXPOSE 4000
 EXPOSE 5555
 
+# Запуск через entrypoint
+ENTRYPOINT ["docker-entrypoint.sh"]
+
+# dev server с hot reload
 CMD ["npm", "run", "start:dev"]

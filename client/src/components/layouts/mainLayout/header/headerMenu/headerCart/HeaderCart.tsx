@@ -59,8 +59,8 @@ export function HeaderCart({ triggerBtnClass }: HeaderCartProps) {
           </span>
         </Button>
       </SheetTrigger>
-      <SheetContent className='flex max-h-[100dvh] w-full flex-col bg-white p-4'>
-        <SheetHeader className='sticky top-0 z-20 flex w-full flex-row items-center justify-between border-b bg-white/95 px-4 py-3 backdrop-blur-sm'>
+      <SheetContent className='flex max-h-[100dvh] w-full flex-col bg-white p-4 pb-8'>
+        <SheetHeader className='sticky top-0 z-20 flex w-full flex-row items-center justify-between border-b bg-white/95 p-0 pb-4 backdrop-blur-sm'>
           <SheetTitle className='p-0'>
             <Heading
               title='Basket of products'

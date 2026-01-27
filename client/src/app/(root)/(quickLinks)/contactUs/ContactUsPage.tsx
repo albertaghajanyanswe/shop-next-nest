@@ -52,9 +52,9 @@ export default function ContactUsPage() {
         <PageHeader
           title='Contact Us'
           description='Our support team is here to help with any questions or feedback.'
-          classNames='mt-4 w-[60%]'
+          classNames='mt-4 w-full sm:w-[60%]'
         />
-        <div className='w-[60%]'>
+        <div className='w-full sm:w-[60%]'>
           <Form {...form}>
             <form
               onSubmit={form.handleSubmit(onSubmit)}

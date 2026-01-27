@@ -1,5 +1,3 @@
-import Breadcrumbs from '@/components/customComponents/Breadcrumbs';
-import PageHeader from '@/components/customComponents/PageHeader';
 import { SITE_NAME } from '@/utils/constants';
 import ContactUsPage from './ContactUsPage';
 

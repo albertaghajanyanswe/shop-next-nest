@@ -67,11 +67,11 @@ export function PriceFilter({ onChange }: PriceFilterProps) {
         onValueChange={onSliderChange}
       />
 
-      <div className='mt-1 flex flex-col items-center gap-2 text-xs'>
+      <div className='mt-1 flex flex-col items-center gap-2'>
         <Input
           value={minInput}
           onChange={(e) => onMinChange(e.target.value)}
-          className='w-full text-xs'
+          className='w-full'
           name='price_lte'
           aria-label='price_lte'
         />
@@ -81,7 +81,7 @@ export function PriceFilter({ onChange }: PriceFilterProps) {
         <Input
           value={maxInput}
           onChange={(e) => onMaxChange(e.target.value)}
-          className='w-full text-xs'
+          className='w-full'
           name='price_gte'
           aria-label='price_gte'
         />

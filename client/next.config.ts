@@ -1,8 +1,10 @@
 import type { NextConfig } from 'next';
 
-const isProd = process.env.APP_ENV === 'production';
-const isDev = process.env.APP_ENV === 'development';
+const isProd = process.env.NEXT_PUBLIC_APP_ENV === 'production';
+const isDev = process.env.NEXT_PUBLIC_APP_ENV === 'development';
 
+console.log('\n\n IS_PROD ', isProd)
+console.log('IS_DEV ', isDev)
 const nextConfig: NextConfig = {
   env: {
     APP_DOMAIN: process.env.APP_DOMAIN,
@@ -67,7 +69,7 @@ const nextConfig: NextConfig = {
       },
     ];
   },
-  ...(isProd && { output: 'standalone' }),
+  ...((isProd || isDev) && { output: 'standalone' }),
   eslint: {
     ignoreDuringBuilds: true,
   },
