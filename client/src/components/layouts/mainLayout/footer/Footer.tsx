@@ -13,12 +13,18 @@ import {
 } from './config';
 import QueryString from 'qs';
 
+export const revalidate = 300;
+
 async function getCategories() {
-  // TODO
-  const categories = (
-    (await categoryService.getAll({ limit: 7, skip: 0 })) || []
-  )?.categories;
-  return categories as GetCategoryDto[];
+  try {
+    // TODO
+    const categories = (
+      (await categoryService.getAll({ limit: 7, skip: 0 })) || []
+    )?.categories;
+    return categories as GetCategoryDto[];
+  } catch {
+    return [];
+  }
 }
 
 export default async function Footer() {

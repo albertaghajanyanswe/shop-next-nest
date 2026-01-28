@@ -14,7 +14,9 @@ export default function Favorites() {
       <Breadcrumbs
         items={[{ title: 'Home', href: '/' }, { title: 'Favorites' }]}
       />
+      <div className='mt-4'>
       <Catalog title='Favorites products' products={user.favorites} />
+      </div>
     </div>
   );
 }

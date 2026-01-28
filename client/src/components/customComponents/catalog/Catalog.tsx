@@ -34,20 +34,22 @@ export function Catalog({
       <div className='mb-4 md:flex md:items-center md:justify-between'>
         <div className='w-full px-0'>
           <p className='text-2xl font-semibold'>{title}</p>
-          <div className='mt-4 flex flex-col items-center gap-2 sm:flex-row'>
-            {showSearch && (
-              <SearchInput
-                searchFields={['id', 'title', 'description']}
-                redirectToShop={searchRedirectToShop}
-              />
-            )}
-            {showSort && (
-              <SortSelect
-                triggerClassName='w-full sm:w-[220px]'
-                options={SORT_PRODUCT_OPTIONS}
-              />
-            )}
-          </div>
+          {(showSearch || showSort) && (
+            <div className='mt-4 flex flex-col items-center gap-2 sm:flex-row'>
+              {showSearch && (
+                <SearchInput
+                  searchFields={['id', 'title', 'description']}
+                  redirectToShop={searchRedirectToShop}
+                />
+              )}
+              {showSort && (
+                <SortSelect
+                  triggerClassName='w-full sm:w-[220px]'
+                  options={SORT_PRODUCT_OPTIONS}
+                />
+              )}
+            </div>
+          )}
           {description && (
             <p className='text-muted-foreground mt-2 text-sm'>
               <span className='text-xs font-medium'>{descriptionLabel}</span>{' '}

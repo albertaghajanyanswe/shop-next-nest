@@ -22,6 +22,7 @@ import Link from 'next/link';
 import { Badge } from '@/components/ui/Badge';
 import { EnvVariables } from '@/shared/envVariables';
 import toast from 'react-hot-toast';
+import NoDataFound from '@/components/customComponents/loading/NoDataFound';
 
 interface HeaderCartProps {
   triggerBtnClass?: string;
@@ -85,7 +86,7 @@ export function HeaderCart({ triggerBtnClass }: HeaderCartProps) {
               </div>
             ))
           ) : (
-            <div className='text-muted-foreground text-sm'>Basket is empty</div>
+            <NoDataFound entityName='cart item' showDesc={false} />
           )}
         </div>
         {orderItems?.length ? (

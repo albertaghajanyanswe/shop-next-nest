@@ -18,10 +18,9 @@ FROM base AS builder
 WORKDIR /usr/src/app
 COPY --from=deps /usr/src/app/node_modules ./node_modules
 COPY . .
-COPY .env.dev .env
 ENV NEXT_TELEMETRY_DISABLED=1
 # RUN npm run build
-RUN npx next build --no-lint
+RUN npx next build
 
 # --- runner ---
 FROM base AS runner
@@ -30,6 +29,7 @@ WORKDIR /usr/src/app
 ENV NODE_ENV=production
 RUN addgroup --system --gid 1001 nodejs
 RUN adduser --system --uid 1001 nextjs
+COPY .env.dev .env
 
 COPY --from=builder /usr/src/app/public ./public
 COPY --from=builder --chown=nextjs:nodejs /usr/src/app/.next/standalone ./
