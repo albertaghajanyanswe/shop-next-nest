@@ -3,7 +3,7 @@ import FaqsPage from './FaqsPage';
 import { generateMeta } from '@/components/meta/Meta';
 import Script from 'next/script';
 
-const items = [
+export const FAQS_ITEMS = [
   {
     title: 'How long does shipping take?',
     content: '3-7 business days on average.',
@@ -14,8 +14,7 @@ const items = [
   },
   {
     title: 'What payment methods do you accept?',
-    content:
-      'Visa, Masterp-6 rounded-xl border bg-white shadow-sm transition hover:shadow-md, PayPal, Apple Pay.',
+    content: 'Visa, Master',
   },
 ];
 
@@ -37,7 +36,7 @@ export default function FAQs() {
           __html: JSON.stringify({
             '@context': 'https://schema.org',
             '@type': 'FAQPage',
-            mainEntity: items.map((i) => ({
+            mainEntity: FAQS_ITEMS.map((i) => ({
               '@type': 'Question',
               name: i.title,
               acceptedAnswer: { '@type': 'Answer', text: i.content },

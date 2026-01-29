@@ -51,7 +51,8 @@ export default function ContactUsPage() {
       <section className='flex w-full flex-col items-center justify-center'>
         <PageHeader
           title='Contact Us'
-          description='Our support team is here to help with any questions or feedback.'
+          description='If you have any comments or feedback, please do not hesitate to write us. We love feedback! This is your site and your suggestions will help us make it better.
+Please provide as much detail as possible. If your inquiry is related to an existing ad, please include the ad reference number with your message. Our support team is here to help with any questions or feedback.'
           classNames='mt-4 w-full sm:w-[60%]'
         />
         <div className='w-full sm:w-[60%]'>

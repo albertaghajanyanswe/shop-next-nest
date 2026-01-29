@@ -11,17 +11,21 @@ export default function AboutPage() {
 
       <PageHeader
         title='About Us'
-        description='We build modern, customer-centric eCommerce experiences powered by technology, transparency, and trust.'
+        description='We build modern, customer-centric E-commerce experiences powered by technology, transparency, and trust.'
         classNames='mt-4'
       />
 
       <section>
         <div className='flex flex-col gap-y-4'>
           <p className='leading-relaxed; text-sm text-neutral-600'>
-            {SITE_NAME} is a cutting-edge technology company dedicated to
-            providing innovative solutions for modern businesses. Founded in
-            2020, we are quickly established ourselves as a leader in digital
-            transformation and software development.
+            {SITE_NAME} was founded in 2025 with the desire to create an
+            online marketplace, where could buy and sell goods, offer services
+            and so on. Our mission is to be most trusted and comprehensive
+            online platform, helping accelerate the country’s transformation to
+            a modern digital society. We connect people with the goods,
+            services, and opportunities they need to enhance their everyday
+            lives. By offering a safe, efficient, transparent, and accessible
+            marketplace
           </p>
           <p className='leading-relaxed; text-sm text-neutral-600'>
             Our team of expert developers, designers, and strategists work

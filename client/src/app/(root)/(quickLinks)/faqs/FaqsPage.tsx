@@ -1,24 +1,7 @@
 import Breadcrumbs from '@/components/customComponents/Breadcrumbs';
 import { CustomAccordion } from '@/components/customComponents/CustomAccordion';
 import PageHeader from '@/components/customComponents/PageHeader';
-import { SITE_NAME } from '@/utils/constants';
-import Script from 'next/script';
-
-const items = [
-  {
-    title: 'How long does shipping take?',
-    content: '3–7 business days on average.',
-  },
-  {
-    title: 'What is your return policy?',
-    content: '14 days money-back guarantee.',
-  },
-  {
-    title: 'What payment methods do you accept?',
-    content:
-      'Visa, Masterp-6 rounded-xl border bg-white shadow-sm transition hover:shadow-md, PayPal, Apple Pay.',
-  },
-];
+import { FAQS_ITEMS } from './page';
 
 export default function FaqsPage() {
   return (
@@ -31,7 +14,7 @@ export default function FaqsPage() {
         classNames='mt-4'
       />
 
-      <CustomAccordion items={items} />
+      <CustomAccordion items={FAQS_ITEMS} />
     </>
   );
 }

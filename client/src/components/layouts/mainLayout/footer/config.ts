@@ -35,8 +35,8 @@ export const FooterQuickLinks = [
     href: PUBLIC_URL.contactUs(),
   },
   {
-    title: 'Terms & Conditions',
-    href: PUBLIC_URL.termsAndCondition(),
+    title: 'Terms & Service',
+    href: PUBLIC_URL.termsAndService(),
   },
   {
     title: 'Privacy Policy',

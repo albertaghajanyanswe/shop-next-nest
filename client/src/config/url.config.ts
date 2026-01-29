@@ -15,7 +15,7 @@ export const PUBLIC_URL = {
   brand: (id = '') => PUBLIC_URL.root(`/brand/${id}`),
   aboutUs: () => PUBLIC_URL.root(`/aboutUs`),
   contactUs: () => PUBLIC_URL.root(`/contactUs`),
-  termsAndCondition: () => PUBLIC_URL.root(`/termsAndCondition`),
+  termsAndService: () => PUBLIC_URL.root(`/termsAndService`),
   privacyPolicy: () => PUBLIC_URL.root(`/privacyPolicy`),
   faqs: () => PUBLIC_URL.root(`/faqs`),
 };
