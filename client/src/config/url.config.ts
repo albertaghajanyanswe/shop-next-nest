@@ -13,6 +13,7 @@ export const PUBLIC_URL = {
   product: (id = '') => PUBLIC_URL.root(`/product/${id}`),
   category: (id = '') => PUBLIC_URL.root(`/category/${id}`),
   brand: (id = '') => PUBLIC_URL.root(`/brand/${id}`),
+  howItWorks: () => PUBLIC_URL.root(`/howItWorks`),
   aboutUs: () => PUBLIC_URL.root(`/aboutUs`),
   contactUs: () => PUBLIC_URL.root(`/contactUs`),
   termsAndService: () => PUBLIC_URL.root(`/termsAndService`),
