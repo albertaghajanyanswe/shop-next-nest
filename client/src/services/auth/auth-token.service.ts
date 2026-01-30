@@ -15,9 +15,9 @@ const checkSecureCookie = () => {
   const isLocalHost = process.env.APP_DOMAIN === 'localhost';
   const isProd = process.env.NEXT_PUBLIC_APP_ENV === 'production';
   const isSecure = isLocalHost || isProd;
-  console.log('\n\n\n process.env.NODE_ENV - ', process.env.NODE_ENV);
-  console.log('process.env.SERVER_DOMAIN - ', process.env.SERVER_DOMAIN);
-  console.log('checkSecureCookie - ', isSecure);
+  console.log('\n\n\n isLocalHost - ', isLocalHost);
+  console.log('isProd - ', isProd);
+  console.log('isSecure - ', isSecure);
   return isSecure;
 };
 
