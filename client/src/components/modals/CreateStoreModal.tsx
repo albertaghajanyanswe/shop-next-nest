@@ -20,11 +20,16 @@ import {
 } from '../ui/formElements/Form';
 import { Input } from '../ui/formElements/Input';
 import { Button } from '../ui/Button';
+import { GetStoreDto } from '@/generated/orval/types';
 
 export function CreateStoreModal({
   children,
+  setCurrentStore,
   disabledTrigger = false,
-}: PropsWithChildren<unknown> & { disabledTrigger?: boolean }) {
+}: PropsWithChildren<unknown> & {
+  disabledTrigger?: boolean;
+  setCurrentStore: (store: GetStoreDto) => void;
+}) {
   const [isOpen, setIsOpen] = useState(false);
   const { createStore, isLoadingCreate } = useCreateStore();
 
@@ -35,8 +40,11 @@ export function CreateStoreModal({
     },
   });
 
-  const onSubmit: SubmitHandler<ICreateStore> = (data: ICreateStore) => {
-    createStore(data);
+  const onSubmit: SubmitHandler<ICreateStore> = async (data: ICreateStore) => {
+    const res = await createStore(data);
+    if (res.id) {
+      setCurrentStore(res);
+    }
     setIsOpen(false);
   };
 

@@ -12,13 +12,14 @@ export function useCreateStore() {
 
   const queryClient = useQueryClient();
 
-  const { mutate: createStore, isPending: isLoadingCreate } = useMutation({
+  const { mutateAsync: createStore, isPending: isLoadingCreate } = useMutation({
     mutationKey: QUERY_KEYS.createStore,
     mutationFn: (data: ICreateStore) => storeService.create(data),
     onSuccess: (store) => {
       queryClient.invalidateQueries({ queryKey: QUERY_KEYS.profile });
       toast.success('Store created successfully.');
       router.push(STORE_URL.home(store.id));
+      return store;
     },
     onError: (error: any) => {
       toast.error(error?.response?.data?.message || 'Error creating store.');
