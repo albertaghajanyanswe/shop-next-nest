@@ -26,7 +26,7 @@ export const FooterAboutLinks = [
 ];
 
 export const FooterQuickLinks = [
-    {
+  {
     title: 'How It Works',
     href: PUBLIC_URL.howItWorks(),
   },

@@ -21,7 +21,7 @@ function InfoBlock() {
         />
 
         <p className='mt-4 leading-relaxed text-neutral-900'>
-          <strong>MyStores</strong> is your personal seller dashboard. It's
+          <strong>MyStores</strong> is your personal seller dashboard. It is
           designed for users who want to sell products, manage inventory (create
           and manage stores, products, categories, brands and colors), and track
           store sales performance — all in one place.

@@ -18,14 +18,13 @@ export default function AboutPage() {
       <section>
         <div className='flex flex-col gap-y-4'>
           <p className='leading-relaxed; text-sm text-neutral-600'>
-            {SITE_NAME} was founded in 2025 with the desire to create an
-            online marketplace, where could buy and sell goods, offer services
-            and so on. Our mission is to be most trusted and comprehensive
-            online platform, helping accelerate the country’s transformation to
-            a modern digital society. We connect people with the goods,
-            services, and opportunities they need to enhance their everyday
-            lives. By offering a safe, efficient, transparent, and accessible
-            marketplace
+            {SITE_NAME} was founded in 2025 with the desire to create an online
+            marketplace, where could buy and sell goods, offer services and so
+            on. Our mission is to be most trusted and comprehensive online
+            platform, helping accelerate the country’s transformation to a
+            modern digital society. We connect people with the goods, services,
+            and opportunities they need to enhance their everyday lives. By
+            offering a safe, efficient, transparent, and accessible marketplace
           </p>
           <p className='leading-relaxed; text-sm text-neutral-600'>
             Our team of expert developers, designers, and strategists work

@@ -1,6 +1,5 @@
 import Breadcrumbs from '@/components/customComponents/Breadcrumbs';
 import PageHeader from '@/components/customComponents/PageHeader';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/Card';
 import { SITE_NAME } from '@/utils/constants';
 
 export default function TermsPage() {
@@ -16,7 +15,7 @@ export default function TermsPage() {
         classNames='mt-4'
       />
 
-      <p className='text-sm text-neutral-500 mb-4 '>
+      <p className='mb-4 text-sm text-neutral-500'>
         Last updated: {new Date().toLocaleDateString()}
       </p>
 
@@ -96,10 +95,6 @@ export default function TermsPage() {
           <h2 className='text-lg font-semibold text-neutral-900'>
             6. Limitation of Liability
           </h2>
-          <p className='text-neutral-700'>
-            <b>{SITE_NAME}</b> is provided on an "as is" and "as available"
-            basis. Use of the platform is at your own risk.
-          </p>
           <p className='text-neutral-700'>
             <b>{SITE_NAME}</b> shall not be liable for any damages, losses, or
             disputes arising from transactions between users.
