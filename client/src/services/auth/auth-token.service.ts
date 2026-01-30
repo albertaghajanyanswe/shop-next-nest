@@ -12,9 +12,9 @@ export const getAccessToken = () => {
 };
 
 const checkSecureCookie = () => {
-  const isSecure =
-    process.env.NODE_ENV === 'production' ||
-    process.env.APP_DOMAIN === 'localhost';
+  const isLocalHost = process.env.APP_DOMAIN === 'localhost';
+  const isProd = process.env.NEXT_PUBLIC_APP_ENV === 'production';
+  const isSecure = isLocalHost || isProd;
   console.log('\n\n\n process.env.NODE_ENV - ', process.env.NODE_ENV);
   console.log('process.env.SERVER_DOMAIN - ', process.env.SERVER_DOMAIN);
   console.log('checkSecureCookie - ', isSecure);
