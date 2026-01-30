@@ -24,7 +24,7 @@ export default function HowItWorksPage() {
         <InfoBlock />
 
         <HowItWorksSection
-          title='How to register as a seller and create a connected Stripe account. This is a must if you want to sell products.'
+          title='How to register as a seller and create a connected Stripe account. This is a must if you want to sell products, because sales revenue will be transferred to this account after confirmation.'
           steps={[
             'Log in to the platform',
             'Click on User Avatar in the header',
