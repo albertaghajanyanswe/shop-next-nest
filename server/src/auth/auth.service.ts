@@ -126,10 +126,13 @@ export class AuthService {
   }
 
   checkSecureCookie() {
-    return (
+    const isSecure =
       process.env.NODE_ENV === 'production' ||
-      process.env.SERVER_DOMAIN === 'localhost'
-    );
+      process.env.SERVER_DOMAIN === 'localhost';
+    console.log('\n\n\n process.env.NODE_ENV - ', process.env.NODE_ENV);
+    console.log('process.env.SERVER_DOMAIN - ', process.env.SERVER_DOMAIN);
+    console.log('checkSecureCookie - ', isSecure);
+    return isSecure;
   }
   addRefreshTokenToResponse(res: Response, refreshToken: string) {
     const expiresIn = new Date();
