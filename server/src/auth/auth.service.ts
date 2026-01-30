@@ -149,7 +149,7 @@ export class AuthService {
         : {}),
       secure: this.checkSecureCookie() ? true : false,
       expires: expiresIn,
-      sameSite: this.checkSecureCookie() ? 'lax' : 'none',
+      sameSite: 'lax',
     });
   }
 
@@ -166,7 +166,7 @@ export class AuthService {
         : {}),
       expires: new Date(0),
       secure: this.checkSecureCookie() ? true : false,
-      sameSite: this.checkSecureCookie() ? 'lax' : 'none',
+      sameSite: 'lax',
     });
   }
 }

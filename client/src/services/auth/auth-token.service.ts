@@ -28,7 +28,7 @@ const checkSecureCookie = () => {
 export const saveTokenStorage = (accessToken: string) => {
   Cookies.set(EnumTokens.ACCESS_TOKEN, accessToken, {
     ...(checkSecureCookie() ? { domain: process.env.APP_DOMAIN } : {}),
-    sameSite: 'strict',
+    sameSite: 'lax',
     expires: 1,
   });
 };
