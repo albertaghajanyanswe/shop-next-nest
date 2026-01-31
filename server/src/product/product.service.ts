@@ -1,9 +1,14 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { PrismaService } from 'src/prisma.service';
 import { ProductDto } from './dto/product.dto';
 import { QueryPayloadBuilderService } from 'src/queryPayloadBuilder/QueryPayloadBuilder';
 import { CloudinaryFileService } from 'src/cloudinary-file/cloudinary-file.service';
 import { GetSubscriptionsDto } from 'src/subscription/dto/subscription.dto';
+import { EnumSubscriptionStatus } from '@prisma/client';
 
 @Injectable()
 export class ProductService {
@@ -15,14 +20,14 @@ export class ProductService {
 
   getDefaultWhere() {
     return {
-      isPublished: true
-    }
+      isPublished: true,
+    };
   }
   async getAll(params?: string) {
     const payload = this.queryBuilderService.build({
       queryParams: params || '',
     });
-    const { where, ...rest } = payload
+    const { where, ...rest } = payload;
     const products = await this.prisma.product.findMany({
       orderBy: {
         createdAt: 'desc',
@@ -35,6 +40,7 @@ export class ProductService {
         store: true,
         brand: true,
         reviews: true,
+        user: true,
       },
     });
     const totalCount = await this.prisma.product.count({
@@ -60,6 +66,7 @@ export class ProductService {
         color: true,
         store: true,
         brand: true,
+        user: true,
       },
     });
 
@@ -220,6 +227,25 @@ export class ProductService {
 
   async update(id: string, dto: ProductDto) {
     const product = await this.getByIdHelper(id);
+    if (product.isPublished !== dto.isPublished && dto.isPublished === true) {
+      const allProducts = await this.prisma.product.findMany({
+        where: {
+          userId: product.userId,
+          isPublished: true,
+        },
+      });
+      const userSubscription = await this.prisma.subscription.findFirst({
+        where: {
+          userId: product.userId as string,
+          status: EnumSubscriptionStatus.ACTIVE,
+        },
+      });
+      if ((userSubscription?.productLimit || 10) >= allProducts.length) {
+        throw new BadRequestException(
+          'You have reached the limit of published products for your subscription plan.',
+        );
+      }
+    }
     return this.prisma.product.update({
       where: { id },
       data: {

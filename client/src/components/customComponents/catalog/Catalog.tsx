@@ -5,6 +5,7 @@ import NoProductsFound from '@/components/customComponents/loading/NoProductsFou
 import { SearchInput } from '@/components/layouts/mainLayout/header/searchInput/SearchInput';
 import { SortSelect } from '@/components/customComponents/filters/SortSelect';
 import { SORT_PRODUCT_OPTIONS } from '@/utils/sortConstants';
+import NoDataFound from '../loading/NoDataFound';
 
 export interface ICatalog {
   title: string;
@@ -16,6 +17,7 @@ export interface ICatalog {
   showSearch?: boolean;
   showSort?: boolean;
   searchRedirectToShop?: boolean;
+  isFavoritePage?: boolean;
 }
 
 export function Catalog({
@@ -28,6 +30,7 @@ export function Catalog({
   showSearch = false,
   showSort = false,
   searchRedirectToShop = true,
+  isFavoritePage = false,
 }: ICatalog) {
   return (
     <>
@@ -73,8 +76,10 @@ export function Catalog({
               <ProductCard key={product.id} product={product} />
             ))}
           </div>
-        ) : (
+        ) : isFavoritePage ? (
           <NoProductsFound />
+        ) : (
+          <NoDataFound entityName='favorites products' showDesc={false} />
         )}
       </div>
     </>

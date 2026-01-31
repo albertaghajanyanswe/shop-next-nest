@@ -485,7 +485,9 @@ export function ProductForm({
 
           <Button
             variant='default'
-            disabled={isLoading || !isFormDirty || !canCreateProduct}
+            disabled={
+              isLoading || !isFormDirty || (!product && !canCreateProduct)
+            }
           >
             {action}
           </Button>

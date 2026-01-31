@@ -53,6 +53,8 @@ function HowItWorksSection({
             muted
             playsInline
             className='h-full w-full object-cover'
+            preload='metadata'
+            poster='/images/poster.png'
           />
         )}
       </div>

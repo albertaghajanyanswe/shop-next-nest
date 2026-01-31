@@ -9,13 +9,16 @@ export function useProfile() {
   });
 
   const userActiveSub = user?.subscription?.find((i) => i.status === 'ACTIVE');
+
   const canCreateStore =
     userActiveSub && userActiveSub?.storeLimit
       ? userActiveSub.storeLimit > (user?.stores?.length || 0)
       : false;
+  const publishedProduct = user?.products?.filter((i) => i.isPublished) || [];
+
   const canCreateProduct =
     userActiveSub && userActiveSub?.productLimit
-      ? userActiveSub.productLimit > (user?.products?.length || 0)
+      ? userActiveSub.productLimit > (publishedProduct.length || 0)
       : false;
   return { user, isLoading, canCreateStore, canCreateProduct };
 }

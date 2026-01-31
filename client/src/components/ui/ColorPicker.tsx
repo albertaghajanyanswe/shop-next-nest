@@ -116,7 +116,6 @@ export function AdvancedColorPicker({
   };
 
   const handleHexChange = (hex: string) => {
-    console.log('hex', hex);
     // if (/^#[0-9A-Fa-f]{6}$/.test(hex)) {
     handleColorChange(hex);
     // }

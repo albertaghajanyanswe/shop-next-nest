@@ -15,7 +15,7 @@ export const ResetFilterButton = ({
     <Button
       className='group flex w-full items-center justify-start p-0 text-red-500 hover:text-red-600 hover:no-underline'
       variant='link'
-      onClick={() => resetFilter(filterKey)}
+      onClick={() => selectedCount > 0 && resetFilter(filterKey)}
     >
       {/* Reset Filter <span className='text-[12px]'>({selectedCount} selected)</span> */}
       Reset Filter

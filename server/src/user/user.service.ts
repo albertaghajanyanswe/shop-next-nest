@@ -12,6 +12,7 @@ export class UserService {
       where: { id },
       include: {
         stores: true,
+        products: true,
         favorites: {
           include: {
             category: true,
