@@ -100,6 +100,7 @@ model Product {
 
   reviews    Review[]
   orderItems OrderItem[]
+  productDetails ProductDetail[]
 
   totalViews Int @default(0)
   totalLikes Int @default(0)
@@ -132,6 +133,23 @@ model Product {
   @@index([title])
   @@index([description])
   @@index([isPublished])
+}
+
+model ProductDetail {
+  id    String @id @default(cuid())
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  key   String
+  value String
+
+  product   Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+  productId String  @map("product_id")
+
+  @@unique([productId, key])
+  @@index([value])
+  @@map("product_detail")
 }
 
 model Category {

@@ -102,6 +102,7 @@ export * from './productControllerGetByStoreIdParams';
 export * from './productControllerGetByStoreIdPublicParams';
 export * from './productControllerGetMostPopularParams';
 export * from './productControllerGetSimilarParams';
+export * from './productDetailDto';
 export * from './productDto';
 export * from './registerDto';
 export * from './reviewControllerGetByStoreIdParams';

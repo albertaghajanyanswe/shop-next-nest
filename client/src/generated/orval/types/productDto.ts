@@ -27,4 +27,6 @@ export interface ProductDto {
   colorId: string;
   /** Product brand id */
   brandId: string;
+  /** Product details */
+  productDetails: string[];
 }

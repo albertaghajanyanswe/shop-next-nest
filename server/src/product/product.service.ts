@@ -83,6 +83,7 @@ export class ProductService {
         id,
       },
       include: {
+        productDetails: true,
         category: true,
         color: true,
         brand: true,
@@ -221,12 +222,22 @@ export class ProductService {
         isOriginal: dto.isOriginal,
         isPublished: dto.isPublished,
         quantity: dto.quantity,
+        ...(dto.productDetails &&
+          dto.productDetails.length > 0 && {
+            productDetails: {
+              create: dto.productDetails.map((detail) => ({
+                key: detail.key,
+                value: detail.value,
+              })),
+            },
+          }),
       },
     });
   }
 
   async update(id: string, dto: ProductDto) {
     const product = await this.getByIdHelper(id);
+
     if (product.isPublished !== dto.isPublished && dto.isPublished === true) {
       const allProducts = await this.prisma.product.findMany({
         where: {
@@ -234,34 +245,79 @@ export class ProductService {
           isPublished: true,
         },
       });
+
       const userSubscription = await this.prisma.subscription.findFirst({
         where: {
           userId: product.userId as string,
           status: EnumSubscriptionStatus.ACTIVE,
         },
       });
+
       if ((userSubscription?.productLimit || 10) >= allProducts.length) {
         throw new BadRequestException(
           'You have reached the limit of published products for your subscription plan.',
         );
       }
     }
-    return this.prisma.product.update({
-      where: { id },
-      data: {
-        title: dto.title,
-        description: dto.description,
-        price: dto.price,
-        images: dto.images,
-        categoryId: dto.categoryId,
-        ...(dto?.colorId && { colorId: dto.colorId }),
-        brandId: dto.brandId,
-        oldPrice: product.price,
-        quantity: dto.quantity,
-        isPublished: dto.isPublished,
-        isOriginal: dto.isOriginal,
-        // isBlocked: dto.isBlocked,
-      },
+
+    return this.prisma.$transaction(async (tx) => {
+      if (dto.productDetails) {
+        const existingDetails = await tx.productDetail.findMany({
+          where: { productId: id },
+        });
+
+        const incomingIds = dto.productDetails
+          .filter((d) => d.id)
+          .map((d) => d.id as string);
+
+        const idsToDelete = existingDetails
+          .filter((d) => !incomingIds.includes(d.id))
+          .map((d) => d.id);
+
+        if (idsToDelete.length) {
+          await tx.productDetail.deleteMany({
+            where: { id: { in: idsToDelete } },
+          });
+        }
+
+        for (const detail of dto.productDetails) {
+          if (detail.id) {
+            await tx.productDetail.update({
+              where: { id: detail.id },
+              data: {
+                key: detail.key,
+                value: detail.value,
+              },
+            });
+          } else {
+            await tx.productDetail.create({
+              data: {
+                productId: id,
+                key: detail.key,
+                value: detail.value,
+              },
+            });
+          }
+        }
+      }
+
+      // ---- product
+      return tx.product.update({
+        where: { id },
+        data: {
+          title: dto.title,
+          description: dto.description,
+          price: dto.price,
+          images: dto.images,
+          categoryId: dto.categoryId,
+          ...(dto?.colorId && { colorId: dto.colorId }),
+          brandId: dto.brandId,
+          oldPrice: product.price,
+          quantity: dto.quantity,
+          isPublished: dto.isPublished,
+          isOriginal: dto.isOriginal,
+        },
+      });
     });
   }
 

@@ -19,8 +19,9 @@ export default function ProductGallery({ product }: ProductGalleryProps) {
           alt={product.title}
           width={300}
           height={300}
-          className='hoverEffect max-h-[350px] min-h-auto w-full rounded-md object-contain group-hover:scale-110 md:max-h-[450px]'
+          className='hoverEffect max-h-[350px] w-full rounded-md object-contain transition-transform group-hover:scale-110 md:max-h-[450px]'
           priority
+          style={{ height: 'auto' }}
         />
       </div>
       <div className='mt-6 flex gap-6'>
@@ -41,6 +42,7 @@ export default function ProductGallery({ product }: ProductGalleryProps) {
               height={100}
               className='hoverEffect h-[100px] w-[100px] object-contain group-hover:scale-110'
               priority
+              style={{ height: 'auto' }}
             />
           </Button>
         ))}

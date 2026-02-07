@@ -34,9 +34,9 @@ import { useDeleteProduct } from '@/hooks/queries/products/useDeleteProduct';
 import { useUpdateProduct } from '@/hooks/queries/products/useUpdateProduct';
 import { useProfile } from '@/hooks/useProfile';
 import { IProductInput } from '@/shared/types/product.interface';
-import { Trash2 } from 'lucide-react';
+import { CirclePlus, Trash2 } from 'lucide-react';
 import { useMemo } from 'react';
-import { SubmitHandler, useForm } from 'react-hook-form';
+import { SubmitHandler, useFieldArray, useForm } from 'react-hook-form';
 
 interface ProductFormProps {
   product?: GetProductWithDetails;
@@ -87,14 +87,28 @@ export function ProductForm({
       quantity: product?.quantity || 0,
       isOriginal: product?.isOriginal ?? false,
       isPublished: product?.isPublished ?? true,
+      productDetails: product?.productDetails || [],
     },
+  });
+
+  const {
+    fields: attributeFields,
+    append,
+    remove,
+  } = useFieldArray({
+    control: form.control,
+    name: 'productDetails',
   });
 
   const isFormDirty = Object.keys(form.formState.dirtyFields).length > 0;
   const isLoading = isLoadingUpdate || isLoadingCreate;
+  console.log('PRODUCT = ', product);
+
   const onSubmit: SubmitHandler<IProductInput> = (data) => {
     data.price = Number(data.price);
     data.quantity = Number(data.quantity);
+
+    console.log('PRODUCT DATA = ', data);
     if (product) {
       updateProduct(data);
     } else if (canCreateProduct) {
@@ -481,6 +495,82 @@ export function ProductForm({
                 </FormItem>
               )}
             />
+          </div>
+
+          <div className='space-y-4'>
+            <div className='flex items-center justify-between'>
+              <p className='font-medium text-lg'>Product details</p>
+
+              <Button
+                type='button'
+                variant='secondary'
+                size='sm'
+                onClick={() => append({ key: '', value: '' })}
+              >
+                <CirclePlus className='size-4' />
+                <span className='ml-2'>Add new info</span>
+              </Button>
+            </div>
+
+            {attributeFields.map((field, index) => (
+              <div className='flex flex-row items-center gap-4' key={field.id}>
+                <div className='grid w-full items-start gap-4 sm:grid-cols-2'>
+                  <FormField
+                    control={form.control}
+                    name={`productDetails.${index}.key`}
+                    rules={{ required: 'Key is required' }}
+                    render={({ field, fieldState }) => (
+                      <FormItem>
+                        <FormControl>
+                          <Input
+                            id={`productDetails-${index}-key`}
+                            placeholder='Key (e.g. Height)'
+                            className={`${fieldState.error ? 'border-destructive focus:border-destructive hover:border-destructive border-1' : ''}`}
+                            {...field}
+                          />
+                        </FormControl>
+                        {fieldState.error && (
+                          <p className='text-destructive text-sm'>
+                            {fieldState.error.message}
+                          </p>
+                        )}
+                      </FormItem>
+                    )}
+                  />
+
+                  <FormField
+                    control={form.control}
+                    name={`productDetails.${index}.value`}
+                    rules={{ required: 'Value is required' }}
+                    render={({ field, fieldState }) => (
+                      <FormItem>
+                        <FormControl>
+                          <Input
+                            id={`productDetails-${index}-value`}
+                            placeholder='Value (e.g. 50 sm)'
+                            className={`${fieldState.error ? 'border-destructive focus:border-destructive hover:border-destructive border-1' : ''}`}
+                            {...field}
+                          />
+                        </FormControl>
+                        {fieldState.error && (
+                          <p className='text-destructive text-sm'>
+                            {fieldState.error.message}
+                          </p>
+                        )}
+                      </FormItem>
+                    )}
+                  />
+                </div>
+                <Button
+                  type='button'
+                  variant='ghost'
+                  className='text-red-500 hover:bg-red-500/5'
+                  onClick={() => remove(index)}
+                >
+                  <Trash2 className='size-4 text-red-500 hover:text-red-600' />
+                </Button>
+              </div>
+            ))}
           </div>
 
           <Button

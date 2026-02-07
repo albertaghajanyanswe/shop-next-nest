@@ -12,6 +12,7 @@ import {
   TabItem,
 } from '@/components/customComponents/customTabs/CustomTabs';
 import { useMemo, lazy, Suspense } from 'react';
+import ProductDetails from './productDetails/ProductDetails';
 const ProductReviews = lazy(() => import('./productReviews/ProductReviews'));
 
 export interface ProductProps {
@@ -45,21 +46,12 @@ export default function Product({
   const tabs: TabItem[] = useMemo(() => {
     return [
       {
-        id: 'review',
-        label: 'Reviews',
+        id: 'details',
+        label: 'Details',
         content: (
           <LazyTabContent>
-            <ProductReviews product={product} />
+            <ProductDetails product={product} />
           </LazyTabContent>
-        ),
-      },
-      {
-        id: 'info',
-        label: 'Additional Information',
-        content: (
-          <div className='bg-shop-light-bg rounded-md p-4'>
-            <p>Some additional information about product</p>
-          </div>
         ),
       },
       {
@@ -69,6 +61,15 @@ export default function Product({
           <div className='bg-shop-light-bg rounded-md p-4'>
             {product.description}
           </div>
+        ),
+      },
+      {
+        id: 'review',
+        label: 'Reviews',
+        content: (
+          <LazyTabContent>
+            <ProductReviews product={product} />
+          </LazyTabContent>
         ),
       },
     ];
@@ -86,7 +87,7 @@ export default function Product({
       </div>
       <Catalog title='Similar products' products={similarProducts} />
       <div className='mt-6 mb-4 w-full max-w-3xl'>
-        <CustomTabs tabs={tabs} defaultValue='review' />
+        <CustomTabs tabs={tabs} defaultValue='details' />
       </div>
     </>
   );

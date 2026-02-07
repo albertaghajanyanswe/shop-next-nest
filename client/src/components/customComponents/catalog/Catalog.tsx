@@ -77,9 +77,9 @@ export function Catalog({
             ))}
           </div>
         ) : isFavoritePage ? (
-          <NoProductsFound />
-        ) : (
           <NoDataFound entityName='favorites products' showDesc={false} />
+        ) : (
+          <NoProductsFound />
         )}
       </div>
     </>

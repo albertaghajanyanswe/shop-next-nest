@@ -16,6 +16,7 @@ import { GetColorDto } from 'src/color/dto/color.dto';
 import { GetReviewDto, GetReviewWithUserDto } from 'src/review/dto/review.dto';
 import { GetStoreDto } from 'src/store/dto/store.dto';
 import { GetUserDto } from 'src/user/dto/user.dto';
+import { ProductDetailDto } from './productDetail.dto';
 
 export class ProductDto {
   @ApiProperty({
@@ -106,6 +107,19 @@ export class ProductDto {
   @IsString()
   @IsOptional()
   brandId?: string;
+
+  @ApiProperty({
+    required: true,
+    description: 'Product details',
+    example: [
+      {
+        key: 'RAM',
+        value: '16 GB',
+      },
+    ],
+  })
+  @IsArray()
+  productDetails: ProductDetailDto[];
 }
 
 export class GetProductDto {
@@ -241,6 +255,14 @@ export class GetProductWithDetails extends GetProductDto {
   @ApiProperty({ type: () => GetUserDto, required: false })
   @IsOptional()
   user?: GetUserDto;
+
+  @ApiProperty({
+    type: () => ProductDetailDto,
+    isArray: true,
+    required: false,
+  })
+  @IsOptional()
+  productDetails?: ProductDetailDto;
 }
 
 export class GetProductWithDetailsAndCount {

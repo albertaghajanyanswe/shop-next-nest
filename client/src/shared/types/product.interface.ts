@@ -48,6 +48,10 @@ export interface IProductInput
   categoryId: string;
   colorId: string;
   brandId: string;
+  productDetails: {
+    key: string;
+    value: string;
+  }[];
 }
 
 export interface IProductColumn {

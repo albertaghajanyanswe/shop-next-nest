@@ -18,7 +18,8 @@ export function useDeleteProduct() {
     mutationFn: (prodId?: string) => productService.delete(prodId ?? productId),
     onSuccess: () => {
       queryClient.invalidateQueries({
-        queryKey: [QUERY_KEYS.getStoreProducts, storeId],
+        queryKey: [QUERY_KEYS.getStoreProducts[0], storeId],
+        exact: false,
       });
       toast.success('Product deleted successfully.');
       router.push(STORE_URL.products(storeId));
