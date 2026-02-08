@@ -499,7 +499,7 @@ export function ProductForm({
 
           <div className='space-y-4'>
             <div className='flex items-center justify-between'>
-              <p className='font-medium text-lg'>Product details</p>
+              <p className='text-lg font-medium'>Product details</p>
 
               <Button
                 type='button'

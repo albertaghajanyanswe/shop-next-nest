@@ -23,7 +23,9 @@ function ProductDetails({ product }: ProductDetailsProps) {
             key={detail.id}
             className='flex items-baseline justify-between border-b border-neutral-200 pb-3 last:border-0'
           >
-            <dt className='text-sm font-normal text-neutral-700'>{detail.key}</dt>
+            <dt className='text-sm font-normal text-neutral-700'>
+              {detail.key}
+            </dt>
             <dd className='text-sm font-normal text-neutral-700'>
               {detail.value}
             </dd>
