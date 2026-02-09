@@ -39,7 +39,7 @@ export default function Shop({
       params: {
         sort: { field: 'createdAt', order: 'desc' },
         filter: {},
-        limit: 20,
+        limit: 40,
         skip: 0,
         search: {
           value: '',
@@ -69,7 +69,7 @@ export default function Shop({
 
   const catalogTitle = useMemo(() => {
     const q = queryParams.params.search?.value;
-    return q ? `Search by query ${q}` : 'Product catalog';
+    return q ? `Search by query ${q}` : 'Products catalog';
   }, [queryParams.params.search?.value]);
 
   return (
@@ -89,7 +89,7 @@ export default function Shop({
           ) : (
             <>
               <Catalog
-                title={catalogTitle}
+                title={`Products catalog (${productData?.totalCount ?? totalCount})`}
                 products={productData?.products ?? []}
                 showSearch
                 showSort

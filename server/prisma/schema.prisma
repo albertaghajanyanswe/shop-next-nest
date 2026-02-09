@@ -96,6 +96,8 @@ model Product {
   oldPrice    Float?
   images      String[]
 
+  intendedFor EnumProductIntendedFor @default(SALE)
+
   state EnumProductState @default(NEW)
 
   reviews    Review[]
@@ -514,4 +516,10 @@ enum EnumRole {
   USER
   ADMIN
   SUPER_ADMIN
+}
+
+enum EnumProductIntendedFor {
+  FREE
+  SALE
+  RENT
 }

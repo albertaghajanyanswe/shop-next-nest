@@ -133,7 +133,7 @@ export async function generateMetadata(): Promise<Metadata> {
  */
 export default async function ShopPage() {
   const [products, categories, brands, stores] = await Promise.all([
-    getProductsCached().catch(() => ({ products: [], totalCount: 0 })),
+    getProductsCached({ limit: 40, skip: 0 }).catch(() => ({ products: [], totalCount: 0 })),
     getCategoriesCached().catch(() => ({ categories: [] })),
     getBrandsCached().catch(() => ({ brands: [] })),
     getStoresCached().catch(() => ({ stores: [] })),

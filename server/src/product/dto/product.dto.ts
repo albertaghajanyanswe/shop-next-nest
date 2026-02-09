@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { EnumProductState } from '@prisma/client';
+import { EnumProductIntendedFor, EnumProductState } from '@prisma/client';
 import {
   ArrayMinSize,
   IsArray,
@@ -120,6 +120,20 @@ export class ProductDto {
   })
   @IsArray()
   productDetails: ProductDetailDto[];
+
+  @ApiProperty({
+    required: true,
+    description: 'Product intended for',
+    example: 'SALE',
+    enum: EnumProductIntendedFor,
+  })
+  @IsEnum(EnumProductIntendedFor, {
+    message: `Intended for must be one of the following values: ${Object.values(
+      EnumProductIntendedFor,
+    ).join(', ')}`,
+  })
+  intendedFor: EnumProductIntendedFor;
+
 }
 
 export class GetProductDto {
@@ -166,6 +180,14 @@ export class GetProductDto {
   @IsArray()
   @IsString({ each: true })
   images: string[];
+
+  @ApiProperty({
+    enum: EnumProductIntendedFor,
+    example: 'SALE',
+    description: 'Product intended for',
+  })
+  @IsEnum(EnumProductIntendedFor)
+  intendedFor: EnumProductIntendedFor;
 
   @ApiProperty({
     enum: EnumProductState,

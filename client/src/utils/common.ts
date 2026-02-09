@@ -13,3 +13,8 @@ export function hashStringToColors(str: string) {
   const hue2 = (hue1 + 60 + (Math.abs(h1) % 120)) % 360;
   return [`hsl(${hue1} 70% 45%)`, `hsl(${hue2} 65% 55%)`];
 }
+
+export function capitalizeFirstLetter(str: string): string {
+  if (!str) return str
+  return str.charAt(0).toUpperCase() + str.slice(1).toLowerCase();
+}

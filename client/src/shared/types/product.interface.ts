@@ -2,6 +2,7 @@ import {
   GetBrandWithCategoryDto,
   GetCategoryDto,
   GetColorDto,
+  GetProductWithDetailsIntendedFor,
   GetProductWithDetailsState,
   GetReviewDto,
 } from '@/generated/orval/types';
@@ -30,6 +31,7 @@ export interface IProduct {
   isOriginal: boolean;
   isPublished: boolean;
   quantity: number;
+  intendedFor: GetProductWithDetailsIntendedFor;
 }
 
 export interface IProductInput

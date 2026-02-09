@@ -161,7 +161,7 @@ export function CustomPagination({
             <SelectValue placeholder={limit} />
           </SelectTrigger>
           <SelectContent>
-            {[1, 2, 10, 20, 30, 50, 100].map((num) => (
+            {[1, 2, 10, 20, 30, 40, 50, 100, 200].map((num) => (
               <SelectItem key={num} value={String(num)}>
                 {num}
               </SelectItem>

@@ -7,12 +7,14 @@ import {
 import {
   GetBrandDto,
   GetCategoryDto,
+  GetProductWithDetailsIntendedFor,
   GetStoreDto,
 } from '@/generated/orval/types';
 import { iFilter } from '@/shared/types/filter.interface';
 import { PriceFilter } from './PriceFilter';
 import { FilterAccordionItem } from './FilterAccordionItem';
 import { useState, useEffect } from 'react';
+import { capitalizeFirstLetter } from '@/utils/common';
 
 interface FilterContentProps {
   stores?: GetStoreDto[];
@@ -23,6 +25,13 @@ interface FilterContentProps {
   updatePrice: (values: number[]) => void;
   resetFilter: (field: string) => void;
 }
+
+const INTENDED_FOR_OPTIONS = Object.values(
+  GetProductWithDetailsIntendedFor
+).map((value) => ({
+  id: value,
+  name: capitalizeFirstLetter(value),
+}));
 
 export default function FiltersContent({
   categories,
@@ -44,6 +53,9 @@ export default function FiltersContent({
     currentFilter.storeId ?? []
   );
 
+  const [localIntendedForIds, setLocalIntendedForIds] = useState<string[]>(
+    currentFilter.intendedFor ?? []
+  );
   // Synchronize the local state with the global filter when it changes
   useEffect(
     () => setLocalCategoryIds(currentFilter.categoryId ?? []),
@@ -56,6 +68,10 @@ export default function FiltersContent({
   useEffect(
     () => setLocalStoreIds(currentFilter.storeId ?? []),
     [currentFilter.storeId]
+  );
+  useEffect(
+    () => setLocalIntendedForIds(currentFilter.intendedFor ?? []),
+    [currentFilter.intendedFor]
   );
 
   // Handler for toggling filters
@@ -83,6 +99,14 @@ export default function FiltersContent({
     toggleFilter('storeId', id);
   };
 
+  const handleToggleIntendedFor = (id: string) => {
+    const newState = localIntendedForIds.includes(id)
+      ? localIntendedForIds.filter((sid) => sid !== id)
+      : [...localIntendedForIds, id];
+    setLocalIntendedForIds(newState);
+    toggleFilter('intendedFor', id);
+  };
+
   const handleResetCategories = () => {
     setLocalCategoryIds([]);
     resetFilter('categoryId');
@@ -98,13 +122,34 @@ export default function FiltersContent({
     resetFilter('storeId');
   };
 
+  const handleResetIntendedFor = () => {
+    setLocalIntendedForIds([]);
+    resetFilter('intendedFor');
+  };
+
   return (
     <div className='space-y-6'>
       <Accordion
         type='multiple'
-        defaultValue={['categories', 'brands', 'stores', 'price']}
+        defaultValue={[
+          'intendedFor',
+          'categories',
+          'brands',
+          'stores',
+          'price',
+        ]}
         className='w-full'
       >
+        {/* INTENDED FOR */}
+        <FilterAccordionItem
+          title='Intended For'
+          value='intendedFor'
+          items={INTENDED_FOR_OPTIONS || []}
+          selectedIds={localIntendedForIds}
+          onToggle={handleToggleIntendedFor}
+          onReset={handleResetIntendedFor}
+          searchPlaceholder='Search intended for...'
+        />
         {/* CATEGORIES */}
         <FilterAccordionItem
           title='Categories'

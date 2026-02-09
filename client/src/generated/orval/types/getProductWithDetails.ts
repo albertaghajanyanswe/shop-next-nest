@@ -5,6 +5,7 @@
  * The API description
  * OpenAPI spec version: 0.0.1
  */
+import type { GetProductWithDetailsIntendedFor } from './getProductWithDetailsIntendedFor';
 import type { GetProductWithDetailsState } from './getProductWithDetailsState';
 import type { GetStoreDto } from './getStoreDto';
 import type { GetCategoryDto } from './getCategoryDto';
@@ -35,6 +36,8 @@ export interface GetProductWithDetails {
   isOriginal: boolean;
   /** Product images URLs */
   images: string[];
+  /** Product intended for */
+  intendedFor: GetProductWithDetailsIntendedFor;
   /** Product state */
   state: GetProductWithDetailsState;
   /** Store ID */

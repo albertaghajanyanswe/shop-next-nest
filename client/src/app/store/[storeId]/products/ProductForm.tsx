@@ -27,6 +27,7 @@ import {
   GetCategoryDto,
   GetColorDto,
   GetProductWithDetails,
+  GetProductWithDetailsIntendedFor,
   GetProductWithDetailsState,
 } from '@/generated/orval/types';
 import { useCreateProduct } from '@/hooks/queries/products/useCreateProduct';
@@ -88,6 +89,8 @@ export function ProductForm({
       isOriginal: product?.isOriginal ?? false,
       isPublished: product?.isPublished ?? true,
       productDetails: product?.productDetails || [],
+      intendedFor:
+        product?.intendedFor || GetProductWithDetailsIntendedFor.SALE,
     },
   });
 
@@ -381,7 +384,40 @@ export function ProductForm({
             />
           </div>
 
-          <div className='grid items-start gap-4 sm:grid-cols-2'>
+          <div className='grid items-start gap-4 sm:grid-cols-3'>
+            <FormField
+              control={form.control}
+              name='intendedFor'
+              rules={{ required: 'Intended for is required' }}
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>State</FormLabel>
+                  <Select
+                    disabled={isLoading}
+                    onValueChange={field.onChange}
+                    defaultValue={field.value as unknown as string}
+                  >
+                    <FormControl>
+                      <SelectTrigger className='w-full'>
+                        <SelectValue placeholder='Select a target' />
+                      </SelectTrigger>
+                    </FormControl>
+                    <SelectContent>
+                      {[
+                        { id: 'FREE', title: 'FREE' },
+                        { id: 'SALE', title: 'SALE' },
+                        { id: 'RENT', title: 'RENT' },
+                      ].map((state) => (
+                        <SelectItem key={state.id} value={state.id}>
+                          {state.title}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
             <FormField
               control={form.control}
               name='state'

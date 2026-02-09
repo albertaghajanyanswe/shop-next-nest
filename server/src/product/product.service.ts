@@ -44,7 +44,7 @@ export class ProductService {
       },
     });
     const totalCount = await this.prisma.product.count({
-      where: payload.where,
+      where: { ...where, ...this.getDefaultWhere() },
     });
     return { products, totalCount };
   }
@@ -85,6 +85,7 @@ export class ProductService {
       include: {
         productDetails: true,
         category: true,
+        store: true,
         color: true,
         brand: true,
         reviews: {
@@ -222,6 +223,7 @@ export class ProductService {
         isOriginal: dto.isOriginal,
         isPublished: dto.isPublished,
         quantity: dto.quantity,
+        intendedFor: dto.intendedFor,
         ...(dto.productDetails &&
           dto.productDetails.length > 0 && {
             productDetails: {
@@ -316,6 +318,7 @@ export class ProductService {
           quantity: dto.quantity,
           isPublished: dto.isPublished,
           isOriginal: dto.isOriginal,
+          intendedFor: dto.intendedFor,
         },
       });
     });

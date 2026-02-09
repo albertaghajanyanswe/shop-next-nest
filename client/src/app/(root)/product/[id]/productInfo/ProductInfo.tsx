@@ -11,6 +11,8 @@ import { Crown, Sparkles } from 'lucide-react';
 import { ProductRating } from './ProductRating';
 import EditProductButton from './EditProductButton';
 import { useMemo } from 'react';
+import { capitalizeFirstLetter } from '@/utils/common';
+import ProductInfoItem from './ProductInfoItem';
 
 export interface ProductInfoProps {
   product: GetProductWithDetails;
@@ -27,6 +29,30 @@ export default function ProductInfo({ product }: ProductInfoProps) {
       )
     );
   }, [product.category?.id]);
+
+  const storeUrl = useMemo(() => {
+    if (!product.store?.id) return PUBLIC_URL.shop();
+
+    return PUBLIC_URL.shop(
+      QueryString.stringify(
+        { filter: { storeId: [product.store.id] } },
+        { skipNulls: true }
+      )
+    );
+  }, [product.store?.id]);
+
+  const targetUrl = useMemo(() => {
+    if (!product.intendedFor) return PUBLIC_URL.shop();
+
+    return PUBLIC_URL.shop(
+      QueryString.stringify(
+        { filter: { intendedFor: [product.intendedFor] } },
+        { skipNulls: true }
+      )
+    );
+  }, [product.intendedFor]);
+
+  console.log('prod ', product);
   return (
     <div
       itemScope
@@ -72,16 +98,21 @@ export default function ProductInfo({ product }: ProductInfoProps) {
           />
           <hr className='my-3' />
 
-          <div className='flex items-center gap-x-4'>
-            <p className='font-medium text-neutral-700'>Category:</p>
-            <Link
-              href={categoryUrl}
-              className='text-shop-light-green mt-1 text-xs font-medium hover:underline sm:text-sm'
-              aria-label='Go to shop'
-            >
-              {product.category?.name}
-            </Link>
-          </div>
+          <ProductInfoItem
+            leftText='Store'
+            rightText={product.store?.title || 'N/A'}
+            link={storeUrl}
+          />
+          <ProductInfoItem
+            leftText='Category'
+            rightText={product.category?.name || 'N/A'}
+            link={categoryUrl}
+          />
+          <ProductInfoItem
+            leftText='Intended For'
+            rightText={capitalizeFirstLetter(product.intendedFor) || 'N/A'}
+            link={targetUrl}
+          />
 
           {product.color?.name && (
             <div className='flex items-center gap-x-4'>
