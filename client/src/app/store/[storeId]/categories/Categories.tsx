@@ -5,7 +5,7 @@ import { DataTable } from '@/components/ui/dataLoading/DataTable';
 import DataTableLoading from '@/components/ui/dataLoading/DataTableLoading';
 import { Heading } from '@/components/ui/Heading';
 import { STORE_URL } from '@/config/url.config';
-import { Plus } from 'lucide-react';
+import { CirclePlus } from 'lucide-react';
 import Link from 'next/link';
 import { useParams } from 'next/navigation';
 import { categoryColumns } from './CategoryColumns';
@@ -70,7 +70,7 @@ export function Categories() {
           <div className='flex items-center gap-x-4'>
             <Link href={STORE_URL.categoryCreate(storeId)}>
               <Button variant='default'>
-                <Plus className='size-4' />
+                <CirclePlus className='size-5' />
                 Create
               </Button>
             </Link>

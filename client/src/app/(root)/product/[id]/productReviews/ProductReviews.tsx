@@ -4,7 +4,7 @@ import { Button } from '@/components/ui/Button';
 import { useDeleteReview } from '@/hooks/queries/reviews/useDeleteReview';
 import { useProfile } from '@/hooks/useProfile';
 import { generateImgPath } from '@/utils/imageUtils';
-import { Plus, Trash2 } from 'lucide-react';
+import { CirclePlus, Trash2 } from 'lucide-react';
 import Image from 'next/image';
 import { Rating } from 'react-simple-star-rating';
 import { GetProductWithDetails } from '@/generated/orval/types';
@@ -27,11 +27,8 @@ function ProductReviews({ product }: ProductReviewsProps) {
         <p className='text-2xl font-semibold'>Reviews</p>
         {user && (
           <ReviewModal storeId={product.storeId as string}>
-            <Button
-              variant='ghost'
-              className='hover:border-primary-100 border border-white hover:border'
-            >
-              <Plus className='mr-2 size-4' />
+            <Button variant='secondary'>
+              <CirclePlus className='mr-2 size-5' />
               Add review
             </Button>
           </ReviewModal>

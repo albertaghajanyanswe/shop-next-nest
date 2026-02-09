@@ -34,7 +34,7 @@ export class ProductController {
     return this.productService.getAll(params);
   }
 
-  @Get('store/:storeId')
+  @Get('public/store/:storeId')
   @ApiOkResponse({ type: GetProductWithDetailsAndCount })
   async getByStoreIdPublic(
     @Param('storeId') storeId: string,
@@ -44,7 +44,7 @@ export class ProductController {
   }
 
   @AuthAndOwner(StoreService, 'storeId')
-  @Get('by-storeId/:storeId')
+  @Get('store/:storeId')
   @ApiOkResponse({ type: GetProductWithDetails, isArray: true })
   async getByStoreId(
     @CurrentUser('id') userId: string,

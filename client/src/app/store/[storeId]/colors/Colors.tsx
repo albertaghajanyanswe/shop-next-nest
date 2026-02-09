@@ -6,7 +6,7 @@ import DataTableLoading from '@/components/ui/dataLoading/DataTableLoading';
 import { Heading } from '@/components/ui/Heading';
 import { STORE_URL } from '@/config/url.config';
 import { useGetColors } from '@/hooks/queries/colors/useGetColors';
-import { Plus } from 'lucide-react';
+import { CirclePlus } from 'lucide-react';
 import Link from 'next/link';
 import { useParams } from 'next/navigation';
 import { colorColumns } from './ColorColumns';
@@ -59,7 +59,7 @@ export function Colors() {
           <div className='flex items-center gap-x-4'>
             <Link href={STORE_URL.colorCreate(storeId)}>
               <Button variant='default'>
-                <Plus className='size-4' />
+                <CirclePlus className='size-5' />
                 Create
               </Button>
             </Link>

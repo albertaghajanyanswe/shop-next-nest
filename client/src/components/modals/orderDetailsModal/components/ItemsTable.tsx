@@ -74,6 +74,7 @@ export function ItemsTable<T extends TableSectionItem>({
   const { distributeFundsOrderItem, isLoadingDistributeFundsOrderItem } =
     useDistributeFundsOrderItem();
 
+  console.log('items - ', items);
   return (
     <div className={`space-y-3 ${className}`}>
       <div className='hidden grid-cols-12 gap-4 p-0 text-sm font-semibold text-neutral-700 sm:grid'>
@@ -105,14 +106,18 @@ export function ItemsTable<T extends TableSectionItem>({
             ))}
           </div>
           <div className='xs:items-start mt-4 flex flex-col justify-between sm:mt-2 sm:flex-row sm:items-center'>
-            <div className='w-full'>
-              <p className='mb-4 flex w-full flex-row justify-between text-xs sm:mb-0 sm:justify-start'>
+            <div className='mr-4 w-full'>
+              <p className='mb-4 flex w-full flex-row justify-between text-xs sm:mb-0'>
                 <b className='text-sm'>Order Item ID:</b>{' '}
                 <span className='ml-2'>{item.id}</span>
               </p>
-              <p className='mb-4 flex w-full flex-row justify-between text-xs sm:mb-0 sm:justify-start'>
+              <p className='mb-4 flex w-full flex-row justify-between text-xs sm:mb-0'>
                 <b className='text-sm'>Product ID:</b>{' '}
                 <span className='ml-2'>{item.productId}</span>
+              </p>
+              <p className='mb-4 flex w-full flex-row justify-between text-xs sm:mb-0'>
+                <b className='text-sm'>Store ID:</b>{' '}
+                <span className='ml-2'>{item.storeId}</span>
               </p>
             </div>
             {item.orderItemId && showConfirm && (

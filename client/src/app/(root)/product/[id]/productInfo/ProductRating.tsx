@@ -18,9 +18,11 @@ export const ProductRating = ({
   return (
     <div className={`flex items-center gap-x-4 ${className}`}>
       {leftTitle && (
-        <p className='text-sm font-semibold text-neutral-700 whitespace-nowrap'>{leftTitle}</p>
+        <p className='text-sm font-semibold whitespace-nowrap text-neutral-700'>
+          {leftTitle}
+        </p>
       )}
-      <div className='text-sm w-full text-end'>
+      <div className='w-full text-end text-sm'>
         ⭐ {rating.toFixed(1) || ' '}
         <span className='text-muted-foreground'>{` • ${productReviews?.length} reviews`}</span>
       </div>

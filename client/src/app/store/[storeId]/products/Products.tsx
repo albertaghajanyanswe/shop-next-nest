@@ -6,13 +6,12 @@ import DataTableLoading from '@/components/ui/dataLoading/DataTableLoading';
 import { Heading } from '@/components/ui/Heading';
 import { STORE_URL } from '@/config/url.config';
 import { useGetStoreProducts } from '@/hooks/queries/products/useGetStoreProducts';
-import { Plus } from 'lucide-react';
+import { CirclePlus } from 'lucide-react';
 import Link from 'next/link';
-import { useParams, useSearchParams } from 'next/navigation';
+import { useParams } from 'next/navigation';
 import { productColumns } from './ProductColumns';
 import { useQueryParams } from '@/hooks/commons/useQueryParams';
 import { CustomPagination } from '@/components/customComponents/CustomPagination';
-import QueryString from 'qs';
 
 export function Products() {
   const params = useParams<{ storeId: string }>();
@@ -52,6 +51,9 @@ export function Products() {
         image: product.images[0],
         originalPrice: product.price,
         description: product.description,
+        quantity: product.quantity,
+        isOriginal: product.isOriginal,
+        isPublished: product.isPublished,
       }))
     : [];
   return (
@@ -67,7 +69,7 @@ export function Products() {
           <div className='flex items-center gap-x-4'>
             <Link href={STORE_URL.productCreate(storeId)}>
               <Button variant='default'>
-                <Plus className='size-4' />
+                <CirclePlus className='size-5' />
                 Create
               </Button>
             </Link>

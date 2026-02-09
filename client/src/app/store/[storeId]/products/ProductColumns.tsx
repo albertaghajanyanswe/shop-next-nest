@@ -15,6 +15,9 @@ import { generateImgPath } from '@/utils/imageUtils';
 import { ColumnDef } from '@tanstack/react-table';
 import {
   ArrowUpDown,
+  CheckCircle,
+  CircleX,
+  Copy,
   CopyPlus,
   ExternalLink,
   MoreHorizontal,
@@ -23,6 +26,7 @@ import {
 } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
+import toast from 'react-hot-toast';
 
 const ProductActionsCell = ({ row }: { row: IProductColumn }) => {
   const { createProduct, isLoadingCreate } = useCreateProduct();
@@ -37,6 +41,15 @@ const ProductActionsCell = ({ row }: { row: IProductColumn }) => {
       </DropdownMenuTrigger>
       <DropdownMenuContent align='end'>
         <DropdownMenuLabel>Action</DropdownMenuLabel>
+        <DropdownMenuItem
+          onClick={async () => {
+            await navigator.clipboard.writeText(row.id);
+            toast.success('Product ID copied to clipboard');
+          }}
+        >
+          <Copy className='mr-2 size-4' />
+          Copy product ID
+        </DropdownMenuItem>
         <Link href={PUBLIC_URL.product(row.id)} target='_blank'>
           <DropdownMenuItem>
             <ExternalLink className='mr-2 size-4' />
@@ -187,7 +200,100 @@ export const productColumns: ColumnDef<IProductColumn>[] = [
       );
     },
     cell: ({ row }) => {
-      return formatPrice(row.original.price);
+      return (
+        <p className='text-shop-light-green font-semibold'>
+          {formatPrice(row.original.price)}
+        </p>
+      );
+    },
+  },
+
+  {
+    accessorKey: 'quantity',
+    meta: {
+      className: 'w-[10%]',
+      textClassName:
+        'truncate overflow-hidden text-ellipsis whitespace-nowrap max-w-[80px]  place-items-center',
+      sortField: 'quantity',
+    },
+    header: ({ column }) => {
+      return (
+        <Button
+          variant='ghost'
+          onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
+          className='p-0 has-[>svg]:px-0'
+        >
+          In stock
+          <ArrowUpDown className='ml-2 size-4' />
+        </Button>
+      );
+    },
+    cell: ({ row }) => {
+      return (
+        <p
+          className={`${row?.original?.quantity <= 0 ? 'font-semibold text-red-500' : ''}`}
+        >
+          {row.original.quantity}
+        </p>
+      );
+    },
+  },
+
+  {
+    accessorKey: 'isOriginal',
+    meta: {
+      className: 'w-[10%]',
+      textClassName:
+        'truncate overflow-hidden text-ellipsis whitespace-nowrap max-w-[80px]  place-items-center',
+      sortField: 'isOriginal',
+    },
+    header: ({ column }) => {
+      return (
+        <Button
+          variant='ghost'
+          onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
+          className='p-0 has-[>svg]:px-0'
+        >
+          Original
+          <ArrowUpDown className='ml-2 size-4' />
+        </Button>
+      );
+    },
+    cell: ({ row }) => {
+      return row.original.isOriginal ? (
+        <CheckCircle className='text-shop-light-green size-5' />
+      ) : (
+        <CircleX className='text-red-500' />
+      );
+    },
+  },
+
+  {
+    accessorKey: 'isPublished',
+    meta: {
+      className: 'w-[10%]',
+      textClassName:
+        'truncate overflow-hidden text-ellipsis whitespace-nowrap max-w-[80px]  place-items-center',
+      sortField: 'isPublished',
+    },
+    header: ({ column }) => {
+      return (
+        <Button
+          variant='ghost'
+          onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
+          className='p-0 has-[>svg]:px-0'
+        >
+          Published
+          <ArrowUpDown className='ml-2 size-4' />
+        </Button>
+      );
+    },
+    cell: ({ row }) => {
+      return row.original.isPublished ? (
+        <CheckCircle className='text-shop-light-green size-5' />
+      ) : (
+        <CircleX className='text-red-500' />
+      );
     },
   },
 
@@ -213,29 +319,31 @@ export const productColumns: ColumnDef<IProductColumn>[] = [
     },
   },
 
-  {
-    accessorKey: 'color',
-    meta: {
-      className: 'w-[10%]',
-      textClassName:
-        'truncate overflow-hidden text-ellipsis whitespace-nowrap max-w-[80px]',
-    },
-    header: ({ column }) => {
-      return (
-        <Button className='p-0' variant='ghost'>
-          Color
-        </Button>
-      );
-    },
-    cell: ({ row }) => {
-      return (
-        <div
-          className='size-5 rounded-full border'
-          style={{ backgroundColor: row.original.color }}
-        />
-      );
-    },
-  },
+  // {
+  //   accessorKey: 'color',
+  //   meta: {
+  //     className: 'w-[10%]',
+  //     textClassName:
+  //       'truncate overflow-hidden text-ellipsis whitespace-nowrap max-w-[80px]',
+  //   },
+  //   header: ({ column }) => {
+  //     return (
+  //       <Button className='p-0' variant='ghost'>
+  //         Color
+  //       </Button>
+  //     );
+  //   },
+  //   cell: ({ row }) => {
+  //     return row.original.color ? (
+  //       <div
+  //         className='size-5 rounded-full border'
+  //         style={{ backgroundColor: row.original.color }}
+  //       />
+  //     ) : (
+  //       '-'
+  //     );
+  //   },
+  // },
   {
     accessorKey: 'actions',
     meta: { className: 'w-[5%]' },

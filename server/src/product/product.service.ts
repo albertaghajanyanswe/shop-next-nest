@@ -201,6 +201,7 @@ export class ProductService {
       },
       include: {
         category: true,
+        store: true,
       },
       ...rest,
     });

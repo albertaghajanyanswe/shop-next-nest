@@ -34,7 +34,7 @@ export default async function Footer() {
     <footer className='global-container bg-shop-light-bg w-full border-t'>
       <div>
         {/* ===== Top Contact Row ===== */}
-        <div className='container grid grid-cols-2 gap-8 py-6 md:grid-cols-4'>
+        {/* <div className='container grid grid-cols-2 gap-8 py-6 md:grid-cols-4'>
           {FooterAboutLinks.map((i) => (
             <FooterInfoBlock
               key={i.title}
@@ -45,7 +45,7 @@ export default async function Footer() {
           ))}
         </div>
 
-        <hr className='border-gray-200' />
+        <hr className='border-gray-200' /> */}
 
         {/* ===== Main Footer ===== */}
         <div className='xs:grid-cols-2 container grid grid-cols-1 gap-10 py-6 md:grid-cols-4'>

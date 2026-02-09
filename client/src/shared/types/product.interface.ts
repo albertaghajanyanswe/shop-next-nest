@@ -76,4 +76,7 @@ export interface IProductColumn {
   userId?: string;
   originalPrice?: number;
   image?: string;
+  quantity: number;
+  isOriginal?: boolean;
+  isPublished?: boolean;
 }

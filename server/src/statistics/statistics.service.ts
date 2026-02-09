@@ -111,7 +111,14 @@ export class StatisticsService {
         },
       },
       include: {
-        orderItems: true,
+        orderItems: {
+          where: {
+            storeId, // Фильтруем только orderItems с нужным storeId
+          },
+        },
+      },
+      orderBy: {
+        createdAt: 'asc', // Сортируем при запросе
       },
     });
 
@@ -119,24 +126,41 @@ export class StatisticsService {
       return `${date.getDate()} ${monthNames[date.getMonth()]}`;
     };
 
-    const salesByDate = new Map<string, number>();
+    // Используем Map для хранения даты с её timestamp для последующей сортировки
+    const salesByDate = new Map<string, { value: number; timestamp: number }>();
+    console.log('salesRow = ', salesRow.length);
     salesRow.forEach((order) => {
-      const formattedDate = formatDate(new Date(order.createdAt));
+      const orderDate = new Date(order.createdAt);
+      const formattedDate = formatDate(orderDate);
+      console.log('ITEMS =  ', order.orderItems);
       const total = order.orderItems.reduce((total, item) => {
         return total + item.price * item.quantity;
       }, 0);
 
       if (salesByDate.has(formattedDate)) {
-        salesByDate.set(formattedDate, salesByDate.get(formattedDate)! + total);
+        const existing = salesByDate.get(formattedDate)!;
+        salesByDate.set(formattedDate, {
+          value: existing.value + total,
+          timestamp: existing.timestamp,
+        });
       } else {
-        salesByDate.set(formattedDate, total);
+        salesByDate.set(formattedDate, {
+          value: total,
+          timestamp: orderDate.getTime(),
+        });
       }
     });
 
-    const monthlySales = Array.from(salesByDate, ([date, value]) => ({
+    // Сортируем по timestamp
+    const monthlySales = Array.from(salesByDate, ([date, data]) => ({
       date,
-      value,
-    }));
+      value: data.value,
+      timestamp: data.timestamp,
+    }))
+      .sort((a, b) => a.timestamp - b.timestamp)
+      .map(({ date, value }) => ({ date, value })); // Убираем timestamp из финального результата
+
+    console.log('monthlySales = ', monthlySales);
     return monthlySales;
   }
 

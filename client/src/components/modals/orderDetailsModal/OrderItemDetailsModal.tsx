@@ -114,6 +114,7 @@ export function OrderItemDetailsModal<T extends TableSectionItem>({
         title: orderItem.cachedProductTitle,
         productId: orderItem.productId,
         orderItemId: orderItem.id,
+        storeId: orderItem.storeId,
       },
     ];
   };

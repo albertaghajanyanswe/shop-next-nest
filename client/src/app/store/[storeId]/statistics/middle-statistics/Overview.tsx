@@ -15,17 +15,18 @@ interface IOverviewProps {
 
 const chartConfig = {
   value: {
-    label: 'Profit',
-    color: '#3B82F6',
+    label: 'Profit (USD)',
+    color: '#063d29',
   },
 } satisfies ChartConfig;
 
 export function Overview({ data }: IOverviewProps) {
+  console.log('DATA = ', data);
   return (
     <Card className='py-4'>
       <CardHeader className='flex flex-col items-stretch justify-between space-y-0 border-b px-4 [.border-b]:pb-4'>
         <CardTitle className='text-xl font-medium tracking-[0.1px]'>
-          Profit
+          Last month profit
         </CardTitle>
       </CardHeader>
       <CardContent>
@@ -36,7 +37,7 @@ export function Overview({ data }: IOverviewProps) {
           <AreaChart
             accessibilityLayer
             data={data}
-            margin={{ left: 12, right: 12 }}
+            margin={{ left: 4, right: 4 }}
           >
             <CartesianGrid vertical={false} />
             <XAxis
@@ -48,7 +49,7 @@ export function Overview({ data }: IOverviewProps) {
             <ChartTooltip
               content={
                 <ChartTooltipContent
-                  labelFormatter={formatPrice}
+                  // labelFormatter={formatPrice}
                   indicator='line'
                 />
               }

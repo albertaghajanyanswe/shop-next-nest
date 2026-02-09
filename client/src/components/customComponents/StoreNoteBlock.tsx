@@ -15,7 +15,7 @@ export function StoreNoteBlock() {
           only store whose products will be visible in the free plan. To create
           more stores, please upgrade your{' '}
           <Link
-            href={DASHBOARD_URL.root()}
+            href={DASHBOARD_URL.subscriptions()}
             className='text-primary-700 hover:text-primary-700/80 text-md font-semibold underline'
           >
             Subscription

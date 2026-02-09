@@ -30,7 +30,7 @@ class ProductService {
   ): Promise<GetProductWithDetailsAndCount> {
     const { data } = await axiosClassic<GetProductWithDetailsAndCount>({
       url: API_URL.products(
-        `/store/${storeId}?params=${encodeURIComponent(JSON.stringify(params))}`
+        `/public/store/${storeId}?params=${encodeURIComponent(JSON.stringify(params))}`
       ),
       method: 'GET',
     });
@@ -44,7 +44,7 @@ class ProductService {
   ): Promise<GetProductWithDetailsAndCount> {
     const { data } = await axiosWithAuth<GetProductWithDetailsAndCount>({
       url: API_URL.products(
-        `/by-storeId/${storeId}?params=${encodeURIComponent(JSON.stringify(params))}`
+        `/store/${storeId}?params=${encodeURIComponent(JSON.stringify(params))}`
       ),
       method: 'GET',
     });

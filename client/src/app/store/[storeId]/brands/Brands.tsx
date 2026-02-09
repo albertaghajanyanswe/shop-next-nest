@@ -8,7 +8,7 @@ import { STORE_URL } from '@/config/url.config';
 import { useGetBrands } from '@/hooks/queries/brands/useGetBrands';
 import { IBrandColumn } from '@/shared/types/brand.interface';
 import { formateDate } from '@/utils/formateDate';
-import { Plus } from 'lucide-react';
+import { CirclePlus } from 'lucide-react';
 import Link from 'next/link';
 import { useParams } from 'next/navigation';
 import { brandColumns } from './BrandColumns';
@@ -67,7 +67,7 @@ export function Brands() {
           <div className='flex items-center gap-x-4'>
             <Link href={STORE_URL.brandCreate(storeId)}>
               <Button variant='default'>
-                <Plus className='size-4' />
+                <CirclePlus className='size-5' />
                 Create
               </Button>
             </Link>

@@ -143,6 +143,7 @@ export function OrderDetailsModalContent<T extends TableSectionItem>({
       orderItemId: item.id,
       orderItemStatus: item.status,
       productId: item.productId,
+      storeId: item.storeId,
     }));
   };
 
