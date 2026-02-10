@@ -8,7 +8,7 @@ export interface ProductDetailsProps {
 
 function ProductDetails({ product }: ProductDetailsProps) {
   if (!product?.productDetails?.length) {
-    return null; // или NoDataFound
+    return <NoDataFound entityName='product details' />;
   }
 
   return (

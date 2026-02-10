@@ -143,4 +143,22 @@ export class PaymentService {
     }
     return this.stripeService.distributeFundsForOrderItem(orderItemId);
   }
+
+  public async refundOrder(user: User, orderId: string, reason?: string) {
+    if (!user || user.role !== EnumRole.SUPER_ADMIN) {
+      throw new ForbiddenException('Permission denied.');
+    }
+    return this.stripeService.refundOrder(orderId, reason);
+  }
+
+  public async refundOrderItem(
+    user: User,
+    orderItemId: string,
+    reason?: string,
+  ) {
+    if (!user || user.role !== EnumRole.SUPER_ADMIN) {
+      throw new ForbiddenException('Permission denied.');
+    }
+    return this.stripeService.refundOrderItem(orderItemId, reason);
+  }
 }

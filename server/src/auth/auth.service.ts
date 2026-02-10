@@ -1,6 +1,7 @@
 import {
   BadRequestException,
   Injectable,
+  Logger,
   NotFoundException,
   UnauthorizedException,
 } from '@nestjs/common';
@@ -20,6 +21,8 @@ export class AuthService {
   EXPIRE_DAY_REFRESH_TOKEN = 1;
   REFRESH_TOKEN_NAME = 'refreshToken';
 
+  private readonly logger = new Logger(AuthService.name);
+
   constructor(
     private readonly jwt: JwtService,
     private readonly userService: UserService,
@@ -29,7 +32,6 @@ export class AuthService {
   ) {}
 
   async login(loginDto: LoginDto) {
-    console.log('\n\n LOGIN');
     const user = await this.validateUser(loginDto);
     const tokens = this.issueTokens(user.id);
     return { user, ...tokens };
@@ -38,6 +40,9 @@ export class AuthService {
   async register(registerDto: RegisterDto) {
     const oldUser = await this.userService.getByEmail(registerDto.email);
     if (oldUser) {
+      this.logger.error(
+        `Registration attempt with existing email: ${registerDto.email}`,
+      );
       throw new BadRequestException('User already exists');
     }
 
@@ -55,7 +60,9 @@ export class AuthService {
     try {
       await this.stripeService.createCheckoutSessionSubscription(user, plan);
     } catch (e) {
-      console.log('error ', e);
+      this.logger.error(
+        `Failed to create Stripe subscription for user ${user.id}: ${e.message}`,
+      );
     }
 
     return { user, ...tokens };
@@ -64,11 +71,15 @@ export class AuthService {
   async getNewTokens(refreshToken: string) {
     const result = await this.jwt.verifyAsync(refreshToken);
     if (!result) {
+      this.logger.error('Invalid refresh token provided for token refresh.');
       throw new UnauthorizedException('Invalid refresh token');
     }
 
     const user = await this.userService.getById(result.id);
     if (!user) {
+      this.logger.error(
+        `User with ID ${result.id} not found during token refresh.`,
+      );
       throw new NotFoundException('User not found');
     }
     const tokens = this.issueTokens(user.id);
@@ -89,11 +100,13 @@ export class AuthService {
   private async validateUser(dto: RegisterDto | LoginDto) {
     const user = await this.userService.getByEmail(dto.email);
     if (!user) {
+      this.logger.error(`Login attempt with non-existent email: ${dto.email}`);
       throw new NotFoundException('User not found');
     }
 
     const isPasswordValid = await verify(user.password as string, dto.password);
     if (!isPasswordValid) {
+      this.logger.error(`Invalid password attempt for email: ${dto.email}`);
       throw new UnauthorizedException('Invalid password');
     }
     return user;
@@ -129,11 +142,9 @@ export class AuthService {
     const isSecure =
       process.env.NODE_ENV === 'production' ||
       process.env.SERVER_DOMAIN === 'localhost';
-    console.log('\n\n\n process.env.NODE_ENV - ', process.env.NODE_ENV);
-    console.log('process.env.SERVER_DOMAIN - ', process.env.SERVER_DOMAIN);
-    console.log('checkSecureCookie - ', isSecure);
     return isSecure;
   }
+
   addRefreshTokenToResponse(res: Response, refreshToken: string) {
     const expiresIn = new Date();
     expiresIn.setDate(expiresIn.getDate() + this.EXPIRE_DAY_REFRESH_TOKEN);

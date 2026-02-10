@@ -368,6 +368,9 @@ model OrderItem {
   status      EnumOrderItemStatus @default(PENDING)
 
   stripeTransferId String? @map("stripe_transfer_id")
+  stripeRefundId   String? @map("stripe_refund_id")
+  stripeReversalId String? @map("stripe_reversal_id")
+
   transferCompletedAt DateTime @default(now()) @map("transfer_completed_at")
 
   store   Store?  @relation(fields: [storeId], references: [id])
@@ -499,6 +502,7 @@ enum EnumOrderItemStatus {
   PENDING
   FAILED
   REFUNDED
+  CANCELLED
   CONFIRMED
   EXPIRED
 

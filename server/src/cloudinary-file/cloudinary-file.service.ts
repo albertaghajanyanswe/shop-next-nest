@@ -1,4 +1,4 @@
-import { Injectable, BadRequestException } from '@nestjs/common';
+import { Injectable, BadRequestException, Logger } from '@nestjs/common';
 import {
   UploadApiResponse,
   UploadApiErrorResponse,
@@ -7,6 +7,8 @@ import {
 
 @Injectable()
 export class CloudinaryFileService {
+  private readonly logger = new Logger(CloudinaryFileService.name);
+
   async uploadFile(
     file: Express.Multer.File,
     folder: string,
@@ -45,13 +47,12 @@ export class CloudinaryFileService {
     //   'http://res.cloudinary.com/dvuo50sjj/image/upload/v1764672034/products/avvegssidk0vb7ewtxox.png';
     // const publicId = 'products/avvegssidk0vb7ewtxox';
 
-    console.log('url = ', url);
+    this.logger.log(`Attempting to delete file from Cloudinary: ${url}`);
     const afterUpload = url.split('/upload/')[1];
     const withoutVersion = afterUpload.replace(/^v\d+\//, '');
     const publicId = withoutVersion.replace(/\.[^/.]+$/, '');
 
-    console.log(publicId);
-
+    this.logger.log(`Extracted publicId: ${publicId}`);
     const result = await cloudinary.uploader.destroy(publicId, {
       resource_type: 'image',
     });
@@ -68,13 +69,12 @@ export class CloudinaryFileService {
 
     const output = results.map((res, index) => {
       if (res.status === 'rejected') {
-        console.error(
+        this.logger.error(
           `Cloudinary delete error for ${urls[index]}:`,
           res.reason?.message,
         );
         return { url: urls[index], success: false, error: res.reason };
       }
-
       return { url: urls[index], success: true };
     });
 

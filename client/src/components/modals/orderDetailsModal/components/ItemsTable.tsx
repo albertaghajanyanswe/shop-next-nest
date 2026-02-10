@@ -11,7 +11,8 @@ import {
   GetUserDto,
 } from '@/generated/orval/types';
 import { Button } from '@/components/ui/Button';
-import { CircleDollarSignIcon } from 'lucide-react';
+import { CircleDollarSignIcon, RotateCcw } from 'lucide-react';
+import { useRefundOrderItem } from '@/hooks/stripe/useRefundOrderItem';
 
 interface GenericTableProps<T extends TableSectionItem> {
   columns: TableSectionColumn[];
@@ -20,6 +21,7 @@ interface GenericTableProps<T extends TableSectionItem> {
   className?: string;
   user: GetUserDto;
   showConfirm?: boolean;
+  showRefund?: boolean;
 }
 
 function DefaultCellRenderer<T extends TableSectionItem>(
@@ -70,10 +72,12 @@ export function ItemsTable<T extends TableSectionItem>({
   className = '',
   user,
   showConfirm,
+  showRefund,
 }: GenericTableProps<T>) {
   const { distributeFundsOrderItem, isLoadingDistributeFundsOrderItem } =
     useDistributeFundsOrderItem();
 
+  const { refundOrderItem, isLoadingRefundOrderItem } = useRefundOrderItem();
   console.log('items - ', items);
   return (
     <div className={`space-y-3 ${className}`}>
@@ -120,30 +124,58 @@ export function ItemsTable<T extends TableSectionItem>({
                 <span className='ml-2'>{item.storeId}</span>
               </p>
             </div>
-            {item.orderItemId && showConfirm && (
-              <Button
-                disabled={
-                  isLoadingDistributeFundsOrderItem ||
-                  item.orderItemStatus ===
-                    GetOrderItemsWithUserDtoStatus.CONFIRMED
-                }
-                onClick={() => {
-                  if (
-                    item.orderItemStatus !==
-                    GetOrderItemsWithUserDtoStatus.CONFIRMED
-                  ) {
-                    distributeFundsOrderItem(item.orderItemId);
+            <div className='flex flex-row gap-1'>
+              {item.orderItemId && showConfirm && (
+                <Button
+                  disabled={
+                    isLoadingDistributeFundsOrderItem ||
+                    item.orderItemStatus ===
+                      GetOrderItemsWithUserDtoStatus.CONFIRMED
                   }
-                }}
-                variant='outline'
-              >
-                <CircleDollarSignIcon />
-                {item.orderItemStatus ===
-                GetOrderItemsWithUserDtoStatus.CONFIRMED
-                  ? 'Confirmed'
-                  : 'Confirm'}
-              </Button>
-            )}
+                  onClick={() => {
+                    if (
+                      item.orderItemStatus !==
+                      GetOrderItemsWithUserDtoStatus.CONFIRMED
+                    ) {
+                      distributeFundsOrderItem(item.orderItemId);
+                    }
+                  }}
+                  variant='outline'
+                  className='text-xs'
+                >
+                  <CircleDollarSignIcon />
+                  {item.orderItemStatus ===
+                  GetOrderItemsWithUserDtoStatus.CONFIRMED
+                    ? 'Confirmed'
+                    : 'Confirm'}
+                </Button>
+              )}
+              {item.orderItemId && showRefund && (
+                <Button
+                  disabled={
+                    isLoadingRefundOrderItem ||
+                    item.orderItemStatus ===
+                      GetOrderItemsWithUserDtoStatus.REFUNDED
+                  }
+                  onClick={() => {
+                    if (
+                      item.orderItemStatus !==
+                      GetOrderItemsWithUserDtoStatus.REFUNDED
+                    ) {
+                      refundOrderItem(item.orderItemId);
+                    }
+                  }}
+                  variant='outline'
+                  className='text-xs'
+                >
+                  <RotateCcw />
+                  {item.orderItemStatus ===
+                  GetOrderItemsWithUserDtoStatus.REFUNDED
+                    ? 'Refunded'
+                    : 'Refund'}
+                </Button>
+              )}
+            </div>
           </div>
         </div>
       ))}

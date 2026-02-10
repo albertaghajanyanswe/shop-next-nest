@@ -25,6 +25,7 @@ interface OrderItemDetailsModalProps<T extends TableSectionItem> {
   orderItem: GetOrderItemsDetailsDto;
   user: GetUserDto;
   showConfirm?: boolean;
+  showRefund?: boolean;
 }
 
 export function OrderItemDetailsModal<T extends TableSectionItem>({
@@ -33,6 +34,7 @@ export function OrderItemDetailsModal<T extends TableSectionItem>({
   orderItem,
   user,
   showConfirm = false,
+  showRefund = false,
 }: OrderItemDetailsModalProps<T>) {
   const getOrderInfoItems = (): InfoSectionItem[] => {
     if (!orderItem) return [];
@@ -141,6 +143,7 @@ export function OrderItemDetailsModal<T extends TableSectionItem>({
               items={getOrderTableItems()}
               user={user}
               showConfirm={showConfirm}
+              showRefund={showRefund}
             />
           </div>
         </div>
@@ -152,6 +155,7 @@ export function OrderItemDetailsModal<T extends TableSectionItem>({
           user={user}
           orderItemId={orderItem.id}
           showConfirm={showConfirm}
+          showRefund={showRefund}
         />
       </div>
     </CustomModal>

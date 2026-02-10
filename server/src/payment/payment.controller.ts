@@ -4,6 +4,7 @@ import {
   Controller,
   Get,
   HttpCode,
+  Logger,
   Post,
   Res,
   UsePipes,
@@ -21,9 +22,11 @@ import {
 } from './dto';
 import { OrderDto } from 'src/order/dto/order.dto';
 import type { User } from '@prisma/client';
+import { RefundOrderDto, RefundOrderItemDto } from './dto/refund.dto';
 
 @Controller('payment')
 export class PaymentController {
+  private readonly logger = new Logger(PaymentController.name);
   constructor(private readonly paymentService: PaymentService) {}
 
   @Auth()
@@ -34,7 +37,7 @@ export class PaymentController {
     @Res() res,
   ) {
     const upgradeRes = await this.paymentService.initSubscription(dto, user);
-    console.log('\n\n UPGRADE RES = ', upgradeRes);
+    this.logger.log('\n\n UPGRADE SUBSCRIPTION RESULT = ', upgradeRes);
     return res.json({ url: upgradeRes });
   }
 
@@ -128,6 +131,30 @@ export class PaymentController {
     return await this.paymentService.orderItemPayToCustomer(
       user,
       dto.orderItemId,
+    );
+  }
+
+  @Auth()
+  @ApiOkResponse({ type: RefundOrderDto })
+  @Post('/order/refund')
+  async refundOrder(
+    @CurrentUser() user: User,
+    @Body() dto: { reason?: string; orderId: string },
+  ) {
+    return this.paymentService.refundOrder(user, dto.orderId, dto.reason);
+  }
+
+  @Auth()
+  @ApiOkResponse({ type: RefundOrderItemDto })
+  @Post('/orderItem/refund')
+  async refundOrderItem(
+    @CurrentUser() user: User,
+    @Body() dto: { reason?: string; orderItemId: string },
+  ) {
+    return this.paymentService.refundOrderItem(
+      user,
+      dto.orderItemId,
+      dto.reason,
     );
   }
 }

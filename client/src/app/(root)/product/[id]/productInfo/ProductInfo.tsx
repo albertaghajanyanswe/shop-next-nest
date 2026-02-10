@@ -13,12 +13,14 @@ import EditProductButton from './EditProductButton';
 import { useMemo } from 'react';
 import { capitalizeFirstLetter } from '@/utils/common';
 import ProductInfoItem from './ProductInfoItem';
+import { useProfile } from '@/hooks/useProfile';
 
 export interface ProductInfoProps {
   product: GetProductWithDetails;
 }
 
 export default function ProductInfo({ product }: ProductInfoProps) {
+  const { user } = useProfile();
   const categoryUrl = useMemo(() => {
     if (!product.category?.id) return PUBLIC_URL.shop();
 
@@ -141,11 +143,14 @@ export default function ProductInfo({ product }: ProductInfoProps) {
             btnVariant='outline'
             onlyIcon={false}
           />
-          <EditProductButton
-            product={product}
-            className='flex w-full'
-            onlyIcon={false}
-          />
+          {product.userId === user?.id ||
+            (user?.role === 'SUPER_ADMIN' && (
+              <EditProductButton
+                product={product}
+                className='flex w-full'
+                onlyIcon={false}
+              />
+            ))}
         </div>
       </div>
     </div>

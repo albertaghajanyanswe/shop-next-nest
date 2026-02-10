@@ -115,10 +115,10 @@ export default function PrivacyPage() {
         <p className='text-sm'>
           For privacy-related inquiries, contact us at{' '}
           <a
-            href='mailto:privacy@mystore.com'
+            href='mailto:albert.aghajanyan.mw@gmail.com'
             className='text-blue-600 underline underline-offset-4 hover:text-blue-800'
           >
-            privacy@mystore.com
+            albert.aghajanyan.mw@gmail.com
           </a>
           .
         </p>

@@ -17,7 +17,6 @@ export class CategoryService {
     const payload = this.queryBuilderService.build({
       queryParams: params ?? '',
     });
-    console.log('PAYLOAD = ', payload);
     const categories = await this.prisma.category.findMany({
       orderBy: {
         rating: 'desc',

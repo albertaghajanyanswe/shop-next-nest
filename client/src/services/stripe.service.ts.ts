@@ -118,6 +118,24 @@ class StripeService {
     });
     return data;
   }
+
+  async refundOrder(orderId: string, reason?: string) {
+    const { data } = await axiosWithAuth<{ message: string }>({
+      url: API_URL.payment(`/order/refund`),
+      method: 'POST',
+      data: { orderId, reason },
+    });
+    return data;
+  }
+
+  async refundOrderItem(orderItemId: string, reason?: string) {
+    const { data } = await axiosWithAuth<{ message: string }>({
+      url: API_URL.payment(`/orderItem/refund`),
+      method: 'POST',
+      data: { orderItemId, reason },
+    });
+    return data;
+  }
 }
 
 export const stripeService = new StripeService();

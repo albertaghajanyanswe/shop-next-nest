@@ -105,6 +105,7 @@ export default function SoldOrders() {
                 orderItem={selectedOrderItem}
                 user={user}
                 showConfirm
+                showRefund
               />
             )}
           </>

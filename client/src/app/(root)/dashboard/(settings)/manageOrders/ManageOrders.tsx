@@ -111,6 +111,9 @@ export default function ManageOrders() {
                 showConfirm={
                   selectedOrder.status === GetOrderDtoStatus.SUCCEEDED
                 }
+                showRefund={
+                  selectedOrder.status === GetOrderDtoStatus.SUCCEEDED
+                }
               />
             )}
           </>

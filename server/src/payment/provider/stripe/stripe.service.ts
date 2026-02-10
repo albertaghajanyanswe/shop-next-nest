@@ -1,6 +1,7 @@
 import {
   BadRequestException,
   Injectable,
+  Logger,
   NotFoundException,
 } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
@@ -32,6 +33,7 @@ import { OrderService } from 'src/order/order.service';
 
 @Injectable()
 export class StripeService {
+  private readonly logger = new Logger(StripeService.name);
   private readonly stripe: Stripe;
   constructor(
     private readonly prisma: PrismaService,
@@ -53,7 +55,7 @@ export class StripeService {
   }
 
   private async createStripePrice(plan: CreatePlanType) {
-    console.log('\n\n [Func] createStripePrice');
+    this.logger.log(`\n [Func] createStripePrice for plan ${plan.planId}`);
     const price = await this.stripe.prices.create({
       unit_amount: plan.price * 100,
       currency: 'usd',
@@ -66,7 +68,7 @@ export class StripeService {
   }
 
   async createStripeProduct(plan: CreatePlanType) {
-    console.log('\n\n [Func] createStripeProduct');
+    this.logger.log(`\n [Func] createStripeProduct for plan ${plan.planId}`);
     const stripeProduct = await this.stripe.products.create({
       name: `${plan.planId.split('_')[0]} ${plan.period} PLAN`,
       default_price_data: {
@@ -82,8 +84,9 @@ export class StripeService {
   }
 
   async createStripeProductAndPlan(plan: CreatePlanType) {
-    console.log('\n\n [Func] createStripeProductAndPlan');
-
+    this.logger.log(
+      `\n [Func] createStripeProductAndPlan for plan ${plan.planId}`,
+    );
     const stripeProd = await this.createStripeProduct(plan);
     await this.prisma.plan.create({
       data: { ...plan, stripeProductId: stripeProd.id },
@@ -91,8 +94,7 @@ export class StripeService {
   }
 
   private async initializeSubscriptionPlans() {
-    console.log('\n\n [Func] initializeSubscriptionPlans');
-
+    this.logger.log(`\n [Func] initializeSubscriptionPlans`);
     const existingPlans = await this.prisma.plan.findMany();
     if (existingPlans.length > 1) {
       return;
@@ -210,7 +212,7 @@ export class StripeService {
   }
 
   async cancelUpgrade(userId: string) {
-    console.log('\n\n [Func] cancelUpgrade', userId);
+    this.logger.log(`\n [Func] cancelUpgrade for user ${userId}`);
     const sub = await this.prisma.subscription.findFirst({
       where: { userId, status: EnumSubscriptionStatus.ACTIVE },
     });
@@ -219,7 +221,6 @@ export class StripeService {
     await this.stripe.subscriptions.update(sub.stripeSubscriptionId as string, {
       cancel_at_period_end: false,
     });
-    console.log('13.13.13 Update Sub');
     await this.prisma.subscription.update({
       where: { id: sub.id },
       data: { nextPlanId: null },
@@ -229,19 +230,30 @@ export class StripeService {
 
   async upgradeSubscription(user: User, plan: Plan): Promise<string> {
     try {
-      console.log('\n\n [Func] upgradeSubscription', user.id, plan.planId);
+      this.logger.log(
+        `\n [Func] upgradeSubscription for user ${user.id} to plan ${plan.planId}`,
+      );
 
       const planId = plan.planId;
       const sub = await this.prisma.subscription.findFirst({
         where: { userId: user.id, status: EnumSubscriptionStatus.ACTIVE },
       });
-      if (!sub) throw new BadRequestException('Subscription not found');
+      if (!sub) {
+        this.logger.error(`No active subscription found for user ${user.id}`);
+        throw new BadRequestException('Subscription not found');
+      }
       if (sub.planId == planId) {
+        this.logger.error(
+          `User ${user.id} already has the subscription plan ${planId}`,
+        );
         throw new BadRequestException('Already have subscription');
       }
 
       if (sub.nextPlanId) {
         if (sub.nextPlanId == planId) {
+          this.logger.error(
+            `User ${user.id} already has a pending subscription upgrade to plan ${planId}`,
+          );
           throw new BadRequestException('Already have subscription');
         }
         await this.cancelUpgrade(user.id);
@@ -250,21 +262,21 @@ export class StripeService {
       const currPlan = await this.prisma.plan.findUnique({
         where: { planId },
       });
-      if (!currPlan)
-        throw new BadRequestException(
-          `There is no subscription with id ${planId}`,
-        );
+      if (!currPlan) {
+        this.logger.error(`Plan with ID ${planId} not found`);
+        throw new BadRequestException(`There is no plan with id ${planId}`);
+      }
 
       const oldPlan = await this.prisma.plan.findUnique({
         where: { planId: sub.planId },
       });
 
       if (currPlan.price > (oldPlan?.price || 0)) {
-        console.log('\n\n upgradeSubscription - UPGRADE');
+        this.logger.log('\n\n upgradeSubscription - UPGRADE');
         const url = await this.createCheckoutSessionSubscription(user, plan);
         return url;
       } else {
-        console.log('\n\n upgradeSubscription - DOWNGRADE');
+        this.logger.log('\n\n upgradeSubscription - DOWNGRADE');
         try {
           await this.stripe.subscriptions.update(
             sub.stripeSubscriptionId as string,
@@ -274,9 +286,11 @@ export class StripeService {
             },
           );
         } catch (err) {
-          console.log(`StripeService.upgradeSubscription() : failed: ${err}`);
+          this.logger.error(
+            `Stripe API error during subscription update for user ${user.id}: ${err.message}`,
+            err.stack,
+          );
         }
-        console.log('14.14.14 Update Sub');
         await this.prisma.subscription.update({
           where: { id: sub.id },
           data: { nextPlanId: planId },
@@ -284,17 +298,20 @@ export class StripeService {
         return `${process.env.CLIENT_URL}/billing?success=true&downgrade=true&planId=${planId}`;
       }
     } catch (err) {
-      console.log(`StripeService.upgradeSubscription() : failed: ${err}`);
+      this.logger.error(
+        `Error in upgradeSubscription for user ${user.id}: ${err.message}`,
+        err.stack,
+      );
       throw new BadRequestException(
         err?.message || 'Failed to upgrade subscription',
       );
     } finally {
-      console.log('\n\n [Func END] upgradeSubscription');
+      this.logger.log(`\n [Func END] upgradeSubscription for user ${user.id}`);
     }
   }
 
   async createCustomer(userId: string) {
-    console.log('\n\n [Func] createCustomer', userId);
+    this.logger.log(`\n [Func] createCustomer for user ${userId}`);
     const clock = await this.createStripeTestClock(`CustomerClock-${userId}`);
     const localCustomer = await this.prisma.billingInfo.findUnique({
       where: { userId },
@@ -427,11 +444,8 @@ export class StripeService {
   }
 
   async createCheckoutSessionSubscription(user: User, plan: Plan) {
-    console.log(
-      '\n\n [Func] createCheckoutSessionSubscription for user',
-      user.id,
-      'planId',
-      plan.planId,
+    this.logger.log(
+      `[Func] createCheckoutSessionSubscription for user ${user.id} and plan ${plan.planId}`,
     );
 
     const planId = plan.planId;
@@ -465,7 +479,6 @@ export class StripeService {
       });
       if (!customer) throw new BadRequestException('Failed to create customer');
     }
-    console.log('15.15.15 Update Sub');
 
     const subscriptions = await this.prisma.subscription.findMany({
       where: {
@@ -491,6 +504,9 @@ export class StripeService {
       where: { userId: user.id, status: EnumSubscriptionStatus.ACTIVE },
     });
     if (activeSub && activeSub.planId == planId) {
+      this.logger.error(
+        'User ' + user.id + ' already has the subscription plan ' + planId,
+      );
       throw new BadRequestException('Already have subscription');
     }
 
@@ -498,10 +514,10 @@ export class StripeService {
       where: { planId },
     });
 
-    if (!subscriptionSettings)
-      throw new BadRequestException(
-        `There is no subscription with id ${planId}`,
-      );
+    if (!subscriptionSettings) {
+      this.logger.error(`Plan with ID ${planId} not found`);
+      throw new BadRequestException(`There is no plan with id ${planId}`);
+    }
 
     if (planId == 'FREE') {
       const orderAndSub =
@@ -521,8 +537,10 @@ export class StripeService {
           PaymentProvider.STRIPE,
         );
       const freeSub = orderAndSub.subscription;
-      console.log('111 CREATE NEW SUB = ', freeSub);
-
+      this.logger.log(
+        '\n\n createCheckoutSessionSubscription - FREE SUBSCRIPTION CREATED = ',
+        freeSub,
+      );
       return `${process.env.CLIENT_URL}/billing?success=true&planId=${planId}`;
     }
 
@@ -552,7 +570,10 @@ export class StripeService {
         PaymentProvider.STRIPE,
       );
     const subscription = orderAndSub.subscription as Subscription;
-    console.log('222 CREATE NEW SUB = ', subscription);
+    this.logger.log(
+      '\n\n createCheckoutSessionSubscription - SUBSCRIPTION CREATED = ',
+      subscription,
+    );
     const previousSub =
       (await this.prisma.subscription.count({
         where: {
@@ -581,7 +602,6 @@ export class StripeService {
       });
     }
 
-    console.log('\n\n subscriptionSettings = ', subscriptionSettings);
     const checkoutSessionParams: Stripe.Checkout.SessionCreateParams = {
       line_items: [
         {
@@ -702,8 +722,8 @@ export class StripeService {
   }
 
   async createConnectAccountStripe(user: User) {
+    this.logger.log(`\n [Func] createConnectAccountStripe for user ${user.id}`);
     let createdAccountId: string = user.stripeAccountId || '';
-    console.log('\n\n [Func] createConnectAccountStripe for user', user);
     if (!user.stripeAccountId) {
       const createdAccount = await this.createConnectedAccount(user.email);
       createdAccountId = createdAccount.id;
@@ -810,127 +830,6 @@ export class StripeService {
     });
   }
 
-  // async distributeFundsForOrder(orderId: string) {
-  //   const order = await this.prisma.order.findUnique({
-  //     where: { id: orderId },
-  //     include: { orderItems: { include: { product: true } } },
-  //   });
-
-  //   if (!order) throw new NotFoundException('Order not found');
-
-  //   // group by seller
-  //   const bySeller = new Map<
-  //     string,
-  //     { amount: number; orderItemsIds: string[] }
-  //   >();
-
-  //   let isEmpty = true;
-  //   for (const item of order.orderItems) {
-  //     if (item.status !== EnumOrderItemStatus.CONFIRMED) {
-  //       isEmpty = false;
-  //       const amount = Math.round(item.price * item.quantity * 100);
-  //       const sellerId = item.product?.userId as string;
-
-  //       if (!bySeller.has(sellerId)) {
-  //         bySeller.set(sellerId, { amount: 0, orderItemsIds: [] });
-  //       }
-
-  //       const entry = bySeller.get(sellerId)!;
-  //       entry.amount += amount;
-  //       entry.orderItemsIds.push(item.id);
-  //     }
-  //   }
-
-  //   if (isEmpty) {
-  //     throw new BadRequestException(
-  //       'All customers has already received money for this order',
-  //     );
-  //   }
-
-  //   // send money to customers
-
-  //   for (const [sellerId, { amount, orderItemsIds }] of bySeller.entries()) {
-  //     const seller = await this.prisma.user.findUnique({
-  //       where: { id: sellerId },
-  //     });
-
-  //     if (!seller?.stripeAccountId) continue;
-
-  //     const transferAmount = Math.round(amount * 0.95);
-
-  //     const idempotencyKey = `orderItemsId-${orderItemsIds}`;
-  //     const transfer = await this.createStripeTransfer(
-  //       transferAmount,
-  //       seller.stripeAccountId,
-  //       order.stripeChargeId as string,
-  //       idempotencyKey,
-  //     );
-  //     console.log('CREATED TRANSFER = ', transfer);
-
-  //     // save transferId inside orderItems for that seller
-  //     await this.prisma.orderItem.updateMany({
-  //       where: { id: { in: orderItemsIds } },
-  //       data: {
-  //         stripeTransferId: transfer.id,
-  //         status: EnumOrderItemStatus.CONFIRMED,
-  //       },
-  //     });
-  //   }
-  // }
-
-  // async distributeFundsForOrderItem(orderItemId: string) {
-  //   const orderItem = await this.prisma.orderItem.findUnique({
-  //     where: { id: orderItemId },
-  //     include: {
-  //       product: true,
-  //       order: true,
-  //     },
-  //   });
-
-  //   if (!orderItem) throw new NotFoundException('Order item not found');
-  //   if (orderItem.status === EnumOrderItemStatus.CONFIRMED)
-  //     throw new NotFoundException(
-  //       'The customer has already received money for this order',
-  //     );
-  //   if (!orderItem.product) throw new NotFoundException('Product not found');
-
-  //   const sellerId = orderItem.product.userId;
-  //   if (!sellerId) throw new NotFoundException('Seller not found');
-
-  //   const seller = await this.prisma.user.findUnique({
-  //     where: { id: sellerId },
-  //   });
-
-  //   if (!seller?.stripeAccountId) {
-  //     // No Stripe account — skip silently or throw
-  //     throw new BadRequestException(
-  //       `Customer (ID: ${sellerId}) does not have stripe connected account.`,
-  //     );
-  //   }
-
-  //   // calculate amount in cents
-  //   const gross = Math.round(orderItem.price * orderItem.quantity * 100);
-  //   const transferAmount = Math.round(gross * 0.95); // 95% payout
-  //   const idempotencyKey = `orderItemId-${orderItemId}`;
-
-  //   const transfer = await this.createStripeTransfer(
-  //     transferAmount,
-  //     seller.stripeAccountId,
-  //     orderItem?.order?.stripeChargeId as string,
-  //     idempotencyKey,
-  //   );
-  //   console.log('CREATED TRANSFER = ', transfer);
-
-  //   // save transferId inside orderItems for that seller
-  //   await this.prisma.orderItem.update({
-  //     where: { id: orderItemId },
-  //     data: {
-  //       stripeTransferId: transfer.id,
-  //       status: EnumOrderItemStatus.CONFIRMED,
-  //     },
-  //   });
-  // }
-
   async distributeFundsForOrder(orderId: string) {
     const order = await this.prisma.order.findUnique({
       where: { id: orderId },
@@ -941,12 +840,19 @@ export class StripeService {
       },
     });
 
-    if (!order) throw new NotFoundException('Order not found');
+    if (!order) {
+      this.logger.error(`Order with ID ${orderId} not found`);
+      throw new NotFoundException('Order not found');
+    }
     if (order.status !== EnumOrderStatus.SUCCEEDED) {
+      this.logger.error(`Order with ID ${orderId} payment not succeeded`);
       throw new NotFoundException('Order payment not succeeded.');
     }
 
     if (!order.stripeChargeId) {
+      this.logger.error(
+        `Order with ID ${orderId} does not have a Stripe charge`,
+      );
       throw new BadRequestException(
         `Order - ${order.id} does not have a Stripe charge`,
       );
@@ -957,6 +863,9 @@ export class StripeService {
     );
 
     if (itemsToPay.length === 0) {
+      this.logger.error(
+        `All order items for order ${orderId} have already been paid out`,
+      );
       throw new BadRequestException(
         'All customers have already received money for this order',
       );
@@ -974,9 +883,8 @@ export class StripeService {
     for (const item of itemsToPay) {
       try {
         const result = await this.distributeFundsForOrderItem(item.id);
-
-        console.log(
-          `[Order ${orderId}], OrderItem ${item.id} transfer processed successfully`,
+        this.logger.log(
+          `[Order ${orderId}] OrderItem ${item.id} transfer processed successfully`,
         );
 
         results.push({
@@ -987,9 +895,8 @@ export class StripeService {
           success: true,
         });
       } catch (error) {
-        console.error(
-          `[Order ${orderId}] Failed to process transfer for orderItem ${item.id}:`,
-          error.message,
+        this.logger.error(
+          `[Order ${orderId}] Failed to process transfer for orderItem ${item.id}: ${error.message}`,
         );
 
         results.push({
@@ -1013,13 +920,13 @@ export class StripeService {
       timestamp: new Date(),
     };
 
-    console.log(`[Order ${orderId}] Distribution complete:`, {
-      successful: summary.successfulTransfers,
-      failed: summary.failedTransfers,
-    });
+    this.logger.log(
+      `[Order ${orderId}] Distribution complete, summary:`,
+      summary,
+    );
 
     if (summary.failedTransfers > 0) {
-      console.error(`[Order ${orderId}] Some transfers failed:`, summary);
+      this.logger.error(`[Order ${orderId}] Some transfers failed:`, summary);
     }
     if (summary.failedTransfers === 0) {
       await this.prisma.order.update({
@@ -1039,18 +946,30 @@ export class StripeService {
       },
     });
 
-    if (!orderItem) throw new NotFoundException(`Order item not found`);
+    if (!orderItem) {
+      this.logger.error(`Order item with ID ${orderItemId} not found`);
+      throw new NotFoundException(`Order item not found`);
+    }
     if (orderItem.order?.status !== EnumOrderStatus.SUCCEEDED) {
+      this.logger.error(
+        `Order item with ID ${orderItemId} belongs to order ${orderItem.orderId} which payment not succeeded`,
+      );
       throw new NotFoundException(`Order item payment not succeeded.`);
     }
 
     if (!orderItem.product) {
+      this.logger.error(
+        `Product for order item with ID ${orderItemId} not found`,
+      );
       throw new NotFoundException(
         `Order item ${orderItem.id} product not found`,
       );
     }
 
     if (orderItem.status === EnumOrderItemStatus.CONFIRMED) {
+      this.logger.error(
+        `Order item with ID ${orderItemId} has already been confirmed`,
+      );
       throw new BadRequestException(
         `The customer has already received money for order item - ${orderItem.id}`,
       );
@@ -1060,12 +979,18 @@ export class StripeService {
     const seller = orderItem.product.user;
 
     if (!seller?.stripeAccountId) {
+      this.logger.error(
+        `Seller with ID ${sellerId} does not have a connected Stripe account`,
+      );
       throw new BadRequestException(
         `Seller (ID: ${sellerId}) does not have a connected Stripe account`,
       );
     }
 
     if (!orderItem.order?.stripeChargeId) {
+      this.logger.error(
+        `Order with ID ${orderItem.orderId} does not have a Stripe charge associated`,
+      );
       throw new BadRequestException(
         'Order does not have a Stripe charge associated',
       );
@@ -1085,7 +1010,9 @@ export class StripeService {
         idempotencyKey,
       );
 
-      console.log(`Transfer created successfully:`, transfer);
+      this.logger.log(
+        `Stripe transfer created for orderItem ${orderItemId}, transfer: ${transfer}`,
+      );
 
       const updatedOrderItem = await this.prisma.orderItem.update({
         where: { id: orderItemId },
@@ -1138,9 +1065,9 @@ export class StripeService {
         },
       };
     } catch (error) {
-      console.error(
-        `Failed to distribute funds for orderItem ${orderItemId}:`,
-        error,
+      this.logger.error(
+        `Failed to distribute funds for orderItem ${orderItemId}: ${error.message}`,
+        error.stack,
       );
       try {
         await this.prisma.transferLog.create({
@@ -1170,21 +1097,367 @@ export class StripeService {
           },
         });
       } catch (logError) {
-        console.error(
-          `[OrderItem ${orderItemId}] Failed to create TransferLog:`,
-          logError.message,
+        this.logger.error(
+          `Failed to create TransferLog for failed transfer of orderItem ${orderItemId}: ${logError.message}`,
+          logError.stack,
         );
       }
-
+      this.logger.error(
+        `Failed to distribute funds for orderItem ${orderItemId}: ${error.message}`,
+        error.stack,
+      );
       throw new BadRequestException(
         `Failed to distribute funds: ${error.message}`,
       );
     }
   }
 
+  /**
+   * Полный возврат всего заказа
+   */
+  async refundOrder(orderId: string, reason?: string) {
+    const order = await this.prisma.order.findUnique({
+      where: { id: orderId },
+      include: {
+        orderItems: {
+          include: { product: { include: { user: true } } },
+        },
+      },
+    });
+
+    if (!order) {
+      this.logger.error(`Order with ID ${orderId} not found for refund`);
+      throw new NotFoundException('Order not found');
+    }
+
+    if (order.status === EnumOrderStatus.REFUNDED) {
+      this.logger.error(`Order with ID ${orderId} has already been refunded`);
+      throw new BadRequestException('Order already refunded');
+    }
+
+    if (!order.stripeChargeId) {
+      this.logger.error(
+        `Order with ID ${orderId} does not have a Stripe charge for refund`,
+      );
+      throw new BadRequestException(
+        `Order ${order.id} does not have a Stripe charge`,
+      );
+    }
+
+    const results: {
+      orderItemId: string;
+      sellerId: string;
+      refundId?: string;
+      reversalId?: string;
+      amount?: number;
+      success: boolean;
+      error?: string;
+    }[] = [];
+
+    for (const item of order.orderItems) {
+      try {
+        const result = await this.refundOrderItem(item.id, reason);
+
+        this.logger.log(
+          `[Order ${orderId}] OrderItem ${item.id} refund processed successfully, result: ${JSON.stringify(
+            result,
+          )}`,
+        );
+
+        results.push({
+          orderItemId: item.id,
+          sellerId: item.product?.userId || 'unknown',
+          refundId: result.refundId,
+          reversalId: result.reversalId || undefined,
+          amount: result.amount,
+          success: true,
+        });
+      } catch (error) {
+        this.logger.error(
+          `[Order ${orderId}] Failed to refund orderItem ${item.id}: ${error.message}`,
+          error.stack,
+        );
+
+        results.push({
+          orderItemId: item.id,
+          sellerId: item.product?.userId || 'unknown',
+          success: false,
+          error: error.message,
+        });
+      }
+    }
+
+    const summary = {
+      orderId,
+      totalItems: order.orderItems.length,
+      successfulRefunds: results.filter((r) => r.success).length,
+      failedRefunds: results.filter((r) => !r.success).length,
+      totalAmount: results
+        .filter((r) => r.success)
+        .reduce((sum, r) => sum + (r.amount || 0), 0),
+      results,
+      timestamp: new Date(),
+    };
+
+    // Если все успешно возвращены - обновляем статус заказа
+    if (summary.failedRefunds === 0) {
+      await this.prisma.order.update({
+        where: { id: orderId },
+        data: { status: EnumOrderStatus.REFUNDED },
+      });
+    }
+
+    this.logger.log(
+      `[Order ${orderId}] Refund process completed, summary:`,
+      summary,
+    );
+
+    return summary;
+  }
+
+  /**
+   * Возврат конкретного orderItem
+   */
+  async refundOrderItem(orderItemId: string, reason?: string) {
+    const orderItem = await this.prisma.orderItem.findUnique({
+      where: { id: orderItemId },
+      include: {
+        product: { include: { user: true } },
+        order: true,
+      },
+    });
+
+    if (!orderItem) {
+      this.logger.error(
+        `Order item with ID ${orderItemId} not found for refund`,
+      );
+      throw new NotFoundException('Order item not found');
+    }
+
+    if (orderItem.status === EnumOrderItemStatus.REFUNDED) {
+      this.logger.error(
+        `Order item with ID ${orderItemId} has already been refunded`,
+      );
+      throw new BadRequestException(
+        `Order item ${orderItemId} already refunded`,
+      );
+    }
+
+    if (!orderItem.order?.stripeChargeId) {
+      this.logger.error(
+        `Order with ID ${orderItem.orderId} does not have a Stripe charge for refund of orderItem ${orderItemId}`,
+      );
+      throw new BadRequestException(
+        'Order does not have a Stripe charge associated',
+      );
+    }
+
+    const sellerId = orderItem.product?.userId;
+    const seller = orderItem.product?.user;
+    const gross = Math.round(orderItem.price * orderItem.quantity) * 100;
+
+    try {
+      let reversalId: string | null = null;
+
+      // Если деньги уже были переведены продавцу - делаем reversal
+      if (orderItem.stripeTransferId && seller?.stripeAccountId) {
+        this.logger.log(
+          `[OrderItem ${orderItemId}] Initiating transfer reversal for transfer ${orderItem.stripeTransferId}`,
+        );
+
+        const reversal = await this.reverseStripeTransfer(
+          orderItem.stripeTransferId,
+          gross,
+          reason,
+        );
+
+        reversalId = reversal.id;
+        this.logger.log(
+          `[OrderItem ${orderItemId}] Transfer reversal successful, reversal ID: ${reversalId}`,
+        );
+      }
+
+      // Возвращаем деньги покупателю
+      const refund = await this.createStripeRefund(
+        orderItem.order.stripeChargeId,
+        gross,
+        reason,
+      );
+
+      this.logger.log(
+        `[OrderItem ${orderItemId}] Refund successful, refund ID: ${refund.id}`,
+      );
+
+      // Обновляем статус orderItem
+      await this.prisma.orderItem.update({
+        where: { id: orderItemId },
+        data: {
+          status: EnumOrderItemStatus.REFUNDED,
+          stripeRefundId: refund.id,
+          ...(reversalId && { stripeReversalId: reversalId }),
+        },
+      });
+
+      // Логируем возврат
+      await this.prisma.transferLog.create({
+        data: {
+          // Relations
+          orderId: orderItem.orderId!,
+          orderItemId: orderItemId,
+          sellerId: sellerId!,
+
+          // Stripe IDs
+          stripeTransferId: orderItem.stripeTransferId,
+          stripeReversalId: reversalId,
+          stripeRefundId: refund.id,
+
+          // Amounts (negative for refund)
+          grossAmount: -(gross / 100),
+          transferAmount: orderItem.stripeTransferId
+            ? -Math.round(gross * 0.95)
+            : 0,
+          commission: orderItem.stripeTransferId
+            ? -Math.round(gross * 0.05)
+            : 0,
+
+          // Status
+          status: 'REFUNDED',
+          errorMessage: null,
+
+          // Reason
+          reason: reason || 'Customer requested refund',
+
+          // Metadata
+          metadata: {
+            productTitle: orderItem.cachedProductTitle,
+            productId: orderItem.productId,
+            quantity: orderItem.quantity,
+            price: orderItem.price,
+            originalTransferId: orderItem.stripeTransferId,
+          },
+        },
+      });
+
+      return {
+        success: true,
+        refundId: refund.id,
+        reversalId: reversalId,
+        amount: gross / 100,
+        seller: seller
+          ? {
+              id: sellerId,
+              name: seller.name,
+              email: seller.email,
+            }
+          : null,
+      };
+    } catch (error) {
+      this.logger.error(
+        `Failed to refund orderItem ${orderItemId}: ${error.message}`,
+        error.stack,
+      );
+
+      // Логируем неудачный возврат
+      try {
+        await this.prisma.transferLog.create({
+          data: {
+            orderId: orderItem.orderId!,
+            orderItemId: orderItemId,
+            sellerId: sellerId!,
+
+            stripeTransferId: orderItem.stripeTransferId,
+            stripeRefundId: null,
+            stripeReversalId: null,
+
+            grossAmount: -gross,
+            transferAmount: 0,
+            commission: 0,
+
+            status: 'FAILED',
+            errorMessage: error.message,
+            reason: reason || 'Refund attempt failed',
+
+            metadata: {
+              productTitle: orderItem.product?.title,
+              errorStack: error.stack,
+            },
+          },
+        });
+      } catch (logError) {
+        this.logger.error(
+          `Failed to create TransferLog for failed refund of orderItem ${orderItemId}: ${logError.message}`,
+          logError.stack,
+        );
+      }
+      this.logger.error(
+        `Failed to refund orderItem ${orderItemId}: ${error.message}`,
+        error.stack,
+      );
+      throw new BadRequestException(`Failed to refund: ${error.message}`);
+    }
+  }
+
+  /**
+   * Reversal трансфера (возврат денег от продавца)
+   */
+  private async reverseStripeTransfer(
+    transferId: string,
+    amount: number,
+    reason?: string,
+  ) {
+    try {
+      const reversal = await this.stripe.transfers.createReversal(transferId, {
+        amount: amount,
+        description: reason || 'Order refund',
+        metadata: {
+          reason: reason || 'Customer requested refund',
+        },
+      });
+
+      return reversal;
+    } catch (error) {
+      this.logger.error(
+        `Failed to reverse transfer ${transferId}: ${error.message}`,
+        error.stack,
+      );
+      throw error;
+    }
+  }
+
+  /**
+   * Refund платежа покупателю
+   */
+  private async createStripeRefund(
+    chargeId: string,
+    amount: number,
+    reason?: string,
+  ) {
+    try {
+      const refund = await this.stripe.refunds.create({
+        charge: chargeId,
+        amount: amount,
+        reason: 'requested_by_customer',
+        metadata: {
+          refund_reason: reason || 'Customer requested refund',
+        },
+      });
+
+      return refund;
+    } catch (error) {
+      this.logger.error(
+        `Failed to create refund for charge ${chargeId}: ${error.message}`,
+        error.stack,
+      );
+      throw error;
+    }
+  }
+
   async payOneItem(dto: OrderDto, userId: string, order: Order) {
     const items = dto.orderItems;
     if (items.length > 1) {
+      this.logger.error(
+        `Multiple items in order ${order.id}, only one allowed for payOneItem`,
+      );
       throw new BadRequestException('Only one item allowed per order');
     }
     const bySeller = new Map<string, typeof items>();
@@ -1194,6 +1467,9 @@ export class StripeService {
         where: { id: item.userId },
       });
       if (!productOwner || !productOwner.stripeAccountId) {
+        this.logger.error(
+          `Product owner with ID ${item.userId} not found or does not have a Stripe account`,
+        );
         throw new BadRequestException(
           'Product owner not found or has no Stripe account',
         );
@@ -1203,9 +1479,11 @@ export class StripeService {
         productOwner.stripeAccountId,
       );
       if (!acc.capabilities || acc.capabilities.transfers !== 'active') {
+        this.logger.error(
+          `Seller with ID ${productOwner.id} has inactive Stripe account`,
+        );
         throw new BadRequestException('Seller Stripe account not active');
       }
-      console.log('acc ', acc.capabilities);
 
       if (!bySeller.has(productOwner.stripeAccountId)) {
         bySeller.set(productOwner.stripeAccountId, []);
@@ -1263,8 +1541,7 @@ export class StripeService {
   //   event: Stripe.Event,
   // ): Promise<PaymentWebhookResult | null> {
   public async handleWebhook(event: Stripe.Event) {
-    console.log('\n\n\n ++++ handleWebhook EVENT TYPE = ', event.type);
-    console.log('\n ++++ handleWebhook EVENT = ', event);
+    this.logger.log(`\n [Func] handleWebhook - Received event: ${event}`);
     switch (event.type) {
       case 'payment_method.attached':
         this.onPaymentMethodAttached(event);
@@ -1306,6 +1583,7 @@ export class StripeService {
       //   this.onPaymentCreated(event);
       //   break;
       default:
+        this.logger.warn(`Unhandled stripe event type: ${event.type}`);
         throw new BadRequestException(`Unknown event type: ${event.type}`);
     }
     // TODO: implement handling different event types
@@ -1367,14 +1645,19 @@ export class StripeService {
   }
 
   async onSubscriptionUpdated(event: Stripe.CustomerSubscriptionUpdatedEvent) {
-    console.log('\n\n [Func] WEBHOOK onSubscriptionUpdated event ', event);
+    this.logger.log(
+      '\n [Func] onSubscriptionUpdated - Received event: ',
+      event,
+    );
     const session = event.data.object;
     let sub = await this.prisma.subscription.findFirst({
       where: { stripeSubscriptionId: session.id },
       include: { order: true },
     });
     if (!sub) {
-      console.log('[customer.subscription.updated] No subscription found');
+      this.logger.warn(
+        '[customer.subscription.updated] Subscription not found',
+      );
       sub = await this.prisma.subscription.findFirst({
         where: {
           customerId: session.customer as string,
@@ -1387,7 +1670,10 @@ export class StripeService {
       }
     }
     const subUpdateData: any = {};
-    console.log('\n\n event.data.object = ', event.data.object);
+    this.logger.log(
+      '\n\n onSubscriptionUpdated - event.data.object = ',
+      event.data.object,
+    );
     if (event.data.object.cancel_at_period_end || event.data.object.cancel_at) {
       subUpdateData.cancelledAt = new Date(
         (event?.data?.object?.cancel_at || Date.now()) * 1000,
@@ -1408,7 +1694,10 @@ export class StripeService {
     } else if (event.data.object.status === 'active') {
       subUpdateData.trialEndAt = null;
     }
-    console.log('111 Update Sub');
+    this.logger.log(
+      '\n\n onSubscriptionUpdated - subUpdateData = ',
+      subUpdateData,
+    );
     await this.prisma.subscription.update({
       where: { id: sub.id },
       data: subUpdateData,
@@ -1428,7 +1717,10 @@ export class StripeService {
   }
 
   async onCheckoutSessionExpired(event: Stripe.CheckoutSessionExpiredEvent) {
-    console.log('\n\n [Func] WEBHOOK onCheckoutSessionExpired event = ', event);
+    this.logger.log(
+      '\n [Func] onCheckoutSessionExpired - Received event: ',
+      event,
+    );
     const session = event.data.object as Stripe.Checkout.Session;
 
     const order = await this.prisma.order.findUnique({
@@ -1460,13 +1752,16 @@ export class StripeService {
   async onPaymentIntentPaymentFailed(
     event: Stripe.PaymentIntentPaymentFailedEvent,
   ) {
-    console.log(
-      '\n\n [Func] WEBHOOK onPaymentIntentPaymentFailed event = ',
+    this.logger.log(
+      '\n [Func] WEBHOOK onPaymentIntentPaymentFailed - Received event: ',
       event,
     );
 
     const paymentIntent = event.data.object as Stripe.PaymentIntent;
-    console.log('paymentIntent = ', paymentIntent);
+    this.logger.log(
+      '\n\n onPaymentIntentPaymentFailed - paymentIntent = ',
+      paymentIntent,
+    );
 
     // Получаем checkout session через paymentIntent
     const sessions = await this.stripe.checkout.sessions.list({
@@ -1476,7 +1771,6 @@ export class StripeService {
 
     const session = sessions.data[0];
     const orderId = session?.metadata?.orderId;
-    console.log('orderId = ', orderId);
 
     if (!orderId) return { received: true };
 
@@ -1519,12 +1813,11 @@ export class StripeService {
   async onCheckoutSessionCompletedProduct(
     event: Stripe.CheckoutSessionCompletedEvent,
   ) {
-    console.log(
-      '\n\n [Func] WEBHOOK onCheckoutSessionCompleted event = ',
+    this.logger.log(
+      '\n [Func] WEBHOOK onCheckoutSessionCompletedProduct - Received event: ',
       event,
     );
     const session = event.data.object;
-    console.log('\n onCheckoutSessionCompletedProduct - session = ', session);
     const { userId, orderId } = session.metadata as {
       userId: string;
       orderId: string;
@@ -1532,12 +1825,18 @@ export class StripeService {
 
     const user = await this.userService.getById(userId);
     if (!user) {
+      this.logger.error(
+        `onCheckoutSessionCompletedProduct User not found with ID ${userId} not found, for checkout session completion of order ${orderId}`,
+      );
       throw new NotFoundException(
         'onCheckoutSessionCompletedProduct User not found',
       );
     }
 
     if (!orderId) {
+      this.logger.error(
+        `onCheckoutSessionCompletedProduct Order ID not found in session metadata for user ${userId}`,
+      );
       throw new NotFoundException(
         'onCheckoutSessionCompletedProduct Order not found',
       );
@@ -1554,7 +1853,10 @@ export class StripeService {
       session.payment_intent as string,
       // { expand: ['latest_charge'] },
     );
-    console.log('\n\n paymentIntent = ', paymentIntent);
+    this.logger.log(
+      '\n\n onCheckoutSessionCompletedProduct - Retrieved paymentIntent = ',
+      paymentIntent,
+    );
     const chargeId = paymentIntent.latest_charge as string;
 
     await this.prisma.order.update({
@@ -1571,12 +1873,15 @@ export class StripeService {
   async onCheckoutSessionCompletedSubscription(
     event: Stripe.CheckoutSessionCompletedEvent,
   ) {
-    console.log(
-      '\n\n [Func] WEBHOOK onCheckoutSessionCompleted event = ',
+    this.logger.log(
+      '\n [Func] WEBHOOK onCheckoutSessionCompletedSubscription - Received event: ',
       event,
     );
     const session = event.data.object;
-    console.log('\nsession.metadata = ', session.metadata);
+    this.logger.log(
+      '\n\n onCheckoutSessionCompletedSubscription - session.metadata = ',
+      session.metadata,
+    );
     const { userId, planId } = session.metadata as {
       userId: string;
       orderId: string;
@@ -1585,12 +1890,18 @@ export class StripeService {
 
     const user = await this.userService.getById(userId);
     if (!user) {
+      this.logger.error(
+        `onCheckoutSessionCompletedSubscription User not found with ID ${userId} not found, for checkout session completion of subscription with plan ${planId}`,
+      );
       throw new NotFoundException('onCheckoutSessionCompleted User not found');
     }
     const plan = await this.prisma.plan.findUnique({
       where: { planId },
     });
     if (!plan) {
+      this.logger.error(
+        `onCheckoutSessionCompletedSubscription Plan with ID ${planId} not found for user ${userId}`,
+      );
       throw new NotFoundException('onCheckoutSessionCompleted Plan not found');
     }
 
@@ -1607,7 +1918,7 @@ export class StripeService {
     });
     if (oldSub) {
       if (oldSub.planId === EnumSubscriptionType.FREE) {
-        console.log('222 Update Sub');
+        this.logger.log('\n\n 2 Update Sub');
         await this.subscriptionService.updateSubscriptionAndOrder(
           { status: EnumSubscriptionStatus.CANCELLED },
           oldSub?.order?.id as string,
@@ -1619,7 +1930,7 @@ export class StripeService {
             oldSub.stripeSubscriptionId as string,
           );
         } catch (err) {
-          console.log(
+          this.logger.error(
             `StripeService.onCheckoutSessionCompleted() : failed: ${err}`,
           );
         }
@@ -1643,10 +1954,14 @@ export class StripeService {
           where: { planId },
         });
 
-        if (!subscriptionSettings)
+        if (!subscriptionSettings) {
+          this.logger.error(
+            `onCheckoutSessionCompletedSubscription - There is no subscription with id ${planId}`,
+          );
           throw new BadRequestException(
             `There is no subscription with id ${planId}`,
           );
+        }
         const stripeSubscription = await this.stripe.subscriptions.retrieve(
           session.subscription as string,
         );
@@ -1676,7 +1991,7 @@ export class StripeService {
           ...(subAndOrder.subscription as Subscription),
           order: subAndOrder.order,
         };
-        console.log('333 CREATE NEW SUB = ', sub);
+        this.logger.log('\n\n 3 CREATE NEW SUB = ', sub);
         return;
       }
     } else {
@@ -1692,6 +2007,9 @@ export class StripeService {
           where: { userId },
         });
         if (!customer) {
+          this.logger.error(
+            `onCheckoutSessionCompletedSubscription - Customer with userId ${userId} not found.`,
+          );
           throw new BadRequestException('Customer not found');
         }
         sub = await this.prisma.subscription.findFirst({
@@ -1699,6 +2017,9 @@ export class StripeService {
           include: { order: true },
         });
         if (!sub) {
+          this.logger.error(
+            `onCheckoutSessionCompletedSubscription - Subscription not found for customer ${customer.id} and userId ${userId}.`,
+          );
           throw new BadRequestException('Subscription not found');
         }
       }
@@ -1708,16 +2029,20 @@ export class StripeService {
       where: { planId: sub.planId },
     });
 
-    if (!subscriptionSettings)
+    if (!subscriptionSettings) {
+      this.logger.error(
+        `onCheckoutSessionCompletedSubscription - There is no subscription with id ${sub.planId}`,
+      );
       throw new BadRequestException(
         `There is no subscription with id ${sub.planId}`,
       );
+    }
 
     const stripeSubscription = await this.stripe.subscriptions.retrieve(
       session.subscription as string,
     );
 
-    console.log('\n\n\n stripeSubscription', stripeSubscription);
+    this.logger.log('\n\n\n stripeSubscription', stripeSubscription);
 
     let nextBillingDate: Date;
     if (
@@ -1738,7 +2063,7 @@ export class StripeService {
         ),
       );
     }
-    console.log('333 Update Sub');
+    this.logger.log('333 Update Sub');
 
     await this.subscriptionService.updateSubscriptionAndOrder(
       {
@@ -1758,7 +2083,7 @@ export class StripeService {
   }
 
   async onInvoicePaymentSucceeded(event: Stripe.InvoicePaymentSucceededEvent) {
-    console.log(
+    this.logger.log(
       '\n\n [Func] WEBHOOK onInvoicePaymentSucceeded event = ',
       event,
     );
@@ -1778,7 +2103,7 @@ export class StripeService {
         include: { order: true },
       });
       if (!sub) {
-        console.log(
+        this.logger.error(
           '[invoice.payment_succeeded] No subscription found. Waiting for checkout.session.completed',
         );
         return;
@@ -1789,17 +2114,21 @@ export class StripeService {
       where: { planId: sub.planId },
     });
 
-    if (!subscriptionSettings)
+    if (!subscriptionSettings) {
+      this.logger.error(
+        `onInvoicePaymentSucceeded - There is no subscription with id ${sub.planId}`,
+      );
       throw new BadRequestException(
         `There is no subscription with id ${sub.planId}`,
       );
+    }
 
     const stripeSubscription = await this.stripe.subscriptions.retrieve(
       (session as any).subscription as string,
     );
 
-    console.log('stripeSubscription = ', stripeSubscription);
-    console.log('444 Update Sub');
+    this.logger.log('stripeSubscription = ', stripeSubscription);
+    this.logger.log('444 Update Sub');
     const nextBillingDate =
       this.calculateNextBillingDate(stripeSubscription) || undefined;
 
@@ -1829,7 +2158,10 @@ export class StripeService {
   async onCustomerSubscriptionDeleted(
     event: Stripe.CustomerSubscriptionDeletedEvent,
   ) {
-    console.log('\n[WEBHOOK] onCustomerSubscriptionDeleted', event);
+    this.logger.log(
+      '\n [Func] WEBHOOK onCustomerSubscriptionDeleted event = ',
+      event,
+    );
 
     const session = event.data.object;
     let sub = await this.prisma.subscription.findFirst({
@@ -1837,7 +2169,7 @@ export class StripeService {
       include: { order: true },
     });
     if (!sub) {
-      console.log('[customer.subscription.deleted] No subscription found');
+      this.logger.log('[customer.subscription.deleted] No subscription found');
       sub = await this.prisma.subscription.findFirst({
         where: {
           customerId: session.customer as string,
@@ -1849,15 +2181,18 @@ export class StripeService {
         return;
       }
     }
-    console.log('sub = ', sub);
     if (sub.nextPlanId) {
       const plan = await this.prisma.plan.findUnique({
         where: { planId: sub.nextPlanId },
       });
-      if (!plan)
+      if (!plan) {
+        this.logger.error(
+          `onCustomerSubscriptionDeleted - There is no subscription with id ${sub.nextPlanId}`,
+        );
         throw new BadRequestException(
           `There is no subscription with id ${sub.nextPlanId}`,
         );
+      }
 
       const user = await this.prisma.user.findUnique({
         where: { id: sub.userId },
@@ -1968,7 +2303,9 @@ export class StripeService {
             { status: EnumOrderStatus.SUCCEEDED },
           );
         } catch (err) {
-          console.log('ERR = ', err);
+          this.logger.error(
+            `StripeService.onCustomerSubscriptionDeleted() : failed to create new subscription: ${err}`,
+          );
           const freePlan = await this.prisma.plan.findUnique({
             where: { planId: EnumSubscriptionType.FREE },
           });
@@ -1987,7 +2324,7 @@ export class StripeService {
           );
         }
       } catch (err) {
-        console.log(
+        this.logger.error(
           `StripeService.onCustomerSubscriptionDeleted() : failed: ${err}`,
         );
       }
@@ -2022,8 +2359,12 @@ export class StripeService {
       const subscriptionSettings = await this.prisma.plan.findUnique({
         where: { planId: EnumSubscriptionType.FREE },
       });
-      if (!subscriptionSettings)
+      if (!subscriptionSettings) {
+        this.logger.error(
+          `onCustomerSubscriptionDeleted - There is no subscription with id free`,
+        );
         throw new BadRequestException('There is no subscription with id free');
+      }
 
       const plan = await this.prisma.plan.findUnique({
         where: { planId: EnumSubscriptionType.FREE },
@@ -2056,7 +2397,7 @@ export class StripeService {
   async onCustomerSubscriptionPaused(
     event: Stripe.CustomerSubscriptionPausedEvent,
   ) {
-    console.log(
+    this.logger.log(
       '\n\n [Func] WEBHOOK onCustomerSubscriptionPaused event = ',
       event,
     );
@@ -2066,7 +2407,7 @@ export class StripeService {
       include: { order: true },
     });
     if (!sub) {
-      console.log('[customer.subscription.paused] No subscription found');
+      this.logger.warn('[customer.subscription.paused] No subscription found');
       return;
     }
 
@@ -2084,7 +2425,7 @@ export class StripeService {
   async onCustomerSubscriptionResumed(
     event: Stripe.CustomerSubscriptionResumedEvent,
   ) {
-    console.log(
+    this.logger.log(
       '\n\n [Func] WEBHOOK onCustomerSubscriptionResumed event = ',
       event,
     );
@@ -2094,7 +2435,7 @@ export class StripeService {
       include: { order: true },
     });
     if (!sub) {
-      console.log('[customer.subscription.resumed] No subscription found');
+      this.logger.warn('[customer.subscription.resumed] No subscription found');
       return;
     }
     const date = new Date();
@@ -2119,7 +2460,10 @@ export class StripeService {
   }
 
   async onInvoicePaymentFailed(event: Stripe.InvoicePaymentFailedEvent) {
-    console.log('\n\n [Func] WEBHOOK onInvoicePaymentFailed event = ', event);
+    this.logger.log(
+      '\n\n [Func] WEBHOOK onInvoicePaymentFailed event = ',
+      event,
+    );
     const session = event.data.object;
     if (!(session as any).subscription) return;
 
@@ -2128,7 +2472,7 @@ export class StripeService {
       include: { order: true },
     });
     if (!sub) {
-      console.log('[invoice.payment_failed] No subscription found');
+      this.logger.warn('[invoice.payment_failed] No subscription found');
       return;
     }
     console.log('12.12.12 Update Sub');
@@ -2144,7 +2488,10 @@ export class StripeService {
 
   // TODO
   async onPaymentMethodAttached(event: Stripe.PaymentMethodAttachedEvent) {
-    console.log('\n\n [Func] WEBHOOK onPaymentMethodAttached EVENT = ', event);
+    this.logger.log(
+      '\n\n [Func] WEBHOOK onPaymentMethodAttached EVENT = ',
+      event,
+    );
     const customer = await this.prisma.billingInfo.findFirst({
       where: {
         stripeCustomerId: (event?.data?.object?.customer as any)
@@ -2152,7 +2499,7 @@ export class StripeService {
       },
     });
     if (!customer) {
-      console.log('[payment_method.attached] No customer found');
+      this.logger.warn('[payment_method.attached] No customer found');
       return;
     }
     await this.prisma.billingInfo.update({
@@ -2164,11 +2511,11 @@ export class StripeService {
   }
 
   async onBalanceAvailable(event: Stripe.BalanceAvailableEvent) {
-    console.log('\n\n [Func] WEBHOOK onBalanceAvailable EVENT = ', event);
+    this.logger.log('\n\n [Func] WEBHOOK onBalanceAvailable EVENT = ', event);
   }
 
   async onTransferCreated(event: Stripe.TransferCreatedEvent) {
-    console.log('\n\n [Func] WEBHOOK onTransferCreated EVENT = ', event);
+    this.logger.log('\n\n [Func] WEBHOOK onTransferCreated EVENT = ', event);
     // const transferObj = event.data.object;
     // const transferId = transferObj.id;
 
@@ -2188,16 +2535,25 @@ export class StripeService {
   }
 
   async createInvoice(userId: string, planId: EnumSubscriptionType) {
-    console.log('\n\n [Func] createInvoice');
+    this.logger.log('\n\n [Func] createInvoice');
     const sub = await this.prisma.subscription.findFirst({
       where: { userId, status: EnumSubscriptionStatus.ACTIVE },
     });
-    if (!sub) throw new BadRequestException('Subscription not found');
+    if (!sub) {
+      this.logger.error(
+        `createInvoice - No active subscription found for user ${userId}`,
+      );
+      throw new BadRequestException('Subscription not found');
+    }
     const plan = await this.prisma.plan.findUnique({ where: { planId } });
-    if (!plan)
+    if (!plan) {
+      this.logger.error(
+        `createInvoice - There is no subscription with id ${planId} for user ${userId}`,
+      );
       throw new BadRequestException(
         `There is no subscription with id ${planId}`,
       );
+    }
 
     const prod = await this.stripe.products.retrieve(plan.stripeProductId);
 
@@ -2223,12 +2579,12 @@ export class StripeService {
   }
 
   calculateNextBillingDate(subscription: Stripe.Subscription) {
-    console.log('\n\n [Func] calculateNextBillingDate');
+    this.logger.log('\n\n [Func] calculateNextBillingDate');
     const item = subscription.items?.data?.[0];
     const price = item?.price;
 
     if (!price?.recurring) {
-      console.warn('No recurring price found');
+      this.logger.warn('No recurring price found');
       return undefined;
     }
 
@@ -2248,7 +2604,7 @@ export class StripeService {
       );
     }
 
-    console.log('\n\n\n ***** nextBillingDate = ', nextBillingDate);
+    this.logger.log('\n\n\n ***** nextBillingDate = ', nextBillingDate);
     return nextBillingDate;
   }
 
@@ -2265,6 +2621,9 @@ export class StripeService {
       where: { userId },
     });
     if (!customer || !customer.stripeTestClockId) {
+      this.logger.error(
+        `simulateStripeTestClockAdvance - No test clock found for user ${userId}`,
+      );
       throw new BadRequestException('No test clock found for user');
     }
     await this.stripe.testHelpers.testClocks.advance(

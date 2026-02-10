@@ -5,6 +5,7 @@ import {
   ForbiddenException,
   Type,
   Inject,
+  Logger,
 } from '@nestjs/common';
 import { PrismaService } from 'src/prisma.service';
 
@@ -14,6 +15,8 @@ export function OwnerCanCreateProductGuard(
 ): Type<CanActivate> {
   @Injectable()
   class OwnerCanCreateProductGuardMixin implements CanActivate {
+    private readonly logger = new Logger(OwnerCanCreateProductGuardMixin.name);
+
     constructor(
       @Inject(entityServiceClass) private readonly entityService: any,
       private readonly prisma: PrismaService,
@@ -32,8 +35,16 @@ export function OwnerCanCreateProductGuard(
 
       if (user.role === 'ADMIN' || user.role === 'SUPER_ADMIN') return true;
 
-      if (entity.userId !== user.id)
+      if (entity.userId !== user.id) {
+        this.logger.error(
+          'User ' +
+            user.id +
+            ' attempted to create a product for entity ' +
+            id +
+            ' which they do not own.',
+        );
         throw new ForbiddenException('You do not own this entity');
+      }
 
       const productsCount = await this.prisma.product.count({
         where: {
@@ -59,15 +70,24 @@ export function OwnerCanCreateProductGuard(
       );
 
       if (!userActiveSub) {
+        this.logger.error(
+          'User ' +
+            user.id +
+            ' does not have an active subscription. Cannot create product.',
+        );
         throw new ForbiddenException('Subscription not found');
       }
 
-      console.log('\n\n userActiveSub.productLimit ', userActiveSub.productLimit);
-      console.log('productsCount = ', productsCount);
+      this.logger.log(
+        `User ${user.id} has an active subscription with product limit: ${userActiveSub.productLimit}. Current products count: ${productsCount}.`,
+      );
       if (
         userActiveSub.productLimit &&
         productsCount >= userActiveSub.productLimit
       ) {
+        this.logger.error(
+          `User ${user.id} has reached the product limit for their subscription plan. Cannot create more products.`,
+        );
         throw new ForbiddenException(
           `Product limit exceeded. Limit: ${userActiveSub.productLimit}`,
         );

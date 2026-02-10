@@ -36,6 +36,7 @@ interface OrderDetailsModalProps<T extends TableSectionItem> {
   setIsOpen: (open: boolean) => void;
   order: GetOrderWithItemsDto;
   showConfirm: boolean;
+  showRefund: boolean;
 }
 
 export function OrderDetailsModal<T extends TableSectionItem>({
@@ -43,6 +44,7 @@ export function OrderDetailsModal<T extends TableSectionItem>({
   setIsOpen,
   order,
   showConfirm = false,
+  showRefund = false,
 }: OrderDetailsModalProps<T>) {
   return (
     <CustomModal
@@ -51,7 +53,11 @@ export function OrderDetailsModal<T extends TableSectionItem>({
       onOpenChange={setIsOpen}
       size='xl'
     >
-      <OrderDetailsModalContent order={order} showConfirm={showConfirm} />
+      <OrderDetailsModalContent
+        order={order}
+        showConfirm={showConfirm}
+        showRefund={showRefund}
+      />
     </CustomModal>
   );
 }

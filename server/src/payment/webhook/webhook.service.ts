@@ -1,4 +1,4 @@
-import { Injectable, UnauthorizedException } from '@nestjs/common';
+import { Injectable, Logger, UnauthorizedException } from '@nestjs/common';
 import { StripeService } from '../provider/stripe/stripe.service';
 import Stripe from 'stripe';
 import { YoomoneyService } from '../provider/yoomoney/yoomoney.service';
@@ -7,6 +7,7 @@ import { PaymentHandler } from '../payment.handler';
 
 @Injectable()
 export class WebhookService {
+  private readonly logger = new Logger(WebhookService.name);
   public constructor(
     private readonly paymentHandler: PaymentHandler,
     private readonly stripeService: StripeService,
@@ -33,7 +34,7 @@ export class WebhookService {
       event = res?.event as Stripe.Event;
       error = res?.error;
 
-      console.log('\n\n\n STRIPE WEBHOOK', event.type);
+      this.logger.log('\n\n\n STRIPE WEBHOOK', event.type);
 
       if (error) {
         throw new UnauthorizedException(error);

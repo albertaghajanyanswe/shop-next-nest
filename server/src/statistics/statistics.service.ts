@@ -128,11 +128,9 @@ export class StatisticsService {
 
     // Используем Map для хранения даты с её timestamp для последующей сортировки
     const salesByDate = new Map<string, { value: number; timestamp: number }>();
-    console.log('salesRow = ', salesRow.length);
     salesRow.forEach((order) => {
       const orderDate = new Date(order.createdAt);
       const formattedDate = formatDate(orderDate);
-      console.log('ITEMS =  ', order.orderItems);
       const total = order.orderItems.reduce((total, item) => {
         return total + item.price * item.quantity;
       }, 0);
@@ -160,7 +158,6 @@ export class StatisticsService {
       .sort((a, b) => a.timestamp - b.timestamp)
       .map(({ date, value }) => ({ date, value })); // Убираем timestamp из финального результата
 
-    console.log('monthlySales = ', monthlySales);
     return monthlySales;
   }
 

@@ -1,6 +1,7 @@
 import {
   BadRequestException,
   Injectable,
+  Logger,
   NotFoundException,
 } from '@nestjs/common';
 import { PrismaService } from 'src/prisma.service';
@@ -12,6 +13,8 @@ import { EnumSubscriptionStatus } from '@prisma/client';
 
 @Injectable()
 export class ProductService {
+  private readonly logger = new Logger(ProductService.name);
+
   constructor(
     private readonly prisma: PrismaService,
     private readonly queryBuilderService: QueryPayloadBuilderService,
@@ -51,6 +54,7 @@ export class ProductService {
 
   async getByStoreId(storeId: string, params?: string) {
     if (!storeId) {
+      this.logger.error('Store ID is required to fetch products by store.');
       throw new NotFoundException('Store ID is required.');
     }
     const payload = this.queryBuilderService.build({
@@ -97,6 +101,7 @@ export class ProductService {
     });
 
     if (!product) {
+      this.logger.error(`Product with ID ${id} not found.`);
       throw new NotFoundException('Product not found.');
     }
 
@@ -121,7 +126,6 @@ export class ProductService {
   }
 
   async getMostPopular(params?: string) {
-    console.log('\n\n getMostPopular params = ', params);
     const payload = this.queryBuilderService.build({
       queryParams: params || '',
     });
@@ -139,10 +143,6 @@ export class ProductService {
       ...(payload.skip ? { skip: payload.skip } : {}),
     });
 
-    console.log(
-      '\n\n mostPopularProducts.length = ',
-      mostPopularProducts.length,
-    );
     if (!mostPopularProducts.length) {
       return this.prisma.product.findMany({
         ...(payload.take ? { take: payload.take } : {}),
@@ -180,6 +180,9 @@ export class ProductService {
   async getSimilar(id: string, params?: string) {
     const currentProduct = await this.getByIdHelper(id);
     if (!currentProduct) {
+      this.logger.error(
+        `Current product with ID ${id} not found for fetching similar products.`,
+      );
       throw new NotFoundException('Current product not found.');
     }
 
@@ -257,6 +260,9 @@ export class ProductService {
       });
 
       if ((userSubscription?.productLimit || 10) >= allProducts.length) {
+        this.logger.error(
+          `User ${product.userId} has reached the product limit for their subscription plan. Cannot publish more products.`,
+        );
         throw new BadRequestException(
           'You have reached the limit of published products for your subscription plan.',
         );

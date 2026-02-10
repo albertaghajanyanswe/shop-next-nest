@@ -50,11 +50,13 @@ export interface ImageItemConfig {
 interface OrderDetailsModalProps<T extends TableSectionItem> {
   order: GetOrderWithItemsDto;
   showConfirm?: boolean;
+  showRefund?: boolean;
 }
 
 export function OrderDetailsModalContent<T extends TableSectionItem>({
   order,
   showConfirm = false,
+  showRefund = false,
 }: OrderDetailsModalProps<T>) {
   const { user } = useProfile();
   const getOrderInfoItems = (): InfoSectionItem[] => {
@@ -165,6 +167,7 @@ export function OrderDetailsModalContent<T extends TableSectionItem>({
               items={getOrderTableItems()}
               user={user!}
               showConfirm={showConfirm}
+              showRefund={showRefund}
             />
           </div>
         </div>
@@ -177,6 +180,7 @@ export function OrderDetailsModalContent<T extends TableSectionItem>({
         orderId={order.id}
         user={user!}
         showConfirm={showConfirm}
+        showRefund={showRefund}
       />
     </div>
   );

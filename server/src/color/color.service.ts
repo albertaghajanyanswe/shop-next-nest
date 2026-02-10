@@ -14,7 +14,6 @@ export class ColorService {
     const payload = this.queryBuilderService.build({
       queryParams: params ?? '',
     });
-    console.log('PAYLOAD = ', payload);
     const colors = await this.prisma.color.findMany({
       orderBy: {
         createdAt: 'desc',

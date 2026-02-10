@@ -2,6 +2,7 @@ import {
   BadRequestException,
   ForbiddenException,
   Injectable,
+  Logger,
   NotFoundException,
 } from '@nestjs/common';
 import { PrismaService } from 'src/prisma.service';
@@ -13,6 +14,7 @@ import { excludeFields } from 'src/utils/types/stripe';
 
 @Injectable()
 export class OrderService {
+  private readonly logger = new Logger(OrderService.name);
   constructor(
     private prisma: PrismaService,
     private readonly queryBuilderService: QueryPayloadBuilderService,
@@ -95,7 +97,8 @@ export class OrderService {
       });
       return { orders, totalCount };
     } catch (err) {
-      console.log('err = ', err);
+      this.logger.error(`Error fetching all orders: ${err.message}`, err.stack);
+      throw new BadRequestException('Failed to fetch orders');
     }
   }
 
@@ -198,6 +201,7 @@ export class OrderService {
     });
 
     if (!order) {
+      this.logger.error(`Order with ID ${id} not found for user ${user.id}`);
       throw new NotFoundException('Order not found.');
     }
 
@@ -268,7 +272,8 @@ export class OrderService {
 
       return order;
     } catch (error) {
-      console.log('error ', error);
+      this.logger.error(`Error creating order: ${error.message}`, error.stack);
+      throw new BadRequestException('Failed to create order');
     }
   }
 
@@ -289,6 +294,9 @@ export class OrderService {
       });
 
       if (!product) {
+        this.logger.error(
+          `Product with ID ${item.productId} not found during order creation`,
+        );
         throw new BadRequestException(`Product ${item.productId} not found`);
       }
 
