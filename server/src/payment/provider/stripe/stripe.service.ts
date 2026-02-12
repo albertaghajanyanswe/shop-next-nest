@@ -806,17 +806,17 @@ export class StripeService {
         payment_method_types: ['card'],
         line_items: lineItems,
         mode: 'payment',
-        success_url: `${process.env.CLIENT_URL}/payment/success/${order!.id}`,
-        cancel_url: `${process.env.CLIENT_URL}/payment/cancel/${order!.id}`,
+        success_url: `${process.env.CLIENT_URL}/payment/success/${order.id}`,
+        cancel_url: `${process.env.CLIENT_URL}/payment/cancel/${order.id}`,
         metadata: {
           userId,
-          orderId: order!.id,
+          orderId: order.id,
         },
         expires_at: Math.floor(Date.now() / 1000) + 60 * 60,
       });
 
       await tx.order.update({
-        where: { id: order!.id },
+        where: { id: order.id },
         data: {
           stripeSessionId: session.id,
           stripePaymentIntentId:
@@ -997,21 +997,24 @@ export class StripeService {
     }
 
     try {
-      const gross = Math.round(orderItem.price * orderItem.quantity);
-      const transferAmount = Math.round(gross * 0.95);
-      const commission = gross - transferAmount;
+      // Work internally in cents for all Stripe amounts and logs
+      const grossInCents = Math.round(
+        orderItem.price * orderItem.quantity * 100,
+      );
+      const transferAmountInCents = Math.round(grossInCents * 0.95);
+      const commissionInCents = grossInCents - transferAmountInCents;
 
       const idempotencyKey = `order-item-${orderItemId}`;
 
       const transfer = await this.createStripeTransfer(
-        transferAmount,
+        transferAmountInCents,
         seller.stripeAccountId,
         orderItem.order.stripeChargeId,
         idempotencyKey,
       );
 
       this.logger.log(
-        `Stripe transfer created for orderItem ${orderItemId}, transfer: ${transfer}`,
+        `Stripe transfer created for orderItem ${orderItemId}, transfer: ${transfer.id}`,
       );
 
       const updatedOrderItem = await this.prisma.orderItem.update({
@@ -1034,10 +1037,10 @@ export class StripeService {
           // stripeReversalId: null (будет заполнено при refund)
           // stripeRefundId: null (будет заполнено при refund)
 
-          // price in cents
-          grossAmount: gross,
-          transferAmount: transferAmount,
-          commission: commission,
+          // price/amounts in cents
+          grossAmount: grossInCents / 100,
+          transferAmount: transferAmountInCents / 100,
+          commission: commissionInCents / 100,
 
           // status
           status: 'SUCCEEDED',
@@ -1057,19 +1060,23 @@ export class StripeService {
       return {
         success: true,
         transferId: transfer.id,
-        amount: transferAmount / 100,
+        // expose amount to API consumers in dollars
+        amount: transferAmountInCents / 100,
         seller: {
           id: sellerId,
           name: seller.name,
           email: seller.email,
         },
       };
-    } catch (error) {
+    } catch (error: any) {
       this.logger.error(
-        `Failed to distribute funds for orderItem ${orderItemId}: ${error.message}`,
-        error.stack,
+        `Failed to distribute funds for orderItem ${orderItemId}, error - ${error}`,
       );
       try {
+        // Log failed transfer attempt in cents for consistency
+        const grossInCents = Math.round(
+          orderItem.price * orderItem.quantity * 100,
+        );
         await this.prisma.transferLog.create({
           data: {
             // Relations
@@ -1081,8 +1088,8 @@ export class StripeService {
             stripeTransferId: null,
             errorMessage: error.message,
 
-            // Суммы
-            grossAmount: Math.round(orderItem.price * orderItem.quantity),
+            // Amounts
+            grossAmount: grossInCents / 100,
             transferAmount: 0,
             commission: 0,
 
@@ -1254,7 +1261,8 @@ export class StripeService {
 
     const sellerId = orderItem.product?.userId;
     const seller = orderItem.product?.user;
-    const gross = Math.round(orderItem.price * orderItem.quantity) * 100;
+    // Work internally in cents for refund amounts
+    const grossInCents = Math.round(orderItem.price * orderItem.quantity * 100);
 
     try {
       let reversalId: string | null = null;
@@ -1267,7 +1275,7 @@ export class StripeService {
 
         const reversal = await this.reverseStripeTransfer(
           orderItem.stripeTransferId,
-          gross,
+          grossInCents,
           reason,
         );
 
@@ -1280,7 +1288,7 @@ export class StripeService {
       // Возвращаем деньги покупателю
       const refund = await this.createStripeRefund(
         orderItem.order.stripeChargeId,
-        gross,
+        grossInCents,
         reason,
       );
 
@@ -1311,13 +1319,13 @@ export class StripeService {
           stripeReversalId: reversalId,
           stripeRefundId: refund.id,
 
-          // Amounts (negative for refund)
-          grossAmount: -(gross / 100),
+          // Amounts in cents (negative for refund)
+          grossAmount: -grossInCents / 100,
           transferAmount: orderItem.stripeTransferId
-            ? -Math.round(gross * 0.95)
+            ? -Math.round((grossInCents / 100) * 0.95)
             : 0,
           commission: orderItem.stripeTransferId
-            ? -Math.round(gross * 0.05)
+            ? -Math.round((grossInCents / 100) * 0.05)
             : 0,
 
           // Status
@@ -1342,7 +1350,8 @@ export class StripeService {
         success: true,
         refundId: refund.id,
         reversalId: reversalId,
-        amount: gross / 100,
+        // expose amount in dollars to API consumers
+        amount: grossInCents / 100,
         seller: seller
           ? {
               id: sellerId,
@@ -1369,7 +1378,8 @@ export class StripeService {
             stripeRefundId: null,
             stripeReversalId: null,
 
-            grossAmount: -gross,
+            // Amounts
+            grossAmount: -grossInCents / 100,
             transferAmount: 0,
             commission: 0,
 
@@ -1537,9 +1547,12 @@ export class StripeService {
     return sessions[0];
   }
 
-  // public async handleWebhook(
-  //   event: Stripe.Event,
-  // ): Promise<PaymentWebhookResult | null> {
+  /*
+   * Главный обработчик всех Stripe вебхуков
+   * В зависимости от типа события, делегирует обработку в соответствующий метод
+   * Каждый тип события (например, успешная оплата, обновление подписки и т.д.) имеет свой метод-обработчик, который выполняет необходимые действия в базе данных и бизнес-логике
+   * Если приходит событие, для которого нет обработчика, логируем предупреждение и выбрасываем исключение
+   */
   public async handleWebhook(event: Stripe.Event) {
     this.logger.log(`\n [Func] handleWebhook - Received event: ${event}`);
     switch (event.type) {
@@ -1586,47 +1599,6 @@ export class StripeService {
         this.logger.warn(`Unhandled stripe event type: ${event.type}`);
         throw new BadRequestException(`Unknown event type: ${event.type}`);
     }
-    // TODO: implement handling different event types
-    // switch (event.type) {
-    //   case 'checkout.session.completed': {
-    //     const paymentObject = event.data.object as Stripe.Checkout.Session;
-
-    //     const orderId = paymentObject.metadata?.orderId;
-    //     const planId = paymentObject.metadata?.planId;
-    //     const paymentId = paymentObject.id;
-
-    //     if (!orderId || !planId || !paymentId) {
-    //       return null;
-    //     }
-    //     return {
-    //       orderId: orderId,
-    //       planId,
-    //       paymentId,
-    //       status: EnumOrderStatus.SUCCEEDED,
-    //       raw: event,
-    //     };
-    //   }
-    //   case 'invoice.payment_failed': {
-    //     const invoice = event.data.object as Stripe.Invoice;
-
-    //     const orderId = invoice.metadata?.orderId;
-    //     const planId = invoice.metadata?.planId;
-    //     const paymentId = invoice.id;
-
-    //     if (!orderId || !planId || !paymentId) {
-    //       return null;
-    //     }
-    //     return {
-    //       orderId: orderId,
-    //       planId,
-    //       paymentId,
-    //       status: EnumOrderStatus.FAILED,
-    //       raw: event,
-    //     };
-    //   }
-    //   default:
-    //     return null;
-    // }
   }
   constructEvent(request: Request): { error?: Error; event?: Stripe.Event } {
     const sig = request.headers['stripe-signature'];
@@ -1721,7 +1693,7 @@ export class StripeService {
       '\n [Func] onCheckoutSessionExpired - Received event: ',
       event,
     );
-    const session = event.data.object as Stripe.Checkout.Session;
+    const session = event.data.object;
 
     const order = await this.prisma.order.findUnique({
       where: { id: session.metadata!.orderId },
@@ -1786,12 +1758,15 @@ export class StripeService {
     for (const orderItem of order.orderItems) {
       const sellerId = orderItem.product!.userId!; // предполагаем, что product.userId есть
 
+      // Log failed payment amounts in cents for consistency
+      const gross = Math.round(orderItem.price * orderItem.quantity);
+
       await this.prisma.transferLog.create({
         data: {
           orderId: order.id,
           orderItemId: orderItem.id,
           sellerId: sellerId,
-          grossAmount: orderItem.price * orderItem.quantity, // цена * количество
+          grossAmount: gross,
           transferAmount: 0, // т.к. failed
           commission: 0, // т.к. failed
           status: 'FAILED', // статус failed
@@ -1864,7 +1839,7 @@ export class StripeService {
       data: {
         status: EnumOrderStatus.SUCCEEDED,
         stripePaymentIntentId: session.payment_intent as string,
-        stripeChargeId: chargeId as string,
+        stripeChargeId: chargeId,
         providerMeta: JSON.parse(JSON.stringify(event.data.object)),
       },
     });
@@ -2242,7 +2217,7 @@ export class StripeService {
               productLimit: plan.productLimit!,
               nextBillingDate: undefined,
             },
-            newSub.order.id as string,
+            newSub.order.id,
             { status: EnumOrderStatus.SUCCEEDED },
           );
 
@@ -2299,7 +2274,7 @@ export class StripeService {
                   ? EnumSubscriptionStatus.ACTIVE
                   : newSub.status,
             },
-            newSub.order.id as string,
+            newSub.order.id,
             { status: EnumOrderStatus.SUCCEEDED },
           );
         } catch (err) {
@@ -2319,7 +2294,7 @@ export class StripeService {
               storeLimit: freePlan?.storeLimit!,
               productLimit: freePlan?.productLimit!,
             },
-            newSub.order.id as string,
+            newSub.order.id,
             { status: EnumOrderStatus.SUCCEEDED },
           );
         }

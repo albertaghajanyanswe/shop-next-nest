@@ -419,9 +419,9 @@ model TransferLog {
   stripeRefundId    String?   @map("stripe_refund_id")// ID рефунда покупателю
 
   // Суммы (в cents)
-  grossAmount       Int      @map("gross_amount")// полная сумма (что платил покупатель)
-  transferAmount    Int      @map("transfer_amount")// сумма для продавца (95%)
-  commission        Int      @map("commission")// комиссия платформы (5%)
+  grossAmount       Float      @map("gross_amount")// полная сумма (что платил покупатель)
+  transferAmount    Float      @map("transfer_amount")// сумма для продавца (95%)
+  commission        Float      @map("commission")// комиссия платформы (5%)
 
   // Статус
   status            String   // 'SUCCEEDED', 'FAILED', 'REVERSED', 'REFUNDED'
