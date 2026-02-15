@@ -155,12 +155,16 @@ export function ItemsTable<T extends TableSectionItem>({
                   disabled={
                     isLoadingRefundOrderItem ||
                     item.orderItemStatus ===
-                      GetOrderItemsWithUserDtoStatus.REFUNDED
+                      GetOrderItemsWithUserDtoStatus.REFUNDED ||
+                    item.orderItemStatus ===
+                      GetOrderItemsWithUserDtoStatus.CONFIRMED
                   }
                   onClick={() => {
                     if (
                       item.orderItemStatus !==
-                      GetOrderItemsWithUserDtoStatus.REFUNDED
+                        GetOrderItemsWithUserDtoStatus.REFUNDED &&
+                      item.orderItemStatus !==
+                        GetOrderItemsWithUserDtoStatus.CONFIRMED
                     ) {
                       refundOrderItem(item.orderItemId);
                     }
