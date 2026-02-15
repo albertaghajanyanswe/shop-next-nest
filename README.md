@@ -36,6 +36,7 @@ The platform supports online payments via Stripe and subscription-based limits f
 
 ```bash
 create postgres database with name <mystore-dev>
+create .env file based on .env.example and fill environment variables
 cd server
 npm install
 npm run start:dev
@@ -45,6 +46,7 @@ npm run start:dev
 
 ```bash
 cd frontend
+create .env file based on .env.example and fill environment variables
 npm install
 npm run dev
 ```
