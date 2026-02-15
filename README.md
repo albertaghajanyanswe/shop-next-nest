@@ -30,6 +30,25 @@ The platform supports online payments via Stripe and subscription-based limits f
 
 ---
 
+## ⚙️ Installation & Running
+
+### Backend
+
+```bash
+create postgres database with name <mystore-dev>
+cd server
+npm install
+npm run start:dev
+```
+
+### Frontend
+
+```bash
+cd frontend
+npm install
+npm run dev
+```
+
 ## ✨ Core Features
 
 ### 👤 Users
@@ -47,10 +66,17 @@ The platform supports online payments via Stripe and subscription-based limits f
 
 ### 📦 Products
 
-- Create / update / delete products
+- Create / get / update / delete products
 - Product price, description, and images
 - Product limits based on subscription plan
 - Browse and buy products from other stores
+
+### 📦 Categories
+- Create / get / update / delete categories
+
+### 📦 Brands
+- Create / get / update / delete brands
+
 
 ### 💳 Payments (Stripe)
 
@@ -75,9 +101,9 @@ The platform supports online payments via Stripe and subscription-based limits f
   - maximum number of products a seller can create
   - access to advanced features
 - Example plans:
-  - **Free** — up to 10 products
+  - **Free**     — up to 10 products
   - **Advanced** — up to 150 products
-  - **Premium** — unlimited products
+  - **Premium**  — unlimited products
 
 ---
 
