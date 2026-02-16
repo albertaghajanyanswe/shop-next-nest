@@ -5,6 +5,7 @@
  * The API description
  * OpenAPI spec version: 0.0.1
  */
+import type { ProductDtoIntendedFor } from './productDtoIntendedFor';
 
 export interface ProductDto {
   /** Product name */
@@ -29,4 +30,6 @@ export interface ProductDto {
   brandId: string;
   /** Product details */
   productDetails: string[];
+  /** Product intended for */
+  intendedFor: ProductDtoIntendedFor;
 }

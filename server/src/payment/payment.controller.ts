@@ -83,7 +83,77 @@ export class PaymentController {
   @Post('/create-connect-account')
   @Auth()
   async createConnectAccountStripe(@CurrentUser() user: User) {
+    if (process.env.ALLOW_PURCHASE !== 'true') {
+      throw new BadRequestException('Purchase products not allowed.');
+    }
     return this.paymentService.createConnectAccountStripe(user);
+  }
+
+  @Auth()
+  @Get('/create-login-link')
+  async createLoginLink(@CurrentUser() user: User) {
+    if (process.env.ALLOW_PURCHASE !== 'true') {
+      throw new BadRequestException('Purchase products not allowed.');
+    }
+    return await this.paymentService.createLoginLink(user);
+  }
+
+  @Auth()
+  @ApiOkResponse({ type: DistributeOrderDto })
+  @Post('/order/distribute-funds')
+  async orderPayToCustomer(
+    @CurrentUser() user: User,
+    @Body() dto: { orderId: string },
+  ) {
+    if (process.env.ALLOW_PURCHASE !== 'true') {
+      throw new BadRequestException('Purchase products not allowed.');
+    }
+    return await this.paymentService.orderPayToCustomer(user, dto.orderId);
+  }
+  @Auth()
+  @ApiOkResponse({ type: DistributeOrderItemDto })
+  @Post('/orderItem/distribute-funds')
+  async orderItemPayToCustomer(
+    @CurrentUser() user: User,
+    @Body() dto: { orderItemId: string },
+  ) {
+    if (process.env.ALLOW_PURCHASE !== 'true') {
+      throw new BadRequestException('Purchase products not allowed.');
+    }
+    return await this.paymentService.orderItemPayToCustomer(
+      user,
+      dto.orderItemId,
+    );
+  }
+
+  @Auth()
+  @ApiOkResponse({ type: RefundOrderDto })
+  @Post('/order/refund')
+  async refundOrder(
+    @CurrentUser() user: User,
+    @Body() dto: { reason?: string; orderId: string },
+  ) {
+    if (process.env.ALLOW_PURCHASE !== 'true') {
+      throw new BadRequestException('Purchase products not allowed.');
+    }
+    return this.paymentService.refundOrder(user, dto.orderId, dto.reason);
+  }
+
+  @Auth()
+  @ApiOkResponse({ type: RefundOrderItemDto })
+  @Post('/orderItem/refund')
+  async refundOrderItem(
+    @CurrentUser() user: User,
+    @Body() dto: { reason?: string; orderItemId: string },
+  ) {
+    if (process.env.ALLOW_PURCHASE !== 'true') {
+      throw new BadRequestException('Purchase products not allowed.');
+    }
+    return this.paymentService.refundOrderItem(
+      user,
+      dto.orderItemId,
+      dto.reason,
+    );
   }
 
   @Auth()
@@ -104,57 +174,5 @@ export class PaymentController {
         err?.message || 'Failed to simulate stripe test clock',
       );
     }
-  }
-
-  @Auth()
-  @Get('/create-login-link')
-  async createLoginLink(@CurrentUser() user: User) {
-    return await this.paymentService.createLoginLink(user);
-  }
-
-  @Auth()
-  @ApiOkResponse({ type: DistributeOrderDto })
-  @Post('/order/distribute-funds')
-  async orderPayToCustomer(
-    @CurrentUser() user: User,
-    @Body() dto: { orderId: string },
-  ) {
-    return await this.paymentService.orderPayToCustomer(user, dto.orderId);
-  }
-  @Auth()
-  @ApiOkResponse({ type: DistributeOrderItemDto })
-  @Post('/orderItem/distribute-funds')
-  async orderItemPayToCustomer(
-    @CurrentUser() user: User,
-    @Body() dto: { orderItemId: string },
-  ) {
-    return await this.paymentService.orderItemPayToCustomer(
-      user,
-      dto.orderItemId,
-    );
-  }
-
-  @Auth()
-  @ApiOkResponse({ type: RefundOrderDto })
-  @Post('/order/refund')
-  async refundOrder(
-    @CurrentUser() user: User,
-    @Body() dto: { reason?: string; orderId: string },
-  ) {
-    return this.paymentService.refundOrder(user, dto.orderId, dto.reason);
-  }
-
-  @Auth()
-  @ApiOkResponse({ type: RefundOrderItemDto })
-  @Post('/orderItem/refund')
-  async refundOrderItem(
-    @CurrentUser() user: User,
-    @Body() dto: { reason?: string; orderItemId: string },
-  ) {
-    return this.paymentService.refundOrderItem(
-      user,
-      dto.orderItemId,
-      dto.reason,
-    );
   }
 }

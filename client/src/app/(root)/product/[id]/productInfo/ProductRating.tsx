@@ -1,6 +1,8 @@
 import { GetReviewWithUserDto } from '@/generated/orval/types';
+import { Star } from 'lucide-react';
+import { memo } from 'react';
 
-export const ProductRating = ({
+const ProductRatingComponent = ({
   productReviews,
   leftTitle,
   className = '',
@@ -22,10 +24,13 @@ export const ProductRating = ({
           {leftTitle}
         </p>
       )}
-      <div className='w-full text-end text-sm'>
-        ⭐ {rating.toFixed(1) || ' '}
+      <div className='flex w-full items-center gap-x-1 text-end text-sm place-content-end'>
+        <Star className='inline-block size-5 fill-yellow-400 text-yellow-400' />
+        {rating.toFixed(1) || ' '}
         <span className='text-muted-foreground'>{` • ${productReviews?.length} reviews`}</span>
       </div>
     </div>
   );
 };
+
+export const ProductRating = memo(ProductRatingComponent);

@@ -23,6 +23,7 @@ import { useLogout } from '@/hooks/queries/user/useLogout';
 import { GetUserDto } from '@/generated/orval/types';
 import Image from 'next/image';
 import { generateImgPath } from '@/utils/imageUtils';
+import { EnvVariables } from '@/shared/envVariables';
 
 const menuItems = (user: GetUserDto) => {
   return [
@@ -55,7 +56,7 @@ const menuItems = (user: GetUserDto) => {
       value: 'Account Settings',
       icon: Settings,
       link: DASHBOARD_URL.settings(),
-      show: true,
+      show: EnvVariables.NEXT_PUBLIC_ALLOW_PURCHASE,
     },
   ];
 };

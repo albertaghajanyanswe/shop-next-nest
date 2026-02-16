@@ -6,6 +6,7 @@ import { useCreateLoginLink } from '@/hooks/stripe/useCreateLoginLink';
 import { stripeService } from '@/services/stripe.service.ts';
 import { StripeActionBlock } from './StripeActionBlock';
 import { useProfile } from '@/hooks/useProfile';
+import { EnvVariables } from '@/shared/envVariables';
 
 export default function AccountSettings() {
   const { user } = useProfile();
@@ -51,7 +52,11 @@ export default function AccountSettings() {
         }
         buttonText='Register on Stripe as Seller'
         onButtonClick={handleConnectStripeAccount}
-        btnDisabled={!!user?.stripeAccountId || isLoadingConnectAccount}
+        btnDisabled={
+          !!user?.stripeAccountId ||
+          isLoadingConnectAccount ||
+          !EnvVariables.NEXT_PUBLIC_ALLOW_PURCHASE
+        }
       />
 
       <StripeActionBlock
@@ -61,7 +66,11 @@ Click the button below to securely log in to your Stripe Dashboard and manage yo
 Access your account anytime to track orders and payments.`}
         buttonText='Login to Stripe Dashboard'
         onButtonClick={handleLoginStripeDashboard}
-        btnDisabled={!user?.stripeAccountId || isLoadingConnectAccount}
+        btnDisabled={
+          !user?.stripeAccountId ||
+          isLoadingConnectAccount ||
+          !EnvVariables.NEXT_PUBLIC_ALLOW_PURCHASE
+        }
       />
     </div>
   );

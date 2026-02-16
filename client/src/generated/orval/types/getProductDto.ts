@@ -5,8 +5,16 @@
  * The API description
  * OpenAPI spec version: 0.0.1
  */
+import type { GetProductDtoDescription } from './getProductDtoDescription';
+import type { GetProductDtoOldPrice } from './getProductDtoOldPrice';
 import type { GetProductDtoIntendedFor } from './getProductDtoIntendedFor';
 import type { GetProductDtoState } from './getProductDtoState';
+import type { GetProductDtoStoreId } from './getProductDtoStoreId';
+import type { GetProductDtoUserId } from './getProductDtoUserId';
+import type { GetProductDtoCategoryId } from './getProductDtoCategoryId';
+import type { GetProductDtoBrandId } from './getProductDtoBrandId';
+import type { GetProductDtoColorId } from './getProductDtoColorId';
+import type { TotalSoldDto } from './totalSoldDto';
 
 export interface GetProductDto {
   /** Product ID */
@@ -17,12 +25,18 @@ export interface GetProductDto {
   updatedAt: string;
   /** Product title */
   title: string;
-  /** Product description */
-  description?: string;
+  /**
+   * Product description
+   * @nullable
+   */
+  description?: GetProductDtoDescription;
   /** Product price */
   price: number;
-  /** Old price */
-  oldPrice?: number;
+  /**
+   * Old price
+   * @nullable
+   */
+  oldPrice?: GetProductDtoOldPrice;
   /** Product quantity */
   quantity: number;
   /** Is original */
@@ -33,16 +47,31 @@ export interface GetProductDto {
   intendedFor: GetProductDtoIntendedFor;
   /** Product state */
   state: GetProductDtoState;
-  /** Store ID */
-  storeId?: string;
-  /** User ID */
-  userId?: string;
-  /** Category ID */
-  categoryId?: string;
-  /** Brand ID */
-  brandId: string;
-  /** Color ID */
-  colorId: string;
+  /**
+   * Store ID
+   * @nullable
+   */
+  storeId?: GetProductDtoStoreId;
+  /**
+   * User ID
+   * @nullable
+   */
+  userId?: GetProductDtoUserId;
+  /**
+   * Category ID
+   * @nullable
+   */
+  categoryId?: GetProductDtoCategoryId;
+  /**
+   * Brand ID
+   * @nullable
+   */
+  brandId?: GetProductDtoBrandId;
+  /**
+   * Color ID
+   * @nullable
+   */
+  colorId?: GetProductDtoColorId;
   /** Is published */
   isPublished: boolean;
   /** Is blocked */
@@ -51,4 +80,8 @@ export interface GetProductDto {
   totalViews: number;
   /** Total likes */
   totalLikes: number;
+  /** Total number of sold */
+  orderItems: TotalSoldDto[];
+  /** Sold count */
+  soldCount: number;
 }

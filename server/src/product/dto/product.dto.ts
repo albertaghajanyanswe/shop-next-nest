@@ -13,7 +13,7 @@ import {
 import { GetBrandDto } from 'src/brand/dto/brand.dto';
 import { GetCategoryDto } from 'src/category/dto/category.dto';
 import { GetColorDto } from 'src/color/dto/color.dto';
-import { GetReviewDto, GetReviewWithUserDto } from 'src/review/dto/review.dto';
+import { GetReviewWithUserDto } from 'src/review/dto/review.dto';
 import { GetStoreDto } from 'src/store/dto/store.dto';
 import { GetUserDto } from 'src/user/dto/user.dto';
 import { ProductDetailDto } from './productDetail.dto';
@@ -133,7 +133,11 @@ export class ProductDto {
     ).join(', ')}`,
   })
   intendedFor: EnumProductIntendedFor;
+}
 
+export class TotalSoldDto {
+  @ApiProperty({ example: 3 })
+  quantity: number;
 }
 
 export class GetProductDto {
@@ -154,19 +158,25 @@ export class GetProductDto {
     example: 'High-end laptop',
     description: 'Product description',
     required: false,
+    nullable: true,
   })
   @IsOptional()
   @IsString()
-  description?: string;
+  description?: string | null;
 
   @ApiProperty({ example: 2000, description: 'Product price' })
   @IsNumber()
   price: number;
 
-  @ApiProperty({ example: 2200, description: 'Old price', required: false })
+  @ApiProperty({
+    example: 2200,
+    description: 'Old price',
+    required: false,
+    nullable: true,
+  })
   @IsOptional()
   @IsNumber()
-  oldPrice?: number;
+  oldPrice?: number | null;
 
   @ApiProperty({ example: 3, description: 'Product quantity' })
   @IsNumber()
@@ -201,36 +211,41 @@ export class GetProductDto {
     example: 'storeId123',
     description: 'Store ID',
     required: false,
+    nullable: true,
   })
   @IsOptional()
   @IsString()
-  storeId?: string;
+  storeId?: string | null;
 
   @ApiProperty({
     example: 'userId123',
     description: 'User ID',
     required: false,
+    nullable: true,
   })
   @IsOptional()
   @IsString()
-  userId?: string;
+  userId?: string | null;
 
   @ApiProperty({
     example: 'categoryId123',
     description: 'Category ID',
     required: false,
+    nullable: true,
   })
   @IsOptional()
   @IsString()
-  categoryId?: string;
+  categoryId?: string | null;
 
-  @ApiProperty({ example: 'brandId123', description: 'Brand ID' })
+  @ApiProperty({ example: 'brandId123', description: 'Brand ID', required: false, nullable: true })
+  @IsOptional()
   @IsString()
-  brandId: string;
+  brandId?: string | null;
 
-  @ApiProperty({ example: 'colorId123', description: 'Color ID' })
+  @ApiProperty({ example: 'colorId123', description: 'Color ID', required: false, nullable: true })
+  @IsOptional()
   @IsString()
-  colorId: string;
+  colorId?: string | null;
 
   @ApiProperty({ example: true, description: 'Is published' })
   @IsBoolean()
@@ -247,6 +262,19 @@ export class GetProductDto {
   @ApiProperty({ example: 0, description: 'Total likes' })
   @IsNumber()
   totalLikes: number;
+
+  @ApiProperty({
+    type: () => TotalSoldDto,
+    isArray: true,
+    description: 'Total number of sold',
+  })
+  @IsOptional()
+  orderItems?: TotalSoldDto[];
+
+  @ApiProperty({ example: 3, description: 'Sold count' })
+  @IsOptional()
+  @IsNumber()
+  soldCount?: number;
 }
 
 export class GetProductWithDetails extends GetProductDto {

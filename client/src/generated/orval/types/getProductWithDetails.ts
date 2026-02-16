@@ -5,8 +5,16 @@
  * The API description
  * OpenAPI spec version: 0.0.1
  */
+import type { GetProductWithDetailsDescription } from './getProductWithDetailsDescription';
+import type { GetProductWithDetailsOldPrice } from './getProductWithDetailsOldPrice';
 import type { GetProductWithDetailsIntendedFor } from './getProductWithDetailsIntendedFor';
 import type { GetProductWithDetailsState } from './getProductWithDetailsState';
+import type { GetProductWithDetailsStoreId } from './getProductWithDetailsStoreId';
+import type { GetProductWithDetailsUserId } from './getProductWithDetailsUserId';
+import type { GetProductWithDetailsCategoryId } from './getProductWithDetailsCategoryId';
+import type { GetProductWithDetailsBrandId } from './getProductWithDetailsBrandId';
+import type { GetProductWithDetailsColorId } from './getProductWithDetailsColorId';
+import type { TotalSoldDto } from './totalSoldDto';
 import type { GetStoreDto } from './getStoreDto';
 import type { GetCategoryDto } from './getCategoryDto';
 import type { GetBrandDto } from './getBrandDto';
@@ -24,12 +32,18 @@ export interface GetProductWithDetails {
   updatedAt: string;
   /** Product title */
   title: string;
-  /** Product description */
-  description?: string;
+  /**
+   * Product description
+   * @nullable
+   */
+  description?: GetProductWithDetailsDescription;
   /** Product price */
   price: number;
-  /** Old price */
-  oldPrice?: number;
+  /**
+   * Old price
+   * @nullable
+   */
+  oldPrice?: GetProductWithDetailsOldPrice;
   /** Product quantity */
   quantity: number;
   /** Is original */
@@ -40,16 +54,31 @@ export interface GetProductWithDetails {
   intendedFor: GetProductWithDetailsIntendedFor;
   /** Product state */
   state: GetProductWithDetailsState;
-  /** Store ID */
-  storeId?: string;
-  /** User ID */
-  userId?: string;
-  /** Category ID */
-  categoryId?: string;
-  /** Brand ID */
-  brandId: string;
-  /** Color ID */
-  colorId: string;
+  /**
+   * Store ID
+   * @nullable
+   */
+  storeId?: GetProductWithDetailsStoreId;
+  /**
+   * User ID
+   * @nullable
+   */
+  userId?: GetProductWithDetailsUserId;
+  /**
+   * Category ID
+   * @nullable
+   */
+  categoryId?: GetProductWithDetailsCategoryId;
+  /**
+   * Brand ID
+   * @nullable
+   */
+  brandId?: GetProductWithDetailsBrandId;
+  /**
+   * Color ID
+   * @nullable
+   */
+  colorId?: GetProductWithDetailsColorId;
   /** Is published */
   isPublished: boolean;
   /** Is blocked */
@@ -58,6 +87,10 @@ export interface GetProductWithDetails {
   totalViews: number;
   /** Total likes */
   totalLikes: number;
+  /** Total number of sold */
+  orderItems: TotalSoldDto[];
+  /** Sold count */
+  soldCount: number;
   store?: GetStoreDto;
   category?: GetCategoryDto;
   brand?: GetBrandDto;

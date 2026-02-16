@@ -7,6 +7,7 @@ import { GetProductWithDetails } from '@/generated/orval/types';
 import QueryString from 'qs';
 import { usePathname } from 'next/navigation';
 import { ProductRating } from '@/app/(root)/product/[id]/productInfo/ProductRating';
+import ProductSoldCount from '@/app/(root)/product/[id]/productInfo/ProductSoldCount';
 
 interface ProductCardInfoProps {
   product: GetProductWithDetails;
@@ -91,7 +92,10 @@ function ProductCardInfoUnMemo({
           </span>
         )}
       </div>
-      <ProductRating className='mb-2' productReviews={product.reviews || []} />
+      <div className='xs:flex-col my-2 flex flex-row items-end justify-between gap-1 md:flex-row'>
+        <ProductSoldCount soldCount={product.soldCount} />
+        <ProductRating className='' productReviews={product.reviews || []} />
+      </div>
     </>
   );
 }

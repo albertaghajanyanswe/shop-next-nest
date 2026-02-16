@@ -5,7 +5,12 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 import { PrismaService } from 'src/prisma.service';
-import { ProductDto } from './dto/product.dto';
+import {
+  GetProductDto,
+  GetProductWithDetails,
+  GetProductWithDetailsAndCount,
+  ProductDto,
+} from './dto/product.dto';
 import { QueryPayloadBuilderService } from 'src/queryPayloadBuilder/QueryPayloadBuilder';
 import { CloudinaryFileService } from 'src/cloudinary-file/cloudinary-file.service';
 import { GetSubscriptionsDto } from 'src/subscription/dto/subscription.dto';
@@ -44,12 +49,18 @@ export class ProductService {
         brand: true,
         reviews: true,
         user: true,
+        orderItems: {
+          select: {
+            quantity: true,
+          },
+        },
       },
     });
+    const productsWithSoldCount = this.getSoldCount(products);
     const totalCount = await this.prisma.product.count({
       where: { ...where, ...this.getDefaultWhere() },
     });
-    return { products, totalCount };
+    return { products: productsWithSoldCount, totalCount };
   }
 
   async getByStoreId(storeId: string, params?: string) {
@@ -71,14 +82,20 @@ export class ProductService {
         store: true,
         brand: true,
         user: true,
+        orderItems: {
+          select: {
+            quantity: true,
+          },
+        },
       },
     });
 
+    const productsWithSoldCount = this.getSoldCount(products);
     const totalCount = await this.prisma.product.count({
       where: payload.where,
     });
 
-    return { products, totalCount };
+    return { products: productsWithSoldCount, totalCount };
   }
 
   async getByIdHelper(id: string) {
@@ -97,15 +114,23 @@ export class ProductService {
             user: true,
           },
         },
+        orderItems: {
+          select: {
+            quantity: true,
+          },
+        },
       },
     });
 
-    if (!product) {
+    const productWithSoldCount = this.getSoldCount([
+      product as unknown as GetProductWithDetails,
+    ])[0];
+    if (!productWithSoldCount) {
       this.logger.error(`Product with ID ${id} not found.`);
       throw new NotFoundException('Product not found.');
     }
 
-    return product;
+    return productWithSoldCount;
   }
 
   async getById(id: string) {
@@ -144,7 +169,7 @@ export class ProductService {
     });
 
     if (!mostPopularProducts.length) {
-      return this.prisma.product.findMany({
+      const allProducts = this.prisma.product.findMany({
         ...(payload.take ? { take: payload.take } : {}),
         ...(payload.skip ? { skip: payload.skip } : {}),
         orderBy: {
@@ -154,8 +179,18 @@ export class ProductService {
           category: true,
           brand: true,
           store: true,
+          orderItems: {
+            select: {
+              quantity: true,
+            },
+          },
         },
       });
+
+      const productsWithSoldCount = this.getSoldCount(
+        allProducts as unknown as GetProductWithDetails[],
+      );
+      return productsWithSoldCount;
     }
     const productIds = mostPopularProducts.map((item) => item.productId);
 
@@ -169,12 +204,20 @@ export class ProductService {
         category: true,
         brand: true,
         store: true,
+        orderItems: {
+          select: {
+            quantity: true,
+          },
+        },
       },
       ...(payload.take ? { take: payload.take } : {}),
       ...(payload.skip ? { skip: payload.skip } : {}),
     });
 
-    return products;
+    const productsWithSoldCount = this.getSoldCount(
+      products as unknown as GetProductWithDetails[],
+    );
+    return productsWithSoldCount;
   }
 
   async getSimilar(id: string, params?: string) {
@@ -205,11 +248,19 @@ export class ProductService {
       include: {
         category: true,
         store: true,
+        orderItems: {
+          select: {
+            quantity: true,
+          },
+        },
       },
       ...rest,
     });
 
-    return similarProducts;
+    const similarProductsWithSoldCount = this.getSoldCount(
+      similarProducts as unknown as GetProductWithDetails[],
+    );
+    return similarProductsWithSoldCount;
   }
 
   async create(storeId: string, userId: string, dto: ProductDto) {
@@ -376,5 +427,21 @@ export class ProductService {
         isPublished: false,
       },
     });
+  }
+
+  getSoldCount(products: GetProductWithDetails[]) {
+    const productsWithSoldCount = products.map((product) => {
+      const soldCount = product.orderItems?.reduce(
+        (sum, item) => sum + item.quantity,
+        0,
+      );
+
+      return {
+        ...product,
+        soldCount,
+      };
+    });
+
+    return productsWithSoldCount;
   }
 }

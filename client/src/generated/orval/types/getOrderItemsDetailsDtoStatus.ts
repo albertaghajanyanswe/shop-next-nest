@@ -17,6 +17,7 @@ export const GetOrderItemsDetailsDtoStatus = {
   PENDING: 'PENDING',
   FAILED: 'FAILED',
   REFUNDED: 'REFUNDED',
+  CANCELLED: 'CANCELLED',
   CONFIRMED: 'CONFIRMED',
   EXPIRED: 'EXPIRED',
 } as const;
