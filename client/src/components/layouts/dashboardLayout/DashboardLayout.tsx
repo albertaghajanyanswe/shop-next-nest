@@ -17,7 +17,7 @@ import {
 } from 'lucide-react';
 import { cn } from '@/utils/common';
 import { Card } from '@/components/ui/Card';
-import { DASHBOARD_URL } from '@/config/url.config';
+import { DASHBOARD_URL, PUBLIC_URL } from '@/config/url.config';
 import { MenuItem } from '../storeLayout/sidebar/navigation/MenuItem';
 import { useLogout } from '@/hooks/queries/user/useLogout';
 import { GetUserDto } from '@/generated/orval/types';
@@ -51,7 +51,12 @@ const menuItems = (user: GetUserDto) => {
       link: DASHBOARD_URL.subscriptions(),
       show: true,
     },
-    { value: 'Support service', icon: HelpCircle, link: '', show: true },
+    {
+      value: 'Support service',
+      icon: HelpCircle,
+      link: PUBLIC_URL.contactUs(),
+      show: true,
+    },
     {
       value: 'Account Settings',
       icon: Settings,

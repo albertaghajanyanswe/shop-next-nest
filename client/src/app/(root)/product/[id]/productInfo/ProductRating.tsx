@@ -24,7 +24,7 @@ const ProductRatingComponent = ({
           {leftTitle}
         </p>
       )}
-      <div className='flex w-full items-center gap-x-1 text-end text-sm place-content-end'>
+      <div className='flex w-full place-content-end items-center gap-x-1 text-end text-sm'>
         <Star className='inline-block size-5 fill-yellow-400 text-yellow-400' />
         {rating.toFixed(1) || ' '}
         <span className='text-muted-foreground'>{` • ${productReviews?.length} reviews`}</span>
