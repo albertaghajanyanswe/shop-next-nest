@@ -1,3 +1,7 @@
+import {
+  GetOrderDtoStatus,
+  GetOrderItemsDetailsDtoStatus,
+} from '@/generated/orval/types';
 import { ICartItem } from './cart.interface';
 import { IUser } from './user.interface';
 
@@ -50,4 +54,12 @@ export interface IOrder {
   status: EnumOrderStatus;
   user: IUser;
   totalPrice: number;
+}
+
+export interface IUpdateOrder {
+  status: GetOrderDtoStatus;
+}
+
+export interface IUpdateOrderItem {
+  status: GetOrderItemsDetailsDtoStatus;
 }

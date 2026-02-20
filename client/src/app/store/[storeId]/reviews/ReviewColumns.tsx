@@ -49,6 +49,25 @@ export const reviewColumns: ColumnDef<IReviewColumn>[] = [
   },
 
   {
+    accessorKey: 'text',
+    meta: {
+      className: 'w-[25%]',
+      textClassName: 'whitespace-pre-wrap max-w-[350px]',
+      sortField: 'text',
+    },
+    header: ({ column }) => {
+      return (
+        <Button
+          variant='ghost'
+        >
+          text
+          <ArrowUpDown className='ml-2 size-4' />
+        </Button>
+      );
+    },
+  },
+
+  {
     accessorKey: 'username',
     meta: {
       textClassName: 'truncate overflow-hidden text-ellipsis whitespace-nowrap',

@@ -11,6 +11,7 @@ import { EnumRole, PaymentProvider } from '@prisma/client';
 import type { Prisma, User } from '@prisma/client';
 import { QueryPayloadBuilderService } from 'src/queryPayloadBuilder/QueryPayloadBuilder';
 import { excludeFields } from 'src/utils/types/stripe';
+import { UpdateOrderDto, UpdateOrderItemDto } from './dto/update-order.dto';
 
 @Injectable()
 export class OrderService {
@@ -120,6 +121,7 @@ export class OrderService {
         cachedProductTitle: true,
         cachedProductImages: true,
         productId: true,
+        status: true,
 
         user: {
           select: {
@@ -333,6 +335,24 @@ export class OrderService {
         orderItems: {
           create: orderItems,
         },
+      },
+    });
+  }
+
+  async update(id: string, dto: UpdateOrderDto) {
+    return this.prisma.order.update({
+      where: { id },
+      data: {
+        status: dto.status,
+      },
+    });
+  }
+
+    async updateOrderItem(id: string, dto: UpdateOrderItemDto) {
+    return this.prisma.orderItem.update({
+      where: { id },
+      data: {
+        status: dto.status,
       },
     });
   }

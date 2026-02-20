@@ -13,7 +13,7 @@ export const useUpdateBrand = () => {
   const queryClient = useQueryClient();
 
   const { mutate: updateBrand, isPending: isLoadingUpdate } = useMutation({
-    mutationKey: QUERY_KEYS.updateColor,
+    mutationKey: QUERY_KEYS.updateBrand,
     mutationFn: (data: IBrandInput) => brandService.update(brandId, data),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: QUERY_KEYS.getStoreBrands });

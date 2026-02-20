@@ -52,15 +52,28 @@ export default function SoldOrders() {
       ) as GetOrderItemsDetailsDto;
 
       if (found) {
-        setSelectedOrderItem(found);
+        setSelectedOrderItemId(found.id);
         setIsOpen(true);
       }
     },
     [orderItemsData?.orderItems]
   );
 
-  const [selectedOrderItem, setSelectedOrderItem] =
-    useState<GetOrderItemsDetailsDto | null>(null);
+  const [selectedOrderItemId, setSelectedOrderItemId] = useState<string | null>(
+    null
+  );
+
+  const selectedOrderItem = useMemo(() => {
+    if (!selectedOrderItemId) return null;
+
+    return (
+      orderItemsData?.orderItems?.find((i) => i.id === selectedOrderItemId) ??
+      null
+    );
+  }, [selectedOrderItemId, orderItemsData?.orderItems]);
+
+  // const [selectedOrderItem, setSelectedOrderItem] =
+  //   useState<GetOrderItemsDetailsDto | null>(null);
 
   const [isOpen, setIsOpen] = useState(false);
 

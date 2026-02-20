@@ -156,6 +156,7 @@ export function OrderItemDetailsModal<T extends TableSectionItem>({
           orderItemId={orderItem.id}
           showConfirm={showConfirm}
           showRefund={showRefund}
+          orderItemStatus={orderItem.status}
         />
       </div>
     </CustomModal>

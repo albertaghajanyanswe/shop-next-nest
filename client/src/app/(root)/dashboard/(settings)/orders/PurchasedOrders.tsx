@@ -58,15 +58,22 @@ export default function PurchasedOrders() {
       ) as GetOrderWithItemsDto;
 
       if (found) {
-        setSelectedOrder(found);
+        setSelectedOrderId(found.id);
         setIsOpen(true);
       }
     },
     [ordersData?.orders]
   );
 
-  const [selectedOrder, setSelectedOrder] =
-    useState<GetOrderWithItemsDto | null>(null);
+  // const [selectedOrder, setSelectedOrder] =
+  //   useState<GetOrderWithItemsDto | null>(null);
+  const [selectedOrderId, setSelectedOrderId] = useState<string | null>(null);
+
+  const selectedOrder = useMemo(() => {
+    if (!selectedOrderId) return null;
+
+    return ordersData?.orders?.find((i) => i.id === selectedOrderId) ?? null;
+  }, [selectedOrderId, ordersData?.orders]);
 
   const [isOpen, setIsOpen] = useState(false);
 

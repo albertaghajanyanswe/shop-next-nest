@@ -1,6 +1,8 @@
 import { axiosWithAuth } from '@/api/api.interceptors';
 import { API_URL } from '@/config/api.config';
 import {
+  GetOrderDto,
+  GetOrderItemsDetailsDto,
   GetOrderItemsDetailsDtoAndCount,
   GetOrderWithItemsDto,
   GetOrderWithItemsDtoAndCount,
@@ -9,6 +11,8 @@ import { iParams } from '@/shared/types/filter.interface';
 import {
   EnumOrderStatus,
   IPaymentResponse,
+  IUpdateOrder,
+  IUpdateOrderItem,
 } from '@/shared/types/order.interface';
 
 export type TypeData = {
@@ -76,6 +80,27 @@ class OrderService {
       method: 'POST',
       data,
     });
+  }
+
+  async update(id: string, data: IUpdateOrder) {
+    const { data: updatedOrder } = await axiosWithAuth<GetOrderDto>({
+      url: API_URL.orders(`/${id}`),
+      method: 'PUT',
+      data,
+    });
+
+    return updatedOrder;
+  }
+
+  async updateOrderItem(id: string, data: IUpdateOrderItem) {
+    const { data: updatedOrderItem } =
+      await axiosWithAuth<GetOrderItemsDetailsDto>({
+        url: API_URL.orders(`/orderItems/${id}`),
+        method: 'PUT',
+        data,
+      });
+
+    return updatedOrderItem;
   }
 }
 
