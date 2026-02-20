@@ -29,3 +29,16 @@ chmod 400 your-key.pem
 ssh -i "your-key.pem" ec2-user@<EC2_PUBLIC_IP>
 Example - ssh -i "mystore-frankfurt.pem" ubuntu@ec2-18-184-69-253.eu-central-1.compute.amazonaws.com
 ```
+
+## Setup HTTPS
+
+1. sudo apt install certbot python-certbot-nginx
+2. sudo certbot --nginx -d <your domain name>
+   1. example: sudo certbot --nginx -d staging.myshop.com
+3. Add this setting on nginx.conf file
+   1. listen 443 ssl;
+   2. ssl_certificate /etc/letsencrypt/live/<your domain>/fullchain.pem
+   3. ssl_certificate_key /etc/letsencrypt/live/<your domain>/private.pem
+   4. include /etc/letsencrypt/options-ssl-nginx.conf
+   5. ssl_dhparam /etc/letsencrypt/ssl-dhparam.pem
+

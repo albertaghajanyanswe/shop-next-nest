@@ -31,24 +31,26 @@ const OrderItemTotalSectionComponent = ({
     <div
       className={`flex w-full flex-row items-center ${isShowDistributeBtn ? 'justify-between' : 'justify-end'} border-t pt-4`}
     >
-      {isShowDistributeBtn && (
-        <Button
-          disabled={isLoadingDistributeFundsOrderItem}
-          onClick={() => distributeFundsOrderItem(orderItemId)}
-          variant='default'
-        >
-          Confirm
-        </Button>
-      )}
-      {isShowRefundBtn && (
-        <Button
-          disabled={isLoadingRefundOrderItem}
-          onClick={() => refundOrderItem(orderItemId)}
-          variant='outline'
-        >
-          Refund
-        </Button>
-      )}
+      <div className={`flex flex-row gap-2`}>
+        {isShowDistributeBtn && (
+          <Button
+            disabled={isLoadingDistributeFundsOrderItem}
+            onClick={() => distributeFundsOrderItem(orderItemId)}
+            variant='default'
+          >
+            Confirm
+          </Button>
+        )}
+        {isShowRefundBtn && (
+          <Button
+            disabled={isLoadingRefundOrderItem}
+            onClick={() => refundOrderItem(orderItemId)}
+            variant='outline'
+          >
+            Refund
+          </Button>
+        )}
+      </div>
       <TotalSection title={title} value={value} />
     </div>
   );

@@ -80,8 +80,8 @@ export function ItemsTable<T extends TableSectionItem>({
   const { refundOrderItem, isLoadingRefundOrderItem } = useRefundOrderItem();
   console.log('items - ', items);
   return (
-    <div className={`space-y-3 ${className}`}>
-      <div className='hidden grid-cols-12 gap-4 p-0 text-sm font-semibold text-neutral-700 sm:grid'>
+    <div className={`space-y-3 wrap-anywhere ${className}`}>
+      <div className='hidden grid-cols-12 gap-4 p-0 text-sm font-semibold text-neutral-900 sm:grid'>
         {columns.map((col) => (
           <div key={col.key} className={`${col.span || 'col-span-3'}`}>
             {col.title}
@@ -93,7 +93,7 @@ export function ItemsTable<T extends TableSectionItem>({
       {items.map((item) => (
         <div
           key={item.id}
-          className='border-shop-light-green/70 gap-4 rounded-lg border p-2'
+          className='border-shop-light-green/70 xs:max-w-none max-w-fit gap-4 rounded-lg border py-4 px-4'
         >
           <div className='flex flex-col gap-4 sm:grid sm:grid-cols-12'>
             {columns.map((col) => (
@@ -101,7 +101,7 @@ export function ItemsTable<T extends TableSectionItem>({
                 key={`${item.id}-${col.key}`}
                 className={`${col.span || 'col-span-3'} flex items-center justify-between wrap-anywhere`}
               >
-                <span className='text-sm font-semibold text-neutral-700 sm:hidden'>
+                <span className='text-sm font-semibold text-neutral-900 sm:hidden'>
                   {col.title}
                 </span>
 
@@ -109,22 +109,22 @@ export function ItemsTable<T extends TableSectionItem>({
               </div>
             ))}
           </div>
-          <div className='xs:items-start mt-4 flex flex-col justify-between sm:mt-2 sm:flex-row sm:items-center'>
-            <div className='mr-4 w-full'>
-              <p className='mb-4 flex w-full flex-row justify-between text-xs sm:mb-0'>
-                <b className='text-sm'>Order Item ID:</b>{' '}
-                <span className='ml-2'>{item.id}</span>
-              </p>
-              <p className='mb-4 flex w-full flex-row justify-between text-xs sm:mb-0'>
-                <b className='text-sm'>Product ID:</b>{' '}
-                <span className='ml-2'>{item.productId}</span>
-              </p>
-              <p className='mb-4 flex w-full flex-row justify-between text-xs sm:mb-0'>
-                <b className='text-sm'>Store ID:</b>{' '}
-                <span className='ml-2'>{item.storeId}</span>
-              </p>
+          <div className='xs:items-start mt-4 flex flex-col justify-between sm:mt-2 sm:items-center'>
+            <div className='w-full border-t border-neutral-200 pt-4'>
+              <div className='mb-4 flex w-full flex-row justify-between text-xs sm:mb-0'>
+                <p className='font-semibold text-sm'>Order Item ID</p>{' '}
+                <span className='ml-2'>{item.id || '-'}</span>
+              </div>
+              <div className='mb-4 flex w-full flex-row justify-between text-xs sm:mb-0'>
+                <p className='font-semibold text-sm'>Product ID</p>{' '}
+                <span className='ml-2'>{item.productId || '-'}</span>
+              </div>
+              <div className='mb-4 flex w-full flex-row justify-between text-xs sm:mb-0'>
+                <p className='font-semibold text-sm'>Store ID</p>{' '}
+                <span className='ml-2'>{item.storeId || '-'}</span>
+              </div>
             </div>
-            <div className='flex flex-row gap-1'>
+            <div className='flex flex-row gap-1 mt-2 self-start'>
               {item.orderItemId && showConfirm && (
                 <Button
                   disabled={

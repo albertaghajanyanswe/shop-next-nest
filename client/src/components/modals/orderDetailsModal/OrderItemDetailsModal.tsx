@@ -128,7 +128,7 @@ export function OrderItemDetailsModal<T extends TableSectionItem>({
       onOpenChange={setIsOpen}
       size='xl'
     >
-      <div className='space-y-4'>
+      <div className='xs:max-w-none max-w-fit space-y-4'>
         {/* Customer Info */}
         <InfoSection
           items={getOrderInfoItems()}
