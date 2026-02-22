@@ -24,9 +24,9 @@ export class UserService {
         subscription: true,
       },
     });
-    if (!user) {
-      throw new NotFoundException('User not found.');
-    }
+    // if (!user) {
+    //   throw new NotFoundException('User not found.');
+    // }
     return user;
   }
 
@@ -96,7 +96,10 @@ export class UserService {
   }
 
   async update(user: User, dto: UpdateUserDto) {
-    await this.getById(user.id);
+    const currUser = await this.getById(user.id);
+    if (!currUser) {
+      throw new NotFoundException('User not found.');
+    }
     return this.prismaService.user.update({
       where: {
         id: user.id,
