@@ -87,16 +87,17 @@ export default function ProductInfo({ product }: ProductInfoProps) {
             <span className='text-shop-red font-semibold'>
               {formatPrice(product.price)}
             </span>
-            {product.oldPrice && product.oldPrice !== product.price && (
-              <span className='ml-2 text-gray-500 line-through'>
-                {formatPrice(product.oldPrice)}
-              </span>
-            )}
+            {typeof product.oldPrice === 'number' &&
+              product.oldPrice !== product.price && (
+                <span className='ml-2 text-gray-500 line-through'>
+                  {formatPrice(product.oldPrice)}
+                </span>
+              )}
           </div>
           <hr className='my-3' />
           <ShowMoreText
             className='text-muted-foreground text-sm'
-            text={product.description}
+            text={product.description as unknown as string}
           />
           <hr className='my-3' />
 
@@ -143,14 +144,13 @@ export default function ProductInfo({ product }: ProductInfoProps) {
             btnVariant='outline'
             onlyIcon={false}
           />
-          {product.userId === user?.id ||
-            (user?.role === 'SUPER_ADMIN' && (
-              <EditProductButton
-                product={product}
-                className='flex w-full'
-                onlyIcon={false}
-              />
-            ))}
+          {(product.userId === user?.id || user?.role === 'SUPER_ADMIN') && (
+            <EditProductButton
+              product={product}
+              className='flex w-full'
+              onlyIcon={false}
+            />
+          )}
         </div>
       </div>
     </div>

@@ -78,7 +78,7 @@ export function ProductForm({
     mode: 'onChange',
     values: {
       title: product?.title || '',
-      description: product?.description || '',
+      description: typeof product?.description === 'string' ? product.description : '',
       images: product?.images || [],
       price: product?.price || 0,
       categoryId: product?.category?.id || '',
@@ -391,7 +391,7 @@ export function ProductForm({
               rules={{ required: 'Intended for is required' }}
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>State</FormLabel>
+                  <FormLabel>Intended For</FormLabel>
                   <Select
                     disabled={isLoading}
                     onValueChange={field.onChange}
