@@ -27,17 +27,17 @@ export interface GetUserDto {
   name: string;
   /** Profile picture URL */
   picture?: string;
-  /** Store country */
+  /** User country */
   country?: string;
-  /** Store city */
+  /** User city */
   city?: string;
-  /** Store address */
+  /** User address */
   address?: string;
-  /** Store phone */
+  /** User phone */
   phone?: string;
   /** Username */
   username?: string;
-  /** Stores created by user */
+  /** User stores list */
   stores?: GetStoreDto[];
   /** Favorite products */
   favorites?: GetProductDto[];

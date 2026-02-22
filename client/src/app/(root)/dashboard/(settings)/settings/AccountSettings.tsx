@@ -33,21 +33,17 @@ export default function AccountSettings() {
             To start selling products and accepting payments and manage your
             sales, you need a Stripe seller account. Click the button below to
             quickly register or log in. After completing it, you can:
-            {
-              <p className='mt-1 text-xs leading-relaxed'>
-                - Receive payouts to your bank account
-              </p>
-            }
-            {
-              <p className='text-xs leading-relaxed'>
-                - Manage your products and orderst
-              </p>
-            }
-            {
-              <p className='text-xs leading-relaxed'>
-                - Access your Stripe Dashboard
-              </p>
-            }
+            <ul className='list-disc px-4'>
+              <li className='mt-1 text-xs leading-relaxed'>
+                Receive payouts to your bank account
+              </li>
+              <li className='mt-1 text-xs leading-relaxed'>
+                Manage your products and orders
+              </li>
+              <li className='mt-1 text-xs leading-relaxed'>
+                Access your Stripe Dashboard
+              </li>
+            </ul>
           </>
         }
         buttonText='Register on Stripe as Seller'

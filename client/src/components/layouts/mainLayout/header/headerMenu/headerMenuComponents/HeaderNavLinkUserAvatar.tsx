@@ -11,14 +11,14 @@ interface UserAvatarProps {
 const UserAvatarComponent = ({ user, url }: UserAvatarProps) => (
   <Link
     href={url}
-    className='hover:text-shop-light-green hoverEffect group relative min-w-8 sm:min-w-10'
+    className='group bg-shop-bg relative min-w-8 rounded-full sm:min-w-10'
   >
     <Image
       src={generateImgPath(user?.picture || '') || '/images/no-user-image.png'}
       alt={user?.name || 'User img'}
       width={42}
       height={42}
-      className='w-9 rounded-full sm:w-10'
+      className='w-9 rounded-full transition-transform duration-500 group-hover:scale-105 sm:w-10'
       priority={false}
     />
   </Link>

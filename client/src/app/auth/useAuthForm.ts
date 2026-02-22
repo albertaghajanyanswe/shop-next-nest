@@ -18,6 +18,11 @@ export function useAuthForm(isReg: boolean) {
       name: '',
       email: '',
       password: '',
+      country: '',
+      city: '',
+      address: '',
+      phone: '',
+      postalCode: '',
     },
   });
 

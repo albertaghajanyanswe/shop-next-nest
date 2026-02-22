@@ -6,20 +6,18 @@
  * OpenAPI spec version: 0.0.1
  */
 
-export interface RegisterDto {
-  /** Name of the user */
-  name?: string;
-  /** Email of the user */
-  email: string;
-  /** Password of the user */
-  password: string;
+export interface UpdateUserDto {
+  /** User name */
+  name: string;
+  /** Profile picture URL */
+  picture?: string;
   /** User country */
   country?: string;
   /** User city */
   city?: string;
   /** User address */
   address?: string;
-  /** Store phone number */
+  /** User phone */
   phone?: string;
   /** User postal code */
   postalCode?: string;

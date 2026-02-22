@@ -57,9 +57,7 @@ export const reviewColumns: ColumnDef<IReviewColumn>[] = [
     },
     header: ({ column }) => {
       return (
-        <Button
-          variant='ghost'
-        >
+        <Button variant='ghost'>
           text
           <ArrowUpDown className='ml-2 size-4' />
         </Button>

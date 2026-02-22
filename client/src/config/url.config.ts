@@ -32,6 +32,7 @@ export const DASHBOARD_URL = {
   subscriptions: () => DASHBOARD_URL.root(`/subscriptions`),
   profile: () => DASHBOARD_URL.root(`/profile`),
   settings: () => DASHBOARD_URL.root(`/settings`),
+  userProfile: () => DASHBOARD_URL.root(`/userProfile`),
 };
 
 export const STORE_URL = {

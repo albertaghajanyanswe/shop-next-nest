@@ -14,6 +14,7 @@ import {
   CircleDollarSign,
   Settings,
   ShoppingBag,
+  UserRound,
 } from 'lucide-react';
 import { cn } from '@/utils/common';
 import { Card } from '@/components/ui/Card';
@@ -62,6 +63,12 @@ const menuItems = (user: GetUserDto) => {
       icon: Settings,
       link: DASHBOARD_URL.settings(),
       show: EnvVariables.NEXT_PUBLIC_ALLOW_PURCHASE,
+    },
+    {
+      value: 'User profile',
+      icon: UserRound,
+      link: DASHBOARD_URL.userProfile(),
+      show: true,
     },
   ];
 };

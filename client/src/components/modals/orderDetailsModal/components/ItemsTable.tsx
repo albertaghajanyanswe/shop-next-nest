@@ -93,7 +93,7 @@ export function ItemsTable<T extends TableSectionItem>({
       {items.map((item) => (
         <div
           key={item.id}
-          className='border-shop-light-green/70 xs:max-w-none max-w-fit gap-4 rounded-lg border py-4 px-4'
+          className='border-shop-light-green/70 xs:max-w-none max-w-fit gap-4 rounded-lg border px-4 py-4'
         >
           <div className='flex flex-col gap-4 sm:grid sm:grid-cols-12'>
             {columns.map((col) => (
@@ -112,19 +112,19 @@ export function ItemsTable<T extends TableSectionItem>({
           <div className='xs:items-start mt-4 flex flex-col justify-between sm:mt-2 sm:items-center'>
             <div className='w-full border-t border-neutral-200 pt-4'>
               <div className='mb-4 flex w-full flex-row justify-between text-xs sm:mb-0'>
-                <p className='font-semibold text-sm'>Order Item ID</p>{' '}
+                <p className='text-sm font-semibold'>Order Item ID</p>{' '}
                 <span className='ml-2'>{item.id || '-'}</span>
               </div>
               <div className='mb-4 flex w-full flex-row justify-between text-xs sm:mb-0'>
-                <p className='font-semibold text-sm'>Product ID</p>{' '}
+                <p className='text-sm font-semibold'>Product ID</p>{' '}
                 <span className='ml-2'>{item.productId || '-'}</span>
               </div>
               <div className='mb-4 flex w-full flex-row justify-between text-xs sm:mb-0'>
-                <p className='font-semibold text-sm'>Store ID</p>{' '}
+                <p className='text-sm font-semibold'>Store ID</p>{' '}
                 <span className='ml-2'>{item.storeId || '-'}</span>
               </div>
             </div>
-            <div className='flex flex-row gap-1 mt-2 self-start'>
+            <div className='mt-2 flex flex-row gap-1 self-start'>
               {item.orderItemId && showConfirm && (
                 <Button
                   disabled={

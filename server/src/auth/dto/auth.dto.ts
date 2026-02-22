@@ -32,6 +32,51 @@ export class RegisterDto {
   })
   @IsString({ message: 'Password is required' })
   password: string;
+
+  @ApiProperty({
+    example: 'Armenia',
+    description: 'User country',
+    required: false,
+  })
+  @IsString()
+  @IsOptional()
+  country?: string;
+
+  @ApiProperty({
+    example: 'Erevan',
+    description: 'User city',
+    required: false,
+  })
+  @IsString()
+  @IsOptional()
+  city?: string;
+
+  @ApiProperty({
+    example: 'Shinararneri 7/23',
+    description: 'User address',
+    required: false,
+  })
+  @IsString()
+  @IsOptional()
+  address?: string;
+
+  @ApiProperty({
+    example: '+37495898795',
+    description: 'Store phone number',
+    required: false,
+  })
+  @IsString()
+  @IsOptional()
+  phone?: string;
+
+  @ApiProperty({
+    example: '2019',
+    description: 'User postal code',
+    required: false,
+  })
+  @IsString()
+  @IsOptional()
+  postalCode?: string;
 }
 export class LoginDto {
   @ApiProperty({

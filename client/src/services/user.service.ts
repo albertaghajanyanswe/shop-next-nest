@@ -1,6 +1,6 @@
 import { axiosWithAuth } from '@/api/api.interceptors';
 import { API_URL } from '@/config/api.config';
-import { GetUserDto } from '@/generated/orval/types';
+import { GetUserDto, UpdateUserDto } from '@/generated/orval/types';
 import { IUser } from '@/shared/types/user.interface';
 
 class UserService {
@@ -21,6 +21,16 @@ class UserService {
     });
 
     return response;
+  }
+
+  async update(data: UpdateUserDto) {
+    const { data: updatedUser } = await axiosWithAuth<GetUserDto>({
+      url: API_URL.users(),
+      method: 'PUT',
+      data,
+    });
+
+    return updatedUser;
   }
 }
 

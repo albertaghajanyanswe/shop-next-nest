@@ -18,24 +18,6 @@ export interface AuthFieldsProps {
 export function AuthFields({ form, isPending, isReg }: AuthFieldsProps) {
   return (
     <>
-      {isReg && (
-        <>
-          <FormField<RegisterDto, 'name'>
-            control={form.control}
-            name='name'
-            rules={{ required: 'Name is required' }}
-            render={({ field }) => (
-              <FormItem>
-                <FormControl>
-                  <Input placeholder='Name' disabled={isPending} {...field} />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-        </>
-      )}
-
       <FormField<RegisterDto, 'email'>
         control={form.control}
         name='email'
@@ -85,6 +67,120 @@ export function AuthFields({ form, isPending, isReg }: AuthFieldsProps) {
           </FormItem>
         )}
       />
+      <>
+        {isReg && (
+          <>
+            <div className='grid items-start gap-4 sm:grid-cols-2'>
+              <FormField<RegisterDto, 'name'>
+                control={form.control}
+                name='name'
+                rules={{ required: 'Name is required' }}
+                render={({ field }) => (
+                  <FormItem>
+                    <FormControl>
+                      <Input
+                        placeholder='Name'
+                        disabled={isPending}
+                        {...field}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField<RegisterDto, 'phone'>
+                control={form.control}
+                name='phone'
+                // rules={{ required: 'Phone is required' }}
+                render={({ field }) => (
+                  <FormItem>
+                    <FormControl>
+                      <Input
+                        placeholder='Phone'
+                        disabled={isPending}
+                        {...field}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            </div>
+            <div className='grid items-start gap-4 sm:grid-cols-2'>
+              <FormField<RegisterDto, 'country'>
+                control={form.control}
+                name='country'
+                // rules={{ required: 'Country is required' }}
+                render={({ field }) => (
+                  <FormItem>
+                    <FormControl>
+                      <Input
+                        placeholder='Country'
+                        disabled={isPending}
+                        {...field}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField<RegisterDto, 'city'>
+                control={form.control}
+                name='city'
+                // rules={{ required: 'City is required' }}
+                render={({ field }) => (
+                  <FormItem>
+                    <FormControl>
+                      <Input
+                        placeholder='City'
+                        disabled={isPending}
+                        {...field}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            </div>
+            <div className='grid items-start gap-4 sm:grid-cols-2'>
+              <FormField<RegisterDto, 'address'>
+                control={form.control}
+                name='address'
+                // rules={{ required: 'Address is required' }}
+                render={({ field }) => (
+                  <FormItem>
+                    <FormControl>
+                      <Input
+                        placeholder='Address'
+                        disabled={isPending}
+                        {...field}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField<RegisterDto, 'postalCode'>
+                control={form.control}
+                name='postalCode'
+                // rules={{ required: 'PostalCode is required' }}
+                render={({ field }) => (
+                  <FormItem>
+                    <FormControl>
+                      <Input
+                        placeholder='Postal code'
+                        disabled={isPending}
+                        {...field}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            </div>
+          </>
+        )}
+      </>
     </>
   );
 }

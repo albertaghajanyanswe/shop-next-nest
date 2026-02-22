@@ -21,7 +21,7 @@ export default function Auth() {
   const { form, onSubmit, isPending } = useAuthForm(isReg);
 
   return (
-    <div className='grid min-h-screen grid-cols-1 lg:grid-cols-2'>
+    <div className='grid min-h-screen grid-cols-1 p-4 lg:grid-cols-2'>
       <div
         className={`relative hidden flex-col items-center justify-center overflow-hidden border-none bg-white bg-gradient-to-r from-emerald-200 to-lime-100 p-6 shadow-none lg:flex`}
       >
@@ -36,7 +36,7 @@ export default function Auth() {
         </p>
       </div>
       <div className='flex h-full flex-col items-center justify-center'>
-        <Card className='flex w-full flex-col items-center justify-center border-none bg-white p-4 shadow-none sm:w-[500px] sm:p-0'>
+        <Card className='flex w-full flex-col items-center justify-center gap-4 border-none bg-white p-4 shadow-none sm:w-[500px] sm:p-0'>
           <Logo classNames='sm:text-4xl' />
 
           <CardHeader className='flex w-full flex-col items-center justify-center pb-5'>

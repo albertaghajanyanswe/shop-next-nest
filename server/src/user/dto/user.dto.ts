@@ -46,8 +46,8 @@ export class GetUserDto {
   picture?: string;
 
   @ApiProperty({
-    example: 'Store country',
-    description: 'Store country',
+    example: 'User country',
+    description: 'User country',
     required: false,
   })
   @IsOptional()
@@ -55,8 +55,8 @@ export class GetUserDto {
   country?: string;
 
   @ApiProperty({
-    example: 'Store city',
-    description: 'Store city',
+    example: 'User city',
+    description: 'User city',
     required: false,
   })
   @IsOptional()
@@ -64,8 +64,8 @@ export class GetUserDto {
   city?: string;
 
   @ApiProperty({
-    example: 'Store address',
-    description: 'Store address',
+    example: 'User address',
+    description: 'User address',
     required: false,
   })
   @IsOptional()
@@ -73,8 +73,8 @@ export class GetUserDto {
   address?: string;
 
   @ApiProperty({
-    example: 'Store phone',
-    description: 'Store phone',
+    example: 'User phone',
+    description: 'User phone',
     required: false,
   })
   @IsOptional()
@@ -89,7 +89,7 @@ export class GetUserDto {
   @ApiProperty({
     type: () => [GetStoreDto],
     required: false,
-    description: 'Stores created by user',
+    description: 'User stores list',
   })
   @IsOptional()
   @IsArray()
@@ -164,4 +164,65 @@ export class GetUserDto {
   @IsOptional()
   @IsEnum(EnumRole)
   public role: EnumRole;
+}
+
+export class UpdateUserDto {
+  @ApiProperty({ example: 'John Doe', description: 'User name' })
+  @IsString()
+  name: string;
+
+  @ApiProperty({
+    example:
+      'https://res.cloudinary.com/dvuo50sjj/image/upload/w_500,q_auto,f_auto/v1764687769/products/mfhyojzhx8drdd6zlzwf.webp',
+    description: 'Profile picture URL',
+    required: false,
+  })
+  @IsOptional()
+  @IsString()
+  picture?: string;
+
+  @ApiProperty({
+    example: 'User country',
+    description: 'User country',
+    required: false,
+  })
+  @IsOptional()
+  @IsString()
+  country?: string;
+
+  @ApiProperty({
+    example: 'User city',
+    description: 'User city',
+    required: false,
+  })
+  @IsOptional()
+  @IsString()
+  city?: string;
+
+  @ApiProperty({
+    example: 'User address',
+    description: 'User address',
+    required: false,
+  })
+  @IsOptional()
+  @IsString()
+  address?: string;
+
+  @ApiProperty({
+    example: 'User phone',
+    description: 'User phone',
+    required: false,
+  })
+  @IsOptional()
+  @IsString()
+  phone?: string;
+
+  @ApiProperty({
+    example: 'User postal code',
+    description: 'User postal code',
+    required: false,
+  })
+  @IsOptional()
+  @IsString()
+  postalCode?: string;
 }

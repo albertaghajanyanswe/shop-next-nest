@@ -40,7 +40,7 @@ export function Reviews() {
           .map(() => '⭐')
           .join(' '),
         username: review.user.name,
-        text: review.text
+        text: review.text,
       }))
     : [];
 

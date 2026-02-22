@@ -23,6 +23,7 @@ model User {
   city       String?
   address    String?
   phone      String?
+  postalCode String? @map("postal_code")
 
   username String? @unique
 
