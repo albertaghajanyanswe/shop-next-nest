@@ -19,7 +19,7 @@ export const StripeActionBlock: React.FC<StripeActionBlockProps> = ({
   btnDisabled = false,
 }) => {
   return (
-    <div className='border-shop-green-hover bg-shop-green-hover rounded-md border p-4'>
+    <div className='border-shop-green-hover rounded-md border bg-gradient-to-r from-emerald-50 to-lime-50 p-4'>
       <p className='mb-3 text-xl font-semibold'>{title}</p>
       <div className='mb-4 text-sm leading-relaxed whitespace-pre-line text-neutral-900'>
         {description}

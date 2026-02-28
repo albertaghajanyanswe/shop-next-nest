@@ -17,9 +17,13 @@ function ProductSoldCount({
           {leftTitle}
         </p>
       )}
-      <div className='flex w-full items-center gap-x-1 text-end text-sm'>
-        <Flame className='inline-block size-5 fill-amber-400 text-red-500' />
-        <span className='text-muted-foreground'>{`${soldCount} sold`}</span>
+
+      <div className='flex w-full min-w-0 items-center justify-end gap-x-1'>
+        <Flame className='size-5 shrink-0 fill-amber-400 text-red-500' />
+
+        <span className='text-muted-foreground truncate text-sm'>
+          {`${soldCount} sold`}
+        </span>
       </div>
     </div>
   );

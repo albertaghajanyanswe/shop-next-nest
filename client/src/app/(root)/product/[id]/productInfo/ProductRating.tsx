@@ -24,10 +24,15 @@ const ProductRatingComponent = ({
           {leftTitle}
         </p>
       )}
-      <div className='flex w-full place-content-end items-center gap-x-1 text-end text-sm'>
-        <Star className='inline-block size-5 fill-yellow-400 text-yellow-400' />
-        {rating.toFixed(1) || ' '}
-        <span className='text-muted-foreground'>{` • ${productReviews?.length} reviews`}</span>
+
+      <div className='flex w-full min-w-0 items-center justify-end gap-x-1 text-sm'>
+        <Star className='size-5 shrink-0 fill-yellow-400 text-yellow-400' />
+
+        <span className='shrink-0'>{rating.toFixed(1) || ' '}</span>
+
+        <span className='text-muted-foreground truncate'>
+          {` • ${productReviews?.length} reviews`}
+        </span>
       </div>
     </div>
   );

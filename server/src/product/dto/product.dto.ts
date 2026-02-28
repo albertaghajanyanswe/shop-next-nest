@@ -155,6 +155,7 @@ export class GetProductDto {
   title: string;
 
   @ApiProperty({
+    type: String,
     example: 'High-end laptop',
     description: 'Product description',
     required: false,
@@ -169,6 +170,7 @@ export class GetProductDto {
   price: number;
 
   @ApiProperty({
+    type: Number,
     example: 2200,
     description: 'Old price',
     required: false,
@@ -208,6 +210,7 @@ export class GetProductDto {
   state: EnumProductState;
 
   @ApiProperty({
+    type: String,
     example: 'storeId123',
     description: 'Store ID',
     required: false,
@@ -218,6 +221,7 @@ export class GetProductDto {
   storeId?: string | null;
 
   @ApiProperty({
+    type: String,
     example: 'userId123',
     description: 'User ID',
     required: false,
@@ -228,6 +232,7 @@ export class GetProductDto {
   userId?: string | null;
 
   @ApiProperty({
+    type: String,
     example: 'categoryId123',
     description: 'Category ID',
     required: false,

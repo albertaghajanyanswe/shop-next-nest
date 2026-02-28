@@ -16,6 +16,13 @@ export interface AuthFieldsProps {
 }
 
 export function AuthFields({ form, isPending, isReg }: AuthFieldsProps) {
+  const passwordValue = form.watch('password', '');
+  const strength =
+    passwordValue.length >= 8
+      ? 'strong'
+      : passwordValue.length >= 6
+        ? 'medium'
+        : 'weak';
   return (
     <>
       <FormField<RegisterDto, 'email'>
@@ -35,6 +42,7 @@ export function AuthFields({ form, isPending, isReg }: AuthFieldsProps) {
                 placeholder='Email'
                 type='email'
                 disabled={isPending}
+                autoComplete='email'
                 {...field}
               />
             </FormControl>
@@ -60,6 +68,7 @@ export function AuthFields({ form, isPending, isReg }: AuthFieldsProps) {
                 placeholder='Password'
                 type='password'
                 disabled={isPending}
+                autoComplete='current-password'
                 {...field}
               />
             </FormControl>
@@ -67,6 +76,24 @@ export function AuthFields({ form, isPending, isReg }: AuthFieldsProps) {
           </FormItem>
         )}
       />
+      {isReg && passwordValue && (
+        <div className='mt-2 flex gap-1'>
+          {['weak', 'medium', 'strong'].map((s, i) => (
+            <div
+              key={s}
+              className={`h-1 flex-1 rounded-full transition-all ${
+                strength === 'strong'
+                  ? 'bg-green-500'
+                  : strength === 'medium' && i < 2
+                    ? 'bg-yellow-500'
+                    : strength === 'weak' && i === 0
+                      ? 'bg-red-500'
+                      : 'bg-gray-700'
+              }`}
+            />
+          ))}
+        </div>
+      )}
       <>
         {isReg && (
           <>

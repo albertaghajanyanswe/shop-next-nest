@@ -5,13 +5,8 @@
  * The API description
  * OpenAPI spec version: 0.0.1
  */
-import type { GetProductWithDetailsDescription } from './getProductWithDetailsDescription';
-import type { GetProductWithDetailsOldPrice } from './getProductWithDetailsOldPrice';
 import type { GetProductWithDetailsIntendedFor } from './getProductWithDetailsIntendedFor';
 import type { GetProductWithDetailsState } from './getProductWithDetailsState';
-import type { GetProductWithDetailsStoreId } from './getProductWithDetailsStoreId';
-import type { GetProductWithDetailsUserId } from './getProductWithDetailsUserId';
-import type { GetProductWithDetailsCategoryId } from './getProductWithDetailsCategoryId';
 import type { GetProductWithDetailsBrandId } from './getProductWithDetailsBrandId';
 import type { GetProductWithDetailsColorId } from './getProductWithDetailsColorId';
 import type { TotalSoldDto } from './totalSoldDto';
@@ -36,14 +31,14 @@ export interface GetProductWithDetails {
    * Product description
    * @nullable
    */
-  description?: GetProductWithDetailsDescription;
+  description?: string | null;
   /** Product price */
   price: number;
   /**
    * Old price
    * @nullable
    */
-  oldPrice?: GetProductWithDetailsOldPrice;
+  oldPrice?: number | null;
   /** Product quantity */
   quantity: number;
   /** Is original */
@@ -58,17 +53,17 @@ export interface GetProductWithDetails {
    * Store ID
    * @nullable
    */
-  storeId?: GetProductWithDetailsStoreId;
+  storeId?: string | null;
   /**
    * User ID
    * @nullable
    */
-  userId?: GetProductWithDetailsUserId;
+  userId?: string | null;
   /**
    * Category ID
    * @nullable
    */
-  categoryId?: GetProductWithDetailsCategoryId;
+  categoryId?: string | null;
   /**
    * Brand ID
    * @nullable

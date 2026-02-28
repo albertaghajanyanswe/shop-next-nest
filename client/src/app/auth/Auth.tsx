@@ -15,13 +15,16 @@ import { Button } from '@/components/ui/Button';
 import { AuthFields } from './AuthFields';
 import { Social } from './Social';
 import { Logo } from '@/components/layouts/mainLayout/header/logo/Logo';
+import { CheckCircle2 } from 'lucide-react';
+import { useGetPlans } from '@/hooks/stripe/useGetPlans';
 
 export default function Auth() {
   const [isReg, setIsReg] = useState(false);
   const { form, onSubmit, isPending } = useAuthForm(isReg);
-
+  const { plans, isLoadingPlans } = useGetPlans();
+  const free = plans?.find((i) => i.planId === 'FREE');
   return (
-    <div className='grid min-h-screen grid-cols-1 p-4 lg:grid-cols-2'>
+    <div className='grid min-h-screen grid-cols-1 p-0 lg:grid-cols-2'>
       <div
         className={`relative hidden flex-col items-center justify-center overflow-hidden border-none bg-white bg-gradient-to-r from-emerald-200 to-lime-100 p-6 shadow-none lg:flex`}
       >
@@ -40,7 +43,7 @@ export default function Auth() {
           <Logo classNames='sm:text-4xl' />
 
           <CardHeader className='flex w-full flex-col items-center justify-center pb-5'>
-            <CardTitle className='text-primary-700 pb-1 text-center text-xl font-semibold'>
+            <CardTitle className='pb-1 text-center text-xl font-semibold text-neutral-700'>
               {isReg
                 ? 'Join us to create and manage your online stores.'
                 : 'Welcome Back!'}
@@ -56,7 +59,19 @@ export default function Auth() {
                 onSubmit={form.handleSubmit(onSubmit)}
               >
                 <AuthFields form={form} isPending={isPending} isReg={isReg} />
-
+                {isReg && !isLoadingPlans && (
+                  <div className='space-y-2 rounded-xl bg-gradient-to-r from-emerald-100 to-lime-200 p-3'>
+                    {free?.features.map((perk) => (
+                      <div
+                        key={perk}
+                        className='text-neutral-700 flex items-center gap-2 text-sm font-medium'
+                      >
+                        <CheckCircle2 className='text-neutral-700 size-5 flex-shrink-0' />
+                        {perk}
+                      </div>
+                    ))}
+                  </div>
+                )}
                 <Button
                   variant='default'
                   className='w-full'
@@ -72,7 +87,7 @@ export default function Auth() {
           <CardFooter className='text-muted-foreground mt-4 p-0 text-sm'>
             {isReg ? 'Already have an account?' : "Don't have an account?"}
             <Button
-              className='text-primary-700 ml-1'
+              className='text-shop-light-green ml-1 p-0'
               variant='link'
               onClick={() => setIsReg(!isReg)}
             >

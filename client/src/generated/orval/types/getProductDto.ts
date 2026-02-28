@@ -5,13 +5,8 @@
  * The API description
  * OpenAPI spec version: 0.0.1
  */
-import type { GetProductDtoDescription } from './getProductDtoDescription';
-import type { GetProductDtoOldPrice } from './getProductDtoOldPrice';
 import type { GetProductDtoIntendedFor } from './getProductDtoIntendedFor';
 import type { GetProductDtoState } from './getProductDtoState';
-import type { GetProductDtoStoreId } from './getProductDtoStoreId';
-import type { GetProductDtoUserId } from './getProductDtoUserId';
-import type { GetProductDtoCategoryId } from './getProductDtoCategoryId';
 import type { GetProductDtoBrandId } from './getProductDtoBrandId';
 import type { GetProductDtoColorId } from './getProductDtoColorId';
 import type { TotalSoldDto } from './totalSoldDto';
@@ -29,14 +24,14 @@ export interface GetProductDto {
    * Product description
    * @nullable
    */
-  description?: GetProductDtoDescription;
+  description?: string | null;
   /** Product price */
   price: number;
   /**
    * Old price
    * @nullable
    */
-  oldPrice?: GetProductDtoOldPrice;
+  oldPrice?: number | null;
   /** Product quantity */
   quantity: number;
   /** Is original */
@@ -51,17 +46,17 @@ export interface GetProductDto {
    * Store ID
    * @nullable
    */
-  storeId?: GetProductDtoStoreId;
+  storeId?: string | null;
   /**
    * User ID
    * @nullable
    */
-  userId?: GetProductDtoUserId;
+  userId?: string | null;
   /**
    * Category ID
    * @nullable
    */
-  categoryId?: GetProductDtoCategoryId;
+  categoryId?: string | null;
   /**
    * Brand ID
    * @nullable
