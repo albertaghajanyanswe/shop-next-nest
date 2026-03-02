@@ -50,7 +50,7 @@ export function Products() {
         images: product.images,
         image: product.images[0],
         originalPrice: product.price,
-        description: product.description,
+        description: product.description || '',
         quantity: product.quantity,
         isOriginal: product.isOriginal,
         isPublished: product.isPublished,

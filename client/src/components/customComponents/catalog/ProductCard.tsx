@@ -118,11 +118,6 @@ function ProductCard({ product }: ProductCardProps) {
       <Badge className='xs:top-2 xs:left-2 absolute top-1 left-1 bg-red-500/70 text-xs font-semibold shadow-none hover:bg-red-500/70'>
         In stock • {product.quantity}
       </Badge>
-      {/* {product.price &&
-        product.oldPrice &&
-        product.price < product.oldPrice && (
-          <Flame className='xs:top-2 xs:right-12 absolute top-1 right-12 h-9 w-9 p-1 text-xs font-semibold text-red-500 shadow-none' />
-        )} */}
     </div>
   );
 }
