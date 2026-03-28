@@ -69,7 +69,7 @@ jobs:
           key: ${{ secrets.EC2_SSH_KEY }}
           envs: DOCKER_USERNAME,DOCKER_PASSWORD
           script: |
-            cd /home/ubuntu/shop/docker
+            cd /home/ubuntu/shop-next-nest/dev/docker-compose.yml
 
             # Логин в Docker Hub
             echo "${{ secrets.DOCKER_PASSWORD }}" | \
