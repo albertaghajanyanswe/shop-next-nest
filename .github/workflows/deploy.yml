@@ -40,8 +40,13 @@ jobs:
           context: ./client
           file: ./client/Dockerfile.dev
           push: true
-          # build-args: |
-          #   NEXT_PUBLIC_SERVER_URL=${{ secrets.NEXT_PUBLIC_SERVER_URL }}
+          build-args: |
+            NEXT_PUBLIC_SERVER_URL=${{ secrets.NEXT_PUBLIC_SERVER_URL }}
+            APP_DOMAIN=${{ secrets.APP_DOMAIN }}
+            NEXT_PUBLIC_CLIENT_URL=${{ secrets.NEXT_PUBLIC_CLIENT_URL }}
+            NEXT_PUBLIC_SERVER_URL=${{ secrets.NEXT_PUBLIC_SERVER_URL }}
+            NEXT_PUBLIC_SERVER_SERVICE=${{ secrets.NEXT_PUBLIC_SERVER_SERVICE }}
+            NEXT_PUBLIC_ALLOW_PURCHASE=${{ secrets.NEXT_PUBLIC_ALLOW_PURCHASE }}
           tags: |
             ${{ env.IMAGE_CLIENT }}:latest
             ${{ env.IMAGE_CLIENT }}:${{ github.sha }}
