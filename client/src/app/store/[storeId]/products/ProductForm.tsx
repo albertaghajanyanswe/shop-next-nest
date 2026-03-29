@@ -78,7 +78,8 @@ export function ProductForm({
     mode: 'onChange',
     values: {
       title: product?.title || '',
-      description: typeof product?.description === 'string' ? product.description : '',
+      description:
+        typeof product?.description === 'string' ? product.description : '',
       images: product?.images || [],
       price: product?.price || 0,
       categoryId: product?.category?.id || '',

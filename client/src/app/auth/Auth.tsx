@@ -64,9 +64,9 @@ export default function Auth() {
                     {free?.features.map((perk) => (
                       <div
                         key={perk}
-                        className='text-neutral-700 flex items-center gap-2 text-sm font-medium'
+                        className='flex items-center gap-2 text-sm font-medium text-neutral-700'
                       >
-                        <CheckCircle2 className='text-neutral-700 size-5 flex-shrink-0' />
+                        <CheckCircle2 className='size-5 flex-shrink-0 text-neutral-700' />
                         {perk}
                       </div>
                     ))}

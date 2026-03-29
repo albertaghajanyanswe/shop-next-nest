@@ -1,84 +1,83 @@
 #!/bin/bash
 
-set -e  # Остановить при ошибке
+set -euo pipefail
 
-# -----------------------------
-# Цвета для вывода
-# -----------------------------
 GREEN='\033[0;32m'
 YELLOW='\033[1;33m'
 RED='\033[0;31m'
-NC='\033[0m' # No Color
-
-# -----------------------------
-# Настройки
-# -----------------------------
-BACKUP_DIR="./backups"
-mkdir -p "$BACKUP_DIR"
-
-# Берём переменные из .env, если есть
-DB_CONTAINER=${DB_HOST:-db}
-DB_NAME=${DB_DATABASE:-mystore-dev}
-DB_USER=${DB_USER:-postgres}
-DB_PORT=${DB_PORT:-5432}
-COMPOSE_FILE=${COMPOSE_FILE:-docker-compose-pull.yml}
-
-TIMESTAMP=$(date +%Y%m%d_%H%M%S)
-BACKUP_FILE="$BACKUP_DIR/db_backup_$TIMESTAMP.sql"
+NC='\033[0m'
 
 echo -e "${YELLOW}=== Starting deployment ===${NC}"
 
 # -----------------------------
-# Проверка готовности БД
+# Проверка env
+# -----------------------------
+if [ -z "${IMAGE_TAG:-}" ]; then
+  echo -e "${RED}❌ IMAGE_TAG is not set${NC}"
+  exit 1
+fi
+
+if [ -z "${DOCKER_USERNAME:-}" ]; then
+  echo -e "${RED}❌ DOCKER_USERNAME is not set${NC}"
+  exit 1
+fi
+
+echo -e "${GREEN}Deploying version: ${IMAGE_TAG}${NC}"
+
+COMPOSE_FILE=${COMPOSE_FILE:-docker-compose-pull.yml}
+BACKUP_DIR="./backups"
+mkdir -p "$BACKUP_DIR"
+
+DB_CONTAINER=${DB_HOST:-db}
+DB_NAME=${DB_DATABASE:-mystore-dev}
+DB_USER=${DB_USER:-postgres}
+
+TIMESTAMP=$(date +%Y%m%d_%H%M%S)
+BACKUP_FILE="$BACKUP_DIR/db_backup_$TIMESTAMP.sql"
+
+# -----------------------------
+# Проверка образов
+# -----------------------------
+echo -e "${YELLOW}Checking images...${NC}"
+
+docker manifest inspect "${DOCKER_USERNAME}/shop-backend:${IMAGE_TAG}" > /dev/null || {
+  echo -e "${RED}❌ Backend image not found${NC}"
+  exit 1
+}
+
+docker manifest inspect "${DOCKER_USERNAME}/shop-client:${IMAGE_TAG}" > /dev/null || {
+  echo -e "${RED}❌ Client image not found${NC}"
+  exit 1
+}
+
+echo -e "${GREEN}✓ Images exist${NC}"
+
+# -----------------------------
+# Backup DB
 # -----------------------------
 if docker ps --format '{{.Names}}' | grep -q "^$DB_CONTAINER\$"; then
-    echo -e "${YELLOW}Waiting for PostgreSQL at $DB_CONTAINER:$DB_PORT...${NC}"
-    until docker exec "$DB_CONTAINER" pg_isready -U "$DB_USER" -d "$DB_NAME" > /dev/null 2>&1; do
-        echo -e "${YELLOW}PostgreSQL is unavailable - sleeping${NC}"
-        sleep 2
-    done
-    echo -e "${GREEN}PostgreSQL is ready!${NC}"
-
-    # -----------------------------
-    # Создание бэкапа
-    # -----------------------------
-    echo -e "${GREEN}Creating database backup...${NC}"
-    if docker exec "$DB_CONTAINER" pg_dump -U "$DB_USER" "$DB_NAME" > "$BACKUP_FILE" 2>/dev/null; then
-        echo -e "${GREEN}✓ Backup created: $BACKUP_FILE${NC}"
-
-        # Оставляем только последние 10 бэкапов
-        ls -t "$BACKUP_DIR"/db_backup_*.sql 2>/dev/null | tail -n +11 | xargs -r rm || true
-        echo -e "${GREEN}✓ Old backups cleaned (kept last 10)${NC}"
-    else
-        echo -e "${YELLOW}⚠ Database backup failed${NC}"
-    fi
-else
-    echo -e "${YELLOW}⚠ Database container '$DB_CONTAINER' not running, skipping backup${NC}"
+  echo -e "${YELLOW}Creating DB backup...${NC}"
+  docker exec "$DB_CONTAINER" pg_dump -U "$DB_USER" "$DB_NAME" > "$BACKUP_FILE" || true
+  echo -e "${GREEN}✓ Backup: $BACKUP_FILE${NC}"
 fi
 
 # -----------------------------
-# Остановка контейнеров
+# Pull
 # -----------------------------
-echo -e "${YELLOW}Stopping containers...${NC}"
-docker-compose -f "$COMPOSE_FILE" down --remove-orphans
+echo -e "${YELLOW}Pulling images...${NC}"
+docker compose -f "$COMPOSE_FILE" pull
 
 # -----------------------------
-# Сборка контейнеров
-# -----------------------------
-echo -e "${YELLOW}Building containers...${NC}"
-docker-compose -f "$COMPOSE_FILE" build --no-cache
-
-# -----------------------------
-# Запуск контейнеров
+# Deploy
 # -----------------------------
 echo -e "${YELLOW}Starting containers...${NC}"
-docker-compose -f "$COMPOSE_FILE" up --remove-orphans -d
+docker compose -f "$COMPOSE_FILE" up -d --remove-orphans
 
 # -----------------------------
-# Проверка статуса
+# Check
 # -----------------------------
-sleep 3
-docker-compose -f "$COMPOSE_FILE" ps
+sleep 5
+docker compose ps
 
 echo -e "${GREEN}=== Deployment completed ===${NC}"
-echo -e "${GREEN}Backup location: $BACKUP_FILE${NC}"
+echo -e "${GREEN}Version: ${IMAGE_TAG}${NC}"

@@ -1,8 +1,8 @@
-version: "3.3"
+version: "3.9"
 
 services:
   nginx:
-    image: nginx:alpine
+    image: nginx:1.25-alpine
     container_name: shop-nginx
     ports:
       - "8080:80"
@@ -22,10 +22,10 @@ services:
     env_file:
       - ../../server/.env.dev
     environment:
-      - POSTGRES_USER=${DB_USER}
-      - POSTGRES_PASSWORD=${DB_PASSWORD}
-      - POSTGRES_DB=${DB_DATABASE}
-      - PGDATA=/var/lib/postgresql/data/pgdata
+      POSTGRES_USER: ${DB_USER}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+      POSTGRES_DB: ${DB_DATABASE}
+      PGDATA: /var/lib/postgresql/data/pgdata
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U ${DB_USER} -d ${DB_DATABASE}"]
       interval: 5s
@@ -33,7 +33,7 @@ services:
       retries: 5
       start_period: 10s
     ports:
-      - 5433:5432
+      - "5433:5432"
     volumes:
       - db_data:/var/lib/postgresql/data
     networks:
@@ -41,8 +41,7 @@ services:
 
   server:
     container_name: shop-backend
-    # ИЗМЕНЕНО: убрали build, добавили image с Docker Hub
-    image: ${DOCKER_USERNAME}/shop-backend:latest
+    image: ${DOCKER_USERNAME}/shop-backend:${IMAGE_TAG}
     restart: always
     ports:
       - "4000:4000"
@@ -53,33 +52,31 @@ services:
     env_file:
       - ../../server/.env.dev
     volumes:
-      # ИЗМЕНЕНО: убрали маунт исходников — в production не нужен
       - images:/usr/src/app/server-uploads
     networks:
       - app-connect
 
   ui:
     container_name: shop-client
-    # ИЗМЕНЕНО: убрали build, добавили image с Docker Hub
-    image: ${DOCKER_USERNAME}/shop-client:latest
+    image: ${DOCKER_USERNAME}/shop-client:${IMAGE_TAG}
     restart: always
     ports:
       - "3000"
     env_file:
       - ../../client/.env.dev
-    networks:
-      - app-connect
     depends_on:
       - server
+    networks:
+      - app-connect
 
   stripe:
     container_name: shop-stripe-cli
-    image: stripe/stripe-cli:latest
+    image: stripe/stripe-cli:v1.21.5
     restart: always
     command: listen --forward-to http://server:4000/api/webhook/stripe --skip-verify
     environment:
-      - STRIPE_API_KEY=${STRIPE_SECRET_KEY}
-      - STRIPE_DEVICE_NAME=docker-stripe-cli
+      STRIPE_API_KEY: ${STRIPE_SECRET_KEY}
+      STRIPE_DEVICE_NAME: docker-stripe-cli
     depends_on:
       - server
     networks:
