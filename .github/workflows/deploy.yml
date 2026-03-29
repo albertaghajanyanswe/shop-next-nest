@@ -67,16 +67,55 @@ jobs:
           host: ${{ secrets.EC2_HOST }}
           username: ubuntu
           key: ${{ secrets.EC2_SSH_KEY }}
-          envs: DOCKER_USERNAME,DOCKER_PASSWORD
           script: |
-            cd /home/ubuntu/shop-next-nest/dev/docker-compose.yml
+            set -ex
 
-            # Логин в Docker Hub
+            echo "=== START DEBUG ==="
+
+            echo "=== CURRENT DIR ==="
+            pwd
+            ls -la
+
+            echo "=== HOME ==="
+            cd /home/ubuntu
+            pwd
+            ls -la
+
+            echo "=== PROJECT ROOT ==="
+            cd /home/ubuntu/shop-next-nest || exit 1
+            pwd
+            ls -la
+
+            echo "=== DEV FOLDER ==="
+            cd /home/ubuntu/shop-next-nest/dev || exit 1
+            pwd
+            ls -la
+
+            echo "=== DOCKER LOGIN ==="
             echo "${{ secrets.DOCKER_PASSWORD }}" | \
               docker login -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin
 
-            # Запускаем твой скрипт
+            echo "=== RUN START.SH ==="
             bash start.sh
+
+            echo "=== DONE ==="
+
+      # - name: Deploy на EC2
+      #   uses: appleboy/ssh-action@v1
+      #   with:
+      #     host: ${{ secrets.EC2_HOST }}
+      #     username: ubuntu
+      #     key: ${{ secrets.EC2_SSH_KEY }}
+      #     envs: DOCKER_USERNAME,DOCKER_PASSWORD
+      #     script: |
+      #       cd /home/ubuntu/shop-next-nest/dev/docker-compose.yml
+
+      #       # Логин в Docker Hub
+      #       echo "${{ secrets.DOCKER_PASSWORD }}" | \
+      #         docker login -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin
+
+      #       # Запускаем твой скрипт
+      #       bash start.sh
 
 ## Итоговая структура на EC2
 
