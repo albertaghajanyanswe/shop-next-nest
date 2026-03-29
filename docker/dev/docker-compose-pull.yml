@@ -2,7 +2,7 @@ version: "3.9"
 
 services:
   nginx:
-    image: nginx:1.25-alpine
+    image: nginx:alpine
     container_name: shop-nginx
     ports:
       - "8080:80"
@@ -71,7 +71,7 @@ services:
 
   stripe:
     container_name: shop-stripe-cli
-    image: stripe/stripe-cli:v1.21.5
+    image: stripe/stripe-cli:latest
     restart: always
     command: listen --forward-to http://server:4000/api/webhook/stripe --skip-verify
     environment:
