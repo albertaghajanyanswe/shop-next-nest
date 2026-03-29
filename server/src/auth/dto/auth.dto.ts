@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import type { User } from '@prisma/client';
+import type { EnumRole, User } from '@prisma/client';
 import { IsEmail, IsOptional, IsString, MinLength } from 'class-validator';
 import { GetUserDto } from 'src/user/dto/user.dto';
 
@@ -110,4 +110,9 @@ export class AuthResponseDto {
 
   @ApiProperty({ example: 'accessToken123', description: 'Access token' })
   accessToken: string;
+}
+
+export interface JwtPayload {
+  id: string;
+  role: EnumRole;
 }

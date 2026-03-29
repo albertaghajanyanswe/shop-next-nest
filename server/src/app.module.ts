@@ -24,6 +24,7 @@ import { CloudinaryProvider } from './cloudinary-file/cloudinary-file.provider';
 import { MailerModule } from './mailer/mailer.module';
 import { SchedulerModule } from './scheduler/scheduler.module';
 import { HealthModule } from './health/health.module';
+import { AiAgentModule } from './ai-agent/ai-agent.module';
 @Module({
   imports: [
     ConfigModule.forRoot(),
@@ -47,8 +48,14 @@ import { HealthModule } from './health/health.module';
     MailerModule,
     SchedulerModule,
     HealthModule,
+    AiAgentModule,
   ],
   controllers: [],
-  providers: [PrismaService, SeedService, CloudinaryProvider, QueryPayloadBuilderService],
+  providers: [
+    PrismaService,
+    SeedService,
+    CloudinaryProvider,
+    QueryPayloadBuilderService,
+  ],
 })
 export class AppModule {}

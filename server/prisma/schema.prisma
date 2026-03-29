@@ -38,6 +38,7 @@ model User {
   category      Category[]
   billingInfo   BillingInfo?
   subscription  Subscription[]
+  chatSessions  ChatSession[]
 
   stripeAccountId String? @map("stripe_account_id")
 
@@ -443,6 +444,43 @@ model TransferLog {
   @@index([stripeTransferId])
   @@index([status])
   @@index([createdAt])
+}
+
+model ChatSession {
+  id        String        @id @default(cuid())
+  createdAt DateTime      @default(now()) @map("created_at")
+  updatedAt DateTime      @updatedAt @map("updated_at")
+
+  userId    String        @map("user_id")
+  user      User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  messages  ChatMessage[]
+
+  @@index([userId])
+  @@map("chat_sessions")
+}
+
+model ChatMessage {
+  id        String      @id @default(cuid())
+  createdAt DateTime    @default(now()) @map("created_at")
+
+  sessionId  String      @map("session_id")
+  session    ChatSession @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+
+  role       ChatRole
+  content    String
+  toolCalls  Json?       @map("tool_calls")
+  wasStopped Boolean     @default(false) @map("was_stopped")
+
+  @@index([sessionId])
+  @@map("chat_messages")
+}
+
+// Отдельный enum — не конфликтует с EnumRole, EnumOrderStatus и др.
+enum ChatRole {
+  user
+  assistant
+  tool
 }
 
 enum EnumProductState {

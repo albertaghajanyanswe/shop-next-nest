@@ -15,6 +15,7 @@ import { verify } from 'argon2';
 import { StripeService } from 'src/payment/provider/stripe/stripe.service';
 import { EnvVariables } from 'src/utils/constants/variables';
 import { EnumRole, EnumSubscriptionType } from '@prisma/client';
+import { StringValue } from 'ms';
 
 @Injectable()
 export class AuthService {
@@ -89,10 +90,12 @@ export class AuthService {
   issueTokens(userId: string, role: EnumRole = EnumRole.USER) {
     const data = { id: userId, role };
     const accessToken = this.jwt.sign(data, {
-      expiresIn: '1h',
+      expiresIn: (this.configService.get<string>('JWT_EXPIRES_IN') ??
+        '1h') as StringValue,
     });
     const refreshToken = this.jwt.sign(data, {
-      expiresIn: '7d',
+      expiresIn: (this.configService.get<string>('REFRESH_JWT_EXPIRES_IN') ||
+        '7d') as StringValue,
     });
     return { accessToken, refreshToken };
   }
