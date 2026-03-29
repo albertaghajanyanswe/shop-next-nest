@@ -29,6 +29,17 @@ jobs:
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
 
+      #       # Создаём .env.dev для клиента
+      - name: Create client .env.dev
+        run: |
+          cat > ./client/.env.dev << EOF
+          NEXT_PUBLIC_APP_ENV=${{ secrets.NEXT_PUBLIC_APP_ENV }}
+          APP_DOMAIN=${{ secrets.APP_DOMAIN }}
+          NEXT_PUBLIC_CLIENT_URL=${{ secrets.NEXT_PUBLIC_CLIENT_URL }}
+          NEXT_PUBLIC_SERVER_URL=${{ secrets.NEXT_PUBLIC_SERVER_URL }}
+          NEXT_PUBLIC_SERVER_SERVICE=${{ secrets.NEXT_PUBLIC_SERVER_SERVICE }}
+          NEXT_PUBLIC_ALLOW_PURCHASE=${{ secrets.NEXT_PUBLIC_ALLOW_PURCHASE }}
+          EOF
       # CLIENT
       - name: Build & Push client
         uses: docker/build-push-action@v5
@@ -36,6 +47,13 @@ jobs:
           context: ./client
           file: ./client/Dockerfile.dev
           push: true
+          build-args: |
+            NEXT_PUBLIC_APP_ENV=${{ secrets.NEXT_PUBLIC_APP_ENV }}
+            APP_DOMAIN=${{ secrets.APP_DOMAIN }}
+            NEXT_PUBLIC_CLIENT_URL=${{ secrets.NEXT_PUBLIC_CLIENT_URL }}
+            NEXT_PUBLIC_SERVER_URL=${{ secrets.NEXT_PUBLIC_SERVER_URL }}
+            NEXT_PUBLIC_SERVER_SERVICE=${{ secrets.NEXT_PUBLIC_SERVER_SERVICE }}
+            NEXT_PUBLIC_ALLOW_PURCHASE=${{ secrets.NEXT_PUBLIC_ALLOW_PURCHASE }}
           tags: |
             ${{ env.IMAGE_CLIENT }}:${{ steps.tag.outputs.tag }}
 
