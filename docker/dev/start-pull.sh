@@ -58,7 +58,7 @@ DB_NAME=${DB_DATABASE:-mystore-dev}
 DB_USER=${DB_USER:-postgres}
 
 TIMESTAMP=$(date +%Y%m%d_%H%M%S)
-BACKUP_FILE="$BACKUP_DIR/db_backup_$TIMESTAMP.sql"
+BACKUP_FILE="$BACKUP_DIR/db_backup_${IMAGE_TAG}_$TIMESTAMP.sql"
 
 # -----------------------------
 # Проверка docker
