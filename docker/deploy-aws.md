@@ -42,3 +42,8 @@ Example - ssh -i "mystore-frankfurt.pem" ubuntu@ec2-18-184-69-253.eu-central-1.c
    4. include /etc/letsencrypt/options-ssl-nginx.conf
    5. ssl_dhparam /etc/letsencrypt/ssl-dhparam.pem
 
+
+
+##  CI / CD pipeline link
+https://www.youtube.com/watch?v=rRes9LM-Jh8
+
