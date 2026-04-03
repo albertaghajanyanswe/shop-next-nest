@@ -63,8 +63,8 @@ jobs:
           tags: |
             ${{ env.IMAGE_CLIENT }}:${{ steps.tag.outputs.tag }}
             ${{ env.IMAGE_CLIENT }}:latest
-          cache-from: type=registry,ref=${{ env.IMAGE_CLIENT }}:buildcache
-          cache-to: type=registry,ref=${{ env.IMAGE_CLIENT }}:buildcache,mode=max
+          # cache-from: type=registry,ref=${{ env.IMAGE_CLIENT }}:buildcache
+          # cache-to: type=registry,ref=${{ env.IMAGE_CLIENT }}:buildcache,mode=max
 
       # SERVER
       - name: Build & Push server
@@ -76,5 +76,5 @@ jobs:
           tags: |
             ${{ env.IMAGE_SERVER }}:${{ steps.tag.outputs.tag }}
             ${{ env.IMAGE_SERVER }}:latest
-          cache-from: type=registry,ref=${{ env.IMAGE_SERVER }}:buildcache
-          cache-to: type=registry,ref=${{ env.IMAGE_SERVER }}:buildcache,mode=max
+          # cache-from: type=registry,ref=${{ env.IMAGE_SERVER }}:buildcache
+          # cache-to: type=registry,ref=${{ env.IMAGE_SERVER }}:buildcache,mode=max
