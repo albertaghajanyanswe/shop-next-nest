@@ -1,3 +1,15 @@
+# * Before running this workflow, make sure to set the following secrets in your GitHub repository:
+# * Link - https://github.com/albertaghajanyanswe/shop-next-nest/settings/secrets/actions
+# - DOCKER_USERNAME: Your Docker Hub username.
+# - DOCKER_PASSWORD: Your Docker Hub password.
+# * Client env variables need to be added as secrets as well for the build args to work:
+# * Next JS SSR relies on envs being present at build time
+# - NEXT_PUBLIC_APP_ENV: The environment for the client (e.g., production, staging).
+# - APP_DOMAIN: The domain of your application.
+# - NEXT_PUBLIC_CLIENT_URL: The URL for the client application.
+# - NEXT_PUBLIC_SERVER_URL: The URL for the server application.
+# - NEXT_PUBLIC_SERVER_SERVICE: The service name for the server (e.g., api).
+# - NEXT_PUBLIC_ALLOW_PURCHASE: A flag to allow purchases (e.g., true or false).
 name: CI - Build and Push Release Images
 
 on:

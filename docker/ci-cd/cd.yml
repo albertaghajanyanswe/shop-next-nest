@@ -1,3 +1,7 @@
+# This workflow is triggered after the successful completion of the CI pipeline.
+# First need to create a github action runner on your server and set it to run jobs with label 'self-hosted'.
+# Link to create runner - https://github.com/albertaghajanyanswe/shop-next-nest/settings/actions/runners/new?arch=x64&os=linux
+
 name: CD Pipeline
 
 on:
