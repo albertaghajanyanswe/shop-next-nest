@@ -152,7 +152,7 @@ export const HeaderMenuV2 = React.forwardRef<HTMLElement, HeaderMenuProps>(
               linkClass='flex items-center whitespace-nowrap'
             >
               <LogOut className='mr-2 size-4' />
-              Login Btn 2
+              Login Btn 3
             </HeaderNavLink>
           )}
         </div>
@@ -234,7 +234,7 @@ export const HeaderMenuV2 = React.forwardRef<HTMLElement, HeaderMenuProps>(
             <Link href={PUBLIC_URL.auth()}>
               <Button variant='default' className='w-full'>
                 <LogOut className='mr-2 size-4 text-white' />
-                Login Btn 2
+                Login Btn 3
               </Button>
             </Link>
           )}
