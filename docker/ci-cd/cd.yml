@@ -1,10 +1,17 @@
 #* INSTRUCTION.
 # This workflow is triggered after the successful completion of the CI pipeline.
-# * workflows: ["CI - Build and Push Release Images"] - this means that this CD pipeline will be triggered only after the successful completion of the CI pipeline with the name "CI - Build and Push Release Images". 
+# * workflows: ["CI - Build and Push Release Images"] - this means that this CD pipeline will be triggered only after the successful completion of the CI pipeline with the name "CI - Build and Push Release Images".
 # First need to create a github action runner on your server (EC2 instance)
 # Connect to the server via ssh and follow the instructions from *link* below to create a self-hosted runner.
 # * Link to create runner - https://github.com/albertaghajanyanswe/shop-next-nest/settings/actions/runners/new?arch=x64&os=linux
-# * After setting up the runner on the server, need to run runner on background, command: ./run.sh &
+# * After setting up the runner on the server, need to run runner
+# 1. on background, command: ./run.sh &, for debugging
+# 2. as system service, commands
+#   2.1 cd actions-runner
+#   2.2 sudo ./svc.sh install
+#   2.3 sudo ./svc.sh start
+#   2.4 sudo ./svc.sh status
+#   2.4 sudo ./svc.sh restart - if cd pipeline does not launch after ci pipeline and runner stopped to work
 # Please note that the runner working only on the default branch (main/master),
 
 name: CD Pipeline

@@ -1,7 +1,8 @@
+# * INSTRUCTIONS
 # * Before running this workflow, make sure to set the following secrets in your GitHub repository:
 # * Link - https://github.com/albertaghajanyanswe/shop-next-nest/settings/secrets/actions
 # - DOCKER_USERNAME: Your Docker Hub username.
-# - DOCKER_PASSWORD: Your Docker Hub password.
+# - DOCKER_PASSWORD: Your Docker Hub password. - https://app.docker.com/accounts/albertaghajanyan/settings/personal-access-tokens
 # * Client env variables need to be added as secrets as well for the build args to work:
 # * Next JS SSR relies on envs being present at build time
 # - NEXT_PUBLIC_APP_ENV: The environment for the client (e.g., production, staging).
