@@ -1,6 +1,11 @@
+#* INSTRUCTION.
 # This workflow is triggered after the successful completion of the CI pipeline.
-# First need to create a github action runner on your server and set it to run jobs with label 'self-hosted'.
-# Link to create runner - https://github.com/albertaghajanyanswe/shop-next-nest/settings/actions/runners/new?arch=x64&os=linux
+# * workflows: ["CI - Build and Push Release Images"] - this means that this CD pipeline will be triggered only after the successful completion of the CI pipeline with the name "CI - Build and Push Release Images". 
+# First need to create a github action runner on your server (EC2 instance)
+# Connect to the server via ssh and follow the instructions from *link* below to create a self-hosted runner.
+# * Link to create runner - https://github.com/albertaghajanyanswe/shop-next-nest/settings/actions/runners/new?arch=x64&os=linux
+# * After setting up the runner on the server, need to run runner on background, command: ./run.sh &
+# Please note that the runner working only on the default branch (main/master),
 
 name: CD Pipeline
 
