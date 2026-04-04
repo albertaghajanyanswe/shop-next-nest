@@ -14,6 +14,8 @@
 #   2.4 sudo ./svc.sh restart - if cd pipeline does not launch after ci pipeline and runner stopped to work
 # Please note that the runner working only on the default branch (main/master),
 
+# * HELPER LINK - https://www.youtube.com/watch?v=rRes9LM-Jh8
+
 name: CD Pipeline
 
 on:
