@@ -29,7 +29,6 @@ WORKDIR /usr/src/app
 ENV NODE_ENV=production
 RUN addgroup --system --gid 1001 nodejs
 RUN adduser --system --uid 1001 nextjs
-# Commented because deploy script failed
 COPY .env.dev .env
 
 COPY --from=builder /usr/src/app/public ./public
