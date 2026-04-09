@@ -23,6 +23,7 @@ import { Badge } from '@/components/ui/Badge';
 import { EnvVariables } from '@/shared/envVariables';
 import toast from 'react-hot-toast';
 import NoDataFound from '@/components/customComponents/loading/NoDataFound';
+import { useTranslations } from 'next-intl';
 
 interface HeaderCartProps {
   triggerBtnClass?: string;
@@ -34,12 +35,13 @@ export function HeaderCart({ triggerBtnClass }: HeaderCartProps) {
   const { createPaymentMultiple, isLoadingCreateMultiple } =
     useCheckoutStripeMultipleItems();
   const { user } = useProfile();
+  const tCart = useTranslations('HeaderCart');
 
   const { orderItems, total } = useCart();
   const handleClickCheckout = () => {
     if (user) {
       if (!EnvVariables.NEXT_PUBLIC_ALLOW_PURCHASE) {
-        toast.error('Purchase not allowed.');
+        toast.error(tCart('purchase_not_allowed'));
       }
       createPaymentMultiple();
     } else {
@@ -64,7 +66,7 @@ export function HeaderCart({ triggerBtnClass }: HeaderCartProps) {
         <SheetHeader className='sticky top-0 z-20 flex w-full flex-row items-center justify-between border-b bg-shop-white/95 p-0 pb-4 backdrop-blur-sm'>
           <SheetTitle className='p-0'>
             <Heading
-              title='Basket of products'
+              title={tCart('basket_of_products')}
               className='text-xl'
               showBackButton={false}
             />
@@ -86,13 +88,13 @@ export function HeaderCart({ triggerBtnClass }: HeaderCartProps) {
               </div>
             ))
           ) : (
-            <NoDataFound entityName='cart item' showDesc={false} />
+            <NoDataFound entityName={tCart('cart_item')} showDesc={false} />
           )}
         </div>
         {orderItems?.length ? (
           <>
             <div className='text-lg font-medium'>
-              <span className='text-muted-foreground'>Total amount:</span>
+              <span className='text-muted-foreground'>{tCart('total_amount')}</span>
               <span className='text-shop-red ml-2'>{formatPrice(total)}</span>
             </div>
             {EnvVariables.NEXT_PUBLIC_ALLOW_PURCHASE && (
@@ -102,7 +104,7 @@ export function HeaderCart({ triggerBtnClass }: HeaderCartProps) {
                 disabled={isLoadingCreateMultiple}
                 className='w-full'
               >
-                Checkout
+                {tCart('checkout')}
               </Button>
             )}
           </>

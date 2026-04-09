@@ -7,6 +7,7 @@ import { useQueryParams } from '@/hooks/commons/useQueryParams';
 import { Search } from 'lucide-react';
 import { usePathname } from 'next/navigation';
 import { useState } from 'react';
+import { useTranslations } from 'next-intl';
 
 interface SearchInputProps {
   placeholder?: string;
@@ -14,11 +15,13 @@ interface SearchInputProps {
   searchFields?: string[];
 }
 export function SearchInput({
-  placeholder = 'Search products...',
+  placeholder,
   redirectToShop = true,
   searchFields = ['title', 'description'],
 }: SearchInputProps) {
   const pathname = usePathname();
+  const t = useTranslations('SearchInput');
+  const actualPlaceholder = placeholder || t('placeholder');
   const { queryParams, setFilteredParams, setFilteredParamsWithPush } =
     useQueryParams({});
   const [searchTerm, setSearchTerm] = useState(
@@ -44,13 +47,13 @@ export function SearchInput({
   return (
     <div className='relative flex w-full items-center'>
       <Input
-        placeholder={placeholder}
+        placeholder={actualPlaceholder}
         value={searchTerm}
         onChange={(e) => setSearchTerm(e.target.value)}
         className='rounded-lg rounded-r-none pr-8 focus-visible:ring-transparent'
       />
       <Button
-        aria-label='Search products'
+        aria-label={t('search')}
         className='rounded-l-none'
         variant='default'
         onClick={handleSearch}

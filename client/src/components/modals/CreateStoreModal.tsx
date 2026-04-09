@@ -21,6 +21,7 @@ import {
 import { Input } from '../ui/formElements/Input';
 import { Button } from '../ui/Button';
 import { GetStoreDto } from '@/generated/orval/types';
+import { useTranslations } from 'next-intl';
 
 export function CreateStoreModal({
   children,
@@ -31,6 +32,7 @@ export function CreateStoreModal({
   setCurrentStore: (store: GetStoreDto) => void;
 }) {
   const [isOpen, setIsOpen] = useState(false);
+  const t = useTranslations('CreateStoreModal');
   const { createStore, isLoadingCreate } = useCreateStore();
 
   const form = useForm<ICreateStore>({
@@ -55,9 +57,9 @@ export function CreateStoreModal({
       </DialogTrigger>
       <DialogContent>
         <DialogHeader>
-          <DialogTitle>Create Store</DialogTitle>
+          <DialogTitle>{t('title')}</DialogTitle>
           <DialogDescription>
-            Create a new store to start selling your products.
+            {t('description')}
           </DialogDescription>
         </DialogHeader>
         <Form {...form}>
@@ -65,13 +67,13 @@ export function CreateStoreModal({
             <FormField
               control={form.control}
               name='title'
-              rules={{ required: 'Store name is required' }}
+              rules={{ required: t('required') }}
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Store name</FormLabel>
+                  <FormLabel>{t('store_name')}</FormLabel>
                   <FormControl>
                     <Input
-                      placeholder='Store name'
+                      placeholder={t('store_name')}
                       disabled={isLoadingCreate}
                       {...field}
                     />
@@ -82,7 +84,7 @@ export function CreateStoreModal({
             />
             <div className='flex justify-end'>
               <Button variant='default' disabled={isLoadingCreate}>
-                Create
+                {t('create')}
               </Button>
             </div>
           </form>

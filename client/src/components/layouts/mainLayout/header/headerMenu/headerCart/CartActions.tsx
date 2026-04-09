@@ -6,6 +6,7 @@ import { ICartItem } from '@/shared/types/cart.interface';
 import { formatPrice } from '@/utils/formatPrice';
 import { Minus, Plus, Trash, Trash2 } from 'lucide-react';
 import { memo } from 'react';
+import { useTranslations } from 'next-intl';
 
 interface CartActionsProps {
   orderItem: ICartItem;
@@ -14,6 +15,7 @@ interface CartActionsProps {
 function CartActions({ orderItem }: CartActionsProps) {
   const { changeQuantity, removeFromCard } = useActions();
   const { orderItems } = useCart();
+  const tCart = useTranslations('HeaderCart');
   const quantity = orderItems.find((i) => i.id === orderItem.id)?.quantity;
 
   console.log('orderItem = ', orderItem);
@@ -34,7 +36,7 @@ function CartActions({ orderItem }: CartActionsProps) {
       <div className='flex items-center justify-between gap-2'>
         <div className='flex items-center gap-4'>
           <p className='text-shop-light-color text-xs font-semibold'>
-            Quantity
+            {tCart('quantity')}
           </p>
           <div className='flex items-center'>
             <Button
@@ -87,7 +89,7 @@ function CartActions({ orderItem }: CartActionsProps) {
 
       <Separator orientation='horizontal' className='my-1' />
       <div className='flex items-center justify-between'>
-        <p className='text-xs font-semibold'>Subtotal</p>
+        <p className='text-xs font-semibold'>{tCart('subtotal')}</p>
         <p className='mr-2 text-xs font-semibold'>
           {formatPrice(orderItem.price * orderItem.quantity)}
         </p>

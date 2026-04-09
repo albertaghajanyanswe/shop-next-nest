@@ -25,47 +25,48 @@ import { GetUserDto } from '@/generated/orval/types';
 import Image from 'next/image';
 import { generateImgPath } from '@/utils/imageUtils';
 import { EnvVariables } from '@/shared/envVariables';
+import { useTranslations } from 'next-intl';
 
-const menuItems = (user: GetUserDto) => {
+const menuItems = (user: GetUserDto, t: any) => {
   return [
     {
-      value: 'Manage Orders',
+      value: t('Manage Orders'),
       icon: CircleDollarSign,
       link: DASHBOARD_URL.manageOrders(),
       show: user.role === 'SUPER_ADMIN',
     },
     {
-      value: 'My Orders',
+      value: t('My Orders'),
       icon: ShoppingBag,
       link: DASHBOARD_URL.orders(),
       show: true,
     },
     {
-      value: 'My sales',
+      value: t('My sales'),
       icon: CircleDollarSign,
       link: DASHBOARD_URL.sales(),
       show: true,
     },
     {
-      value: 'Subscriptions',
+      value: t('Subscriptions'),
       icon: CreditCard,
       link: DASHBOARD_URL.subscriptions(),
       show: true,
     },
     {
-      value: 'Support service',
+      value: t('Support service'),
       icon: HelpCircle,
       link: PUBLIC_URL.contactUs(),
       show: true,
     },
     {
-      value: 'Account Settings',
+      value: t('Account Settings'),
       icon: Settings,
       link: DASHBOARD_URL.settings(),
       show: EnvVariables.NEXT_PUBLIC_ALLOW_PURCHASE,
     },
     {
-      value: 'User profile',
+      value: t('User profile'),
       icon: UserRound,
       link: DASHBOARD_URL.userProfile(),
       show: true,
@@ -78,6 +79,7 @@ export function DashboardLayout({ children }: PropsWithChildren<unknown>) {
   const [collapsed, setCollapsed] = useState(false);
   const router = useRouter();
   const { logout } = useLogout();
+  const t = useTranslations('Dashboard');
 
   const handleLayout = () => {
     logout();
@@ -121,14 +123,14 @@ export function DashboardLayout({ children }: PropsWithChildren<unknown>) {
             <div className='mb-4 rounded-md bg-gradient-to-r from-emerald-200 to-lime-200 p-2 text-sm text-neutral-900'>
               <div className='flex items-center gap-2'>
                 <ArrowUpCircle className='h-6 min-h-6 w-6 min-w-6 text-purple-600' />
-                <span>Upgrade your plan to unlock Premium features</span>
+                <span>{t('Upgrade plan')}</span>
               </div>
             </div>
           )}
           {/* Horizontal Scroll Menu */}
           <div className='overflow-x-auto'>
             <div className='mb-2 flex gap-2'>
-              {menuItems(user).map((route) => {
+              {menuItems(user, t).map((route) => {
                 return (
                   route.show && (
                     <MenuItem
@@ -146,7 +148,7 @@ export function DashboardLayout({ children }: PropsWithChildren<unknown>) {
                 onClick={handleLayout}
               >
                 <LogOut className='h-5 w-5' />
-                <span>Logout</span>
+                <span>{t('Logout')}</span>
               </Button>
             </div>
           </div>
@@ -166,7 +168,7 @@ export function DashboardLayout({ children }: PropsWithChildren<unknown>) {
               {/* Header */}
               <div className='flex items-center justify-between'>
                 {!collapsed && (
-                  <h2 className='text-lg font-semibold'>Profile</h2>
+                  <h2 className='text-lg font-semibold'>{t('Profile')}</h2>
                 )}
                 <Button
                   variant='ghost'
@@ -211,7 +213,7 @@ export function DashboardLayout({ children }: PropsWithChildren<unknown>) {
                 <div className='mt-3 rounded-md bg-gradient-to-r from-emerald-100 to-lime-200 p-3 text-sm text-neutral-900'>
                   <div className='flex items-center gap-2'>
                     <ArrowUpCircle className='h-8 w-8 text-purple-600' />
-                    <span>Upgrade your plan to unlock Premium features</span>
+                    <span>{t('Upgrade plan')}</span>
                   </div>
                 </div>
               )}
@@ -221,7 +223,7 @@ export function DashboardLayout({ children }: PropsWithChildren<unknown>) {
                 <div
                   className={`flex w-full flex-col space-y-1 ${collapsed ? 'items-center' : ''}`}
                 >
-                  {menuItems(user).map((route) => {
+                  {menuItems(user, t).map((route) => {
                     return (
                       route.show && (
                         <MenuItem
@@ -245,7 +247,7 @@ export function DashboardLayout({ children }: PropsWithChildren<unknown>) {
                   onClick={handleLayout}
                 >
                   <LogOut className='h-5 w-5' />
-                  {!collapsed && <span>Logout</span>}
+                  {!collapsed && <span>{t('Logout')}</span>}
                 </Button>
               </div>
             </aside>

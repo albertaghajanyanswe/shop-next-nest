@@ -6,8 +6,8 @@ import { memo } from 'react';
 import { GetProductWithDetails } from '@/generated/orval/types';
 import QueryString from 'qs';
 import { usePathname } from 'next/navigation';
-import { ProductRating } from '@/app/(root)/product/[id]/productInfo/ProductRating';
-import ProductSoldCount from '@/app/(root)/product/[id]/productInfo/ProductSoldCount';
+import { ProductRating } from '@/app/[locale]/(root)/product/[id]/productInfo/ProductRating';
+import ProductSoldCount from '@/app/[locale]/(root)/product/[id]/productInfo/ProductSoldCount';
 
 interface ProductCardInfoProps {
   product: GetProductWithDetails;

@@ -2,9 +2,7 @@
 
 FROM node:20-alpine AS base
 
-# Check https://github.com/nodejs/docker-node/tree/b4117f9333da4138b03a546ec926ef50a31506c3#nodealpine to understand why libc6-compat might be needed.
-RUN apk add --no-cache libc6-compat bash git
-RUN apk add --no-cache openssl
+RUN apk add --no-cache libc6-compat bash git openssl
 
 WORKDIR /usr/src/app
 
@@ -16,10 +14,29 @@ RUN npm ci
 # --- builder ---
 FROM base AS builder
 WORKDIR /usr/src/app
+
 COPY --from=deps /usr/src/app/node_modules ./node_modules
 COPY . .
+
+# 🔥 BUILD ARGS
+ARG NEXT_PUBLIC_APP_ENV
+ARG APP_DOMAIN
+ARG NEXT_PUBLIC_CLIENT_URL
+ARG NEXT_PUBLIC_SERVER_URL
+ARG NEXT_PUBLIC_SERVER_SERVICE
+ARG NEXT_PUBLIC_ALLOW_PURCHASE
+
+# 🔥 ENV (обязательно для next build)
+ENV NEXT_PUBLIC_APP_ENV=$NEXT_PUBLIC_APP_ENV
+ENV APP_DOMAIN=$APP_DOMAIN
+ENV NEXT_PUBLIC_CLIENT_URL=$NEXT_PUBLIC_CLIENT_URL
+ENV NEXT_PUBLIC_SERVER_URL=$NEXT_PUBLIC_SERVER_URL
+ENV NEXT_PUBLIC_SERVER_SERVICE=$NEXT_PUBLIC_SERVER_SERVICE
+ENV NEXT_PUBLIC_ALLOW_PURCHASE=$NEXT_PUBLIC_ALLOW_PURCHASE
+
 ENV NEXT_TELEMETRY_DISABLED=1
-# RUN npm run build
+
+# 🔥 теперь env есть → build не падает
 RUN npx next build
 
 # --- runner ---
@@ -27,9 +44,12 @@ FROM base AS runner
 WORKDIR /usr/src/app
 
 ENV NODE_ENV=production
+
 RUN addgroup --system --gid 1001 nodejs
 RUN adduser --system --uid 1001 nextjs
-COPY .env.dev .env
+
+# ❌ УДАЛЯЕМ ЭТО
+# COPY .env.dev .env
 
 COPY --from=builder /usr/src/app/public ./public
 COPY --from=builder --chown=nextjs:nodejs /usr/src/app/.next/standalone ./
@@ -38,6 +58,7 @@ COPY --from=builder --chown=nextjs:nodejs /usr/src/app/.next/static ./.next/stat
 USER nextjs
 
 EXPOSE 3000
+
 ENV PORT=3000
 ENV HOSTNAME="0.0.0.0"
 

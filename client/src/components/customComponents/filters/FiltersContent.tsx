@@ -15,6 +15,7 @@ import { PriceFilter } from './PriceFilter';
 import { FilterAccordionItem } from './FilterAccordionItem';
 import { useState, useEffect } from 'react';
 import { capitalizeFirstLetter } from '@/utils/common';
+import { useTranslations } from 'next-intl';
 
 interface FilterContentProps {
   stores?: GetStoreDto[];
@@ -42,6 +43,8 @@ export default function FiltersContent({
   updatePrice,
   resetFilter,
 }: FilterContentProps) {
+  const t = useTranslations('Filters');
+  
   // Local states for instant display of checkboxes
   const [localCategoryIds, setLocalCategoryIds] = useState<string[]>(
     currentFilter.categoryId ?? []
@@ -142,51 +145,51 @@ export default function FiltersContent({
       >
         {/* INTENDED FOR */}
         <FilterAccordionItem
-          title='Intended For'
+          title={t('intended_for')}
           value='intendedFor'
           items={INTENDED_FOR_OPTIONS || []}
           selectedIds={localIntendedForIds}
           onToggle={handleToggleIntendedFor}
           onReset={handleResetIntendedFor}
-          searchPlaceholder='Search intended for...'
+          searchPlaceholder={t('search_intended_for')}
         />
         {/* CATEGORIES */}
         <FilterAccordionItem
-          title='Categories'
+          title={t('categories')}
           value='categories'
           items={categories || []}
           selectedIds={localCategoryIds}
           onToggle={handleToggleCategory}
           onReset={handleResetCategories}
-          searchPlaceholder='Search categories...'
+          searchPlaceholder={t('search_categories')}
         />
 
         {/* BRANDS */}
         <FilterAccordionItem
-          title='Brands'
+          title={t('brands')}
           value='brands'
           items={brands || []}
           selectedIds={localBrandIds}
           onToggle={handleToggleBrand}
           onReset={handleResetBrands}
-          searchPlaceholder='Search brands...'
+          searchPlaceholder={t('search_brands')}
         />
 
         {/* STORES */}
         <FilterAccordionItem
-          title='Stores'
+          title={t('stores')}
           value='stores'
           items={stores || []}
           selectedIds={localStoreIds}
           onToggle={handleToggleStore}
           onReset={handleResetStores}
-          searchPlaceholder='Search stores...'
+          searchPlaceholder={t('search_stores')}
         />
 
         {/* PRICE */}
         <AccordionItem value='price'>
           <AccordionTrigger className='text-md cursor-pointer p-2 text-left font-medium hover:no-underline md:text-lg'>
-            Price
+            {t('price')}
           </AccordionTrigger>
           <AccordionContent className='px-2 pt-4'>
             <PriceFilter

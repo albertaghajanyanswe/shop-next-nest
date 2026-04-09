@@ -21,6 +21,7 @@ import { useProfile } from '@/hooks/useProfile';
 import { ChevronsUpDown, Plus, StoreIcon, Check } from 'lucide-react';
 import { useParams, useRouter } from 'next/navigation';
 import { useState } from 'react';
+import { useTranslations } from 'next-intl';
 
 interface StoreSwitcherProps {
   items: GetStoreDto[];
@@ -30,6 +31,7 @@ export function StoreSwitcher({ items }: StoreSwitcherProps) {
   const router = useRouter();
   const params = useParams<{ storeId: string }>();
   const { user, isLoading: isLoadingUser, canCreateStore } = useProfile();
+  const t = useTranslations('StoreSwitcher');
 
   const [isOpen, setIsOpen] = useState(false);
   const [currentStore, setCurrentStore] = useState<GetStoreDto | null>(
@@ -50,20 +52,20 @@ export function StoreSwitcher({ items }: StoreSwitcherProps) {
           size='sm'
           role='combobox'
           aria-expanded={isOpen}
-          aria-label='Select store'
+          aria-label={t('select_store')}
           className='w-fit cursor-pointer'
         >
           <StoreIcon className='mr-2 size-4' />
-          {currentStore?.title || 'Current Store'}
+          {currentStore?.title || t('current_store')}
           <ChevronsUpDown className='ml-auto size-4 shrink-0 opacity-50' />
         </Button>
       </PopoverTrigger>
       <PopoverContent className='w-fit p-0'>
         <Command>
           <CommandList>
-            <CommandInput placeholder='Search store...' />
-            <CommandEmpty>No store found.</CommandEmpty>
-            <CommandGroup heading='Stores'>
+            <CommandInput placeholder={t('search_store')} />
+            <CommandEmpty>{t('no_store_found')}</CommandEmpty>
+            <CommandGroup heading={t('stores')}>
               <div className='flex flex-col gap-1'>
                 {items.map((store) => (
                   <CommandItem
@@ -99,7 +101,7 @@ export function StoreSwitcher({ items }: StoreSwitcherProps) {
                   className='cursor-pointer text-sm'
                 >
                   <Plus className='mr-2 size-4' />
-                  Create Store
+                  {t('create_store')}
                 </CommandItem>
               </CreateStoreModal>
             </CommandGroup>

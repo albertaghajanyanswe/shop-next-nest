@@ -20,6 +20,7 @@ import { usePathname, useRouter } from 'next/navigation';
 import { HeaderNavLink } from './headerMenuComponents/HeaderNavLink';
 import { HeaderNavLinkBtn } from './headerMenuComponents/HeaderNavLinkBtn';
 import { HeaderNavLinkUserAvatar } from './headerMenuComponents/HeaderNavLinkUserAvatar';
+import { useTranslations } from 'next-intl';
 
 export interface HeaderMenuNavItem {
   href?: string;
@@ -53,6 +54,7 @@ export const HeaderMenuV2 = React.forwardRef<HTMLElement, HeaderMenuProps>(
     const { user, isLoading: isLoadingUser } = useProfile();
     const containerRef = useRef<HTMLElement>(null);
     const [isMobile, setIsMobile] = useState(false);
+    const t = useTranslations('HeaderMenu');
 
     const combinedRef = useCallback(
       (node: HTMLElement | null) => {
@@ -101,19 +103,19 @@ export const HeaderMenuV2 = React.forwardRef<HTMLElement, HeaderMenuProps>(
           <HeaderNavLink
             href={PUBLIC_URL.home()}
             isActive={pathName === PUBLIC_URL.home()}
-            label='Home'
+            label={t('Home')}
             linkClass={showMobile}
           />
           <HeaderNavLink
             href={PUBLIC_URL.shop()}
             isActive={pathName === PUBLIC_URL.shop()}
-            label='Shop'
+            label={t('Shop')}
             linkClass={showMobile}
           />
           <HeaderNavLink
             href={PUBLIC_URL.stores()}
             isActive={pathName === PUBLIC_URL.stores()}
-            label='Stores'
+            label={t('Stores')}
             linkClass={showMobile}
           />
           {/* {user?.role === 'SUPER_ADMIN' && (
@@ -128,7 +130,7 @@ export const HeaderMenuV2 = React.forwardRef<HTMLElement, HeaderMenuProps>(
             <HeaderNavLink
               href={STORE_URL.home(user.stores[0].id)}
               isActive={pathName.includes(STORE_URL.home())}
-              label='My stores'
+              label={t('My stores')}
               linkClass={showMobile}
             />
           ) : (
@@ -139,7 +141,7 @@ export const HeaderMenuV2 = React.forwardRef<HTMLElement, HeaderMenuProps>(
                   role='button'
                   className='hover:bg-accent hover:text-accent-foreground w-full cursor-pointer rounded-md px-4 py-2 text-sm font-medium'
                 >
-                  Create store
+                  {t('Create store')}
                 </div>
               </CreateStoreModal>
             )
@@ -148,11 +150,11 @@ export const HeaderMenuV2 = React.forwardRef<HTMLElement, HeaderMenuProps>(
             <HeaderNavLink
               href={PUBLIC_URL.auth()}
               isActive={pathName === PUBLIC_URL.auth()}
-              label='Login'
+              label={t('Login')}
               linkClass='flex items-center whitespace-nowrap'
             >
               <LogOut className='mr-2 size-4' />
-              Login
+              {t('Login')}
             </HeaderNavLink>
           )}
         </div>
@@ -168,19 +170,19 @@ export const HeaderMenuV2 = React.forwardRef<HTMLElement, HeaderMenuProps>(
           <HeaderNavLink
             href={PUBLIC_URL.home()}
             isActive={pathName === PUBLIC_URL.home()}
-            label='Home'
+            label={t('Home')}
             linkClass={showDesktop}
           />
           <HeaderNavLink
             href={PUBLIC_URL.shop()}
             isActive={pathName === PUBLIC_URL.shop()}
-            label='Shop'
+            label={t('Shop')}
             linkClass={showDesktop}
           />
           <HeaderNavLink
             href={PUBLIC_URL.stores()}
             isActive={pathName === PUBLIC_URL.stores()}
-            label='Stores'
+            label={t('Stores')}
             linkClass={showDesktop}
           />
           {/* {user?.role === 'SUPER_ADMIN' && (
@@ -195,7 +197,7 @@ export const HeaderMenuV2 = React.forwardRef<HTMLElement, HeaderMenuProps>(
             <HeaderNavLink
               href={STORE_URL.home(user.stores[0].id)}
               isActive={pathName.includes(STORE_URL.home())}
-              label='My stores'
+              label={t('My stores')}
               linkClass={showDesktop}
             />
           ) : (
@@ -206,7 +208,7 @@ export const HeaderMenuV2 = React.forwardRef<HTMLElement, HeaderMenuProps>(
                   role='button'
                   className='hover:bg-accent hover:text-accent-foreground w-full cursor-pointer rounded-md px-0 py-2 text-sm font-medium'
                 >
-                  Create store
+                  {t('Create store')}
                 </div>
               </CreateStoreModal>
             )
@@ -234,7 +236,7 @@ export const HeaderMenuV2 = React.forwardRef<HTMLElement, HeaderMenuProps>(
             <Link href={PUBLIC_URL.auth()}>
               <Button variant='default' className='w-full'>
                 <LogOut className='mr-2 size-4 text-white' />
-                Login
+                {t('Login')}
               </Button>
             </Link>
           )}

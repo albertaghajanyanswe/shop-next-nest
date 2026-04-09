@@ -9,16 +9,17 @@ import {
   CarouselContent,
   CarouselItem,
 } from '@/components/ui/Carousel';
-import AddToCardButton from '@/app/(root)/product/[id]/productInfo/AddToCardButton';
-import FavoriteButton from '@/app/(root)/product/[id]/productInfo/FavoriteButton';
 import { PUBLIC_URL } from '@/config/url.config';
 import { generateImgPath, productImgParams } from '@/utils/imageUtils';
 import { ProductCardInfo } from './ProductCardInfo';
 import { GetProductWithDetails } from '@/generated/orval/types';
 import { useCart } from '@/hooks/queries/useCart';
-import CartActions from '@/components/layouts/mainLayout/header/headerMenu/headerCart/CartActions';
 import { CircleOff, Flame } from 'lucide-react';
 import { Badge } from '../../ui/Badge';
+import { useTranslations } from 'next-intl';
+import CartActions from '@/components/layouts/mainLayout/header/headerMenu/headerCart/CartActions';
+import AddToCardButton from '@/app/[locale]/(root)/product/[id]/productInfo/AddToCardButton';
+import FavoriteButton from '@/app/[locale]/(root)/product/[id]/productInfo/FavoriteButton';
 
 interface ProductCardProps {
   product: GetProductWithDetails;
@@ -29,6 +30,7 @@ function ProductCard({ product }: ProductCardProps) {
   const [activeIndex, setActiveIndex] = useState(0);
   const { orderItems } = useCart();
   const isProductInCard = orderItems.find((p) => p.product.id === product.id);
+  const t = useTranslations('Product');
   useEffect(() => {
     if (!carouselApi) return;
 
@@ -79,7 +81,7 @@ function ProductCard({ product }: ProductCardProps) {
                     {outOfStock && (
                       <div className='bg-primary/70 absolute top-[40%] flex h-12 w-full items-center justify-center text-lg font-semibold text-white'>
                         <CircleOff className='mr-2' />
-                        Out of stock
+                        {t('Out of stock')}
                       </div>
                     )}
                   </div>
@@ -116,7 +118,7 @@ function ProductCard({ product }: ProductCardProps) {
         btnVariant='outline'
       />
       <Badge className='xs:top-2 xs:left-2 absolute top-1 left-1 bg-red-500/70 text-xs font-semibold shadow-none hover:bg-red-500/70'>
-        In stock • {product.quantity}
+        {t('In stock')} • {product.quantity}
       </Badge>
     </div>
   );

@@ -1,0 +1,158 @@
+{
+  "Common": {
+    "loading": "Loading...",
+    "error": "An error occurred"
+  },
+  "SearchInput": {
+    "placeholder": "Search products...",
+    "search": "Search products"
+  },
+  "Filters": {
+    "intended_for": "Intended For",
+    "search_intended_for": "Search intended for...",
+    "categories": "Categories",
+    "search_categories": "Search categories...",
+    "brands": "Brands",
+    "search_brands": "Search brands...",
+    "stores": "Stores",
+    "search_stores": "Search stores...",
+    "price": "Price"
+  },
+  "CreateStoreModal": {
+    "title": "Create Store",
+    "description": "Create a new store to start selling your products.",
+    "store_name": "Store name",
+    "required": "Store name is required",
+    "create": "Create"
+  },
+  "MiddleStatistics": {
+    "last_month_profit": "Last month profit",
+    "profit_usd": "Profit (USD)",
+    "last_users": "Last Users",
+    "no_users": "This store has no users",
+    "middle_statistics": "middle statistics"
+  },
+  "Footer": {
+    "buy_sell_follow": "Buy, Sell, and Follow your Favorites Products",
+    "quick_links": "Quick Links",
+    "popular_categories": "Popular Categories",
+    "newsletter": "Newsletter",
+    "subscribe_desc": "Subscribe to our newsletter to receive updates and exclusive offers.",
+    "enter_email": "Enter your email",
+    "subscribe": "Subscribe",
+    "all_rights": "All rights reserved."
+  },
+  "FooterLinks": {
+    "How It Works": "How It Works",
+    "About Us": "About Us",
+    "Contact Us": "Contact Us",
+    "Terms & Service": "Terms & Service",
+    "Privacy Policy": "Privacy Policy",
+    "FAQs": "FAQs",
+    "Visit Us": "Visit Us",
+    "Call Us": "Call Us",
+    "Working Hours": "Working Hours",
+    "Email Us": "Email Us"
+  },
+  "HeaderCart": {
+    "basket_of_products": "Basket of products",
+    "total_amount": "Total amount:",
+    "checkout": "Checkout",
+    "cart_item": "cart item",
+    "purchase_not_allowed": "Purchase not allowed.",
+    "quantity": "Quantity",
+    "subtotal": "Subtotal"
+  },
+  "Product": {
+    "AddToCart": "Add to cart",
+    "RemoveFromCart": "Remove from cart",
+    "Out of stock": "Out of stock",
+    "In stock": "In stock"
+  },
+  "QuickLinks": {
+    "About": {
+      "title": "About Us",
+      "description": "We build modern, customer-centric E-commerce experiences powered by technology, transparency, and trust.",
+      "p1": "{siteName} was founded in 2025 with the desire to create an online marketplace, where could buy and sell goods, offer services and so on. Our mission is to be most trusted and comprehensive online platform, helping accelerate the country’s transformation to a modern digital society. We connect people with the goods, services, and opportunities they need to enhance their everyday lives. By offering a safe, efficient, transparent, and accessible marketplace",
+      "p2": "Our team of expert developers, designers, and strategists work tirelessly to create custom solutions that help our clients streamline their operations, increase efficiency, and drive growth.",
+      "p3": "At {siteName}, we believe in the power of technology to transform businesses and improve lives. We are committed to staying at the forefront of technological advancements and delivering exceptional value to our clients."
+    },
+    "ContactUs": {
+      "title": "Contact Us",
+      "description": "If you have any comments or feedback, please do not hesitate to write us. We love feedback! This is your site and your suggestions will help us make it better.\nPlease provide as much detail as possible. If your inquiry is related to an existing ad, please include the ad reference number with your message. Our support team is here to help with any questions or feedback.",
+      "name": "Name",
+      "name_placeholder": "Your name",
+      "name_required": "Name is required",
+      "email": "Email",
+      "email_placeholder": "Your email",
+      "email_required": "Email is required",
+      "email_invalid": "Enter a valid email",
+      "message": "Message",
+      "message_placeholder": "Your message",
+      "message_required": "Message is required",
+      "submit": "Send Message"
+    },
+    "Faqs": {
+      "title": "Frequently Asked Questions",
+      "description": "Find answers to the most common questions from our customers.",
+      "q1_title": "How long does shipping take?",
+      "q1_content": "3-7 business days on average.",
+      "q2_title": "What is your return policy?",
+      "q2_content": "14 days money-back guarantee.",
+      "q3_title": "What payment methods do you accept?",
+      "q3_content": "Visa, Master"
+    }
+  },
+  "HeaderMenu": {
+    "Home": "Home",
+    "Shop": "Shop",
+    "Stores": "Stores",
+    "My stores": "My stores",
+    "Create store": "Create store",
+    "Login": "Login"
+  },
+  "Navigation": {
+    "Statistics": "Statistics",
+    "Products": "Products",
+    "Categories": "Categories",
+    "Brands": "Brands",
+    "Colors": "Colors",
+    "Reviews": "Reviews",
+    "Store Settings": "Store Settings"
+  },
+  "StoreSwitcher": {
+    "select_store": "Select store",
+    "current_store": "Current Store",
+    "search_store": "Search store...",
+    "no_store_found": "No store found.",
+    "stores": "Stores",
+    "create_store": "Create Store"
+  },
+  "AccountSettings": {
+    "theme": "Theme",
+    "dark": "Dark",
+    "light": "Light",
+    "theme_active": " theme is currently active.",
+    "toggle_theme": "Toggle theme",
+    "register_stripe": "Register on stripe as seller",
+    "register_stripe_desc": "To start selling products and accepting payments and manage your sales, you need a Stripe seller account. Click the button below to quickly register or log in. After completing it, you can:",
+    "payouts_desc": "Receive payouts to your bank account",
+    "manage_desc": "Manage your products and orders",
+    "dashboard_desc": "Access your Stripe Dashboard",
+    "login_stripe": "Login to Stripe Dashboard",
+    "login_stripe_desc": "Already have a Stripe seller account?\nClick the button below to securely log in to your Stripe Dashboard and manage your sales, products, and payouts.\nAccess your account anytime to track orders and payments."
+  },
+  "Dashboard": {
+    "Manage Orders": "Manage Orders",
+    "My Orders": "My Orders",
+    "My sales": "My sales",
+    "Subscriptions": "Subscriptions",
+    "Support service": "Support service",
+    "Account Settings": "Account Settings",
+    "User profile": "User profile",
+    "Upgrade plan": "Upgrade your plan to unlock Premium features",
+    "Logout": "Logout",
+    "Favorites": "Favorites",
+    "Favorites_products": "Favorites products"
+  }
+}

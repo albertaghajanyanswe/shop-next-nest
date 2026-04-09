@@ -13,45 +13,47 @@ import {
 import { useParams } from 'next/navigation';
 import { MenuItem } from './MenuItem';
 import { IMenuItem } from './menu.interface';
+import { useTranslations } from 'next-intl';
 
 export function Navigation() {
   const params = useParams<{ storeId: string }>();
+  const t = useTranslations('Navigation');
 
   const routes: IMenuItem[] = [
     {
       icon: BarChart,
       link: STORE_URL.home(params.storeId),
-      value: 'Statistics',
+      value: t('Statistics'),
     },
     {
       icon: FolderKanban,
       link: STORE_URL.products(params.storeId),
-      value: 'Products',
+      value: t('Products'),
     },
     {
       icon: Album,
       link: STORE_URL.categories(params.storeId),
-      value: 'Categories',
+      value: t('Categories'),
     },
     {
       icon: Sparkles,
       link: STORE_URL.brands(params.storeId),
-      value: 'Brands',
+      value: t('Brands'),
     },
     {
       icon: PaintBucket,
       link: STORE_URL.colors(params.storeId),
-      value: 'Colors',
+      value: t('Colors'),
     },
     {
       icon: Star,
       link: STORE_URL.reviews(params.storeId),
-      value: 'Reviews',
+      value: t('Reviews'),
     },
     {
       icon: Settings,
       link: STORE_URL.settings(params.storeId),
-      value: 'Store Settings',
+      value: t('Store Settings'),
     },
   ];
   return (

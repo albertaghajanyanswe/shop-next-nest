@@ -12,6 +12,7 @@ import {
   FooterSocialLinks,
 } from './config';
 import QueryString from 'qs';
+import { getTranslations } from 'next-intl/server';
 
 export const revalidate = 300;
 
@@ -29,6 +30,8 @@ async function getCategories() {
 
 export default async function Footer() {
   const categories = await getCategories();
+  const t = await getTranslations('Footer');
+  const tLinks = await getTranslations('FooterLinks');
 
   return (
     <footer className='global-container bg-shop-light-bg w-full border-t'>
@@ -58,7 +61,7 @@ export default async function Footer() {
             </button>
 
             <p className='mt-4 max-w-xs text-sm text-neutral-600'>
-              Buy, Sell, and Follow your Favorites Products
+              {t('buy_sell_follow')}
             </p>
 
             <div className='mt-6 flex items-center space-x-4'>
@@ -72,7 +75,7 @@ export default async function Footer() {
 
           {/* Quick Links */}
           <div>
-            <h3 className='mb-4 text-lg font-semibold'>Quick Links</h3>
+            <h3 className='mb-4 text-lg font-semibold'>{t('quick_links')}</h3>
             <ul className='space-y-2 text-sm text-neutral-600'>
               {FooterQuickLinks.map((quickLink) => {
                 return (
@@ -81,7 +84,7 @@ export default async function Footer() {
                       className='hover:text-shop-light-green'
                       href={quickLink.href}
                     >
-                      {quickLink.title}
+                      {tLinks(quickLink.title as any)}
                     </Link>
                   </li>
                 );
@@ -91,7 +94,7 @@ export default async function Footer() {
 
           {/* Categories */}
           <div>
-            <h3 className='mb-4 text-lg font-semibold'>Popular Categories</h3>
+            <h3 className='mb-4 text-lg font-semibold'>{t('popular_categories')}</h3>
             <ul className='space-y-2 text-sm text-neutral-600'>
               {categories?.map((category) => {
                 return (
@@ -114,15 +117,14 @@ export default async function Footer() {
 
           {/* Newsletter */}
           <div>
-            <h3 className='mb-4 text-lg font-semibold'>Newsletter</h3>
+            <h3 className='mb-4 text-lg font-semibold'>{t('newsletter')}</h3>
             <p className='mb-4 text-sm text-neutral-600'>
-              Subscribe to our newsletter to receive updates and exclusive
-              offers.
+              {t('subscribe_desc')}
             </p>
             <div className='flex flex-col space-y-4'>
-              <Input placeholder='Enter your email' />
+              <Input placeholder={t('enter_email')} />
               <Button variant='default' size='lg' disabled>
-                Subscribe
+                {t('subscribe')}
               </Button>
             </div>
           </div>
@@ -132,8 +134,7 @@ export default async function Footer() {
 
       {/* Bottom */}
       <div className='py-6 text-center text-neutral-600'>
-        © 2025 <span className='font-semibold'>MYSTORE</span>. All rights
-        reserved.
+        © 2025 <span className='font-semibold'>MYSTORE</span>. {t('all_rights')}
       </div>
     </footer>
   );

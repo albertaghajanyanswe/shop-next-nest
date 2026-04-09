@@ -49,7 +49,7 @@ jobs:
         uses: docker/build-push-action@v5
         with:
           context: ./client
-          file: ./client/Dockerfile.dev
+          file: ./client/Dockerfile.dev.pull
           push: true
           # passing build args to Dockerfile from github secrets
           # important - need to add these env variables on github repo settings as secrets
