@@ -89,10 +89,10 @@ export default function ProductInfo({ product }: ProductInfoProps) {
             </span>
             {typeof product.oldPrice === 'number' &&
               product.oldPrice !== product.price && (
-                <span className='ml-2 text-gray-500 line-through'>
+                <span className='ml-2 text-shop-primary-text line-through'>
                   {formatPrice(product.oldPrice)}
                 </span>
-              )}
+            )}
           </div>
           <hr className='my-3' />
           <ShowMoreText

@@ -37,7 +37,7 @@ function ProductCardInfoUnMemo({
           />
         ))}
       </div>
-      <p className='mt-1 line-clamp-1 text-xs font-semibold text-gray-700 sm:text-sm'>
+      <p className='mt-1 line-clamp-1 text-xs font-semibold text-shop-primary-text sm:text-sm'>
         {product.title}
       </p>
       <p className='text-muted-foreground line-clamp-1 h-4 text-xs'>

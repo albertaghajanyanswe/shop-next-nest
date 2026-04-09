@@ -26,7 +26,7 @@ export function ContactUsTemplate({
         <Body className='bg-neutral-50 p-4 text-neutral-900'>
           <Preview>New message from {name}</Preview>
 
-          <Container className='max-w-2xl mx-auto bg-white rounded-md shadow-md'>
+          <Container className='max-w-2xl mx-auto bg-shop-white rounded-md shadow-md'>
             <div className='relative px-4 py-4 overflow-hidden'>
               <div className='relative text-center'>
                 <Heading className='mb-4 text-3xl font-bold'>

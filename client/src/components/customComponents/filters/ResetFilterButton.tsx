@@ -21,7 +21,7 @@ export const ResetFilterButton = ({
       Reset Filter
       <Badge
         variant='outline'
-        className='border-red-200 bg-white font-medium text-neutral-600 group-hover:border-red-400'
+        className='border-red-200 bg-shop-white font-medium text-neutral-600 group-hover:border-red-400'
       >
         {selectedCount} selected
       </Badge>

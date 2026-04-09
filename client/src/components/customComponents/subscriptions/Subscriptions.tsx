@@ -157,7 +157,7 @@ export default function SubscriptionCards({
         {filteredPlans.map((plan) => (
           <Card
             key={plan.planId}
-            className={`relative flex flex-col overflow-hidden border-none bg-white shadow-none ${
+            className={`relative flex flex-col overflow-hidden border-none bg-shop-white shadow-none ${
               plan.isPopular
                 ? 'bg-gradient-to-r from-emerald-100 to-lime-100'
                 : ''

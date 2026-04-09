@@ -14,7 +14,7 @@ function PaymentSuccessPage({ orderId }: PaymentSuccessPageProps) {
   return order && !isLoadingOrder ? (
     <div className='bg-shop-light-bg my-6 flex flex-col items-center justify-center gap-4 rounded-md py-6'>
       <h1 className='text-primary text-2xl font-semibold'>Payment Success</h1>
-      <div className='border-shop-bg rounded-md border bg-white p-4'>
+      <div className='border-shop-bg rounded-md border bg-shop-white p-4'>
         <OrderDetailsModalContent order={order!} />
       </div>
     </div>

@@ -111,9 +111,9 @@ export default function Filters({ categories, brands, stores }: FilterProps) {
           </SheetTrigger>
           <SheetContent
             side='left'
-            className='flex max-h-[100dvh] w-80 flex-col overflow-y-auto bg-white p-4 pt-0'
+            className='flex max-h-[100dvh] w-80 flex-col overflow-y-auto bg-shop-white p-4 pt-0'
           >
-            <SheetHeader className='sticky top-0 z-20 flex w-full flex-row items-center justify-between border-b bg-white/95 p-0 pb-4 backdrop-blur-sm'>
+            <SheetHeader className='sticky top-0 z-20 flex w-full flex-row items-center justify-between border-b bg-shop-white/95 p-0 pb-4 backdrop-blur-sm'>
               <SheetTitle className='p-0'>
                 <Heading
                   title='Filters'

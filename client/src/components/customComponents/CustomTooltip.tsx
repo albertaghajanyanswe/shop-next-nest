@@ -15,7 +15,7 @@ export function CustomTooltip({
   return (
     <Tooltip>
       <TooltipTrigger asChild>{children}</TooltipTrigger>
-      <TooltipContent className='bg-emerald-700/20 text-black'>
+      <TooltipContent className='bg-emerald-700/20 text-shop-primary-text'>
         <p>{text}</p>
       </TooltipContent>
     </Tooltip>

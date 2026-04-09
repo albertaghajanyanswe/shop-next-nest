@@ -28,13 +28,13 @@ export default function Breadcrumbs({
                   <BreadcrumbLink asChild>
                     <Link
                       href={item.href}
-                      className='transition-colors hover:text-black'
+                      className='transition-colors hover:text-shop-primary-text'
                     >
                       {item.title}
                     </Link>
                   </BreadcrumbLink>
                 ) : (
-                  <span aria-current='page' className='font-medium text-black'>
+                  <span aria-current='page' className='font-medium text-shop-primary-text'>
                     {item.title}
                   </span>
                 )}
@@ -46,24 +46,5 @@ export default function Breadcrumbs({
         })}
       </BreadcrumbList>
     </Breadcrumb>
-
-    // <nav aria-label='Breadcrumb' className='mb-6 text-sm text-gray-500'>
-    //   <ol className='flex items-center gap-1'>
-    //     {items.map((item, i) => (
-    //       <li key={i} className='flex items-center gap-1'>
-    //         {item.href ? (
-    //           <Link href={item.href} className='hover:text-black'>
-    //             {item.title}
-    //           </Link>
-    //         ) : (
-    //           <span aria-current='page' className='font-medium text-black'>
-    //             {item.title}
-    //           </span>
-    //         )}
-    //         {i !== items.length - 1 && <span>/</span>}
-    //       </li>
-    //     ))}
-    //   </ol>
-    // </nav>
   );
 }

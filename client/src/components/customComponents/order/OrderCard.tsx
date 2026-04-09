@@ -15,11 +15,11 @@ export default function OrderCard({ order }: OrderCardProps) {
   );
 
   return (
-    <Card className='w-full max-w-md rounded-xl border bg-white p-3'>
+    <Card className='w-full max-w-md rounded-xl border bg-shop-white p-3'>
       {/* Header */}
       <div className='mb-2 flex items-center justify-between'>
         <div className='flex flex-col'>
-          <span className='text-xs font-medium text-gray-500'>Order</span>
+          <span className='text-xs font-medium text-shop-muted-text-5'>Order</span>
           <span className='max-w-[180px] truncate text-sm font-semibold'>
             {order.id}
           </span>
@@ -38,7 +38,7 @@ export default function OrderCard({ order }: OrderCardProps) {
         {(order.orderItems || []).map((item) => (
           <div
             key={item.id}
-            className='flex min-w-[72px] flex-1 flex-col items-center rounded-md border bg-white p-1 shadow-sm'
+            className='flex min-w-[72px] flex-1 flex-col items-center rounded-md border bg-shop-white p-1 shadow-sm'
             aria-label={`Order item ${item.cachedProductTitle}`}
           >
             <div className='relative h-12 w-12 overflow-hidden rounded-md border bg-gray-50'>
@@ -56,8 +56,8 @@ export default function OrderCard({ order }: OrderCardProps) {
               {item.cachedProductTitle}
             </span>
 
-            <span className='text-[10px] text-gray-600'>${item.price}</span>
-            <span className='text-[9px] text-gray-400'>
+            <span className='text-[10px] text-shop-muted-text-5'>${item.price}</span>
+            <span className='text-[9px] text-shop-muted-text-5'>
               ID: {String(item.id).slice(0, 8)}
             </span>
           </div>
@@ -69,7 +69,7 @@ export default function OrderCard({ order }: OrderCardProps) {
       {/* Footer: totals and quick actions */}
       <div className='flex items-center justify-between text-sm font-semibold'>
         <div className='flex items-baseline gap-2'>
-          <span className='text-xs text-gray-500'>Items:</span>
+          <span className='text-xs text-shop-muted-text-5'>Items:</span>
           <span className='text-sm'>{(order.orderItems || []).length}</span>
         </div>
 

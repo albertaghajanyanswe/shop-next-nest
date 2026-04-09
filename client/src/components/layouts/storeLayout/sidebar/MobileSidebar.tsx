@@ -15,7 +15,7 @@ export function MobileSidebar() {
       <SheetTrigger className='hover-opacity-75 pr-4 transition lg:hidden'>
         <Menu />
       </SheetTrigger>
-      <SheetContent side='left' className='bg-white p-0'>
+      <SheetContent side='left' className='bg-shop-white p-0'>
         <VisuallyHidden>
           <SheetTitle />
         </VisuallyHidden>

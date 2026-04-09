@@ -100,7 +100,7 @@ export function DashboardLayout({ children }: PropsWithChildren<unknown>) {
       <div className='bg-shop-light-bg h-full py-4 lg:hidden'>
         <div className='global-container flex flex-col gap-4'>
           {/* User Card */}
-          <Card className='flex items-center gap-3 bg-white p-3 shadow-none'>
+          <Card className='flex items-center gap-3 bg-shop-white p-3 shadow-none'>
             <Image
               src={
                 generateImgPath(user?.picture || '') ||
@@ -159,7 +159,7 @@ export function DashboardLayout({ children }: PropsWithChildren<unknown>) {
           <div className='inset-y-0 z-[50] flex h-full flex-col'>
             <aside
               className={cn(
-                'flex flex-col rounded-md bg-white shadow-sm transition-all duration-300',
+                'flex flex-col rounded-md bg-shop-white shadow-sm transition-all duration-300',
                 collapsed ? 'w-20 items-center p-2' : 'w-64 p-2'
               )}
             >
@@ -201,14 +201,14 @@ export function DashboardLayout({ children }: PropsWithChildren<unknown>) {
                     <span className='font-medium text-neutral-900'>
                       {user.name}
                     </span>
-                    <span className='text-sm text-gray-500'>{user.email}</span>
+                    <span className='text-sm text-shop-muted-text-5'>{user.email}</span>
                   </div>
                 )}
               </Card>
 
               {/* Upgrade block */}
               {!collapsed && (
-                <div className='mt-3 rounded-md bg-gradient-to-r from-emerald-100 to-lime-200 p-3 text-sm text-gray-800'>
+                <div className='mt-3 rounded-md bg-gradient-to-r from-emerald-100 to-lime-200 p-3 text-sm text-neutral-900'>
                   <div className='flex items-center gap-2'>
                     <ArrowUpCircle className='h-8 w-8 text-purple-600' />
                     <span>Upgrade your plan to unlock Premium features</span>
@@ -251,12 +251,12 @@ export function DashboardLayout({ children }: PropsWithChildren<unknown>) {
             </aside>
           </div>
         </div>
-        <main className='w-full bg-white'>{children}</main>
+        <main className='w-full bg-shop-white'>{children}</main>
       </div>
 
       {/* Main content for mobile/tablet */}
       <div className='lg:hidden'>
-        <main className='global-container my-8 w-full bg-white'>
+        <main className='global-container my-8 w-full bg-shop-white'>
           {children}
         </main>
       </div>

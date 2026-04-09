@@ -133,7 +133,7 @@ export function StoreCard({
                 key={index}
                 onClick={() => carouselApi?.scrollTo(index)}
                 className={`h-2 w-2 rounded-full transition ${
-                  activeIndex === index ? 'bg-black' : 'bg-white'
+                  activeIndex === index ? 'bg-black' : 'bg-shop-white'
                 }`}
                 aria-label={`Go to slide ${index + 1}`}
               />
