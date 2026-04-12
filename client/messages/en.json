@@ -7,17 +7,7 @@
     "placeholder": "Search products...",
     "search": "Search products"
   },
-  "Filters": {
-    "intended_for": "Intended For",
-    "search_intended_for": "Search intended for...",
-    "categories": "Categories",
-    "search_categories": "Search categories...",
-    "brands": "Brands",
-    "search_brands": "Search brands...",
-    "stores": "Stores",
-    "search_stores": "Search stores...",
-    "price": "Price"
-  },
+
   "CreateStoreModal": {
     "title": "Create Store",
     "description": "Create a new store to start selling your products.",
@@ -156,6 +146,11 @@
     "Favorites_products": "Favorites products",
     "Profile": "Profile"
   },
+  "ShopPage": {
+    "products_catalog": "Products catalog",
+    "search_by_query": "Search by query",
+    "products": "Products"
+  },
   "StorePages": {
     "create": "Create",
     "action": "Action",
@@ -289,5 +284,54 @@
     "order_btn_refunded": "Refunded",
     "order_btn_refund_order": "Refund order",
     "order_btn_distribute_funds": "Distribute Funds"
+  },
+  "HomePage": {
+    "banner_title": "Your perfect choice starts here. Explore premium products for every day.",
+    "banner_button": "Order Now",
+    "categories_title": "Shop By Category",
+    "categories_description": "The most popular categories",
+    "most_popular_title": "Most Popular",
+    "most_popular_description": "The most popular products on the market",
+    "brands_title": "Shop By Brand",
+    "brands_description": "The most popular brands",
+    "view_all": "View all",
+    "category_description_label": "Category description:",
+    "favorites_products": "favorites products"
+  },
+  "Loading": {
+    "please_wait": "Please Wait",
+    "no_products_found": "No products found",
+    "no_entity_found": "No {entity} found",
+    "no_data_found": "No data found",
+    "restocking_shortly": "We are restocking shortly",
+    "no_products_matching": "We are sorry, but there are no products matching on",
+    "check_back_later": "Please check back later or explore our other product categories.",
+    "loading_entity": "{entity} is loading",
+    "simple_check_later": "Please check back later."
+  },
+  "Sorting": {
+    "trigger_label": "Sort by",
+    "placeholder": "Sort by",
+    "newest": "Newest",
+    "price_high_low": "Price: High → Low",
+    "price_low_high": "Price: Low → High",
+    "rating": "Rating"
+  },
+  "Filters": {
+    "reset_filter": "Reset Filter",
+    "selected": "{count} selected",
+    "search": "Search",
+    "categories": "Categories",
+    "price": "Price",
+    "brands": "Brands",
+    "stores": "Stores",
+    "intended_for": "Intended For",
+    "search_categories": "Search categories...",
+    "search_brands": "Search brands...",
+    "search_stores": "Search stores...",
+    "search_intended_for": "Search intended for...",
+    "no_results": "No results found",
+    "price_min_max": "Min - Max",
+    "apply": "Apply"
   }
 }

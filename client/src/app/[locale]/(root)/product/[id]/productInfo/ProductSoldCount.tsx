@@ -13,7 +13,7 @@ function ProductSoldCount({
   return (
     <div className={`flex items-center gap-x-4 ${className}`}>
       {leftTitle && (
-        <p className='text-sm font-semibold whitespace-nowrap text-shop-muted-text-7'>
+        <p className='text-shop-muted-text-7 text-sm font-semibold whitespace-nowrap'>
           {leftTitle}
         </p>
       )}

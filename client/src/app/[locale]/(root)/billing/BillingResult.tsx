@@ -58,7 +58,7 @@ export default function BillingResult() {
 
   return (
     <div className='xs:my-24 my-6 flex h-full w-full items-center justify-center px-4'>
-      <div className='w-full max-w-sm rounded-lg border border-gray-200 bg-shop-white p-6 shadow-sm dark:border-gray-700 dark:bg-gray-800'>
+      <div className='bg-shop-white w-full max-w-sm rounded-lg border border-gray-200 p-6 shadow-sm dark:border-gray-700 dark:bg-gray-800'>
         {/* Icon */}
         <div className='mb-4 flex items-center justify-center'>
           {message.icon === 'success' ? (

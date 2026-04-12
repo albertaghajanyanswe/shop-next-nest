@@ -12,25 +12,25 @@ export interface SortOption<
 
 export const SORT_PRODUCT_OPTIONS: readonly SortOption<string, string>[] = [
   {
-    label: 'Newest',
+    label: 'newest',
     value: 'createdAt_desc',
     field: 'createdAt',
     order: 'desc',
   },
   {
-    label: 'Price: High → Low',
+    label: 'price_high_low',
     value: 'price_desc',
     field: 'price',
     order: 'desc',
   },
   {
-    label: 'Price: Low → High',
+    label: 'price_low_high',
     value: 'price_asc',
     field: 'price',
     order: 'asc',
   },
   {
-    label: 'Rating',
+    label: 'rating',
     value: 'totalViews_desc',
     field: 'totalViews',
     order: 'desc',

@@ -16,23 +16,23 @@ export function LanguageSwitcher() {
   };
 
   return (
-    <div className="flex flex-col items-start gap-8">
+    <div className='flex flex-col items-start gap-8'>
       <ButtonGroup>
         <Button
-        // disabled
-        variant={locale === 'ru' ? 'default' : 'outline'}
-        onClick={() => switchLocale('ru')}
-        className={`px-3 py-1 text-xs font-semibold rounded-sm transition-colors`}
-      >
-        RU
-      </Button>
-      <Button
-      variant={locale === 'en' ? 'default' : 'outline'}
-        onClick={() => switchLocale('en')}
-        className={`px-3 py-1 text-xs font-semibold rounded-sm transition-colors`}
-      >
-        EN
-      </Button>
+          // disabled
+          variant={locale === 'ru' ? 'default' : 'outline'}
+          onClick={() => switchLocale('ru')}
+          className={`rounded-sm px-3 py-1 text-xs font-semibold transition-colors`}
+        >
+          RU
+        </Button>
+        <Button
+          variant={locale === 'en' ? 'default' : 'outline'}
+          onClick={() => switchLocale('en')}
+          className={`rounded-sm px-3 py-1 text-xs font-semibold transition-colors`}
+        >
+          EN
+        </Button>
       </ButtonGroup>
     </div>
   );

@@ -15,7 +15,7 @@ export const FooterInfoBlock = ({
       <Icon className='h-5 min-h-5 w-5 min-w-5' />
       <div>
         <p className='font-semibold'>{title}</p>
-        <p className='text-sm wrap-anywhere text-shop-muted-text-6'>{desc}</p>
+        <p className='text-shop-muted-text-6 text-sm wrap-anywhere'>{desc}</p>
       </div>
     </div>
   );

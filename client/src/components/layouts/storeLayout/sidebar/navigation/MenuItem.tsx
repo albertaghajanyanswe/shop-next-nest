@@ -20,7 +20,7 @@ export function MenuItem({ route, showOnlyIcon, className }: MenuItemProps) {
     <Link
       href={route.link}
       className={cn(
-        'hover:bg-shop-primary flex items-center gap-x-3 rounded-lg bg-transparent px-3 py-2.5 text-sm font-medium text-shop-muted-text-7 transition-all duration-200 hover:text-white',
+        'hover:bg-shop-primary text-shop-muted-text-7 flex items-center gap-x-3 rounded-lg bg-transparent px-3 py-2.5 text-sm font-medium transition-all duration-200 hover:text-white',
         isActive &&
           'bg-shop-primary hover:bg-shop-primary text-white hover:text-white',
         className

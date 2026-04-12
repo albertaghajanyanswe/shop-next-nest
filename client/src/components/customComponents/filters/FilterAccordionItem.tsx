@@ -9,6 +9,7 @@ import { useMemo, useState } from 'react';
 import { useDebounce } from '@/hooks/commons/useDebounce';
 import { Search, X } from 'lucide-react';
 import { Input } from '@/components/ui/formElements/Input';
+import { useTranslations } from 'next-intl';
 
 type SearchInputProps = {
   value: string;
@@ -37,7 +38,7 @@ export function SearchInput({
         <button
           type='button'
           onClick={() => onChange('')}
-          className='absolute top-1/2 right-3 -translate-y-1/2 text-neutral-400 hover:text-shop-muted-text-6'
+          className='hover:text-shop-muted-text-6 absolute top-1/2 right-3 -translate-y-1/2 text-neutral-400'
         >
           <X className='h-4 w-4' />
         </button>
@@ -70,11 +71,16 @@ export function FilterAccordionItem<T extends FilterItem>({
   selectedIds,
   onToggle,
   onReset,
-  searchPlaceholder = `Search ${title.toLowerCase()}...`,
+  searchPlaceholder,
   maxHeight = 'max-h-[250px]',
 }: FilterAccordionItemProps<T>) {
+  const t = useTranslations('Filters');
   const [search, setSearch] = useState('');
   const debouncedSearch = useDebounce(search, 300);
+
+  const searchTitle = t('search');
+  const defaultSearchPlaceholder = `${searchTitle} ${title.toLowerCase()}...`;
+  const finalSearchPlaceholder = searchPlaceholder || defaultSearchPlaceholder;
 
   const filterItems = (itemsList: T[], searchText: string) => {
     return itemsList.filter((item) => {
@@ -99,7 +105,7 @@ export function FilterAccordionItem<T extends FilterItem>({
         <SearchInput
           value={search}
           onChange={setSearch}
-          placeholder={searchPlaceholder}
+          placeholder={finalSearchPlaceholder}
         />
         <ResetFilterButton
           filterKey={value}
@@ -120,7 +126,7 @@ export function FilterAccordionItem<T extends FilterItem>({
               </label>
             ))
           ) : (
-            <p className='py-2 text-sm text-neutral-500'>No results found</p>
+            <p className='py-2 text-sm text-neutral-500'>{t('no_results')}</p>
           )}
         </div>
       </AccordionContent>

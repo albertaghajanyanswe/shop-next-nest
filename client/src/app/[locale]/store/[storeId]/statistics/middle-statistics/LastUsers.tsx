@@ -33,7 +33,7 @@ export function LastUsers({ data }: ILastUsersProps) {
                   className='rounded-full'
                 />
                 <div className='text-muted-foreground ml-4 space-y-1 text-sm break-all'>
-                  <p className='leading-none font-medium text-shop-primary-text'>
+                  <p className='text-shop-primary-text leading-none font-medium'>
                     {user.name}
                   </p>
                   <p className=''>{user.email}</p>

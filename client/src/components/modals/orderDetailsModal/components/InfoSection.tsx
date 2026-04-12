@@ -14,7 +14,7 @@ export function InfoSection({ items, className = '' }: InfoSectionProps) {
       {items.map((item, idx) => (
         <p key={idx} className={`${item.className && item.className} flex`}>
           <span className='flex-2 font-semibold'>{item.title}:</span>
-          <span className='ml-2 flex-5 font-medium wrap-anywhere text-shop-muted-text-6'>
+          <span className='text-shop-muted-text-6 ml-2 flex-5 font-medium wrap-anywhere'>
             {item.value}
           </span>
         </p>

@@ -13,7 +13,7 @@ import { GetStoreDto } from '@/generated/orval/types';
 export function Header() {
   const { user, isLoading } = useProfile();
   return (
-    <div className='flex h-full items-center gap-x-4 border-b bg-shop-white p-6'>
+    <div className='bg-shop-white flex h-full items-center gap-x-4 border-b p-6'>
       <MobileSidebar />
       <div className='ml-auto flex items-center gap-x-4'>
         {isLoading ? (

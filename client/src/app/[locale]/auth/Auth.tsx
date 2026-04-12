@@ -26,7 +26,7 @@ export default function Auth() {
   return (
     <div className='grid min-h-screen grid-cols-1 p-0 lg:grid-cols-2'>
       <div
-        className={`relative hidden flex-col items-center justify-center overflow-hidden border-none bg-shop-white bg-linear-to-r from-primary-100 to-primary-400 dark:from-primary-200 dark:to-primary-600 p-6 shadow-none lg:flex text-neutral-700`}
+        className={`bg-shop-white from-primary-100 to-primary-400 dark:from-primary-200 dark:to-primary-600 relative hidden flex-col items-center justify-center overflow-hidden border-none bg-linear-to-r p-6 text-neutral-700 shadow-none lg:flex`}
       >
         <h1 className='max-w-[80%] text-center text-3xl'>
           Your smart shopping starts here...
@@ -39,11 +39,11 @@ export default function Auth() {
         </p>
       </div>
       <div className='flex h-full flex-col items-center justify-center'>
-        <Card className='flex w-full flex-col items-center justify-center gap-4 border-none bg-shop-bg-default p-4 shadow-none sm:w-[500px] sm:p-0'>
+        <Card className='bg-shop-bg-default flex w-full flex-col items-center justify-center gap-4 border-none p-4 shadow-none sm:w-[500px] sm:p-0'>
           <Logo classNames='sm:text-4xl' />
 
           <CardHeader className='flex w-full flex-col items-center justify-center pb-5'>
-            <CardTitle className='pb-1 text-center text-xl font-semibold text-shop-muted-text-7'>
+            <CardTitle className='text-shop-muted-text-7 pb-1 text-center text-xl font-semibold'>
               {isReg
                 ? 'Join us to create and manage your online stores.'
                 : 'Welcome Back!'}
@@ -60,13 +60,13 @@ export default function Auth() {
               >
                 <AuthFields form={form} isPending={isPending} isReg={isReg} />
                 {isReg && !isLoadingPlans && (
-                  <div className='space-y-2 rounded-xl bg-linear-to-r from-primary-100 to-primary-400 dark:from-primary-200 dark:to-primary-600 p-3'>
+                  <div className='from-primary-100 to-primary-400 dark:from-primary-200 dark:to-primary-600 space-y-2 rounded-xl bg-linear-to-r p-3'>
                     {free?.features.map((perk) => (
                       <div
                         key={perk}
-                        className='flex items-center gap-2 text-sm font-medium text-primary-600'
+                        className='text-primary-600 flex items-center gap-2 text-sm font-medium'
                       >
-                        <CheckCircle2 className='size-5 shrink-0 text-primary-600' />
+                        <CheckCircle2 className='text-primary-600 size-5 shrink-0' />
                         {perk}
                       </div>
                     ))}

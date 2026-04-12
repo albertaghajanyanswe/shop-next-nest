@@ -48,7 +48,10 @@ export function Settings() {
   return (
     <div className='p-6'>
       <div className='mb-8 flex items-center justify-between'>
-        <Heading title={t('settings_title')} description={t('settings_description')} />
+        <Heading
+          title={t('settings_title')}
+          description={t('settings_description')}
+        />
         <ConfirmModal
           handleConfirm={() => deleteStore()}
           title={t('delete_store')}

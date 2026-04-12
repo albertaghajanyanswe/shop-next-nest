@@ -157,14 +157,16 @@ export default function SubscriptionCards({
         {filteredPlans.map((plan) => (
           <Card
             key={plan.planId}
-            className={`relative flex flex-col overflow-hidden border-none bg-shop-white shadow-none ${
+            className={`bg-shop-white relative flex flex-col overflow-hidden border-none shadow-none ${
               plan.isPopular
-                ? 'bg-linear-to-r from-primary-200 to-primary-600'
+                ? 'from-primary-200 to-primary-600 bg-linear-to-r'
                 : ''
             }`}
           >
             <CardHeader className='text-neutral-900'>
-              <CardTitle className={`flex h-6 items-center justify-between ${plan.isPopular ? 'text-neutral-900' : 'text-shop-primary-text'}`}>
+              <CardTitle
+                className={`flex h-6 items-center justify-between ${plan.isPopular ? 'text-neutral-900' : 'text-shop-primary-text'}`}
+              >
                 {getPlanName(plan.planId)}
                 {plan.isPopular && (
                   <span className='absolute top-0 right-0 flex w-fit items-center justify-center rounded-bl-full bg-emerald-800 px-[10px] py-[4px] text-xs font-semibold text-white'>
@@ -176,7 +178,10 @@ export default function SubscriptionCards({
             </CardHeader>
 
             <CardContent className='flex-1'>
-              <SubscriptionFeatures features={plan.features} isPopular={plan.isPopular}/>
+              <SubscriptionFeatures
+                features={plan.features}
+                isPopular={plan.isPopular}
+              />
             </CardContent>
 
             <CardFooter>

@@ -60,7 +60,7 @@ export default async function Footer() {
               </div>
             </button>
 
-            <p className='mt-4 max-w-xs text-sm text-shop-muted-text-6'>
+            <p className='text-shop-muted-text-6 mt-4 max-w-xs text-sm'>
               {t('buy_sell_follow')}
             </p>
 
@@ -76,7 +76,7 @@ export default async function Footer() {
           {/* Quick Links */}
           <div>
             <h3 className='mb-4 text-lg font-semibold'>{t('quick_links')}</h3>
-            <ul className='space-y-2 text-sm text-shop-muted-text-6'>
+            <ul className='text-shop-muted-text-6 space-y-2 text-sm'>
               {FooterQuickLinks.map((quickLink) => {
                 return (
                   <li key={quickLink.title}>
@@ -94,8 +94,10 @@ export default async function Footer() {
 
           {/* Categories */}
           <div>
-            <h3 className='mb-4 text-lg font-semibold'>{t('popular_categories')}</h3>
-            <ul className='space-y-2 text-sm text-shop-muted-text-6'>
+            <h3 className='mb-4 text-lg font-semibold'>
+              {t('popular_categories')}
+            </h3>
+            <ul className='text-shop-muted-text-6 space-y-2 text-sm'>
               {categories?.map((category) => {
                 return (
                   <li key={category.id}>
@@ -118,7 +120,7 @@ export default async function Footer() {
           {/* Newsletter */}
           <div>
             <h3 className='mb-4 text-lg font-semibold'>{t('newsletter')}</h3>
-            <p className='mb-4 text-sm text-shop-muted-text-6'>
+            <p className='text-shop-muted-text-6 mb-4 text-sm'>
               {t('subscribe_desc')}
             </p>
             <div className='flex flex-col space-y-4'>
@@ -133,7 +135,7 @@ export default async function Footer() {
       <hr className='border-gray-200' />
 
       {/* Bottom */}
-      <div className='py-6 text-center text-shop-muted-text-6'>
+      <div className='text-shop-muted-text-6 py-6 text-center'>
         © 2025 <span className='font-semibold'>MYSTORE</span>. {t('all_rights')}
       </div>
     </footer>

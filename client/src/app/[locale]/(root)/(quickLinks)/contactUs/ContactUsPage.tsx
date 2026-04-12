@@ -94,7 +94,11 @@ export default function ContactUsPage() {
                   <FormItem>
                     <FormLabel>{t('email')}</FormLabel>
                     <FormControl>
-                      <Input placeholder={t('email_placeholder')} type='email' {...field} />
+                      <Input
+                        placeholder={t('email_placeholder')}
+                        type='email'
+                        {...field}
+                      />
                     </FormControl>
                     <FormMessage />
                   </FormItem>

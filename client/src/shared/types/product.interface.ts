@@ -34,19 +34,18 @@ export interface IProduct {
   intendedFor: GetProductWithDetailsIntendedFor;
 }
 
-export interface IProductInput
-  extends Omit<
-    IProduct,
-    | 'id'
-    | 'reviews'
-    | 'store'
-    | 'category'
-    | 'color'
-    | 'oldPrice'
-    | 'storeId'
-    | 'brand'
-    | 'userId'
-  > {
+export interface IProductInput extends Omit<
+  IProduct,
+  | 'id'
+  | 'reviews'
+  | 'store'
+  | 'category'
+  | 'color'
+  | 'oldPrice'
+  | 'storeId'
+  | 'brand'
+  | 'userId'
+> {
   categoryId: string;
   colorId: string;
   brandId: string;

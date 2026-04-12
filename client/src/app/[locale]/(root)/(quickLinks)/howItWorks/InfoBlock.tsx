@@ -9,7 +9,7 @@ function InfoBlock() {
 
   if (locale === 'ru') {
     return (
-      <div className='mt-3 rounded-md bg-linear-to-r from-primary-100 to-primary-400 dark:from-primary-200 dark:to-primary-600 p-4'>
+      <div className='from-primary-100 to-primary-400 dark:from-primary-200 dark:to-primary-600 mt-3 rounded-md bg-linear-to-r p-4'>
         <h2 className='mb-2 text-xl leading-relaxed font-semibold'>
           Продавайте на {SITE_NAME} с уверенностью
         </h2>
@@ -22,15 +22,18 @@ function InfoBlock() {
           priority
         />
 
-        <p className='mt-4 leading-relaxed text-shop-primary-text'>
-          <strong>MyStores</strong> — это ваша личная панель продавца. Она создана для пользователей, которые хотят продавать товары, управлять запасами (создавать магазины, товары, категории, бренды и цвета) и отслеживать показатели продаж — все в одном месте.
+        <p className='text-shop-primary-text mt-4 leading-relaxed'>
+          <strong>MyStores</strong> — это ваша личная панель продавца. Она
+          создана для пользователей, которые хотят продавать товары, управлять
+          запасами (создавать магазины, товары, категории, бренды и цвета) и
+          отслеживать показатели продаж — все в одном месте.
         </p>
 
-        <p className='mt-6 mb-2 leading-relaxed text-shop-primary-text'>
+        <p className='text-shop-primary-text mt-6 mb-2 leading-relaxed'>
           Из раздела <strong>Мои магазины</strong> в шапке сайта вы можете:
         </p>
 
-        <ul className='grid list-inside list-disc grid-cols-1 gap-2 text-shop-muted-text-7 md:grid-cols-2'>
+        <ul className='text-shop-muted-text-7 grid list-inside list-disc grid-cols-1 gap-2 md:grid-cols-2'>
           <li className='flex flex-row items-center justify-start gap-4'>
             <CheckCircle className='h-4 w-4 text-emerald-600' />
             Создавать и управлять несколькими магазинами
@@ -57,8 +60,10 @@ function InfoBlock() {
           </li>
         </ul>
 
-        <p className='mt-6 leading-relaxed text-shop-primary-text'>
-          У каждого магазина есть своя панель для мониторинга продаж и управления контентом, чтобы вы могли принимать решения на основе данных.
+        <p className='text-shop-primary-text mt-6 leading-relaxed'>
+          У каждого магазина есть своя панель для мониторинга продаж и
+          управления контентом, чтобы вы могли принимать решения на основе
+          данных.
         </p>
       </div>
     );
@@ -66,7 +71,7 @@ function InfoBlock() {
 
   return (
     <>
-      <div className='mt-3 rounded-md bg-linear-to-r from-primary-100 to-primary-400 dark:from-primary-200 dark:to-primary-600 p-4'>
+      <div className='from-primary-100 to-primary-400 dark:from-primary-200 dark:to-primary-600 mt-3 rounded-md bg-linear-to-r p-4'>
         <h2 className='mb-2 text-xl leading-relaxed font-semibold'>
           Sell on {SITE_NAME} with confidence
         </h2>
@@ -80,18 +85,18 @@ function InfoBlock() {
           // loading='lazy'
         />
 
-        <p className='mt-4 leading-relaxed text-shop-primary-text'>
+        <p className='text-shop-primary-text mt-4 leading-relaxed'>
           <strong>MyStores</strong> is your personal seller dashboard. It is
           designed for users who want to sell products, manage inventory (create
           and manage stores, products, categories, brands and colors), and track
           store sales performance — all in one place.
         </p>
 
-        <p className='mt-6 mb-2 leading-relaxed text-shop-primary-text'>
+        <p className='text-shop-primary-text mt-6 mb-2 leading-relaxed'>
           From the <strong>MyStores</strong> section in the header, you can:
         </p>
 
-        <ul className='grid list-inside list-disc grid-cols-1 gap-2 text-shop-muted-text-7 md:grid-cols-2'>
+        <ul className='text-shop-muted-text-7 grid list-inside list-disc grid-cols-1 gap-2 md:grid-cols-2'>
           <li className='flex flex-row items-center justify-start gap-4'>
             <CheckCircle className='h-4 w-4 text-emerald-600' />
             Create and manage multiple stores
@@ -118,7 +123,7 @@ function InfoBlock() {
           </li>
         </ul>
 
-        <p className='mt-6 leading-relaxed text-shop-primary-text'>
+        <p className='text-shop-primary-text mt-6 leading-relaxed'>
           Each store has its own dashboard where you can monitor sales, manage
           content, and make data-driven decisions to grow your business.
         </p>

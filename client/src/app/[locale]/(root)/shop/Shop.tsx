@@ -16,6 +16,7 @@ import Filters from '@/components/customComponents/filters/Filters';
 import LoadingProducts from '@/components/customComponents/loading/LoadingProducts';
 import { StoreCard } from '@/components/customComponents/StoreCard';
 import { useMemo } from 'react';
+import { useTranslations } from 'next-intl';
 
 interface ShopProps {
   initialProducts?: GetProductWithDetails[];
@@ -34,6 +35,7 @@ export default function Shop({
   brands,
   store,
 }: ShopProps) {
+  const t = useTranslations('ShopPage');
   const { queryParams, changePage, changeLimit } = useQueryParams({
     pageDefaultParams: {
       params: {
@@ -69,7 +71,7 @@ export default function Shop({
 
   const catalogTitle = useMemo(() => {
     const q = queryParams.params.search?.value;
-    return q ? `Search by query ${q}` : 'Products catalog';
+    return q ? `${t('search_by_query')} : ${q}` : t('products_catalog');
   }, [queryParams.params.search?.value]);
 
   return (
@@ -85,11 +87,11 @@ export default function Shop({
         <Filters categories={categories} brands={brands} stores={stores} />
         <div className='relative w-full'>
           {loading ? (
-            <LoadingProducts entityName='Products' />
+            <LoadingProducts entityName={t('products')} />
           ) : (
             <>
               <Catalog
-                title={`Products catalog (${productData?.totalCount ?? totalCount})`}
+                title={`${catalogTitle} (${productData?.totalCount ?? totalCount})`}
                 products={productData?.products ?? []}
                 showSearch
                 showSort

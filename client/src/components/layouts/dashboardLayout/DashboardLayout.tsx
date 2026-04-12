@@ -102,7 +102,7 @@ export function DashboardLayout({ children }: PropsWithChildren<unknown>) {
       <div className='bg-shop-light-bg h-full py-4 lg:hidden'>
         <div className='global-container flex flex-col gap-4'>
           {/* User Card */}
-          <Card className='flex items-center gap-3 bg-shop-white p-3 shadow-none'>
+          <Card className='bg-shop-white flex items-center gap-3 p-3 shadow-none'>
             <Image
               src={
                 generateImgPath(user?.picture || '') ||
@@ -115,12 +115,16 @@ export function DashboardLayout({ children }: PropsWithChildren<unknown>) {
               priority={false}
             />
             <div className='flex flex-1 flex-col items-center'>
-              <span className='font-medium text-shop-primary-text'>{user.name}</span>
-              <span className='text-sm text-shop-muted-text-7'>{user.email}</span>
+              <span className='text-shop-primary-text font-medium'>
+                {user.name}
+              </span>
+              <span className='text-shop-muted-text-7 text-sm'>
+                {user.email}
+              </span>
             </div>
           </Card>
           {!collapsed && (
-            <div className='mb-4 rounded-md bg-linear-to-r from-primary-100 to-primary-400 dark:from-primary-200 dark:to-primary-600 p-2 text-sm text-neutral-900'>
+            <div className='from-primary-100 to-primary-400 dark:from-primary-200 dark:to-primary-600 mb-4 rounded-md bg-linear-to-r p-2 text-sm text-neutral-900'>
               <div className='flex items-center gap-2'>
                 <ArrowUpCircle className='h-6 min-h-6 w-6 min-w-6 text-purple-600' />
                 <span>{t('Upgrade plan')}</span>
@@ -183,7 +187,7 @@ export function DashboardLayout({ children }: PropsWithChildren<unknown>) {
               {/* User card */}
               <Card
                 className={cn(
-                  'mt-4 flex items-center gap-3 p-3 shadow-none transition-all bg-linear-to-r from-primary-50 to-primary-200 dark:from-primary-100 dark:to-primary-400',
+                  'from-primary-50 to-primary-200 dark:from-primary-100 dark:to-primary-400 mt-4 flex items-center gap-3 bg-linear-to-r p-3 shadow-none transition-all',
                   collapsed ? 'flex-col p-2' : ''
                 )}
               >
@@ -203,14 +207,16 @@ export function DashboardLayout({ children }: PropsWithChildren<unknown>) {
                     <span className='font-medium text-neutral-900'>
                       {user.name}
                     </span>
-                    <span className='text-sm text-neutral-600'>{user.email}</span>
+                    <span className='text-sm text-neutral-600'>
+                      {user.email}
+                    </span>
                   </div>
                 )}
               </Card>
 
               {/* Upgrade block */}
               {!collapsed && (
-                <div className='mt-3 rounded-md bg-linear-to-r from-primary-100 to-primary-400 dark:from-primary-200 dark:to-primary-600 p-3 text-sm text-neutral-900'>
+                <div className='from-primary-100 to-primary-400 dark:from-primary-200 dark:to-primary-600 mt-3 rounded-md bg-linear-to-r p-3 text-sm text-neutral-900'>
                   <div className='flex items-center gap-2'>
                     <ArrowUpCircle className='h-8 w-8 text-purple-600' />
                     <span>{t('Upgrade plan')}</span>
@@ -253,14 +259,12 @@ export function DashboardLayout({ children }: PropsWithChildren<unknown>) {
             </aside>
           </div>
         </div>
-        <main className='w-full '>{children}</main>
+        <main className='w-full'>{children}</main>
       </div>
 
       {/* Main content for mobile/tablet */}
       <div className='lg:hidden'>
-        <main className='global-container my-8 w-full'>
-          {children}
-        </main>
+        <main className='global-container my-8 w-full'>{children}</main>
       </div>
     </div>
   );

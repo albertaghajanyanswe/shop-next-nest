@@ -15,7 +15,10 @@ export default function HowItWorksPage() {
     return (
       <>
         <Breadcrumbs
-          items={[{ title: 'Главная', href: '/' }, { title: 'Как это работает' }]}
+          items={[
+            { title: 'Главная', href: '/' },
+            { title: 'Как это работает' },
+          ]}
         />
         <PageHeader
           title='Как это работает'

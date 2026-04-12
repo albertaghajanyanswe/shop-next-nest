@@ -45,7 +45,9 @@ const OrderTotalSectionComponent = ({
             className='text-xs'
           >
             <CircleDollarSignIcon />
-            {showConfirm ? dashT('order_btn_confirm') : dashT('order_btn_distribute_funds')}
+            {showConfirm
+              ? dashT('order_btn_confirm')
+              : dashT('order_btn_distribute_funds')}
           </Button>
         )}
         {isShowRefundBtn && (

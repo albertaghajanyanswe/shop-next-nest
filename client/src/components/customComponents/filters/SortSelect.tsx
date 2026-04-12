@@ -9,6 +9,7 @@ import {
 } from '@/components/ui/Select';
 import { useQueryParams } from '@/hooks/commons/useQueryParams';
 import { SortOption, SortOrder } from '@/utils/sortConstants';
+import { useTranslations } from 'next-intl';
 
 export function SortSelect({
   triggerClassName = 'w-[220px]',
@@ -17,6 +18,7 @@ export function SortSelect({
   triggerClassName?: string;
   options: readonly SortOption<string, string>[];
 }) {
+  const t = useTranslations('Sorting');
   const { queryParams, changeSort } = useQueryParams({});
 
   const handleSort = ({
@@ -43,14 +45,17 @@ export function SortSelect({
         handleSort({ field, order });
       }}
     >
-      <SelectTrigger className={triggerClassName} aria-label='Sort by'>
-        <SelectValue placeholder='Sort by' />
+      <SelectTrigger
+        className={triggerClassName}
+        aria-label={t('trigger_label')}
+      >
+        <SelectValue placeholder={t('placeholder')} />
       </SelectTrigger>
 
       <SelectContent>
         {options.map((opt) => (
           <SelectItem key={opt.value} value={opt.value}>
-            {opt.label}
+            {t(opt.label)}
           </SelectItem>
         ))}
       </SelectContent>

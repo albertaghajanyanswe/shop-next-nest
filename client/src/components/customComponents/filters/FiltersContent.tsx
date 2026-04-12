@@ -44,7 +44,7 @@ export default function FiltersContent({
   resetFilter,
 }: FilterContentProps) {
   const t = useTranslations('Filters');
-  
+
   // Local states for instant display of checkboxes
   const [localCategoryIds, setLocalCategoryIds] = useState<string[]>(
     currentFilter.categoryId ?? []

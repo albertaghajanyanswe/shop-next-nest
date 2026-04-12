@@ -6,10 +6,12 @@ import { categoryImgParams, generateImgPath } from '@/utils/imageUtils';
 import { PUBLIC_URL } from '@/config/url.config';
 import QueryString from 'qs';
 import { hashStringToColors } from '@/utils/common';
+import { useTranslations } from 'next-intl';
 
 export interface IShopByCard {
   title: string;
   description?: string;
+  descriptionLabel?: string;
   linkTitle?: string;
   linkClb: (id?: string) => string;
   data: GetCategoryDto[] | GetBrandDto[];
@@ -19,11 +21,18 @@ export interface IShopByCard {
 const ShopByCardComponent = ({
   title,
   description,
+  descriptionLabel,
   linkTitle,
   linkClb,
   data,
   filterKey,
 }: IShopByCard) => {
+  const t = useTranslations('HomePage');
+  const loadT = useTranslations('Loading');
+
+  const displayDescriptionLabel =
+    descriptionLabel || t('category_description_label');
+
   return (
     <div className='m-auto'>
       <div className='mb-4 md:flex md:items-center md:justify-between'>
@@ -31,7 +40,9 @@ const ShopByCardComponent = ({
           <p className='text-2xl font-semibold'>{title}</p>
           {description && (
             <p className='text-muted-foreground mt-2 text-sm'>
-              <span className='text-xs font-medium'>Category description:</span>{' '}
+              <span className='text-xs font-medium'>
+                {displayDescriptionLabel}
+              </span>{' '}
               {description}
             </p>
           )}
@@ -68,16 +79,6 @@ const ShopByCardComponent = ({
                       width={72}
                       height={72}
                       loading='lazy'
-                      // priority
-                      // {...(item.images[0]
-                      //   ? {
-                      //       placeholder: 'blur',
-                      //       blurDataURL: generateImgPath(
-                      //         item.images[0],
-                      //         categoryImgBlurParams
-                      //       ),
-                      //     }
-                      //   : {})}
                     />
                   </div>
                 ) : (
@@ -101,7 +102,7 @@ const ShopByCardComponent = ({
           </div>
         ) : (
           <div className='text-muted-foreground text-center italic'>
-            No products found
+            {loadT('no_products_found')}
           </div>
         )}
       </div>

@@ -11,7 +11,12 @@ export default function FaqsPage() {
 
   return (
     <>
-      <Breadcrumbs items={[{ title: tCommon('Home'), href: '/' }, { title: tFaqs('title') }]} />
+      <Breadcrumbs
+        items={[
+          { title: tCommon('Home'), href: '/' },
+          { title: tFaqs('title') },
+        ]}
+      />
 
       <PageHeader
         title={tFaqs('title')}

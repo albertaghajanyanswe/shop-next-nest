@@ -9,10 +9,11 @@ const handleI18nRouting = createMiddleware(routing);
 export async function middleware(request: NextRequest, response: NextResponse) {
   const refreshToken = request.cookies.get(EnumTokens.REFRESH_TOKEN)?.value;
   const accessToken = request.cookies.get(EnumTokens.ACCESS_TOKEN)?.value;
-  
+
   const pathname = request.nextUrl.pathname;
   const isAuthPage = pathname.includes(PUBLIC_URL.auth());
-  const isProtectedRoute = pathname.includes('/dashboard') || pathname.includes('/store');
+  const isProtectedRoute =
+    pathname.includes('/dashboard') || pathname.includes('/store');
 
   if (isAuthPage) {
     if (refreshToken && accessToken) {

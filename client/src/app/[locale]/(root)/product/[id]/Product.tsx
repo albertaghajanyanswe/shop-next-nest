@@ -36,7 +36,9 @@ export default function Product({
   const LazyTabContent = ({ children }: { children: React.ReactNode }) => (
     <Suspense
       fallback={
-        <div className='py-4 text-center text-shop-primary-text'>Loading...</div>
+        <div className='text-shop-primary-text py-4 text-center'>
+          Loading...
+        </div>
       }
     >
       {children}

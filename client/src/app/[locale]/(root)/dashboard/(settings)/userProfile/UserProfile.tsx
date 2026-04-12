@@ -41,7 +41,10 @@ export function UserProfile() {
   return (
     <div className='p-6'>
       <div className='mb-8 flex items-center justify-between'>
-        <Heading title={t('profile_title')} description={t('profile_description')} />
+        <Heading
+          title={t('profile_title')}
+          description={t('profile_description')}
+        />
       </div>
       <Form {...form}>
         <form

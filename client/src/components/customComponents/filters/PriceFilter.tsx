@@ -3,6 +3,7 @@ import { Slider } from '@/components/ui/Slider';
 import { Input } from '@/components/ui/formElements/Input';
 import { Button } from '@/components/ui/Button';
 import { useDebounce } from '@/hooks/commons/useDebounce';
+import { useTranslations } from 'next-intl';
 
 interface PriceFilterProps {
   onChange: ({ min, max }: { min: number; max: number }) => void;
@@ -11,6 +12,7 @@ interface PriceFilterProps {
 }
 
 export function PriceFilter({ onChange, min, max }: PriceFilterProps) {
+  const t = useTranslations('Filters');
   // --- Applied values ---
   const [minValue, setMinValue] = useState(0);
   const [maxValue, setMaxValue] = useState(1000000);
@@ -78,7 +80,7 @@ export function PriceFilter({ onChange, min, max }: PriceFilterProps) {
           aria-label='price_lte'
         />
 
-        <span className='text-muted-foreground'>Min - Max</span>
+        <span className='text-muted-foreground'>{t('price_min_max')}</span>
 
         <Input
           value={maxInput}
@@ -89,7 +91,7 @@ export function PriceFilter({ onChange, min, max }: PriceFilterProps) {
         />
 
         <Button className='mt-2 w-full text-xs' size='sm' onClick={apply}>
-          Apply
+          {t('apply')}
         </Button>
       </div>
     </div>

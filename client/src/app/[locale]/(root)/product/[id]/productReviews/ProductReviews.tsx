@@ -34,7 +34,7 @@ function ProductReviews({ product }: ProductReviewsProps) {
           </ReviewModal>
         )}
       </div>
-      <div className='flex flex-col gap-6 rounded-xl bg-shop-white py-3'>
+      <div className='bg-shop-white flex flex-col gap-6 rounded-xl py-3'>
         {!!product?.reviews?.length ? (
           product.reviews.map((review) => (
             <div key={review.id} className='flex items-start justify-between'>

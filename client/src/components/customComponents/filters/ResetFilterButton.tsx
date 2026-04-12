@@ -1,5 +1,6 @@
 import { Badge } from '@/components/ui/Badge';
 import { Button } from '@/components/ui/Button';
+import { useTranslations } from 'next-intl';
 
 interface ResetFilterButtonProps {
   filterKey: string;
@@ -11,19 +12,19 @@ export const ResetFilterButton = ({
   filterKey,
   selectedCount = 0,
 }: ResetFilterButtonProps) => {
+  const t = useTranslations('Filters');
   return (
     <Button
       className='group flex w-full items-center justify-start p-0 text-red-500 hover:text-red-600 hover:no-underline'
       variant='link'
       onClick={() => selectedCount > 0 && resetFilter(filterKey)}
     >
-      {/* Reset Filter <span className='text-[12px]'>({selectedCount} selected)</span> */}
-      Reset Filter
+      {t('reset_filter')}
       <Badge
         variant='outline'
-        className='border-red-200 bg-shop-white font-medium text-shop-muted-text-6 group-hover:border-red-400'
+        className='bg-shop-white text-shop-muted-text-6 border-red-200 font-medium group-hover:border-red-400'
       >
-        {selectedCount} selected
+        {t('selected', { count: selectedCount })}
       </Badge>
     </Button>
   );

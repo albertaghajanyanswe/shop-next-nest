@@ -6,6 +6,7 @@ import { SearchInput } from '@/components/layouts/mainLayout/header/searchInput/
 import { SortSelect } from '@/components/customComponents/filters/SortSelect';
 import { SORT_PRODUCT_OPTIONS } from '@/utils/sortConstants';
 import NoDataFound from '../loading/NoDataFound';
+import { useTranslations } from 'next-intl';
 
 export interface ICatalog {
   title: string;
@@ -32,6 +33,7 @@ export function Catalog({
   searchRedirectToShop = true,
   isFavoritePage = false,
 }: ICatalog) {
+  const t = useTranslations('HomePage');
   return (
     <>
       <div className='mb-4 md:flex md:items-center md:justify-between'>
@@ -77,7 +79,7 @@ export function Catalog({
             ))}
           </div>
         ) : isFavoritePage ? (
-          <NoDataFound entityName='favorites products' showDesc={false} />
+          <NoDataFound entityName={t('favorites_products')} showDesc={false} />
         ) : (
           <NoProductsFound />
         )}

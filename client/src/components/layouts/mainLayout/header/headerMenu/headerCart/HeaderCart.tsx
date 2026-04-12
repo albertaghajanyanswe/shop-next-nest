@@ -62,8 +62,8 @@ export function HeaderCart({ triggerBtnClass }: HeaderCartProps) {
           </span>
         </Button>
       </SheetTrigger>
-      <SheetContent className='flex max-h-[100dvh] w-full flex-col bg-shop-white p-4 pb-8'>
-        <SheetHeader className='sticky top-0 z-20 flex w-full flex-row items-center justify-between border-b bg-shop-white/95 p-0 pb-4 backdrop-blur-sm'>
+      <SheetContent className='bg-shop-white flex max-h-[100dvh] w-full flex-col p-4 pb-8'>
+        <SheetHeader className='bg-shop-white/95 sticky top-0 z-20 flex w-full flex-row items-center justify-between border-b p-0 pb-4 backdrop-blur-sm'>
           <SheetTitle className='p-0'>
             <Heading
               title={tCart('basket_of_products')}
@@ -94,7 +94,9 @@ export function HeaderCart({ triggerBtnClass }: HeaderCartProps) {
         {orderItems?.length ? (
           <>
             <div className='text-lg font-medium'>
-              <span className='text-muted-foreground'>{tCart('total_amount')}</span>
+              <span className='text-muted-foreground'>
+                {tCart('total_amount')}
+              </span>
               <span className='text-shop-red ml-2'>{formatPrice(total)}</span>
             </div>
             {EnvVariables.NEXT_PUBLIC_ALLOW_PURCHASE && (

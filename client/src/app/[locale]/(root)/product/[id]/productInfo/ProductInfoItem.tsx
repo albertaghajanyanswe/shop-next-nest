@@ -9,8 +9,10 @@ interface ProductInfoItemProps {
 function ProductInfoItem({ leftText, rightText, link }: ProductInfoItemProps) {
   return (
     <div className='flex items-baseline justify-between border-b border-neutral-200 pb-3 last:border-0'>
-      <dt className='text-sm font-semibold text-shop-muted-text-7'>{leftText}</dt>
-      <dd className='text-sm font-normal text-shop-muted-text-7'>
+      <dt className='text-shop-muted-text-7 text-sm font-semibold'>
+        {leftText}
+      </dt>
+      <dd className='text-shop-muted-text-7 text-sm font-normal'>
         <Link
           href={link}
           className='text-shop-light-primary mt-1 text-xs font-medium hover:underline sm:text-sm'

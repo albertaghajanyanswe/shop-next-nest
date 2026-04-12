@@ -13,7 +13,7 @@ function SubscriptionPrice({
   plans: GetPlansDto[];
 }) {
   if (period === GetPlansDtoPeriod.MONTHLY || plan.planId === 'FREE') {
-    return <MonthlyPrice price={plan.price} isPopular={plan.isPopular}/>;
+    return <MonthlyPrice price={plan.price} isPopular={plan.isPopular} />;
   }
 
   const monthlyPlan = plans.find(
@@ -25,7 +25,14 @@ function SubscriptionPrice({
   const full = monthlyPlan.price * 12;
   const discount = Math.round(((full - plan.price) / full) * 100);
 
-  return <AnnualPrice price={plan.price} full={full} discount={discount} isPopular={plan.isPopular}/>;
+  return (
+    <AnnualPrice
+      price={plan.price}
+      full={full}
+      discount={discount}
+      isPopular={plan.isPopular}
+    />
+  );
 }
 
 export default memo(SubscriptionPrice);

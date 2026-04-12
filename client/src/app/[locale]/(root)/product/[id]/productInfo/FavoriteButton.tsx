@@ -62,7 +62,9 @@ function FavoriteButton({
         <>
           <AiFillHeart className='text-primary size-4' />
           {!onlyIcon && (
-            <span className='text-shop-primary-text'>Remove from favorites</span>
+            <span className='text-shop-primary-text'>
+              Remove from favorites
+            </span>
           )}
         </>
       ) : (

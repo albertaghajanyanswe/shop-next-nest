@@ -16,8 +16,13 @@ export function ThemeSwitcher() {
       <div className='flex items-center justify-between'>
         <div>
           <h3 className='text-lg font-medium'>{t('theme')}</h3>
-          <p className='text-sm text-muted-foreground'>
-            <span><b className='text-shop-primary-text'>{theme === 'dark' ? t('dark') : t('light')}</b>{t('theme_active')}</span>
+          <p className='text-muted-foreground text-sm'>
+            <span>
+              <b className='text-shop-primary-text'>
+                {theme === 'dark' ? t('dark') : t('light')}
+              </b>
+              {t('theme_active')}
+            </span>
           </p>
         </div>
         <ButtonGroup>
@@ -30,7 +35,7 @@ export function ThemeSwitcher() {
             <span className='sr-only'>{t('light')}</span>
           </Button>
           <Button
-          // disabled
+            // disabled
             variant={theme === 'dark' ? 'default' : 'outline'}
             size='icon'
             onClick={() => setTheme('dark')}

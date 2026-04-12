@@ -26,7 +26,7 @@ export default function TermsPage() {
 
       <div className='space-y-6 text-sm leading-relaxed'>
         <section className='space-y-2'>
-          <h2 className='text-lg font-semibold text-shop-primary-text'>
+          <h2 className='text-shop-primary-text text-lg font-semibold'>
             1. Acceptance of Terms
           </h2>
           <p className='text-shop-muted-text-7'>
@@ -37,7 +37,7 @@ export default function TermsPage() {
         </section>
 
         <section className='space-y-2'>
-          <h2 className='text-lg font-semibold text-shop-primary-text'>
+          <h2 className='text-shop-primary-text text-lg font-semibold'>
             2. User Responsibility
           </h2>
           <p className='text-shop-muted-text-7'>
@@ -53,7 +53,7 @@ export default function TermsPage() {
         </section>
 
         <section className='space-y-2'>
-          <h2 className='text-lg font-semibold text-shop-primary-text'>
+          <h2 className='text-shop-primary-text text-lg font-semibold'>
             3. Intellectual Property
           </h2>
           <p className='text-shop-muted-text-7'>
@@ -68,7 +68,7 @@ export default function TermsPage() {
         </section>
 
         <section className='space-y-2'>
-          <h2 className='text-lg font-semibold text-shop-primary-text'>
+          <h2 className='text-shop-primary-text text-lg font-semibold'>
             4. Listings & Transactions
           </h2>
           <p className='text-shop-muted-text-7'>
@@ -84,10 +84,10 @@ export default function TermsPage() {
         </section>
 
         <section className='space-y-2'>
-          <h2 className='text-lg font-semibold text-shop-primary-text'>
+          <h2 className='text-shop-primary-text text-lg font-semibold'>
             5. Prohibited Activities
           </h2>
-          <ul className='list-disc space-y-1 pl-5 text-shop-muted-text-7'>
+          <ul className='text-shop-muted-text-7 list-disc space-y-1 pl-5'>
             <li>Posting false, misleading, or unlawful content</li>
             <li>Using automated tools to access the platform</li>
             <li>Interfering with the normal operation of the service</li>
@@ -97,7 +97,7 @@ export default function TermsPage() {
         </section>
 
         <section className='space-y-2'>
-          <h2 className='text-lg font-semibold text-shop-primary-text'>
+          <h2 className='text-shop-primary-text text-lg font-semibold'>
             6. Limitation of Liability
           </h2>
           <p className='text-shop-muted-text-7'>
@@ -107,7 +107,7 @@ export default function TermsPage() {
         </section>
 
         <section className='space-y-2'>
-          <h2 className='text-lg font-semibold text-shop-primary-text'>
+          <h2 className='text-shop-primary-text text-lg font-semibold'>
             7. Account Termination
           </h2>
           <p className='text-shop-muted-text-7'>
@@ -118,7 +118,7 @@ export default function TermsPage() {
         </section>
 
         <section className='space-y-2'>
-          <h2 className='text-lg font-semibold text-shop-primary-text'>
+          <h2 className='text-shop-primary-text text-lg font-semibold'>
             8. Changes to Terms
           </h2>
           <p className='text-shop-muted-text-7'>
@@ -129,7 +129,7 @@ export default function TermsPage() {
         </section>
 
         <section className='space-y-2'>
-          <h2 className='text-lg font-semibold text-shop-primary-text'>
+          <h2 className='text-shop-primary-text text-lg font-semibold'>
             9. Termination by User
           </h2>
           <p className='text-shop-muted-text-7'>

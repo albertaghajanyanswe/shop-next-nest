@@ -71,7 +71,9 @@ export function OrderDetailsModalContent<T extends TableSectionItem>({
       },
       {
         title: t('order_info_type'),
-        value: order.subscriptionId ? dashT('type_subscription') : dashT('type_product'),
+        value: order.subscriptionId
+          ? dashT('type_subscription')
+          : dashT('type_product'),
       },
       {
         title: t('order_info_customer'),

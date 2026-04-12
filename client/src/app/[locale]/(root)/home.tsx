@@ -7,6 +7,7 @@ import {
   GetCategoryDto,
   GetProductWithDetails,
 } from '@/generated/orval/types';
+import { useTranslations } from 'next-intl';
 
 interface HomeProps {
   products: GetProductWithDetails[];
@@ -15,15 +16,17 @@ interface HomeProps {
 }
 
 export default function Home({ products, categories, brands }: HomeProps) {
+  const t = useTranslations('HomePage');
+
   return (
     <>
       <HomeBanner />
       {categories && categories.length > 0 && (
         <div className='global-container mt-8 flex-1'>
           <ShopByCard
-            title='Shop By Category'
-            description='The most popular categories'
-            linkTitle='View all'
+            title={t('categories_title')}
+            description={t('categories_description')}
+            linkTitle={t('view_all')}
             linkClb={PUBLIC_URL.shop}
             data={categories}
             filterKey='categoryId'
@@ -32,10 +35,10 @@ export default function Home({ products, categories, brands }: HomeProps) {
       )}
       <div className='global-container mt-8 flex-1'>
         <Catalog
-          title='Most Popular'
-          description='The most popular products on the market'
-          descriptionLabel='Category description:'
-          linkTitle='View all'
+          title={t('most_popular_title')}
+          description={t('most_popular_description')}
+          descriptionLabel={t('category_description_label')}
+          linkTitle={t('view_all')}
           link={PUBLIC_URL.shop()}
           products={products}
         />
@@ -43,9 +46,9 @@ export default function Home({ products, categories, brands }: HomeProps) {
       {brands && brands.length > 0 && (
         <div className='global-container mt-8 flex-1 py-6'>
           <ShopByCard
-            title='Shop By Brand'
-            description='The most popular brands'
-            linkTitle='View all'
+            title={t('brands_title')}
+            description={t('brands_description')}
+            linkTitle={t('view_all')}
             linkClb={PUBLIC_URL.shop}
             data={brands}
             filterKey='brandId'

@@ -7,17 +7,7 @@
     "placeholder": "Поиск товаров...",
     "search": "Поиск"
   },
-  "Filters": {
-    "intended_for": "Для кого",
-    "search_intended_for": "Поиск...",
-    "categories": "Категории",
-    "search_categories": "Поиск категорий...",
-    "brands": "Бренды",
-    "search_brands": "Поиск брендов...",
-    "stores": "Магазины",
-    "search_stores": "Поиск магазинов...",
-    "price": "Цена"
-  },
+
   "CreateStoreModal": {
     "title": "Создать магазин",
     "description": "Создайте новый магазин, чтобы начать продавать свои товары.",
@@ -156,6 +146,11 @@
     "Favorites_products": "Избранные товары",
     "Profile": "Профиль"
   },
+  "ShopPage": {
+    "products_catalog": "Каталог товаров",
+    "search_by_query": "Поиск по запросу",
+    "products": "Товары"
+  },
   "StorePages": {
     "create": "Создать",
     "action": "Действие",
@@ -289,5 +284,54 @@
     "order_btn_refunded": "Возвращено",
     "order_btn_refund_order": "Возвратить заказ",
     "order_btn_distribute_funds": "Распределить средства"
+  },
+  "HomePage": {
+    "banner_title": "Ваш идеальный выбор начинается здесь. Исследуйте премиальные товары на каждый день.",
+    "banner_button": "Заказать сейчас",
+    "categories_title": "Поиск по категориям",
+    "categories_description": "Самые популярные категории",
+    "most_popular_title": "Самое популярное",
+    "most_popular_description": "Самые популярные товары на рынке",
+    "brands_title": "Поиск по брендам",
+    "brands_description": "Самые популярные бренды",
+    "view_all": "Посмотреть всё",
+    "category_description_label": "Описание категории:",
+    "favorites_products": "избранные товары"
+  },
+  "Loading": {
+    "please_wait": "Пожалуйста, подождите",
+    "no_products_found": "Товары не найдены",
+    "no_entity_found": "{entity} не найдены",
+    "no_data_found": "Данные не найдены",
+    "restocking_shortly": "Мы скоро пополним запасы",
+    "no_products_matching": "К сожалению, нет товаров, соответствующих вашему запросу",
+    "check_back_later": "Пожалуйста, зайдите позже или изучите другие категории товаров.",
+    "loading_entity": "{entity} загружается",
+    "simple_check_later": "Пожалуйста, проверьте позже."
+  },
+  "Sorting": {
+    "trigger_label": "Сортировать по",
+    "placeholder": "Сортировать по",
+    "newest": "Новинки",
+    "price_high_low": "Цена: По убыванию",
+    "price_low_high": "Цена: По возрастанию",
+    "rating": "Рейтинг"
+  },
+  "Filters": {
+    "reset_filter": "Сбросить фильтр",
+    "selected": "Выбрано: {count}",
+    "search": "Поиск",
+    "categories": "Категории",
+    "price": "Цена",
+    "brands": "Бренды",
+    "stores": "Магазины",
+    "intended_for": "Предназначено для",
+    "search_categories": "Поиск категорий...",
+    "search_brands": "Поиск брендов...",
+    "search_stores": "Поиск магазинов...",
+    "search_intended_for": "Поиск по назначению...",
+    "no_results": "Результатов не найдено",
+    "price_min_max": "Мин - Макс",
+    "apply": "Применить"
   }
 }

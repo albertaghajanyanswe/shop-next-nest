@@ -58,7 +58,9 @@ function DefaultCellRenderer<T extends TableSectionItem>(
             className='max-h-15 object-contain'
           />
         </div>
-        <p className='text-sm font-medium text-shop-muted-text-7'>{item.title}</p>
+        <p className='text-shop-muted-text-7 text-sm font-medium'>
+          {item.title}
+        </p>
       </div>
     );
   }
@@ -80,10 +82,10 @@ export function ItemsTable<T extends TableSectionItem>({
     useDistributeFundsOrderItem();
 
   const { refundOrderItem, isLoadingRefundOrderItem } = useRefundOrderItem();
-  
+
   return (
     <div className={`space-y-3 wrap-anywhere ${className}`}>
-      <div className='hidden grid-cols-12 gap-4 p-0 text-sm font-semibold text-shop-primary-text sm:grid'>
+      <div className='text-shop-primary-text hidden grid-cols-12 gap-4 p-0 text-sm font-semibold sm:grid'>
         {columns.map((col) => (
           <div key={col.key} className={`${col.span || 'col-span-3'}`}>
             {col.title}
@@ -95,7 +97,7 @@ export function ItemsTable<T extends TableSectionItem>({
       {items.map((item) => (
         <div
           key={item.id}
-          className='border-shop-light-primary/70 xs:max-w-none max-w-fit gap-4 rounded-lg border px-4 py-4 dark:bg-shop-green-hover'
+          className='border-shop-light-primary/70 xs:max-w-none dark:bg-shop-green-hover max-w-fit gap-4 rounded-lg border px-4 py-4'
         >
           <div className='flex flex-col gap-4 sm:grid sm:grid-cols-12'>
             {columns.map((col) => (
@@ -103,7 +105,7 @@ export function ItemsTable<T extends TableSectionItem>({
                 key={`${item.id}-${col.key}`}
                 className={`${col.span || 'col-span-3'} flex items-center justify-between wrap-anywhere`}
               >
-                <span className='text-sm font-semibold text-shop-primary-text sm:hidden'>
+                <span className='text-shop-primary-text text-sm font-semibold sm:hidden'>
                   {col.title}
                 </span>
 

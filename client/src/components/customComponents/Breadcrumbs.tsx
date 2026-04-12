@@ -28,13 +28,16 @@ export default function Breadcrumbs({
                   <BreadcrumbLink asChild>
                     <Link
                       href={item.href}
-                      className='transition-colors hover:text-shop-primary-text'
+                      className='hover:text-shop-primary-text transition-colors'
                     >
                       {item.title}
                     </Link>
                   </BreadcrumbLink>
                 ) : (
-                  <span aria-current='page' className='font-medium text-shop-primary-text'>
+                  <span
+                    aria-current='page'
+                    className='text-shop-primary-text font-medium'
+                  >
                     {item.title}
                   </span>
                 )}

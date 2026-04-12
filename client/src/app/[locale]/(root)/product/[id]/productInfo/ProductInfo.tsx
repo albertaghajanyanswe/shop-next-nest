@@ -89,10 +89,10 @@ export default function ProductInfo({ product }: ProductInfoProps) {
             </span>
             {typeof product.oldPrice === 'number' &&
               product.oldPrice !== product.price && (
-                <span className='ml-2 text-shop-primary-text line-through'>
+                <span className='text-shop-primary-text ml-2 line-through'>
                   {formatPrice(product.oldPrice)}
                 </span>
-            )}
+              )}
           </div>
           <hr className='my-3' />
           <ShowMoreText
@@ -119,7 +119,7 @@ export default function ProductInfo({ product }: ProductInfoProps) {
 
           {product.color?.name && (
             <div className='flex items-center gap-x-4'>
-              <p className='font-medium text-shop-muted-text-7'>Color:</p>
+              <p className='text-shop-muted-text-7 font-medium'>Color:</p>
               <div className='flex flex-row items-center justify-center gap-x-2'>
                 <div
                   className='size-6 rounded-full border border-neutral-300'

@@ -149,7 +149,7 @@ export function StoreCard({
       </div>
       {showInfo && (
         <div className='mt-2'>
-          <p className='text-xl leading-relaxed font-semibold text-shop-primary-text'>
+          <p className='text-shop-primary-text text-xl leading-relaxed font-semibold'>
             {store.title}
           </p>
           {store.description &&
@@ -159,17 +159,17 @@ export function StoreCard({
                 text={store.description}
               />
             ) : (
-              <p className='my-2 line-clamp-2 text-sm leading-relaxed font-medium text-shop-muted-text-7'>
+              <p className='text-shop-muted-text-7 my-2 line-clamp-2 text-sm leading-relaxed font-medium'>
                 {store.description}
               </p>
             ))}
           {getLocationText && (
-            <p className='text-xs leading-relaxed text-shop-muted-text-6'>
+            <p className='text-shop-muted-text-6 text-xs leading-relaxed'>
               {getLocationText}
             </p>
           )}
           {store.phone && (
-            <p className='text-xs text-shop-muted-text-6'>
+            <p className='text-shop-muted-text-6 text-xs'>
               Phone number: {store.phone}
             </p>
           )}

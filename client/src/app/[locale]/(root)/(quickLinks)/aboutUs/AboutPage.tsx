@@ -20,13 +20,13 @@ export default function AboutPage() {
 
       <section>
         <div className='flex flex-col gap-y-4'>
-          <p className='leading-relaxed; text-sm text-shop-muted-text-6'>
+          <p className='leading-relaxed; text-shop-muted-text-6 text-sm'>
             {t('p1', { siteName: SITE_NAME })}
           </p>
-          <p className='leading-relaxed; text-sm text-shop-muted-text-6'>
+          <p className='leading-relaxed; text-shop-muted-text-6 text-sm'>
             {t('p2')}
           </p>
-          <p className='leading-relaxed; text-sm text-shop-muted-text-6'>
+          <p className='leading-relaxed; text-shop-muted-text-6 text-sm'>
             {t('p3', { siteName: SITE_NAME })}
           </p>
         </div>
