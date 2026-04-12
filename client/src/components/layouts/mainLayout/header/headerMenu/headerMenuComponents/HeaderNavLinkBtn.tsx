@@ -18,13 +18,13 @@ const HeaderNavLinkBtnComponent = ({
   return (
     <Button
       variant='outline'
-      className={`icon-btn hover:text-shop-light-green hoverEffect group relative flex items-center whitespace-nowrap ${
+      className={`icon-btn hover:text-shop-light-primary hoverEffect group relative flex items-center whitespace-nowrap ${
         isActive ? 'bg-primary-50 border-primary-300' : ''
       }`}
       onClick={onClick}
     >
-      <Icon className='text-shop-light-green' />
-      <span className='bg-shop-light-green absolute -top-1 -right-1 flex h-3.5 w-3.5 items-center justify-center rounded-full text-xs font-semibold text-white'>
+      <Icon className='text-shop-light-primary' />
+      <span className='bg-shop-light-primary absolute -top-1 -right-1 flex h-3.5 w-3.5 items-center justify-center rounded-full text-xs font-semibold text-white'>
         {badge}
       </span>
     </Button>

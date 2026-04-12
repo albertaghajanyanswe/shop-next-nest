@@ -1,12 +1,10 @@
 'use client';
 import React from 'react';
-import { CustomModal } from '@/components/modals/CustomModal';
 import { InfoSection } from './components/InfoSection';
 import { ItemsTable } from './components/ItemsTable';
 import {
   GetOrderDtoStatus,
   GetOrderWithItemsDto,
-  GetUserDto,
 } from '@/generated/orval/types';
 import { formatDateWithHour } from '@/utils/formateDate';
 import { STATUS_COLOR } from '@/utils/colorUtils';
@@ -18,6 +16,7 @@ import {
 import { OrderTotalSection } from './components/OrderTotalSection';
 import { formatPrice } from '@/utils/formatPrice';
 import { useProfile } from '@/hooks/useProfile';
+import { useTranslations } from 'next-intl';
 
 export type CellType = 'text' | 'image';
 
@@ -59,32 +58,35 @@ export function OrderDetailsModalContent<T extends TableSectionItem>({
   showRefund = false,
 }: OrderDetailsModalProps<T>) {
   const { user } = useProfile();
+  const t = useTranslations('Modals');
+  const dashT = useTranslations('DashboardSettings');
+
   const getOrderInfoItems = (): InfoSectionItem[] => {
     if (!order) return [];
 
     return [
       {
-        title: 'Order ID',
+        title: t('order_info_id'),
         value: order.id,
       },
       {
-        title: 'Type',
-        value: order.subscriptionId ? 'Subscription' : 'Product',
+        title: t('order_info_type'),
+        value: order.subscriptionId ? dashT('type_subscription') : dashT('type_product'),
       },
       {
-        title: 'Customer',
+        title: t('order_info_customer'),
         value: order.user.name,
       },
       {
-        title: 'Email',
+        title: t('order_info_email'),
         value: order.user.email,
       },
       {
-        title: 'Date',
+        title: t('order_info_date'),
         value: formatDateWithHour(order.createdAt as string),
       },
       {
-        title: 'Status',
+        title: t('order_info_status'),
         value: (
           <span className={`font-semibold ${STATUS_COLOR[order.status]}`}>
             {order.status}
@@ -98,25 +100,25 @@ export function OrderDetailsModalContent<T extends TableSectionItem>({
     return [
       {
         key: 'image',
-        title: 'Product',
+        title: t('order_col_product'),
         type: 'image',
         span: 'col-span-5',
       },
       {
         key: 'userEmail',
-        title: 'User',
+        title: t('order_col_user'),
         type: 'text',
         span: 'col-span-3',
       },
       {
         key: 'quantity',
-        title: 'Quantity',
+        title: t('order_col_quantity'),
         type: 'text',
         span: 'col-span-2',
       },
       {
         key: 'price',
-        title: 'Price',
+        title: t('order_col_price'),
         type: 'text',
         span: 'col-span-2',
       },
@@ -160,7 +162,7 @@ export function OrderDetailsModalContent<T extends TableSectionItem>({
       {/* Items Table */}
       {getOrderTableItems().length > 0 && (
         <div>
-          <h3 className='mb-2 font-semibold'>Items</h3>
+          <h3 className='mb-2 font-semibold'>{t('order_items_title')}</h3>
           <div className='max-h-[250px] overflow-y-scroll'>
             <ItemsTable
               columns={getOrderTableColumns()}
@@ -175,7 +177,7 @@ export function OrderDetailsModalContent<T extends TableSectionItem>({
 
       {/* Total */}
       <OrderTotalSection
-        title='Total'
+        title={t('order_total')}
         value={formatPrice(order?.totalPrice)}
         orderId={order.id}
         user={user!}

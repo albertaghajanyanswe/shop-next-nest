@@ -13,7 +13,7 @@ function ProductDetails({ product }: ProductDetailsProps) {
 
   return (
     <div className='mt-6'>
-      <h3 className='mb-4 text-base font-semibold text-neutral-900'>
+      <h3 className='mb-4 text-base font-semibold text-shop-primary-text'>
         Product details
       </h3>
 
@@ -23,10 +23,10 @@ function ProductDetails({ product }: ProductDetailsProps) {
             key={detail.id}
             className='flex items-baseline justify-between border-b border-neutral-200 pb-3 last:border-0'
           >
-            <dt className='text-sm font-normal text-neutral-700'>
+            <dt className='text-sm font-normal text-shop-muted-text-7'>
               {detail.key}
             </dt>
-            <dd className='text-sm font-normal text-neutral-700'>
+            <dd className='text-sm font-normal text-shop-muted-text-7'>
               {detail.value}
             </dd>
           </div>

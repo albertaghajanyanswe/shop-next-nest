@@ -13,6 +13,7 @@ import {
 import { Button } from '@/components/ui/Button';
 import { CircleDollarSignIcon, RotateCcw } from 'lucide-react';
 import { useRefundOrderItem } from '@/hooks/stripe/useRefundOrderItem';
+import { useTranslations } from 'next-intl';
 
 interface GenericTableProps<T extends TableSectionItem> {
   columns: TableSectionColumn[];
@@ -33,7 +34,7 @@ function DefaultCellRenderer<T extends TableSectionItem>(
   if (column.type === 'text') {
     return (
       <span
-        className={`text-sm font-medium ${column.key === 'price' ? 'text-shop-red' : 'text-neutral-700'}`}
+        className={`text-sm font-medium ${column.key === 'price' ? 'text-shop-red' : 'text-shop-muted-text-7'}`}
       >
         {value}
       </span>
@@ -57,7 +58,7 @@ function DefaultCellRenderer<T extends TableSectionItem>(
             className='max-h-15 object-contain'
           />
         </div>
-        <p className='text-sm font-medium text-neutral-700'>{item.title}</p>
+        <p className='text-sm font-medium text-shop-muted-text-7'>{item.title}</p>
       </div>
     );
   }
@@ -74,14 +75,15 @@ export function ItemsTable<T extends TableSectionItem>({
   showConfirm,
   showRefund,
 }: GenericTableProps<T>) {
+  const t = useTranslations('Modals');
   const { distributeFundsOrderItem, isLoadingDistributeFundsOrderItem } =
     useDistributeFundsOrderItem();
 
   const { refundOrderItem, isLoadingRefundOrderItem } = useRefundOrderItem();
-  console.log('items - ', items);
+  
   return (
     <div className={`space-y-3 wrap-anywhere ${className}`}>
-      <div className='hidden grid-cols-12 gap-4 p-0 text-sm font-semibold text-neutral-900 sm:grid'>
+      <div className='hidden grid-cols-12 gap-4 p-0 text-sm font-semibold text-shop-primary-text sm:grid'>
         {columns.map((col) => (
           <div key={col.key} className={`${col.span || 'col-span-3'}`}>
             {col.title}
@@ -93,7 +95,7 @@ export function ItemsTable<T extends TableSectionItem>({
       {items.map((item) => (
         <div
           key={item.id}
-          className='border-shop-light-green/70 xs:max-w-none max-w-fit gap-4 rounded-lg border px-4 py-4'
+          className='border-shop-light-primary/70 xs:max-w-none max-w-fit gap-4 rounded-lg border px-4 py-4 dark:bg-shop-green-hover'
         >
           <div className='flex flex-col gap-4 sm:grid sm:grid-cols-12'>
             {columns.map((col) => (
@@ -101,7 +103,7 @@ export function ItemsTable<T extends TableSectionItem>({
                 key={`${item.id}-${col.key}`}
                 className={`${col.span || 'col-span-3'} flex items-center justify-between wrap-anywhere`}
               >
-                <span className='text-sm font-semibold text-neutral-900 sm:hidden'>
+                <span className='text-sm font-semibold text-shop-primary-text sm:hidden'>
                   {col.title}
                 </span>
 
@@ -112,15 +114,15 @@ export function ItemsTable<T extends TableSectionItem>({
           <div className='xs:items-start mt-4 flex flex-col justify-between sm:mt-2 sm:items-center'>
             <div className='w-full border-t border-neutral-200 pt-4'>
               <div className='mb-4 flex w-full flex-row justify-between text-xs sm:mb-0'>
-                <p className='text-sm font-semibold'>Order Item ID</p>{' '}
+                <p className='text-sm font-semibold'>{t('order_item_id')}</p>{' '}
                 <span className='ml-2'>{item.id || '-'}</span>
               </div>
               <div className='mb-4 flex w-full flex-row justify-between text-xs sm:mb-0'>
-                <p className='text-sm font-semibold'>Product ID</p>{' '}
+                <p className='text-sm font-semibold'>{t('order_product_id')}</p>{' '}
                 <span className='ml-2'>{item.productId || '-'}</span>
               </div>
               <div className='mb-4 flex w-full flex-row justify-between text-xs sm:mb-0'>
-                <p className='text-sm font-semibold'>Store ID</p>{' '}
+                <p className='text-sm font-semibold'>{t('order_store_id')}</p>{' '}
                 <span className='ml-2'>{item.storeId || '-'}</span>
               </div>
             </div>
@@ -146,8 +148,8 @@ export function ItemsTable<T extends TableSectionItem>({
                   <CircleDollarSignIcon />
                   {item.orderItemStatus ===
                   GetOrderItemsWithUserDtoStatus.CONFIRMED
-                    ? 'Confirmed'
-                    : 'Confirm'}
+                    ? t('order_btn_confirmed')
+                    : t('order_btn_confirm')}
                 </Button>
               )}
               {item.orderItemId && showRefund && (
@@ -175,8 +177,8 @@ export function ItemsTable<T extends TableSectionItem>({
                   <RotateCcw />
                   {item.orderItemStatus ===
                   GetOrderItemsWithUserDtoStatus.REFUNDED
-                    ? 'Refunded'
-                    : 'Refund'}
+                    ? t('order_btn_refunded')
+                    : t('order_btn_refund')}
                 </Button>
               )}
             </div>

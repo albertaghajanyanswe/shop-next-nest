@@ -14,7 +14,7 @@ const buttonVariants = cva(
         destructive:
           'bg-destructive text-white shadow-xs hover:bg-destructive/90 focus-visible:ring-destructive/20 dark:focus-visible:ring-destructive/40 dark:bg-destructive/60',
         outline:
-          'border bg-background shadow-xs hover:bg-accent hover:text-accent-foreground dark:bg-input/30 dark:border-input dark:hover:bg-input/50',
+          'border bg-background shadow-xs hover:bg-accent hover:text-accent-foreground text-accent-foreground dark:bg-input/30 dark:border-input dark:hover:bg-input/50',
         secondary:
           'bg-secondary shadow-xs hover:bg-secondary/70 border border-primary-100 hover:border hover:border-primary-200 text-primary-600',
         ghost:
@@ -22,7 +22,7 @@ const buttonVariants = cva(
         link: 'text-primary/80 underline-offset-4 hover:underline',
         primary: 'text-white bg-primary-700 hover:bg-primary-700/90',
         primaryLight:
-          'border border-primary-100 hover:border-primary-200 bg-primary-50/20 text-shop-dark-green shadow-xs hover:bg-primary-50/50 dark:bg-input/30 dark:border-input dark:hover:bg-input/50',
+          'border border-primary-100 hover:border-primary-200 bg-primary-50/20 text-shop-primary shadow-xs hover:bg-primary-50/50 dark:bg-input/30 dark:border-input dark:hover:bg-input/50',
       },
       size: {
         default: 'h-9 px-4 py-2 has-[>svg]:px-3',

@@ -5,6 +5,7 @@ import { memo } from 'react';
 import { TotalSection } from './TotalSection';
 import { CircleDollarSignIcon, RotateCcw } from 'lucide-react';
 import { useRefundOrder } from '@/hooks/stripe/useRefundOrder';
+import { useTranslations } from 'next-intl';
 
 interface OrderTotalSectionProps {
   title: string;
@@ -26,6 +27,7 @@ const OrderTotalSectionComponent = ({
     useDistributeFundsOrder();
 
   const { refundOrder, isLoadingRefundOrder } = useRefundOrder();
+  const dashT = useTranslations('Modals');
   const isShowRefundBtn = user?.role === 'SUPER_ADMIN' && orderId && showRefund;
   const isShowConfirmBtn =
     user?.role === 'SUPER_ADMIN' && orderId && showConfirm;
@@ -43,7 +45,7 @@ const OrderTotalSectionComponent = ({
             className='text-xs'
           >
             <CircleDollarSignIcon />
-            {showConfirm ? 'Confirm' : 'Distribute Funds'}
+            {showConfirm ? dashT('order_btn_confirm') : dashT('order_btn_distribute_funds')}
           </Button>
         )}
         {isShowRefundBtn && (
@@ -54,7 +56,7 @@ const OrderTotalSectionComponent = ({
             className='text-xs'
           >
             <RotateCcw />
-            Refund order
+            {dashT('order_btn_refund_order')}
           </Button>
         )}
       </div>

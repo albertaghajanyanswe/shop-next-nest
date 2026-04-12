@@ -13,7 +13,7 @@ export function MainStatisticsItem({ item }: IMainStatisticsItemProps) {
   return (
     <Card className='gap-1 py-2 drop-shadow-xs'>
       <CardHeader className='flex flex-row items-center justify-between space-y-0 px-4 py-2'>
-        <CardTitle className='text-sm font-medium text-neutral-900'>
+        <CardTitle className='text-sm font-medium text-shop-primary-text'>
           {item.name}
         </CardTitle>
         <Icon className='size-5' />

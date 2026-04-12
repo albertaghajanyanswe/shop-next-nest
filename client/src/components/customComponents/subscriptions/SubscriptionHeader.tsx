@@ -39,7 +39,7 @@ function SubscriptionHeader({
 
   return (
     <div className='flex items-center justify-center space-x-2'>
-      <Label className='text-neutral-900' htmlFor='period'>
+      <Label className='text-shop-primary-text' htmlFor='period'>
         Monthly
       </Label>
       <Switch
@@ -51,9 +51,9 @@ function SubscriptionHeader({
           )
         }
       />
-      <Label className='text-neutral-900' htmlFor='period'>
+      <Label className='text-shop-primary-text' htmlFor='period'>
         Annual{' '}
-        <span className='text-shop-light-green font-semibold'>
+        <span className='text-shop-light-primary font-semibold'>
           (save {calculateDiscount(GetPlansDtoPlanId.ADVANCED)}%)
         </span>
       </Label>

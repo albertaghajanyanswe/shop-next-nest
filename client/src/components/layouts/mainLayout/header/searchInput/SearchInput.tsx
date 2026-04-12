@@ -121,7 +121,7 @@ export function SearchInput({
 //         <button
 //           type='button'
 //           onClick={(e) => setSearchTerm('')}
-//           className='absolute top-1/2 right-11 -translate-y-1/2 text-neutral-400 hover:text-neutral-600'
+//           className='absolute top-1/2 right-11 -translate-y-1/2 text-neutral-400 hover:text-shop-muted-text-6'
 //         >
 //           <X className='h-4 w-4' />
 //         </button>

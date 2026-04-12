@@ -94,17 +94,17 @@ export function ImageUpload({
           className={cn(
             'group cursor-pointer rounded-lg border-2 border-dashed p-4 text-center transition-colors sm:p-6',
             isDragActive
-              ? 'border-shop-light-green text-shop-light-green bg-primary-100'
-              : 'hover:border-shop-light-green hover:text-shop-light-green border-gray-300',
+              ? 'border-shop-light-primary text-shop-light-primary bg-primary-100'
+              : 'hover:border-shop-light-primary hover:text-shop-light-primary border-gray-300',
             (isUploading || isDisabled) && 'cursor-not-allowed opacity-50'
           )}
         >
           <input {...getInputProps()} />
           <div className='flex flex-col items-center justify-center space-y-2'>
-            <ImagePlus className='group-hover:text-shop-light-green h-6 w-6 text-neutral-600 transition-colors' />
+            <ImagePlus className='group-hover:text-shop-light-primary h-6 w-6 text-shop-muted-text-6 transition-colors' />
             <p
               className={cn(
-                'group-hover:text-shop-light-green text-sm text-neutral-600 transition-colors',
+                'group-hover:text-shop-light-primary text-sm text-shop-muted-text-6 transition-colors',
                 isDragActive && 'text-primary-700'
               )}
             >
@@ -120,7 +120,7 @@ export function ImageUpload({
 
       {isMaxReached && (
         <div className='rounded-lg border-2 border-dashed border-gray-300 p-4 text-center'>
-          <p className='text-sm text-neutral-600'>
+          <p className='text-sm text-shop-muted-text-6'>
             Maximum number of images reached ({maxFiles})
           </p>
         </div>

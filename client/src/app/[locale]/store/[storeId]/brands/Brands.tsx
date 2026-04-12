@@ -15,8 +15,10 @@ import { brandColumns } from './BrandColumns';
 import { useProfile } from '@/hooks/useProfile';
 import { useQueryParams } from '@/hooks/commons/useQueryParams';
 import { CustomPagination } from '@/components/customComponents/CustomPagination';
+import { useTranslations } from 'next-intl';
 
 export function Brands() {
+  const t = useTranslations('StorePages');
   const params = useParams<{ storeId: string }>();
   const storeId = params.storeId;
   const { user } = useProfile();
@@ -53,7 +55,7 @@ export function Brands() {
         }))
       : [];
 
-  const brandColumnsList = brandColumns(storeId);
+  const brandColumnsList = brandColumns(storeId, t);
   return (
     <div className='p-6'>
       {isLoadingBrandsData ? (
@@ -61,14 +63,14 @@ export function Brands() {
       ) : (
         <div className='flex items-center justify-between'>
           <Heading
-            title={`Brands (${brandsData?.totalCount})`}
-            description='All brands from store'
+            title={`${t('brands_title')} (${brandsData?.totalCount})`}
+            description={t('brands_description')}
           />
           <div className='flex items-center gap-x-4'>
             <Link href={STORE_URL.brandCreate(storeId)}>
               <Button variant='default'>
                 <CirclePlus className='size-5' />
-                Create
+                {t('create')}
               </Button>
             </Link>
           </div>
@@ -80,8 +82,6 @@ export function Brands() {
           data={formattedBrands}
           filterKey='name'
           totalCount={brandsData?.totalCount as number}
-          // onPageChange={changePage}
-          // onLimitChange={changeLimit}
           queryParams={queryParams}
           onChangeSearch={changeSearch}
           onChangeSort={changeSort}

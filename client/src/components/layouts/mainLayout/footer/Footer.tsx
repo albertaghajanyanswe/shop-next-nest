@@ -34,7 +34,7 @@ export default async function Footer() {
   const tLinks = await getTranslations('FooterLinks');
 
   return (
-    <footer className='global-container bg-shop-light-bg w-full border-t'>
+    <footer className='global-container bg-shop-bg w-full border-t'>
       <div>
         {/* ===== Top Contact Row ===== */}
         {/* <div className='container grid grid-cols-2 gap-8 py-6 md:grid-cols-4'>
@@ -60,14 +60,14 @@ export default async function Footer() {
               </div>
             </button>
 
-            <p className='mt-4 max-w-xs text-sm text-neutral-600'>
+            <p className='mt-4 max-w-xs text-sm text-shop-muted-text-6'>
               {t('buy_sell_follow')}
             </p>
 
             <div className='mt-6 flex items-center space-x-4'>
               {FooterSocialLinks.map((soc) => (
                 <div className='group' key={soc.title}>
-                  <soc.Icon className='hoverEffect text-shop-dark-green group-hover:border-shop-dark-green h-8 w-8 cursor-pointer rounded-full border p-1 group-hover:scale-110' />
+                  <soc.Icon className='hoverEffect text-shop-primary group-hover:border-shop-primary h-8 w-8 cursor-pointer rounded-full border p-1 group-hover:scale-110' />
                 </div>
               ))}
             </div>
@@ -76,12 +76,12 @@ export default async function Footer() {
           {/* Quick Links */}
           <div>
             <h3 className='mb-4 text-lg font-semibold'>{t('quick_links')}</h3>
-            <ul className='space-y-2 text-sm text-neutral-600'>
+            <ul className='space-y-2 text-sm text-shop-muted-text-6'>
               {FooterQuickLinks.map((quickLink) => {
                 return (
                   <li key={quickLink.title}>
                     <Link
-                      className='hover:text-shop-light-green'
+                      className='hover:text-shop-light-primary'
                       href={quickLink.href}
                     >
                       {tLinks(quickLink.title as any)}
@@ -95,7 +95,7 @@ export default async function Footer() {
           {/* Categories */}
           <div>
             <h3 className='mb-4 text-lg font-semibold'>{t('popular_categories')}</h3>
-            <ul className='space-y-2 text-sm text-neutral-600'>
+            <ul className='space-y-2 text-sm text-shop-muted-text-6'>
               {categories?.map((category) => {
                 return (
                   <li key={category.id}>
@@ -118,7 +118,7 @@ export default async function Footer() {
           {/* Newsletter */}
           <div>
             <h3 className='mb-4 text-lg font-semibold'>{t('newsletter')}</h3>
-            <p className='mb-4 text-sm text-neutral-600'>
+            <p className='mb-4 text-sm text-shop-muted-text-6'>
               {t('subscribe_desc')}
             </p>
             <div className='flex flex-col space-y-4'>
@@ -133,7 +133,7 @@ export default async function Footer() {
       <hr className='border-gray-200' />
 
       {/* Bottom */}
-      <div className='py-6 text-center text-neutral-600'>
+      <div className='py-6 text-center text-shop-muted-text-6'>
         © 2025 <span className='font-semibold'>MYSTORE</span>. {t('all_rights')}
       </div>
     </footer>

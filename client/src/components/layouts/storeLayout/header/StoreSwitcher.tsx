@@ -73,7 +73,7 @@ export function StoreSwitcher({ items }: StoreSwitcherProps) {
                     onSelect={() => onStoreSelect(store)}
                     className={`cursor-pointer text-sm ${
                       currentStore?.id === store.id
-                        ? 'bg-accent text-neutral-900'
+                        ? 'bg-accent text-shop-primary-text'
                         : ''
                     }`}
                   >
@@ -83,7 +83,7 @@ export function StoreSwitcher({ items }: StoreSwitcherProps) {
                         <div className='line-clamp-1'>{store.title}</div>
                       </div>
                       {currentStore?.id === store.id && (
-                        <Check className='text-shop-light-green h-3 w-3' />
+                        <Check className='text-shop-light-primary h-3 w-3' />
                       )}
                     </div>
                   </CommandItem>

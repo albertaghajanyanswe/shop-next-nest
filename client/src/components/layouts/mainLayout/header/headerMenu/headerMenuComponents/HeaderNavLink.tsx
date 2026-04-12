@@ -16,8 +16,8 @@ const HeaderNavLinkComponent = ({
   linkClass?: string;
 }) => {
   const inactiveClass =
-    'hover:text-shop-light-green hoverEffect group relative';
-  const activeClass = `text-shop-light-green ${inactiveClass}`;
+    'hover:text-shop-light-primary hoverEffect group relative';
+  const activeClass = `text-shop-light-primary ${inactiveClass}`;
 
   return (
     <Link

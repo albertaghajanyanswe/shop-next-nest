@@ -20,10 +20,10 @@ export function Logo({ classNames = '' }: LogoProps) {
         className='h-[48px] w-[64px]'
       /> */}
       <h2
-        className={`group text-shop-dark-green hover:text-shop-light-green hoverEffect font-sans text-xl font-black tracking-wider uppercase sm:text-2xl ${classNames}`}
+        className={`group text-shop-primary hover:text-shop-light-primary hoverEffect font-sans text-xl font-black tracking-wider uppercase sm:text-2xl ${classNames}`}
       >
         {SITE_NAME.slice(0, -1)}
-        <span className='text-shop-light-green group-hover:text-shop-dark-green hoverEffect'>
+        <span className='text-shop-light-primary group-hover:text-shop-primary hoverEffect'>
           {SITE_NAME.slice(-1)}
         </span>
       </h2>

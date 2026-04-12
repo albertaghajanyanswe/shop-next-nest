@@ -13,8 +13,10 @@ import {
 } from '@/generated/orval/types';
 import DataTableLoading from '@/components/ui/dataLoading/DataTableLoading';
 import { OrderDetailsModal } from '@/components/modals/orderDetailsModal/OrderDetailsModal';
+import { useTranslations } from 'next-intl';
 
 export default function PurchasedOrders() {
+  const t = useTranslations('DashboardSettings');
   const { user } = useProfile();
 
   const { queryParams, changePage, changeLimit, changeSearch, changeSort } =
@@ -43,7 +45,7 @@ export default function PurchasedOrders() {
       createdAt: order.createdAt,
       status: order.status,
       totalPrice: order.totalPrice,
-      type: order.subscriptionId ? 'Subscription' : 'Product',
+      type: order.subscriptionId ? t('type_subscription') : t('type_product'),
       itemsCount: order?.orderItems?.length || 0,
       itemsNames: order.orderItems
         .map((item) => item.cachedProductTitle + ' (x' + item.quantity + ')')
@@ -83,7 +85,7 @@ export default function PurchasedOrders() {
     <>
       <div className=''>
         <div className='mb-4 flex items-center justify-between'>
-          <h1 className='text-2xl font-semibold'>Purchased items</h1>
+          <h1 className='text-2xl font-semibold'>{t('purchased_items_title')}</h1>
         </div>
         {isLoadingOrdersData ? (
           <DataTableLoading />
@@ -91,7 +93,7 @@ export default function PurchasedOrders() {
           <>
             <DataTable
               data={formattedOrders}
-              columns={orderColumns}
+              columns={orderColumns(t)}
               totalCount={ordersData?.totalCount as number}
               limit={queryParams?.params?.limit as number}
               skip={queryParams?.params?.skip as number}

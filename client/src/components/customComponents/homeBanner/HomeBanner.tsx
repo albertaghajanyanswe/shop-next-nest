@@ -39,12 +39,12 @@ function HomeBannerComponent() {
                 <div className='relative mx-auto h-full max-w-screen-xl px-4'>
                   <div className='global-container relative h-full content-center space-y-5 py-10 sm:py-15 lg:space-y-10 lg:py-20'>
                     <div className='flex max-w-full flex-col gap-4 sm:max-w-[60%]'>
-                      <h1 className='text-shop-dark-green text-xl font-semibold sm:text-2xl lg:text-3xl'>
+                      <h1 className='text-shop-primary text-xl font-semibold sm:text-2xl lg:text-3xl'>
                         Your perfect choice starts here. Explore premium
                         products for every day.
                       </h1>
                       <Link href={PUBLIC_URL.shop()}>
-                        <Button variant='outline' className='group'>
+                        <Button variant='primary' className='group'>
                           Order Now
                           <ArrowRight className='ml-[4px] size-4 transition-all group-hover:ml-[5px]' />
                         </Button>

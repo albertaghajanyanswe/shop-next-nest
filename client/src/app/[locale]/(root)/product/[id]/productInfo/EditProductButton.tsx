@@ -28,7 +28,7 @@ function EditProductButton({
         className='w-full'
       >
         <Pencil className='size-4' />
-        {!onlyIcon && <span className='text-neutral-900'>Edit product</span>}
+        {!onlyIcon && <span className='text-shop-primary-text'>Edit product</span>}
       </Button>
     </Link>
   );

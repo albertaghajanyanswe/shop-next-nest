@@ -115,12 +115,12 @@ export function DashboardLayout({ children }: PropsWithChildren<unknown>) {
               priority={false}
             />
             <div className='flex flex-1 flex-col items-center'>
-              <span className='font-medium text-neutral-900'>{user.name}</span>
-              <span className='text-sm text-neutral-700'>{user.email}</span>
+              <span className='font-medium text-shop-primary-text'>{user.name}</span>
+              <span className='text-sm text-shop-muted-text-7'>{user.email}</span>
             </div>
           </Card>
           {!collapsed && (
-            <div className='mb-4 rounded-md bg-gradient-to-r from-emerald-200 to-lime-200 p-2 text-sm text-neutral-900'>
+            <div className='mb-4 rounded-md bg-linear-to-r from-primary-100 to-primary-400 dark:from-primary-200 dark:to-primary-600 p-2 text-sm text-neutral-900'>
               <div className='flex items-center gap-2'>
                 <ArrowUpCircle className='h-6 min-h-6 w-6 min-w-6 text-purple-600' />
                 <span>{t('Upgrade plan')}</span>
@@ -143,7 +143,7 @@ export function DashboardLayout({ children }: PropsWithChildren<unknown>) {
                 );
               })}
               <Button
-                variant='secondary'
+                variant='primary'
                 className='text-xs font-medium whitespace-nowrap'
                 onClick={handleLayout}
               >
@@ -158,10 +158,10 @@ export function DashboardLayout({ children }: PropsWithChildren<unknown>) {
       {/* Desktop Layout (lg and above) */}
       <div className='global-container my-6 hidden w-full flex-row gap-6 lg:flex'>
         <div className='layout'>
-          <div className='inset-y-0 z-[50] flex h-full flex-col'>
+          <div className='inset-y-0 z-50 flex h-full flex-col'>
             <aside
               className={cn(
-                'flex flex-col rounded-md bg-shop-white shadow-sm transition-all duration-300',
+                'flex flex-col rounded-md shadow-sm transition-all duration-300',
                 collapsed ? 'w-20 items-center p-2' : 'w-64 p-2'
               )}
             >
@@ -183,7 +183,7 @@ export function DashboardLayout({ children }: PropsWithChildren<unknown>) {
               {/* User card */}
               <Card
                 className={cn(
-                  'mt-4 flex items-center gap-3 p-3 shadow-none transition-all',
+                  'mt-4 flex items-center gap-3 p-3 shadow-none transition-all bg-linear-to-r from-primary-50 to-primary-200 dark:from-primary-100 dark:to-primary-400',
                   collapsed ? 'flex-col p-2' : ''
                 )}
               >
@@ -203,14 +203,14 @@ export function DashboardLayout({ children }: PropsWithChildren<unknown>) {
                     <span className='font-medium text-neutral-900'>
                       {user.name}
                     </span>
-                    <span className='text-sm text-shop-muted-text-5'>{user.email}</span>
+                    <span className='text-sm text-neutral-600'>{user.email}</span>
                   </div>
                 )}
               </Card>
 
               {/* Upgrade block */}
               {!collapsed && (
-                <div className='mt-3 rounded-md bg-gradient-to-r from-emerald-100 to-lime-200 p-3 text-sm text-neutral-900'>
+                <div className='mt-3 rounded-md bg-linear-to-r from-primary-100 to-primary-400 dark:from-primary-200 dark:to-primary-600 p-3 text-sm text-neutral-900'>
                   <div className='flex items-center gap-2'>
                     <ArrowUpCircle className='h-8 w-8 text-purple-600' />
                     <span>{t('Upgrade plan')}</span>
@@ -239,7 +239,7 @@ export function DashboardLayout({ children }: PropsWithChildren<unknown>) {
               </div>
               <div className='mt-auto pt-4'>
                 <Button
-                  variant='secondary'
+                  variant='primary'
                   className={cn(
                     'w-full text-sm font-medium',
                     collapsed ? 'justify-center' : ''
@@ -253,12 +253,12 @@ export function DashboardLayout({ children }: PropsWithChildren<unknown>) {
             </aside>
           </div>
         </div>
-        <main className='w-full bg-shop-white'>{children}</main>
+        <main className='w-full '>{children}</main>
       </div>
 
       {/* Main content for mobile/tablet */}
       <div className='lg:hidden'>
-        <main className='global-container my-8 w-full bg-shop-white'>
+        <main className='global-container my-8 w-full'>
           {children}
         </main>
       </div>

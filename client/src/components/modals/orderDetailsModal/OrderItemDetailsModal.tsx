@@ -18,6 +18,7 @@ import {
 } from './OrderDetailsModal';
 import { OrderItemTotalSection } from './components/OrderItemTotalSection';
 import { formatPrice } from '@/utils/formatPrice';
+import { useTranslations } from 'next-intl';
 
 interface OrderItemDetailsModalProps<T extends TableSectionItem> {
   isOpen: boolean;
@@ -36,28 +37,30 @@ export function OrderItemDetailsModal<T extends TableSectionItem>({
   showConfirm = false,
   showRefund = false,
 }: OrderItemDetailsModalProps<T>) {
+  const t = useTranslations('Modals');
+
   const getOrderInfoItems = (): InfoSectionItem[] => {
     if (!orderItem) return [];
 
     return [
       {
-        title: 'Order item ID',
+        title: t('order_item_info_id'),
         value: orderItem.id,
       },
       {
-        title: 'Customer',
+        title: t('order_info_customer'),
         value: orderItem.order.user.name,
       },
       {
-        title: 'Email',
+        title: t('order_info_email'),
         value: orderItem.order.user.email,
       },
       {
-        title: 'Date',
+        title: t('order_info_date'),
         value: formatDateWithHour(orderItem.createdAt as string),
       },
       {
-        title: 'Status',
+        title: t('order_info_status'),
         value: (
           <span
             className={`font-semibold ${STATUS_COLOR[orderItem.order.status]}`}
@@ -73,19 +76,19 @@ export function OrderItemDetailsModal<T extends TableSectionItem>({
     return [
       {
         key: 'image',
-        title: 'Product',
+        title: t('order_col_product'),
         type: 'image',
         span: 'col-span-6',
       },
       {
         key: 'quantity',
-        title: 'Quantity',
+        title: t('order_col_quantity'),
         type: 'text',
         span: 'col-span-3',
       },
       {
         key: 'price',
-        title: 'Price',
+        title: t('order_col_price'),
         type: 'text',
         span: 'col-span-3',
       },
@@ -123,7 +126,7 @@ export function OrderItemDetailsModal<T extends TableSectionItem>({
 
   return (
     <CustomModal
-      title={`Order Item Details`}
+      title={t('order_item_details_title')}
       open={isOpen}
       onOpenChange={setIsOpen}
       size='xl'
@@ -150,7 +153,7 @@ export function OrderItemDetailsModal<T extends TableSectionItem>({
 
         {/* Total */}
         <OrderItemTotalSection
-          title='Total'
+          title={t('order_total')}
           value={formatPrice(orderItem.price * orderItem.quantity)}
           user={user}
           orderItemId={orderItem.id}

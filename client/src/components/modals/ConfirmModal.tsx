@@ -10,6 +10,7 @@ import {
   AlertDialogTrigger,
 } from '@/components/ui/AlertDialog';
 import { PropsWithChildren } from 'react';
+import { useTranslations } from 'next-intl';
 
 interface ConfirmModalProps {
   handleConfirm: () => void;
@@ -22,26 +23,33 @@ interface ConfirmModalProps {
 export function ConfirmModal({
   children,
   handleConfirm,
-  title = 'Are you sure?',
-  description = 'This action cannot be undone.',
-  confirmText = 'Continue',
-  cancelText = 'Cancel',
+  title,
+  description,
+  confirmText,
+  cancelText,
 }: PropsWithChildren<ConfirmModalProps>) {
+  const t = useTranslations('Modals');
+
+  const displayTitle = title || t('confirm_title');
+  const displayDescription = description || t('confirm_description');
+  const displayConfirmText = confirmText || t('confirm_continue');
+  const displayCancelText = cancelText || t('confirm_cancel');
+
   return (
     <AlertDialog>
       <AlertDialogTrigger asChild>{children}</AlertDialogTrigger>
       <AlertDialogContent>
         <AlertDialogHeader>
-          <AlertDialogTitle>{title}</AlertDialogTitle>
-          <AlertDialogDescription>{description}</AlertDialogDescription>
+          <AlertDialogTitle>{displayTitle}</AlertDialogTitle>
+          <AlertDialogDescription>{displayDescription}</AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>
-          <AlertDialogCancel>{cancelText}</AlertDialogCancel>
+          <AlertDialogCancel>{displayCancelText}</AlertDialogCancel>
           <AlertDialogAction
             onClick={handleConfirm}
             className='bg-primary-700 hover:bg-primary-700/90'
           >
-            {confirmText}
+            {displayConfirmText}
           </AlertDialogAction>
         </AlertDialogFooter>
       </AlertDialogContent>

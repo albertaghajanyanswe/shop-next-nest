@@ -21,7 +21,7 @@ export function CustomAccordion({ items }: { items: FAQItem[] }) {
             {item.title}
           </AccordionTrigger>
 
-          <AccordionContent className='px-4 pb-4 leading-relaxed text-neutral-600'>
+          <AccordionContent className='px-4 pb-4 leading-relaxed text-shop-muted-text-6'>
             {item.content}
           </AccordionContent>
         </AccordionItem>

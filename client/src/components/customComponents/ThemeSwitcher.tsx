@@ -30,7 +30,7 @@ export function ThemeSwitcher() {
             <span className='sr-only'>{t('light')}</span>
           </Button>
           <Button
-          disabled
+          // disabled
             variant={theme === 'dark' ? 'default' : 'outline'}
             size='icon'
             onClick={() => setTheme('dark')}

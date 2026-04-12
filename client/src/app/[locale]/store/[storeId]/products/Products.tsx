@@ -12,8 +12,10 @@ import { useParams } from 'next/navigation';
 import { productColumns } from './ProductColumns';
 import { useQueryParams } from '@/hooks/commons/useQueryParams';
 import { CustomPagination } from '@/components/customComponents/CustomPagination';
+import { useTranslations } from 'next-intl';
 
 export function Products() {
+  const t = useTranslations('StorePages');
   const params = useParams<{ storeId: string }>();
   const storeId = params.storeId;
 
@@ -40,7 +42,7 @@ export function Products() {
     ? productsData?.products?.map((product) => ({
         id: product.id,
         title: product.title,
-        price: product.price, //formatPrice(product.price) as unknown as number,
+        price: product.price,
         category: product.category?.name as string,
         color: product.color?.value as string,
         storeId: product.store?.id as string,
@@ -56,6 +58,9 @@ export function Products() {
         isPublished: product.isPublished,
       }))
     : [];
+
+  const productColumnList = productColumns(t);
+
   return (
     <div className='p-6'>
       {isLoadingProductsData ? (
@@ -63,14 +68,14 @@ export function Products() {
       ) : (
         <div className='flex items-center justify-between'>
           <Heading
-            title={`Products (${productsData?.totalCount})`}
-            description='All products from store'
+            title={`${t('products_title')} (${productsData?.totalCount})`}
+            description={t('products_description')}
           />
           <div className='flex items-center gap-x-4'>
             <Link href={STORE_URL.productCreate(storeId)}>
               <Button variant='default'>
                 <CirclePlus className='size-5' />
-                Create
+                {t('create')}
               </Button>
             </Link>
           </div>
@@ -78,7 +83,7 @@ export function Products() {
       )}
       <div className='w-full'>
         <DataTable
-          columns={productColumns}
+          columns={productColumnList}
           data={formattedProducts}
           filterKey='title'
           totalCount={productsData?.totalCount as number}

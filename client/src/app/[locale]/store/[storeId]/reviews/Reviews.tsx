@@ -9,8 +9,10 @@ import { useGetReviews } from '@/hooks/queries/reviews/useGetReviews';
 import { IReviewColumn, reviewColumns } from './ReviewColumns';
 import { useQueryParams } from '@/hooks/commons/useQueryParams';
 import { CustomPagination } from '@/components/customComponents/CustomPagination';
+import { useTranslations } from 'next-intl';
 
 export function Reviews() {
+  const t = useTranslations('StorePages');
   const params = useParams<{ storeId: string }>();
   const storeId = params.storeId;
 
@@ -44,6 +46,8 @@ export function Reviews() {
       }))
     : [];
 
+  const reviewColumnList = reviewColumns(t);
+
   return (
     <div className='p-6'>
       {isLoadingReviewsData ? (
@@ -51,14 +55,14 @@ export function Reviews() {
       ) : (
         <div className='flex items-center justify-between'>
           <Heading
-            title={`Reviews (${reviewsData?.totalCount})`}
-            description='All reviews from store'
+            title={`${t('reviews_title')} (${reviewsData?.totalCount})`}
+            description={t('reviews_description')}
           />
         </div>
       )}
       <div className='mt-3'>
         <DataTable
-          columns={reviewColumns}
+          columns={reviewColumnList}
           data={formattedReviews}
           filterKey='username'
           totalCount={reviewsData?.totalCount as number}

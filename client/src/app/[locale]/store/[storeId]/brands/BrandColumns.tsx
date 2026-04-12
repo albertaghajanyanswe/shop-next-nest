@@ -21,12 +21,16 @@ import {
 import Image from 'next/image';
 import Link from 'next/link';
 
+type TF = (key: string) => string;
+
 const BrandActionsCell = ({
   row,
   storeId,
+  t,
 }: {
   row: IBrandColumn & { isCurrentUserAdmin: boolean };
   storeId: string;
+  t: TF;
 }) => {
   const { deleteBrand, isLoadingDelete } = useDeleteBrand();
 
@@ -38,18 +42,18 @@ const BrandActionsCell = ({
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align='end'>
-        <DropdownMenuLabel>Action</DropdownMenuLabel>
+        <DropdownMenuLabel>{t('action')}</DropdownMenuLabel>
         <Link href={STORE_URL.brandEdit(row.storeId, row.id)}>
           <DropdownMenuItem>
             <ExternalLink className='mr-2 size-4' />
-            Brand page
+            {t('brand_page')}
           </DropdownMenuItem>
         </Link>
         {(storeId === row.storeId || row.isCurrentUserAdmin) && (
           <Link href={STORE_URL.brandEdit(row.storeId, row.id)}>
             <DropdownMenuItem>
               <Pencil className='mr-2 size-4' />
-              Edit brand
+              {t('edit_brand')}
             </DropdownMenuItem>
           </Link>
         )}
@@ -63,7 +67,7 @@ const BrandActionsCell = ({
         >
           <DropdownMenuItem className='place-content-start'>
             <Trash2 className='mr-2 size-4' />
-            Delete
+            {t('delete')}
           </DropdownMenuItem>
         </Button>
       </DropdownMenuContent>
@@ -72,34 +76,30 @@ const BrandActionsCell = ({
 };
 
 export const brandColumns = (
-  storeId: string
+  storeId: string,
+  t: TF
 ): ColumnDef<IBrandColumn & { isCurrentUserAdmin: boolean }>[] => [
   {
     accessorKey: 'image',
     meta: {
-      // className: 'w-[15%]',
       textClassName:
         'truncate overflow-hidden text-ellipsis whitespace-nowrap max-w-[80px]',
     },
-    header: ({ column }) => {
-      return (
-        <Button variant='ghost' className='p-0 pl-3'>
-          Image
-        </Button>
-      );
-    },
-    cell: ({ row }) => {
-      return (
-        <Image
-          src={generateImgPath(row.original.image as string)}
-          alt={row.original.name}
-          width={44}
-          height={44}
-          className='hoverEffect h-11 max-h-11 min-h-10 w-11 max-w-11 min-w-10 rounded-md object-contain group-hover:scale-110'
-          priority
-        />
-      );
-    },
+    header: () => (
+      <Button variant='ghost' className='p-0 pl-3'>
+        {t('col_image')}
+      </Button>
+    ),
+    cell: ({ row }) => (
+      <Image
+        src={generateImgPath(row.original.image as string)}
+        alt={row.original.name}
+        width={44}
+        height={44}
+        className='hoverEffect h-11 max-h-11 min-h-10 w-11 max-w-11 min-w-10 rounded-md object-contain group-hover:scale-110'
+        priority
+      />
+    ),
   },
   {
     accessorKey: 'name',
@@ -107,42 +107,37 @@ export const brandColumns = (
       textClassName: 'truncate overflow-hidden text-ellipsis whitespace-nowrap',
       sortField: 'name',
     },
-    header: ({ column }) => {
-      return (
-        <Button
-          variant='ghost'
-          onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
-        >
-          Name
-          <ArrowUpDown className='ml-2 size-4' />
-        </Button>
-      );
-    },
+    header: ({ column }) => (
+      <Button
+        variant='ghost'
+        onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
+      >
+        {t('col_name')}
+        <ArrowUpDown className='ml-2 size-4' />
+      </Button>
+    ),
   },
-
   {
     accessorKey: 'createdAt',
     meta: {
       textClassName: 'truncate overflow-hidden text-ellipsis whitespace-nowrap',
       sortField: 'createdAt',
     },
-    header: ({ column }) => {
-      return (
-        <Button
-          variant='ghost'
-          onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
-        >
-          Created date
-          <ArrowUpDown className='ml-2 size-4' />
-        </Button>
-      );
-    },
+    header: ({ column }) => (
+      <Button
+        variant='ghost'
+        onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
+      >
+        {t('col_created_date')}
+        <ArrowUpDown className='ml-2 size-4' />
+      </Button>
+    ),
   },
   {
     accessorKey: 'actions',
-    header: 'Actions',
+    header: t('actions'),
     cell: ({ row }) => (
-      <BrandActionsCell row={row.original} storeId={storeId} />
+      <BrandActionsCell row={row.original} storeId={storeId} t={t} />
     ),
   },
 ];

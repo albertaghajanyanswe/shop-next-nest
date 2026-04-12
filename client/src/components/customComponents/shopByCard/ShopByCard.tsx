@@ -39,7 +39,7 @@ const ShopByCardComponent = ({
         {linkTitle && (
           <Link
             href={PUBLIC_URL.shop()}
-            className='text-primary-600 hover:text-primary-600/70 hidden text-sm font-medium whitespace-nowrap md:flex'
+            className='text-primary hover:text-primary/70 hidden text-sm font-medium whitespace-nowrap md:flex'
           >
             {linkTitle}
           </Link>

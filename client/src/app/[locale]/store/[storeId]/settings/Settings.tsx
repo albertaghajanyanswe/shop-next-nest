@@ -15,15 +15,15 @@ import { ImageUpload } from '@/components/ui/formElements/image-upload/ImageUplo
 import { Input } from '@/components/ui/formElements/Input';
 import { Heading } from '@/components/ui/Heading';
 import { Textarea } from '@/components/ui/Textarea';
-import { DASHBOARD_URL } from '@/config/url.config';
 import { useDeleteStore } from '@/hooks/queries/stores/useDeleteStore';
 import { useUpdateStore } from '@/hooks/queries/stores/useUpdateStore';
 import { IUpdateStore } from '@/shared/types/store.interface';
-import { AlertTriangle, Trash2 } from 'lucide-react';
-import Link from 'next/link';
+import { Trash2 } from 'lucide-react';
 import { SubmitHandler, useForm } from 'react-hook-form';
+import { useTranslations } from 'next-intl';
 
 export function Settings() {
+  const t = useTranslations('StorePages');
   const { store, updateStore, isLoadingUpdate } = useUpdateStore();
   const { deleteStore, isLoadingDelete } = useDeleteStore();
 
@@ -48,13 +48,13 @@ export function Settings() {
   return (
     <div className='p-6'>
       <div className='mb-8 flex items-center justify-between'>
-        <Heading title='Settings' description='Manage your store settings.' />
+        <Heading title={t('settings_title')} description={t('settings_description')} />
         <ConfirmModal
           handleConfirm={() => deleteStore()}
-          title='Delete Store'
-          description='This action cannot be undone. This will permanently delete your store and remove your data from our servers.'
-          confirmText='Delete'
-          cancelText='Cancel'
+          title={t('delete_store')}
+          description={t('delete_store_description')}
+          confirmText={t('confirm_delete')}
+          cancelText={t('cancel')}
         >
           <Button
             variant='default'
@@ -73,34 +73,32 @@ export function Settings() {
           <FormField
             control={form.control}
             name='images'
-            rules={{ required: 'Upload at least one image' }}
-            render={({ field }) => {
-              return (
-                <FormItem className='mt-4'>
-                  <FormLabel>Images</FormLabel>
-                  <FormControl>
-                    <ImageUpload
-                      isDisabled={isLoadingUpdate}
-                      onChange={field.onChange}
-                      value={field.value}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              );
-            }}
+            rules={{ required: t('form_images_required') }}
+            render={({ field }) => (
+              <FormItem className='mt-4'>
+                <FormLabel>{t('form_images')}</FormLabel>
+                <FormControl>
+                  <ImageUpload
+                    isDisabled={isLoadingUpdate}
+                    onChange={field.onChange}
+                    value={field.value}
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
           />
           <div className='mt-4 grid gap-4 sm:grid-cols-2 lg:grid-cols-3'>
             <FormField
               control={form.control}
               name='title'
-              rules={{ required: 'Store name is required' }}
+              rules={{ required: t('form_name_required') }}
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Name</FormLabel>
+                  <FormLabel>{t('form_name')}</FormLabel>
                   <FormControl>
                     <Input
-                      placeholder='Store name'
+                      placeholder={t('form_name_placeholder')}
                       disabled={isLoadingUpdate}
                       {...field}
                     />
@@ -117,10 +115,10 @@ export function Settings() {
               name='country'
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Country</FormLabel>
+                  <FormLabel>{t('form_country')}</FormLabel>
                   <FormControl>
                     <Input
-                      placeholder='Store country'
+                      placeholder={t('form_country_placeholder')}
                       disabled={isLoadingUpdate}
                       {...field}
                     />
@@ -134,10 +132,10 @@ export function Settings() {
               name='city'
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>City</FormLabel>
+                  <FormLabel>{t('form_city')}</FormLabel>
                   <FormControl>
                     <Input
-                      placeholder='Store city'
+                      placeholder={t('form_city_placeholder')}
                       disabled={isLoadingUpdate}
                       {...field}
                     />
@@ -153,10 +151,10 @@ export function Settings() {
               name='address'
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Address</FormLabel>
+                  <FormLabel>{t('form_address')}</FormLabel>
                   <FormControl>
                     <Input
-                      placeholder='Store address'
+                      placeholder={t('form_address_placeholder')}
                       disabled={isLoadingUpdate}
                       {...field}
                     />
@@ -170,10 +168,10 @@ export function Settings() {
               name='phone'
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Phone number</FormLabel>
+                  <FormLabel>{t('form_phone')}</FormLabel>
                   <FormControl>
                     <Input
-                      placeholder='Store phone'
+                      placeholder={t('form_phone_placeholder')}
                       disabled={isLoadingUpdate}
                       {...field}
                     />
@@ -188,10 +186,10 @@ export function Settings() {
             name='description'
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Store description</FormLabel>
+                <FormLabel>{t('form_description')}</FormLabel>
                 <FormControl>
                   <Textarea
-                    placeholder='Store description'
+                    placeholder={t('form_description_placeholder')}
                     disabled={isLoadingUpdate}
                     {...field}
                   />
@@ -202,7 +200,7 @@ export function Settings() {
           />
 
           <Button variant='default' disabled={isLoadingUpdate || !isFormDirty}>
-            Save changes
+            {t('save_changes')}
           </Button>
         </form>
       </Form>

@@ -53,7 +53,7 @@ function CartActions({ orderItem }: CartActionsProps) {
               disabled
               readOnly
               value={quantity}
-              className='w-10 text-center text-sm'
+              className='w-10 text-center text-sm text-foreground bg-transparent'
             />
             <Button
               aria-label='Plus quantity'

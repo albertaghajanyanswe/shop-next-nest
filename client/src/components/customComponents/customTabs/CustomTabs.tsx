@@ -23,7 +23,7 @@ export function CustomTabs({
   defaultValue,
   className = 'w-full',
   listClassName = 'flex h-12 space-x-1 rounded-md bg-red-500/10 p-1',
-  triggerClassName = 'h-full w-full text-neutral-900',
+  triggerClassName = 'h-full w-full text-shop-primary-text',
   contentClassName = '',
 }: CustomTabsProps) {
   const activeTab = defaultValue || tabs[0]?.id || '';

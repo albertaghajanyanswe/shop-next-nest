@@ -11,7 +11,7 @@ const TotalSectionComponent = ({ title, value }: TotalSectionProps) => {
   return (
     <div className='flex justify-end'>
       <div className='text-right'>
-        <p className='text-lg font-semibold text-neutral-700'>{title}</p>
+        <p className='text-lg font-semibold text-shop-muted-text-7'>{title}</p>
         <p className='text-shop-red text-xl font-bold'>{value}</p>
       </div>
     </div>

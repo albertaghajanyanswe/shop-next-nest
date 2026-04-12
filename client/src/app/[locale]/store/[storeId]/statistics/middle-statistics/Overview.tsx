@@ -20,7 +20,7 @@ export function Overview({ data }: IOverviewProps) {
   const chartConfig = {
     value: {
       label: t('profit_usd'),
-      color: '#063d29',
+      color: 'var(--color-primary-700)',
     },
   } satisfies ChartConfig;
 

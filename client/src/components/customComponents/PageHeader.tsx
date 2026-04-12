@@ -13,7 +13,7 @@ export default function PageHeader({
         {title}
       </h1>
       {description && (
-        <p className='leading-relaxed; text-sm text-neutral-600'>
+        <p className='leading-relaxed; text-sm text-shop-muted-text-6'>
           {description}
         </p>
       )}

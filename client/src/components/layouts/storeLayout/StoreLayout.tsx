@@ -13,7 +13,7 @@ export function StoreLayout({ children }: PropsWithChildren<unknown>) {
           <Header />
         </div>
       </div>
-      <main className='bg-shop-white py-[70px] lg:pl-64'>{children}</main>
+      <main className='bg-shop-white py-[70px] lg:pl-64 min-h-[100svh]'>{children}</main>
     </div>
   );
 }

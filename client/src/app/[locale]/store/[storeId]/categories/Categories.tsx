@@ -15,8 +15,10 @@ import { ICategoryColumn } from '@/shared/types/category.interface';
 import { useProfile } from '@/hooks/useProfile';
 import { useQueryParams } from '@/hooks/commons/useQueryParams';
 import { CustomPagination } from '@/components/customComponents/CustomPagination';
+import { useTranslations } from 'next-intl';
 
 export function Categories() {
+  const t = useTranslations('StorePages');
   const params = useParams<{ storeId: string }>();
   const storeId = params.storeId;
   const { user } = useProfile();
@@ -56,7 +58,7 @@ export function Categories() {
       }))
     : [];
 
-  const categoryColumnList = categoryColumns(storeId);
+  const categoryColumnList = categoryColumns(storeId, t);
   return (
     <div className='p-6'>
       {isLoadingCategoriesData ? (
@@ -64,14 +66,14 @@ export function Categories() {
       ) : (
         <div className='flex items-center justify-between'>
           <Heading
-            title={`Categories (${categoriesData?.totalCount})`}
-            description='All Categories from store'
+            title={`${t('categories_title')} (${categoriesData?.totalCount})`}
+            description={t('categories_description')}
           />
           <div className='flex items-center gap-x-4'>
             <Link href={STORE_URL.categoryCreate(storeId)}>
               <Button variant='default'>
                 <CirclePlus className='size-5' />
-                Create
+                {t('create')}
               </Button>
             </Link>
           </div>

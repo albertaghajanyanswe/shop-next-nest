@@ -2,6 +2,7 @@ import React from 'react';
 import { CustomModal } from '@/components/modals/CustomModal';
 import { GetOrderWithItemsDto } from '@/generated/orval/types';
 import { OrderDetailsModalContent } from './OrderDetailsModalContent';
+import { useTranslations } from 'next-intl';
 
 export type CellType = 'text' | 'image';
 
@@ -46,9 +47,10 @@ export function OrderDetailsModal<T extends TableSectionItem>({
   showConfirm = false,
   showRefund = false,
 }: OrderDetailsModalProps<T>) {
+  const t = useTranslations('Modals');
   return (
     <CustomModal
-      title={`Order Details`}
+      title={t('order_details_title')}
       open={isOpen}
       onOpenChange={setIsOpen}
       size='xl'

@@ -3,7 +3,6 @@ import { ColumnSortableHeader } from '@/components/ui/dataLoading/ColumnSortable
 import { formatDateWithHour } from '@/utils/formateDate';
 import { formatPrice } from '@/utils/formatPrice';
 import { ColumnDef } from '@tanstack/react-table';
-import { ArrowUpDown } from 'lucide-react';
 
 export interface IOrderColumns {
   id: string;
@@ -15,7 +14,9 @@ export interface IOrderColumns {
   itemsNames: string;
 }
 
-export const orderColumns: ColumnDef<IOrderColumns>[] = [
+type TF = (key: string) => string;
+
+export const orderColumns = (t: TF): ColumnDef<IOrderColumns>[] => [
   {
     accessorKey: 'id',
     meta: {
@@ -23,24 +24,19 @@ export const orderColumns: ColumnDef<IOrderColumns>[] = [
       textClassName: 'max-w-[100px]',
       sortField: 'id',
     },
-
-    header: ({ column }) => {
-      return (
-        <ColumnSortableHeader
-          label='Order number'
-          onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
-          column={column}
-          showSortIcon
-        />
-      );
-    },
-    cell: ({ row }) => {
-      return (
-        <p className='truncate overflow-hidden text-ellipsis whitespace-nowrap'>
-          {row.original.id}
-        </p>
-      );
-    },
+    header: ({ column }) => (
+      <ColumnSortableHeader
+        label={t('col_order_number')}
+        onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
+        column={column}
+        showSortIcon
+      />
+    ),
+    cell: ({ row }) => (
+      <p className='truncate overflow-hidden text-ellipsis whitespace-nowrap'>
+        {row.original.id}
+      </p>
+    ),
   },
   {
     accessorKey: 'itemsCount',
@@ -48,32 +44,24 @@ export const orderColumns: ColumnDef<IOrderColumns>[] = [
       textClassName:
         'w-10 truncate overflow-hidden text-ellipsis whitespace-nowrap',
     },
-    header: ({ column }) => {
-      return (
-        <Button variant='ghost' className='p-0 px-0 has-[>svg]:px-0'>
-          Count
-        </Button>
-      );
-    },
-    cell: ({ row }) => {
-      return row.original.itemsCount;
-    },
+    header: () => (
+      <Button variant='ghost' className='p-0 px-0 has-[>svg]:px-0'>
+        {t('col_count')}
+      </Button>
+    ),
+    cell: ({ row }) => row.original.itemsCount,
   },
   {
     accessorKey: 'itemsNames',
     meta: {
       textClassName: 'text-wrap text-xs',
     },
-    header: ({ column }) => {
-      return (
-        <Button variant='ghost' className='p-0 px-0 has-[>svg]:px-0'>
-          Items Names
-        </Button>
-      );
-    },
-    cell: ({ row }) => {
-      return row.original.itemsNames;
-    },
+    header: () => (
+      <Button variant='ghost' className='p-0 px-0 has-[>svg]:px-0'>
+        {t('col_items_names')}
+      </Button>
+    ),
+    cell: ({ row }) => row.original.itemsNames,
   },
   {
     accessorKey: 'type',
@@ -81,55 +69,45 @@ export const orderColumns: ColumnDef<IOrderColumns>[] = [
       textClassName: 'truncate overflow-hidden text-ellipsis whitespace-nowrap',
       sortField: 'subscriptionId',
     },
-    header: ({ column }) => {
-      return (
-        <ColumnSortableHeader
-          label='Type'
-          onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
-          column={column}
-          showSortIcon
-        />
-      );
-    },
+    header: ({ column }) => (
+      <ColumnSortableHeader
+        label={t('col_type')}
+        onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
+        column={column}
+        showSortIcon
+      />
+    ),
   },
-
   {
     accessorKey: 'status',
     meta: {
       textClassName: 'truncate overflow-hidden text-ellipsis whitespace-nowrap',
       sortField: 'status',
     },
-    header: ({ column }) => {
-      return (
-        <ColumnSortableHeader
-          label='Status'
-          onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
-          column={column}
-          showSortIcon
-        />
-      );
-    },
+    header: ({ column }) => (
+      <ColumnSortableHeader
+        label={t('col_status')}
+        onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
+        column={column}
+        showSortIcon
+      />
+    ),
   },
-
   {
     accessorKey: 'totalPrice',
     meta: {
       textClassName: 'truncate overflow-hidden text-ellipsis whitespace-nowrap',
       sortField: 'totalPrice',
     },
-    header: ({ column }) => {
-      return (
-        <ColumnSortableHeader
-          label='Price'
-          onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
-          column={column}
-          showSortIcon
-        />
-      );
-    },
-    cell: ({ row }) => {
-      return formatPrice(row.original.totalPrice);
-    },
+    header: ({ column }) => (
+      <ColumnSortableHeader
+        label={t('col_price')}
+        onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
+        column={column}
+        showSortIcon
+      />
+    ),
+    cell: ({ row }) => formatPrice(row.original.totalPrice),
   },
   {
     accessorKey: 'createdAt',
@@ -137,18 +115,16 @@ export const orderColumns: ColumnDef<IOrderColumns>[] = [
       textClassName: 'truncate overflow-hidden text-ellipsis whitespace-nowrap',
       sortField: 'createdAt',
     },
-    header: ({ column }) => {
-      return (
-        <ColumnSortableHeader
-          label='Created date'
-          onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
-          column={column}
-          showSortIcon
-        />
-      );
-    },
-    cell: ({ row }) => {
-      return <p>{formatDateWithHour(new Date(row.original.createdAt))}</p>;
-    },
+    header: ({ column }) => (
+      <ColumnSortableHeader
+        label={t('col_created_date')}
+        onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
+        column={column}
+        showSortIcon
+      />
+    ),
+    cell: ({ row }) => (
+      <p>{formatDateWithHour(new Date(row.original.createdAt))}</p>
+    ),
   },
 ];

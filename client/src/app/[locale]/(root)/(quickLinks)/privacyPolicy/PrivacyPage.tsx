@@ -20,14 +20,14 @@ export default function PrivacyPage() {
         classNames='mt-4'
       />
 
-      <section className='leading-relaxed; space-y-6 text-neutral-600'>
+      <section className='leading-relaxed; space-y-6 text-shop-muted-text-6'>
         <p className='text-sm'>
           This Privacy Policy outlines how {SITE_NAME} (“we”, “our”, “us”)
           collects, uses, and protects your personal information when you visit
           or make a purchase from our website.
         </p>
 
-        <h2 className='mt-4 mb-3 text-xl font-semibold text-neutral-900'>
+        <h2 className='mt-4 mb-3 text-xl font-semibold text-shop-primary-text'>
           1. Information We Collect
         </h2>
         <p className='text-sm'>
@@ -42,7 +42,7 @@ export default function PrivacyPage() {
           </li>
         </ul>
 
-        <h2 className='mt-4 mb-3 text-xl font-semibold text-neutral-900'>
+        <h2 className='mt-4 mb-3 text-xl font-semibold text-shop-primary-text'>
           2. How We Use Your Information
         </h2>
         <p className='text-sm'>Your data may be used for:</p>
@@ -54,7 +54,7 @@ export default function PrivacyPage() {
           <li>Fraud prevention and platform security</li>
         </ul>
 
-        <h2 className='mt-4 mb-3 text-xl font-semibold text-neutral-900'>
+        <h2 className='mt-4 mb-3 text-xl font-semibold text-shop-primary-text'>
           3. Cookies & Tracking Technologies
         </h2>
         <p className='text-sm'>
@@ -63,7 +63,7 @@ export default function PrivacyPage() {
           You can modify cookie settings in your browser at any time.
         </p>
 
-        <h2 className='mt-4 mb-3 text-xl font-semibold text-neutral-900'>
+        <h2 className='mt-4 mb-3 text-xl font-semibold text-shop-primary-text'>
           4. Data Sharing
         </h2>
         <p className='text-sm'>
@@ -76,7 +76,7 @@ export default function PrivacyPage() {
           <li>Legal authorities when required by law</li>
         </ul>
 
-        <h2 className='mt-4 mb-3 text-xl font-semibold text-neutral-900'>
+        <h2 className='mt-4 mb-3 text-xl font-semibold text-shop-primary-text'>
           5. Data Protection & Security
         </h2>
         <p className='text-sm'>
@@ -85,7 +85,7 @@ export default function PrivacyPage() {
           is completely secure, and we cannot guarantee absolute protection.
         </p>
 
-        <h2 className='mt-4 mb-3 text-xl font-semibold text-neutral-900'>
+        <h2 className='mt-4 mb-3 text-xl font-semibold text-shop-primary-text'>
           6. Your Rights
         </h2>
         <p className='text-sm'>
@@ -98,7 +98,7 @@ export default function PrivacyPage() {
           <li>Withdraw consent at any time</li>
         </ul>
 
-        <h2 className='mt-4 mb-3 text-xl font-semibold text-neutral-900'>
+        <h2 className='mt-4 mb-3 text-xl font-semibold text-shop-primary-text'>
           7. International Data Transfers
         </h2>
         <p className='text-sm'>
@@ -106,7 +106,7 @@ export default function PrivacyPage() {
           transferred across jurisdictions with different data protection laws.
         </p>
 
-        <h2 className='mt-4 mb-3 text-xl font-semibold text-neutral-900'>
+        <h2 className='mt-4 mb-3 text-xl font-semibold text-shop-primary-text'>
           8. Updates to This Policy
         </h2>
         <p className='text-sm'>
@@ -114,7 +114,7 @@ export default function PrivacyPage() {
           effect upon publication on this page.
         </p>
 
-        <h2 className='mt-4 mb-3 text-xl font-semibold text-neutral-900'>
+        <h2 className='mt-4 mb-3 text-xl font-semibold text-shop-primary-text'>
           9. Contact Us
         </h2>
         <p className='text-sm'>

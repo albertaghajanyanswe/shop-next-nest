@@ -23,7 +23,7 @@ export function ContactUsTemplate({
   return (
     <GlobalTemplate
       children={
-        <Body className='bg-neutral-50 p-4 text-neutral-900'>
+        <Body className='bg-neutral-50 p-4 text-shop-primary-text'>
           <Preview>New message from {name}</Preview>
 
           <Container className='max-w-2xl mx-auto bg-shop-white rounded-md shadow-md'>
@@ -32,7 +32,7 @@ export function ContactUsTemplate({
                 <Heading className='mb-4 text-3xl font-bold'>
                   Contact Us
                 </Heading>
-                <p className='mb-8 text-neutral-600'>
+                <p className='mb-8 text-shop-muted-text-6'>
                   Thank you for reaching out to us. We have received your
                   message and will get back to you as soon as possible.
                 </p>

@@ -21,11 +21,11 @@ function HowItWorksSection({
 
         <Card>
           <CardContent className=''>
-            <ol className='list-inside list-decimal space-y-2 text-xs text-neutral-700 sm:space-y-4 sm:text-sm'>
+            <ol className='list-inside list-decimal space-y-2 text-xs text-shop-muted-text-7 sm:space-y-4 sm:text-sm'>
               {steps.map((step, index) => (
                 <li
                   key={index}
-                  className='text-xs leading-relaxed font-medium text-neutral-700 sm:text-sm'
+                  className='text-xs leading-relaxed font-medium text-shop-muted-text-7 sm:text-sm'
                 >
                   {step}
                 </li>

@@ -10,8 +10,10 @@ import { GetOrderItemsDetailsDto } from '@/generated/orval/types';
 import { useGetOrderItems } from '@/hooks/queries/orders/useGetOrderItems';
 import { OrderItemDetailsModal } from '@/components/modals/orderDetailsModal/OrderItemDetailsModal';
 import DataTableLoading from '@/components/ui/dataLoading/DataTableLoading';
+import { useTranslations } from 'next-intl';
 
 export default function SoldOrders() {
+  const t = useTranslations('DashboardSettings');
   const { user } = useProfile();
 
   const { queryParams, changePage, changeLimit, changeSearch, changeSort } =
@@ -83,14 +85,14 @@ export default function SoldOrders() {
     <>
       <div className=''>
         <div className='mb-4 flex items-center justify-between'>
-          <h1 className='text-2xl font-semibold'>Sold items</h1>
+          <h1 className='text-2xl font-semibold'>{t('sold_items_title')}</h1>
         </div>
         {isLoadingOrderItems ? (
           <DataTableLoading />
         ) : (
           <>
             <DataTable
-              columns={OrderItemColumns}
+              columns={OrderItemColumns(t)}
               data={formattedOrders}
               totalCount={orderItemsData?.totalCount as number}
               limit={queryParams?.params?.limit as number}

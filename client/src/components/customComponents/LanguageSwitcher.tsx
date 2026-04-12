@@ -19,7 +19,7 @@ export function LanguageSwitcher() {
     <div className="flex flex-col items-start gap-8">
       <ButtonGroup>
         <Button
-        disabled
+        // disabled
         variant={locale === 'ru' ? 'default' : 'outline'}
         onClick={() => switchLocale('ru')}
         className={`px-3 py-1 text-xs font-semibold rounded-sm transition-colors`}

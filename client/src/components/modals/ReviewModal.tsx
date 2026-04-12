@@ -20,6 +20,7 @@ import {
 import { Rating } from 'react-simple-star-rating';
 import { Textarea } from '../ui/Textarea';
 import { Button } from '../ui/Button';
+import { useTranslations } from 'next-intl';
 
 interface IReviewModal {
   storeId: string;
@@ -29,6 +30,7 @@ export function ReviewModal({
   children,
   storeId,
 }: PropsWithChildren<IReviewModal>) {
+  const t = useTranslations('Modals');
   const [isOpen, setIsOpen] = useState(false);
   const form = useForm<IReviewInput>({
     mode: 'onChange',
@@ -47,17 +49,15 @@ export function ReviewModal({
       <DialogTrigger asChild>{children}</DialogTrigger>
       <DialogContent>
         <DialogHeader>
-          <DialogTitle>Create Review</DialogTitle>
-          <DialogDescription>
-            Please leave a comment and rating for the product
-          </DialogDescription>
+          <DialogTitle>{t('review_title')}</DialogTitle>
+          <DialogDescription>{t('review_description')}</DialogDescription>
         </DialogHeader>
         <Form {...form}>
           <form className='space-y-4' onSubmit={form.handleSubmit(onSubmit)}>
             <FormField
               control={form.control}
               name='rating'
-              rules={{ required: 'Rating is required' }}
+              rules={{ required: t('review_rating_required') }}
               render={({ field }) => (
                 <FormItem>
                   <FormControl>
@@ -76,13 +76,13 @@ export function ReviewModal({
             <FormField
               control={form.control}
               name='text'
-              rules={{ required: 'Text is required' }}
+              rules={{ required: t('review_text_required') }}
               render={({ field }) => (
                 <FormItem>
                   <FormControl>
                     <Textarea
                       {...field}
-                      placeholder='Write your review here...'
+                      placeholder={t('review_placeholder')}
                       disabled={isLoadingCreate}
                     />
                   </FormControl>
@@ -92,7 +92,7 @@ export function ReviewModal({
             />
             <div className='flex justify-end'>
               <Button variant='default' disabled={isLoadingCreate}>
-                {isLoadingCreate ? 'Creating...' : 'Create Review'}
+                {isLoadingCreate ? t('review_btn_creating') : t('review_btn_create')}
               </Button>
             </div>
           </form>

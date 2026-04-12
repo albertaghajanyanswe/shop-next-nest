@@ -14,8 +14,10 @@ import { formateDate } from '@/utils/formateDate';
 import { IColorColumn } from '@/shared/types/color.interface';
 import { useQueryParams } from '@/hooks/commons/useQueryParams';
 import { CustomPagination } from '@/components/customComponents/CustomPagination';
+import { useTranslations } from 'next-intl';
 
 export function Colors() {
+  const t = useTranslations('StorePages');
   const params = useParams<{ storeId: string }>();
   const storeId = params.storeId;
 
@@ -46,6 +48,9 @@ export function Colors() {
         storeId: color.storeId as string,
       }))
     : [];
+
+  const colorColumnList = colorColumns(t);
+
   return (
     <div className='p-6'>
       {isLoadingColorsData ? (
@@ -53,14 +58,14 @@ export function Colors() {
       ) : (
         <div className='flex items-center justify-between'>
           <Heading
-            title={`Colors (${colorsData?.totalCount})`}
-            description='All colors from store'
+            title={`${t('colors_title')} (${colorsData?.totalCount})`}
+            description={t('colors_description')}
           />
           <div className='flex items-center gap-x-4'>
             <Link href={STORE_URL.colorCreate(storeId)}>
               <Button variant='default'>
                 <CirclePlus className='size-5' />
-                Create
+                {t('create')}
               </Button>
             </Link>
           </div>
@@ -68,7 +73,7 @@ export function Colors() {
       )}
       <div className='mt-3'>
         <DataTable
-          columns={colorColumns}
+          columns={colorColumnList}
           data={formattedColors}
           filterKey='name'
           totalCount={colorsData?.totalCount as number}

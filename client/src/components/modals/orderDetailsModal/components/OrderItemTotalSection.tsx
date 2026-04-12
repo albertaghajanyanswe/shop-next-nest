@@ -9,6 +9,7 @@ import { TotalSection } from './TotalSection';
 import { useDistributeFundsOrderItem } from '@/hooks/stripe/useDistributeFundsOrderItem';
 import { useRefundOrderItem } from '@/hooks/stripe/useRefundOrderItem';
 import { useUpdateOrderItem } from '@/hooks/queries/orders/useUpdateOrderItem';
+import { useTranslations } from 'next-intl';
 
 interface OrderItemTotalSectionProps {
   title: string;
@@ -28,6 +29,7 @@ const OrderItemTotalSectionComponent = ({
   showRefund,
   orderItemStatus,
 }: OrderItemTotalSectionProps) => {
+  const t = useTranslations('Modals');
   console.log('orderItemStatus = ', orderItemStatus);
   const { distributeFundsOrderItem, isLoadingDistributeFundsOrderItem } =
     useDistributeFundsOrderItem();
@@ -51,7 +53,7 @@ const OrderItemTotalSectionComponent = ({
             onClick={() => distributeFundsOrderItem(orderItemId)}
             variant='default'
           >
-            Confirm
+            {t('order_btn_confirm')}
           </Button>
         )}
         {isShowRefundBtn && (
@@ -60,7 +62,7 @@ const OrderItemTotalSectionComponent = ({
             onClick={() => refundOrderItem(orderItemId)}
             variant='outline'
           >
-            Refund
+            {t('order_btn_refund')}
           </Button>
         )}
         {/* {orderItemStatus && (

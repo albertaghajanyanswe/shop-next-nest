@@ -54,10 +54,10 @@ export function HeaderCart({ triggerBtnClass }: HeaderCartProps) {
       <SheetTrigger asChild>
         <Button
           variant='outline'
-          className={`${triggerBtnClass} icon-btn hover:text-shop-light-green hoverEffect group relative justify-center`}
+          className={`${triggerBtnClass} icon-btn hover:text-shop-light-primary hoverEffect group relative justify-center`}
         >
-          <ShoppingCartIcon className='text-shop-light-green' />
-          <span className='bg-shop-light-green absolute -top-1 -right-1 flex h-3.5 w-3.5 items-center justify-center rounded-full text-xs font-semibold text-white'>
+          <ShoppingCartIcon className='text-shop-light-primary' />
+          <span className='bg-shop-light-primary absolute -top-1 -right-1 flex h-3.5 w-3.5 items-center justify-center rounded-full text-xs font-semibold text-white'>
             {orderItems.length}
           </span>
         </Button>

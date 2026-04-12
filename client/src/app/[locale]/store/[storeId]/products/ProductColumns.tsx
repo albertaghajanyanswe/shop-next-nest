@@ -28,7 +28,9 @@ import Image from 'next/image';
 import Link from 'next/link';
 import toast from 'react-hot-toast';
 
-const ProductActionsCell = ({ row }: { row: IProductColumn }) => {
+type TF = (key: string) => string;
+
+const ProductActionsCell = ({ row, t }: { row: IProductColumn; t: TF }) => {
   const { createProduct, isLoadingCreate } = useCreateProduct();
   const { deleteProduct, isLoadingDelete } = useDeleteProduct();
 
@@ -40,26 +42,26 @@ const ProductActionsCell = ({ row }: { row: IProductColumn }) => {
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align='end'>
-        <DropdownMenuLabel>Action</DropdownMenuLabel>
+        <DropdownMenuLabel>{t('action')}</DropdownMenuLabel>
         <DropdownMenuItem
           onClick={async () => {
             await navigator.clipboard.writeText(row.id);
-            toast.success('Product ID copied to clipboard');
+            toast.success(t('product_id_copied'));
           }}
         >
           <Copy className='mr-2 size-4' />
-          Copy product ID
+          {t('copy_product_id')}
         </DropdownMenuItem>
         <Link href={PUBLIC_URL.product(row.id)} target='_blank'>
           <DropdownMenuItem>
             <ExternalLink className='mr-2 size-4' />
-            Product page
+            {t('product_page')}
           </DropdownMenuItem>
         </Link>
         <Link href={STORE_URL.productEdit(row.storeId, row.id)}>
           <DropdownMenuItem>
             <Pencil className='mr-2 size-4' />
-            Edit product
+            {t('edit_product')}
           </DropdownMenuItem>
         </Link>
         <Button
@@ -83,7 +85,7 @@ const ProductActionsCell = ({ row }: { row: IProductColumn }) => {
         >
           <DropdownMenuItem className='place-content-start'>
             <CopyPlus className='mr-2 size-4' />
-            Duplicate
+            {t('duplicate')}
           </DropdownMenuItem>
         </Button>
 
@@ -96,7 +98,7 @@ const ProductActionsCell = ({ row }: { row: IProductColumn }) => {
         >
           <DropdownMenuItem className='place-content-start'>
             <Trash2 className='mr-2 size-4' />
-            Delete
+            {t('delete')}
           </DropdownMenuItem>
         </Button>
       </DropdownMenuContent>
@@ -104,32 +106,28 @@ const ProductActionsCell = ({ row }: { row: IProductColumn }) => {
   );
 };
 
-export const productColumns: ColumnDef<IProductColumn>[] = [
+export const productColumns = (t: TF): ColumnDef<IProductColumn>[] => [
   {
     accessorKey: 'image',
     meta: {
       textClassName:
         'truncate overflow-hidden text-ellipsis whitespace-nowrap max-w-[80px]',
     },
-    header: ({ column }) => {
-      return (
-        <Button variant='ghost' className='p-0 pl-3'>
-          Image
-        </Button>
-      );
-    },
-    cell: ({ row }) => {
-      return (
-        <Image
-          src={generateImgPath(row.original.image as string)}
-          alt={row.original.title}
-          width={44}
-          height={44}
-          className='hoverEffect h-11 max-h-11 min-h-10 w-11 max-w-11 min-w-10 rounded-md object-contain group-hover:scale-110'
-          priority
-        />
-      );
-    },
+    header: () => (
+      <Button variant='ghost' className='p-0 pl-3'>
+        {t('col_image')}
+      </Button>
+    ),
+    cell: ({ row }) => (
+      <Image
+        src={generateImgPath(row.original.image as string)}
+        alt={row.original.title}
+        width={44}
+        height={44}
+        className='hoverEffect h-11 max-h-11 min-h-10 w-11 max-w-11 min-w-10 rounded-md object-contain group-hover:scale-110'
+        priority
+      />
+    ),
   },
   {
     accessorKey: 'id',
@@ -139,22 +137,17 @@ export const productColumns: ColumnDef<IProductColumn>[] = [
         'truncate overflow-hidden text-ellipsis whitespace-nowrap max-w-[80px]',
       sortField: 'id',
     },
-
-    header: ({ column }) => {
-      return (
-        <Button
-          className='p-0 has-[>svg]:px-0'
-          variant='ghost'
-          onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
-        >
-          ID
-          <ArrowUpDown className='ml-2 size-4' />
-        </Button>
-      );
-    },
-    cell: ({ row }) => {
-      return <p>{row.original.id.slice(-5)}</p>;
-    },
+    header: ({ column }) => (
+      <Button
+        className='p-0 has-[>svg]:px-0'
+        variant='ghost'
+        onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
+      >
+        ID
+        <ArrowUpDown className='ml-2 size-4' />
+      </Button>
+    ),
+    cell: ({ row }) => <p>{row.original.id.slice(-5)}</p>,
   },
   {
     accessorKey: 'title',
@@ -164,139 +157,117 @@ export const productColumns: ColumnDef<IProductColumn>[] = [
         'truncate overflow-hidden text-ellipsis whitespace-nowrap max-w-[100px] sm:max-w-[150px] xl:max-w-[200px]',
       sortField: 'title',
     },
-
-    header: ({ column }) => {
-      return (
-        <Button
-          className='p-0 has-[>svg]:px-0'
-          variant='ghost'
-          onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
-        >
-          Name
-          <ArrowUpDown className='ml-2 size-4' />
-        </Button>
-      );
-    },
+    header: ({ column }) => (
+      <Button
+        className='p-0 has-[>svg]:px-0'
+        variant='ghost'
+        onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
+      >
+        {t('col_name')}
+        <ArrowUpDown className='ml-2 size-4' />
+      </Button>
+    ),
   },
-
   {
     accessorKey: 'price',
     meta: {
       className: 'w-[10%]',
       textClassName:
-        'truncate overflow-hidden text-ellipsis whitespace-nowrap max-w-[80px]  place-items-center',
+        'truncate overflow-hidden text-ellipsis whitespace-nowrap max-w-[80px] place-items-center',
       sortField: 'price',
     },
-    header: ({ column }) => {
-      return (
-        <Button
-          variant='ghost'
-          onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
-          className='p-0 has-[>svg]:px-0'
-        >
-          Price
-          <ArrowUpDown className='ml-2 size-4' />
-        </Button>
-      );
-    },
-    cell: ({ row }) => {
-      return (
-        <p className='text-shop-light-green font-semibold'>
-          {formatPrice(row.original.price)}
-        </p>
-      );
-    },
+    header: ({ column }) => (
+      <Button
+        variant='ghost'
+        onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
+        className='p-0 has-[>svg]:px-0'
+      >
+        {t('col_price')}
+        <ArrowUpDown className='ml-2 size-4' />
+      </Button>
+    ),
+    cell: ({ row }) => (
+      <p className='text-shop-light-primary font-semibold'>
+        {formatPrice(row.original.price)}
+      </p>
+    ),
   },
-
   {
     accessorKey: 'quantity',
     meta: {
       className: 'w-[10%]',
       textClassName:
-        'truncate overflow-hidden text-ellipsis whitespace-nowrap max-w-[80px]  place-items-center',
+        'truncate overflow-hidden text-ellipsis whitespace-nowrap max-w-[80px] place-items-center',
       sortField: 'quantity',
     },
-    header: ({ column }) => {
-      return (
-        <Button
-          variant='ghost'
-          onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
-          className='p-0 has-[>svg]:px-0'
-        >
-          In stock
-          <ArrowUpDown className='ml-2 size-4' />
-        </Button>
-      );
-    },
-    cell: ({ row }) => {
-      return (
-        <p
-          className={`${row?.original?.quantity <= 0 ? 'font-semibold text-red-500' : ''}`}
-        >
-          {row.original.quantity}
-        </p>
-      );
-    },
+    header: ({ column }) => (
+      <Button
+        variant='ghost'
+        onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
+        className='p-0 has-[>svg]:px-0'
+      >
+        {t('col_in_stock')}
+        <ArrowUpDown className='ml-2 size-4' />
+      </Button>
+    ),
+    cell: ({ row }) => (
+      <p
+        className={`${row?.original?.quantity <= 0 ? 'font-semibold text-red-500' : ''}`}
+      >
+        {row.original.quantity}
+      </p>
+    ),
   },
-
   {
     accessorKey: 'isOriginal',
     meta: {
       className: 'w-[10%]',
       textClassName:
-        'truncate overflow-hidden text-ellipsis whitespace-nowrap max-w-[80px]  place-items-center',
+        'truncate overflow-hidden text-ellipsis whitespace-nowrap max-w-[80px] place-items-center',
       sortField: 'isOriginal',
     },
-    header: ({ column }) => {
-      return (
-        <Button
-          variant='ghost'
-          onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
-          className='p-0 has-[>svg]:px-0'
-        >
-          Original
-          <ArrowUpDown className='ml-2 size-4' />
-        </Button>
-      );
-    },
-    cell: ({ row }) => {
-      return row.original.isOriginal ? (
-        <CheckCircle className='text-shop-light-green size-5' />
+    header: ({ column }) => (
+      <Button
+        variant='ghost'
+        onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
+        className='p-0 has-[>svg]:px-0'
+      >
+        {t('col_original')}
+        <ArrowUpDown className='ml-2 size-4' />
+      </Button>
+    ),
+    cell: ({ row }) =>
+      row.original.isOriginal ? (
+        <CheckCircle className='text-shop-light-primary size-5' />
       ) : (
         <CircleX className='text-red-500' />
-      );
-    },
+      ),
   },
-
   {
     accessorKey: 'isPublished',
     meta: {
       className: 'w-[10%]',
       textClassName:
-        'truncate overflow-hidden text-ellipsis whitespace-nowrap max-w-[80px]  place-items-center',
+        'truncate overflow-hidden text-ellipsis whitespace-nowrap max-w-[80px] place-items-center',
       sortField: 'isPublished',
     },
-    header: ({ column }) => {
-      return (
-        <Button
-          variant='ghost'
-          onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
-          className='p-0 has-[>svg]:px-0'
-        >
-          Published
-          <ArrowUpDown className='ml-2 size-4' />
-        </Button>
-      );
-    },
-    cell: ({ row }) => {
-      return row.original.isPublished ? (
-        <CheckCircle className='text-shop-light-green size-5' />
+    header: ({ column }) => (
+      <Button
+        variant='ghost'
+        onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
+        className='p-0 has-[>svg]:px-0'
+      >
+        {t('col_published')}
+        <ArrowUpDown className='ml-2 size-4' />
+      </Button>
+    ),
+    cell: ({ row }) =>
+      row.original.isPublished ? (
+        <CheckCircle className='text-shop-light-primary size-5' />
       ) : (
         <CircleX className='text-red-500' />
-      );
-    },
+      ),
   },
-
   {
     accessorKey: 'category',
     meta: {
@@ -305,49 +276,21 @@ export const productColumns: ColumnDef<IProductColumn>[] = [
       textClassName:
         'truncate overflow-hidden text-ellipsis whitespace-nowrap max-w-[120px]',
     },
-    header: ({ column }) => {
-      return (
-        <Button
-          className='p-0 has-[>svg]:px-0'
-          variant='ghost'
-          onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
-        >
-          Category
-          <ArrowUpDown className='ml-2 size-4' />
-        </Button>
-      );
-    },
+    header: ({ column }) => (
+      <Button
+        className='p-0 has-[>svg]:px-0'
+        variant='ghost'
+        onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
+      >
+        {t('col_category')}
+        <ArrowUpDown className='ml-2 size-4' />
+      </Button>
+    ),
   },
-
-  // {
-  //   accessorKey: 'color',
-  //   meta: {
-  //     className: 'w-[10%]',
-  //     textClassName:
-  //       'truncate overflow-hidden text-ellipsis whitespace-nowrap max-w-[80px]',
-  //   },
-  //   header: ({ column }) => {
-  //     return (
-  //       <Button className='p-0' variant='ghost'>
-  //         Color
-  //       </Button>
-  //     );
-  //   },
-  //   cell: ({ row }) => {
-  //     return row.original.color ? (
-  //       <div
-  //         className='size-5 rounded-full border'
-  //         style={{ backgroundColor: row.original.color }}
-  //       />
-  //     ) : (
-  //       '-'
-  //     );
-  //   },
-  // },
   {
     accessorKey: 'actions',
     meta: { className: 'w-[5%]' },
-    header: 'Actions',
-    cell: ({ row }) => <ProductActionsCell row={row.original} />,
+    header: t('actions'),
+    cell: ({ row }) => <ProductActionsCell row={row.original} t={t} />,
   },
 ];

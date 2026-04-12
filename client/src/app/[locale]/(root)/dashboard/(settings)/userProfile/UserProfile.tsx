@@ -1,7 +1,5 @@
 'use client';
 
-import { StoreNoteBlock } from '@/components/customComponents/StoreNoteBlock';
-import { ConfirmModal } from '@/components/modals/ConfirmModal';
 import { Button } from '@/components/ui/Button';
 import {
   Form,
@@ -14,18 +12,13 @@ import {
 import { ImageUpload } from '@/components/ui/formElements/image-upload/ImageUpload';
 import { Input } from '@/components/ui/formElements/Input';
 import { Heading } from '@/components/ui/Heading';
-import { Textarea } from '@/components/ui/Textarea';
-import { DASHBOARD_URL } from '@/config/url.config';
 import { UpdateUserDto } from '@/generated/orval/types';
-import { useDeleteStore } from '@/hooks/queries/stores/useDeleteStore';
-import { useUpdateStore } from '@/hooks/queries/stores/useUpdateStore';
 import { useUpdateUser } from '@/hooks/queries/user/useUpdateUser';
-import { IUpdateStore } from '@/shared/types/store.interface';
-import { AlertTriangle, Trash2 } from 'lucide-react';
-import Link from 'next/link';
 import { SubmitHandler, useForm } from 'react-hook-form';
+import { useTranslations } from 'next-intl';
 
 export function UserProfile() {
+  const t = useTranslations('DashboardSettings');
   const { user, updateUser, isLoadingUpdate } = useUpdateUser();
 
   const form = useForm<UpdateUserDto>({
@@ -48,7 +41,7 @@ export function UserProfile() {
   return (
     <div className='p-6'>
       <div className='mb-8 flex items-center justify-between'>
-        <Heading title='Settings' description='Update user profile data.' />
+        <Heading title={t('profile_title')} description={t('profile_description')} />
       </div>
       <Form {...form}>
         <form
@@ -58,34 +51,32 @@ export function UserProfile() {
           <FormField
             control={form.control}
             name='picture'
-            rules={{ required: 'Upload at least one image' }}
-            render={({ field }) => {
-              return (
-                <FormItem className='mt-4'>
-                  <FormLabel>User Image</FormLabel>
-                  <FormControl>
-                    <ImageUpload
-                      isDisabled={isLoadingUpdate}
-                      onChange={field.onChange}
-                      value={field.value}
-                      multiple={false}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              );
-            }}
+            rules={{ required: t('form_user_image_required') }}
+            render={({ field }) => (
+              <FormItem className='mt-4'>
+                <FormLabel>{t('form_user_image')}</FormLabel>
+                <FormControl>
+                  <ImageUpload
+                    isDisabled={isLoadingUpdate}
+                    onChange={field.onChange}
+                    value={field.value}
+                    multiple={false}
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
           />
           <FormField
             control={form.control}
             name='name'
-            rules={{ required: 'User name is required' }}
+            rules={{ required: t('form_name_required') }}
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Name</FormLabel>
+                <FormLabel>{t('form_name')}</FormLabel>
                 <FormControl>
                   <Input
-                    placeholder='User name'
+                    placeholder={t('form_name_placeholder')}
                     disabled={isLoadingUpdate}
                     {...field}
                   />
@@ -101,10 +92,10 @@ export function UserProfile() {
               name='country'
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Country</FormLabel>
+                  <FormLabel>{t('form_country')}</FormLabel>
                   <FormControl>
                     <Input
-                      placeholder='User country'
+                      placeholder={t('form_country_placeholder')}
                       disabled={isLoadingUpdate}
                       {...field}
                     />
@@ -118,10 +109,10 @@ export function UserProfile() {
               name='city'
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>City</FormLabel>
+                  <FormLabel>{t('form_city')}</FormLabel>
                   <FormControl>
                     <Input
-                      placeholder='User city'
+                      placeholder={t('form_city_placeholder')}
                       disabled={isLoadingUpdate}
                       {...field}
                     />
@@ -137,10 +128,10 @@ export function UserProfile() {
               name='address'
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Address</FormLabel>
+                  <FormLabel>{t('form_address')}</FormLabel>
                   <FormControl>
                     <Input
-                      placeholder='User address'
+                      placeholder={t('form_address_placeholder')}
                       disabled={isLoadingUpdate}
                       {...field}
                     />
@@ -154,10 +145,10 @@ export function UserProfile() {
               name='phone'
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Phone number</FormLabel>
+                  <FormLabel>{t('form_phone')}</FormLabel>
                   <FormControl>
                     <Input
-                      placeholder='User phone'
+                      placeholder={t('form_phone_placeholder')}
                       disabled={isLoadingUpdate}
                       {...field}
                     />
@@ -170,13 +161,12 @@ export function UserProfile() {
             <FormField
               control={form.control}
               name='postalCode'
-              // rules={{ required: 'User postal code is required' }}
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Postal code</FormLabel>
+                  <FormLabel>{t('form_postal_code')}</FormLabel>
                   <FormControl>
                     <Input
-                      placeholder='User postal code'
+                      placeholder={t('form_postal_code_placeholder')}
                       disabled={isLoadingUpdate}
                       {...field}
                     />
@@ -188,7 +178,7 @@ export function UserProfile() {
           </div>
 
           <Button variant='default' disabled={isLoadingUpdate || !isFormDirty}>
-            Save changes
+            {t('save_changes')}
           </Button>
         </form>
       </Form>

@@ -32,7 +32,7 @@ function ProductCardInfoUnMemo({
             key={index}
             aria-label={`Go to slide ${index + 1}`}
             className={`h-2 w-2 cursor-pointer rounded-full p-[2px] transition ${
-              activeIndex === index ? 'bg-black' : 'bg-neutral-300'
+              activeIndex === index ? 'bg-shop-primary-text' : 'bg-neutral-500'
             }`}
           />
         ))}
@@ -45,7 +45,7 @@ function ProductCardInfoUnMemo({
       </p>
       <div className='flex flex-col'>
         {isShopPage ? (
-          <p className='text-shop-light-green xs:block hidden text-xs sm:text-sm'>
+          <p className='text-shop-light-primary xs:block hidden text-xs sm:text-sm'>
             {product.store?.title}
           </p>
         ) : (
@@ -56,14 +56,14 @@ function ProductCardInfoUnMemo({
                 { skipNulls: true }
               )
             )}
-            className='text-shop-light-green xs:block hidden text-xs hover:underline sm:text-sm'
+            className='text-shop-light-primary xs:block hidden text-xs hover:underline sm:text-sm'
             aria-label='Go to shop'
           >
             {product.store?.title}
           </Link>
         )}
         {isShopPage ? (
-          <p className='text-shop-light-green xs:block hidden text-xs sm:text-sm'>
+          <p className='text-shop-light-primary xs:block hidden text-xs sm:text-sm'>
             {product.category?.name}
           </p>
         ) : (
@@ -74,7 +74,7 @@ function ProductCardInfoUnMemo({
                 { skipNulls: true }
               )
             )}
-            className='text-shop-light-green xs:block hidden text-xs hover:underline sm:text-sm'
+            className='text-shop-light-primary xs:block hidden text-xs hover:underline sm:text-sm'
             aria-label='Go to shop'
           >
             {product.category?.name}
@@ -87,7 +87,7 @@ function ProductCardInfoUnMemo({
           {formatPrice(product.price)}
         </span>
         {product.oldPrice && product.oldPrice !== product.price && (
-          <span className='ml-2 font-semibold text-neutral-700 line-through'>
+          <span className='ml-2 font-semibold text-shop-muted-text-7 line-through'>
             {formatPrice(product.oldPrice)}
           </span>
         )}
