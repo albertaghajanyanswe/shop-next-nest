@@ -61,7 +61,7 @@ export default function ProductInfo({ product }: ProductInfoProps) {
       itemType='https://schema.org/Product'
       className='relative flex w-full flex-col gap-3'
     >
-      <div className='relative flex w-full flex-col gap-3 md:rounded-md md:border md:border-neutral-100 md:p-6'>
+      <div className='relative flex w-full flex-col gap-3 md:rounded-md md:border md:border-neutral-100 dark:md:border-shop-bg-light dark:border-dark-3 md:p-6'>
         <div className='space-y-2'>
           <div className='flex flex-row gap-2'>
             {product.isOriginal && (

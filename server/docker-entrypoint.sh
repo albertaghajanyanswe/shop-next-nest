@@ -43,8 +43,11 @@ echo "PostgreSQL is ready!"
 echo "Generating Prisma client..."
 npx prisma generate
 
-echo "Running Prisma db push..."
-npx prisma db push
+# echo "Running Prisma db push..."
+# npx prisma db push
+
+echo "Running Prisma migrate deploy..."
+npx prisma migrate deploy
 
 # Генерируем Prisma client
 

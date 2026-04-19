@@ -22,7 +22,7 @@ export function CustomTabs({
   tabs,
   defaultValue,
   className = 'w-full',
-  listClassName = 'flex h-12 space-x-1 rounded-md bg-red-500/10 p-1',
+  listClassName = 'flex h-12 space-x-1 rounded-md bg-red-500/10 dark:bg-red-400 p-1',
   triggerClassName = 'h-full w-full text-shop-primary-text',
   contentClassName = '',
 }: CustomTabsProps) {

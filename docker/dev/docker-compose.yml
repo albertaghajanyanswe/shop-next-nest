@@ -59,6 +59,9 @@ services:
 
   server:
     container_name: shop-backend
+    #TODO: uncomment entrypoint to not rerun the server if fails and be able to run commands in the container
+    #!Comment this for production
+    # entrypoint: ["tail", "-f", "/dev/null"]
     restart: always
     build:
       context: ../../server

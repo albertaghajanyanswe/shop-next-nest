@@ -29,7 +29,7 @@ export function CreateStoreModal({
   disabledTrigger = false,
 }: PropsWithChildren<unknown> & {
   disabledTrigger?: boolean;
-  setCurrentStore: (store: GetStoreDto) => void;
+  setCurrentStore?: (store: GetStoreDto) => void;
 }) {
   const [isOpen, setIsOpen] = useState(false);
   const t = useTranslations('CreateStoreModal');
@@ -44,7 +44,7 @@ export function CreateStoreModal({
 
   const onSubmit: SubmitHandler<ICreateStore> = async (data: ICreateStore) => {
     const res = await createStore(data);
-    if (res.id) {
+    if (res.id && setCurrentStore && typeof setCurrentStore === 'function') {
       setCurrentStore(res);
     }
     setIsOpen(false);

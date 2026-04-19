@@ -16,7 +16,7 @@ import Link from 'next/link';
 import { useProfile } from '@/hooks/useProfile';
 import { CreateStoreModal } from '@/components/modals/CreateStoreModal';
 import { HeaderCart } from './headerCart/HeaderCart';
-import { usePathname, useRouter } from 'next/navigation';
+import { usePathname, useRouter } from '@/i18n/routing';
 import { HeaderNavLink } from './headerMenuComponents/HeaderNavLink';
 import { HeaderNavLinkBtn } from './headerMenuComponents/HeaderNavLinkBtn';
 import { HeaderNavLinkUserAvatar } from './headerMenuComponents/HeaderNavLinkUserAvatar';

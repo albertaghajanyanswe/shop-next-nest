@@ -26,7 +26,7 @@ export default function Auth() {
   return (
     <div className='grid min-h-screen grid-cols-1 p-0 lg:grid-cols-2'>
       <div
-        className={`bg-shop-white from-primary-100 to-primary-400 dark:from-primary-200 dark:to-primary-600 relative hidden flex-col items-center justify-center overflow-hidden border-none bg-linear-to-r p-6 text-neutral-700 shadow-none lg:flex`}
+        className={`bg-shop-white from-primary-100 to-primary-400 dark:from-primary-100 dark:to-primary-400 relative hidden flex-col items-center justify-center overflow-hidden border-none bg-linear-to-r p-6 text-neutral-700 shadow-none lg:flex`}
       >
         <h1 className='max-w-[80%] text-center text-3xl'>
           Your smart shopping starts here...
