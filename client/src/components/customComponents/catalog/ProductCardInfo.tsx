@@ -25,14 +25,16 @@ function ProductCardInfoUnMemo({
 
   return (
     <>
-      <div className='mt-0 flex justify-center gap-2'>
+      <div className='flex justify-center gap-1.5'>
         {product.images.map((_, index) => (
           <button
             onClick={() => carouselApi?.scrollTo(index)}
             key={index}
             aria-label={`Go to slide ${index + 1}`}
-            className={`h-2 w-2 cursor-pointer rounded-full p-[2px] transition ${
-              activeIndex === index ? 'bg-shop-primary-text' : 'bg-neutral-500'
+            className={`h-1.5 w-1.5 cursor-pointer rounded-full transition-all ${
+              activeIndex === index
+                ? 'w-3 bg-shop-primary-text'
+                : 'bg-neutral-400'
             }`}
           />
         ))}
