@@ -8,7 +8,7 @@ interface ProductInfoItemProps {
 }
 function ProductInfoItem({ leftText, rightText, link }: ProductInfoItemProps) {
   return (
-    <div className='flex items-baseline justify-between border-b border-neutral-200 dark:border-shop-bg-light pb-3 last:border-0'>
+    <div className='dark:border-shop-bg-light flex items-baseline justify-between border-b border-neutral-200 pb-3 last:border-0'>
       <dt className='text-shop-muted-text-7 text-sm font-semibold'>
         {leftText}
       </dt>

@@ -13,6 +13,8 @@ import {
 } from './config';
 import QueryString from 'qs';
 import { getTranslations } from 'next-intl/server';
+import { LanguageSwitcher } from '@/components/customComponents/LanguageSwitcher';
+import { ThemeSwitcher } from '@/components/customComponents/ThemeSwitcher';
 
 export const revalidate = 300;
 
@@ -70,6 +72,10 @@ export default async function Footer() {
                   <soc.Icon className='hoverEffect text-shop-primary group-hover:border-shop-primary h-8 w-8 cursor-pointer rounded-full border p-1 group-hover:scale-110' />
                 </div>
               ))}
+            </div>
+            <div className='mt-6 flex flex-col items-center space-y-4'>
+              <LanguageSwitcher />
+              <ThemeSwitcher />
             </div>
           </div>
 

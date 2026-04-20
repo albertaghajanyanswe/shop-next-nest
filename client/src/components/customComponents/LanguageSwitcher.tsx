@@ -19,19 +19,19 @@ export function LanguageSwitcher() {
     <div className='flex flex-col items-start gap-8'>
       <ButtonGroup>
         <Button
+          variant={locale === 'en' ? 'default' : 'outline'}
+          onClick={() => switchLocale('en')}
+          className={`w-12 rounded-sm px-3 py-1 text-xs font-semibold transition-colors`}
+        >
+          EN
+        </Button>
+        <Button
           // disabled
           variant={locale === 'ru' ? 'default' : 'outline'}
           onClick={() => switchLocale('ru')}
-          className={`rounded-sm px-3 py-1 text-xs font-semibold transition-colors`}
+          className={`w-12 rounded-sm px-3 py-1 text-xs font-semibold transition-colors`}
         >
           RU
-        </Button>
-        <Button
-          variant={locale === 'en' ? 'default' : 'outline'}
-          onClick={() => switchLocale('en')}
-          className={`rounded-sm px-3 py-1 text-xs font-semibold transition-colors`}
-        >
-          EN
         </Button>
       </ButtonGroup>
     </div>
