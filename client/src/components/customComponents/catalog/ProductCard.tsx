@@ -102,13 +102,13 @@ function ProductCard({ product }: ProductCardProps) {
           />
         </div>
 
-        {/* <div className='xs:gap-x-2 mt-auto flex items-start gap-x-1'>
+        <div className='xs:gap-x-2 mt-auto flex items-start gap-x-1'>
           {isProductInCard ? (
             <CartActions orderItem={isProductInCard} />
           ) : (
             <AddToCardButton product={product} className='flex-10' />
           )}
-        </div> */}
+        </div>
       </div>
 
       {/* Favorite */}
