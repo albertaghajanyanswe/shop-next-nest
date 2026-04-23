@@ -1,5 +1,6 @@
 'use client';
 
+import { useViewMode } from '@/components/customComponents/admin/useViewMode';
 import { Button } from '@/components/ui/Button';
 import { DataTable } from '@/components/ui/dataLoading/DataTable';
 import DataTableLoading from '@/components/ui/dataLoading/DataTableLoading';
@@ -16,12 +17,15 @@ import { useProfile } from '@/hooks/useProfile';
 import { useQueryParams } from '@/hooks/commons/useQueryParams';
 import { CustomPagination } from '@/components/customComponents/CustomPagination';
 import { useTranslations } from 'next-intl';
+import { ViewToggle } from '@/components/customComponents/admin/ViewToggle';
+import { AdminBrandCard } from './AdminBrandCard';
 
 export function Brands() {
   const t = useTranslations('StorePages');
   const params = useParams<{ storeId: string }>();
   const storeId = params.storeId;
   const { user } = useProfile();
+  const [viewMode, setViewMode] = useViewMode('brands');
 
   const { queryParams, changePage, changeLimit, changeSearch, changeSort } =
     useQueryParams({
@@ -56,6 +60,7 @@ export function Brands() {
       : [];
 
   const brandColumnsList = brandColumns(storeId, t);
+
   return (
     <div className='p-6'>
       {isLoadingBrandsData ? (
@@ -66,7 +71,8 @@ export function Brands() {
             title={`${t('brands_title')} (${brandsData?.totalCount})`}
             description={t('brands_description')}
           />
-          <div className='flex items-center gap-x-4'>
+          <div className='flex items-center gap-x-3'>
+            <ViewToggle viewMode={viewMode} onToggle={setViewMode} />
             <Link href={STORE_URL.brandCreate(storeId)}>
               <Button variant='default'>
                 <CirclePlus className='size-5' />
@@ -77,15 +83,23 @@ export function Brands() {
         </div>
       )}
       <div className='mt-3'>
-        <DataTable
-          columns={brandColumnsList}
-          data={formattedBrands}
-          filterKey='name'
-          totalCount={brandsData?.totalCount as number}
-          queryParams={queryParams}
-          onChangeSearch={changeSearch}
-          onChangeSort={changeSort}
-        />
+        {viewMode === 'card' ? (
+          <div className='mt-4 grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5'>
+            {formattedBrands.map((brand) => (
+              <AdminBrandCard key={brand.id} brand={brand} storeId={storeId} t={t} />
+            ))}
+          </div>
+        ) : (
+          <DataTable
+            columns={brandColumnsList}
+            data={formattedBrands}
+            filterKey='name'
+            totalCount={brandsData?.totalCount as number}
+            queryParams={queryParams}
+            onChangeSearch={changeSearch}
+            onChangeSort={changeSort}
+          />
+        )}
         {!!brandsData?.totalCount && (
           <CustomPagination
             limit={queryParams?.params?.limit as number}

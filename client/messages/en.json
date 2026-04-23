@@ -212,7 +212,11 @@
     "form_description_placeholder": "Store description",
     "save_changes": "Save changes",
     "loading": "Loading...",
-    "main_statistics": "main statistics"
+    "main_statistics": "main statistics",
+    "published": "Published",
+    "draft": "Draft",
+    "out_of_stock": "Out of stock",
+    "in_stock": "In stock"
   },
   "DashboardSettings": {
     "manage_orders_title": "Manage all orders",

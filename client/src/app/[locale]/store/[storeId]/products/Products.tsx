@@ -1,5 +1,6 @@
 'use client';
 
+import { useViewMode } from '@/components/customComponents/admin/useViewMode';
 import { Button } from '@/components/ui/Button';
 import { DataTable } from '@/components/ui/dataLoading/DataTable';
 import DataTableLoading from '@/components/ui/dataLoading/DataTableLoading';
@@ -13,11 +14,14 @@ import { productColumns } from './ProductColumns';
 import { useQueryParams } from '@/hooks/commons/useQueryParams';
 import { CustomPagination } from '@/components/customComponents/CustomPagination';
 import { useTranslations } from 'next-intl';
+import { ViewToggle } from '@/components/customComponents/admin/ViewToggle';
+import { AdminProductCard } from './AdminProductCard';
 
 export function Products() {
   const t = useTranslations('StorePages');
   const params = useParams<{ storeId: string }>();
   const storeId = params.storeId;
+  const [viewMode, setViewMode] = useViewMode('products');
 
   const { queryParams, changePage, changeLimit, changeSearch, changeSort } =
     useQueryParams({
@@ -71,7 +75,8 @@ export function Products() {
             title={`${t('products_title')} (${productsData?.totalCount})`}
             description={t('products_description')}
           />
-          <div className='flex items-center gap-x-4'>
+          <div className='flex items-center gap-x-3'>
+            <ViewToggle viewMode={viewMode} onToggle={setViewMode} />
             <Link href={STORE_URL.productCreate(storeId)}>
               <Button variant='default'>
                 <CirclePlus className='size-5' />
@@ -82,15 +87,23 @@ export function Products() {
         </div>
       )}
       <div className='w-full'>
-        <DataTable
-          columns={productColumnList}
-          data={formattedProducts}
-          filterKey='title'
-          totalCount={productsData?.totalCount as number}
-          queryParams={queryParams}
-          onChangeSearch={changeSearch}
-          onChangeSort={changeSort}
-        />
+        {viewMode === 'card' ? (
+          <div className='mt-4 grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5'>
+            {formattedProducts.map((product) => (
+              <AdminProductCard key={product.id} product={product} t={t} />
+            ))}
+          </div>
+        ) : (
+          <DataTable
+            columns={productColumnList}
+            data={formattedProducts}
+            filterKey='title'
+            totalCount={productsData?.totalCount as number}
+            queryParams={queryParams}
+            onChangeSearch={changeSearch}
+            onChangeSort={changeSort}
+          />
+        )}
         {!!productsData?.totalCount && (
           <CustomPagination
             limit={queryParams?.params?.limit as number}

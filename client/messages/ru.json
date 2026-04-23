@@ -212,7 +212,11 @@
     "form_description_placeholder": "Описание магазина",
     "save_changes": "Сохранить изменения",
     "loading": "Загрузка...",
-    "main_statistics": "статистика"
+    "main_statistics": "статистика",
+    "published": "Опубликован",
+    "draft": "Черновик",
+    "out_of_stock": "Нет в наличии",
+    "in_stock": "В наличии"
   },
   "DashboardSettings": {
     "manage_orders_title": "Управление заказами",
