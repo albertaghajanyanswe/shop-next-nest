@@ -2,7 +2,24 @@
 
 import React from 'react';
 import { GetOrderWithItemsDto } from '@/generated/orval/types';
-import { OrderDetailsModalContent } from '../../modals/orderDetailsModal/OrderDetailsModalContent';
+import { formatDateWithHour } from '@/utils/formateDate';
+import { STATUS_COLOR } from '@/utils/colorUtils';
+import { formatPrice } from '@/utils/formatPrice';
+import { useProfile } from '@/hooks/useProfile';
+import { useTranslations } from 'next-intl';
+import Image from 'next/image';
+import {
+  categoryImgBlurParams,
+  categoryImgParams,
+  generateImgPath,
+} from '@/utils/imageUtils';
+import { Button } from '@/components/ui/Button';
+import { CircleDollarSignIcon, RotateCcw, Package, User, Mail, Calendar, Hash, ShoppingBag } from 'lucide-react';
+import { useDistributeFundsOrder } from '@/hooks/stripe/useDistributeFundsOrder';
+import { useRefundOrder } from '@/hooks/stripe/useRefundOrder';
+import { useDistributeFundsOrderItem } from '@/hooks/stripe/useDistributeFundsOrderItem';
+import { useRefundOrderItem } from '@/hooks/stripe/useRefundOrderItem';
+import { GetOrderItemsWithUserDtoStatus } from '@/generated/orval/types';
 
 interface AdminOrderCardProps {
   order: GetOrderWithItemsDto;
@@ -15,13 +32,211 @@ export function AdminOrderCard({
   showConfirm = false,
   showRefund = false,
 }: AdminOrderCardProps) {
+  const { user } = useProfile();
+  const t = useTranslations('Modals');
+  const dashT = useTranslations('DashboardSettings');
+
+  const { distributeFundsOrder, isLoadingDistributeFundsOrder } = useDistributeFundsOrder();
+  const { refundOrder, isLoadingRefundOrder } = useRefundOrder();
+  const { distributeFundsOrderItem, isLoadingDistributeFundsOrderItem } = useDistributeFundsOrderItem();
+  const { refundOrderItem, isLoadingRefundOrderItem } = useRefundOrderItem();
+
+  const isShowRefundBtn = user?.role === 'SUPER_ADMIN' && order.id && showRefund;
+  const isShowConfirmBtn = user?.role === 'SUPER_ADMIN' && order.id && showConfirm;
+
   return (
-    <div className='rounded-xl border bg-card p-4 shadow-sm transition-all hover:shadow-md'>
-      <OrderDetailsModalContent
-        order={order}
-        showConfirm={showConfirm}
-        showRefund={showRefund}
-      />
+    <div className='rounded-xl border bg-card shadow-sm transition-all hover:shadow-md overflow-hidden'>
+      {/* Header Section */}
+      <div className='bg-shop-green-hover p-4 border-b'>
+        <div className='flex flex-wrap items-start justify-between gap-4'>
+          <div className='space-y-2 flex-1 min-w-0'>
+            <div className='flex items-center gap-2 flex-wrap'>
+              <Hash className='h-4 w-4 text-muted-foreground flex-shrink-0' />
+              <span className='text-sm font-medium text-muted-foreground'>{t('order_info_id')}:</span>
+              <span className='text-sm font-mono break-all'>{order.id}</span>
+            </div>
+            <div className='flex items-center gap-2'>
+              <Package className='h-4 w-4 text-muted-foreground flex-shrink-0' />
+              <span className='text-sm font-medium text-muted-foreground'>{t('order_info_type')}:</span>
+              <span className='text-sm'>{order.subscriptionId ? dashT('type_subscription') : dashT('type_product')}</span>
+            </div>
+          </div>
+          <div className='flex items-center gap-2'>
+            <span className={`px-3 py-1 rounded-full text-sm font-semibold ${STATUS_COLOR[order.status]}`}>
+              {order.status}
+            </span>
+          </div>
+        </div>
+      </div>
+
+      {/* Customer Info Section */}
+      <div className='p-4 bg-muted/30 border-b'>
+        <div className='grid grid-cols-1 sm:grid-cols-2 gap-3'>
+          <div className='flex items-center gap-2'>
+            <User className='h-4 w-4 text-muted-foreground flex-shrink-0' />
+            <div className='min-w-0 flex-1'>
+              <p className='text-xs text-muted-foreground'>{t('order_info_customer')}</p>
+              <p className='text-sm font-medium truncate'>{order.user.name}</p>
+            </div>
+          </div>
+          <div className='flex items-center gap-2'>
+            <Mail className='h-4 w-4 text-muted-foreground flex-shrink-0' />
+            <div className='min-w-0 flex-1'>
+              <p className='text-xs text-muted-foreground'>{t('order_info_email')}</p>
+              <p className='text-sm font-medium truncate'>{order.user.email}</p>
+            </div>
+          </div>
+          <div className='flex items-center gap-2'>
+            <Calendar className='h-4 w-4 text-muted-foreground flex-shrink-0' />
+            <div className='min-w-0 flex-1'>
+              <p className='text-xs text-muted-foreground'>{t('order_info_date')}</p>
+              <p className='text-sm font-medium'>{formatDateWithHour(order.createdAt as string)}</p>
+            </div>
+          </div>
+          <div className='flex items-center gap-2'>
+            <ShoppingBag className='h-4 w-4 text-muted-foreground flex-shrink-0' />
+            <div className='min-w-0 flex-1'>
+              <p className='text-xs text-muted-foreground'>{t('order_items_title')}</p>
+              <p className='text-sm font-medium'>{order.orderItems.length} {order.orderItems.length === 1 ? 'item' : 'items'}</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Order Items Section */}
+      <div className='p-4'>
+        <h3 className='text-sm font-semibold mb-3'>{t('order_items_title')}</h3>
+        <div className='space-y-3 max-h-[400px] overflow-y-auto pr-2'>
+          {order.orderItems.map((item) => (
+            <div
+              key={item.id}
+              className='border rounded-lg p-3 bg-shop-green-hover/50 hover:bg-shop-green-hover transition-colors'
+            >
+              <div className='flex gap-3'>
+                <div className='relative h-16 w-16 flex-shrink-0 rounded-md overflow-hidden bg-background'>
+                  <Image
+                    src={generateImgPath(item.cachedProductImages[0], categoryImgParams)}
+                    alt={item.cachedProductTitle as string}
+                    width={64}
+                    height={64}
+                    {...(generateImgPath(item.cachedProductImages[0], categoryImgBlurParams) && {
+                      placeholder: 'blur',
+                      blurDataURL: generateImgPath(item.cachedProductImages[0], categoryImgBlurParams),
+                    })}
+                    className='object-cover h-full w-full'
+                  />
+                </div>
+                <div className='flex-1 min-w-0 space-y-2'>
+                  <p className='text-sm font-medium line-clamp-2'>{item.cachedProductTitle}</p>
+                  <div className='flex flex-wrap gap-x-4 gap-y-1 text-xs text-muted-foreground'>
+                    <span>{t('order_col_user')}: {item.user.email}</span>
+                    <span>{t('order_col_quantity')}: {item.quantity}</span>
+                    <span className='text-shop-red font-semibold'>${item.price.toFixed(2)}</span>
+                  </div>
+                  <div className='space-y-1 text-xs'>
+                    <div className='flex justify-between'>
+                      <span className='text-muted-foreground'>{t('order_item_id')}:</span>
+                      <span className='font-mono text-xs break-all ml-2'>{item.id}</span>
+                    </div>
+                    <div className='flex justify-between'>
+                      <span className='text-muted-foreground'>{t('order_product_id')}:</span>
+                      <span className='font-mono text-xs break-all ml-2'>{item.productId}</span>
+                    </div>
+                    <div className='flex justify-between'>
+                      <span className='text-muted-foreground'>{t('order_store_id')}:</span>
+                      <span className='font-mono text-xs break-all ml-2'>{item.storeId}</span>
+                    </div>
+                  </div>
+                  {(showConfirm || showRefund) && (
+                    <div className='flex gap-2 pt-2'>
+                      {showConfirm && (
+                        <Button
+                          disabled={
+                            isLoadingDistributeFundsOrderItem ||
+                            item.status === GetOrderItemsWithUserDtoStatus.CONFIRMED
+                          }
+                          onClick={() => {
+                            if (item.status !== GetOrderItemsWithUserDtoStatus.CONFIRMED) {
+                              distributeFundsOrderItem(item.id);
+                            }
+                          }}
+                          variant='outline'
+                          size='sm'
+                          className='text-xs'
+                        >
+                          <CircleDollarSignIcon className='h-3 w-3' />
+                          {item.status === GetOrderItemsWithUserDtoStatus.CONFIRMED
+                            ? t('order_btn_confirmed')
+                            : t('order_btn_confirm')}
+                        </Button>
+                      )}
+                      {showRefund && (
+                        <Button
+                          disabled={
+                            isLoadingRefundOrderItem ||
+                            item.status === GetOrderItemsWithUserDtoStatus.REFUNDED ||
+                            item.status === GetOrderItemsWithUserDtoStatus.CONFIRMED
+                          }
+                          onClick={() => {
+                            if (
+                              item.status !== GetOrderItemsWithUserDtoStatus.REFUNDED &&
+                              item.status !== GetOrderItemsWithUserDtoStatus.CONFIRMED
+                            ) {
+                              refundOrderItem(item.id);
+                            }
+                          }}
+                          variant='outline'
+                          size='sm'
+                          className='text-xs'
+                        >
+                          <RotateCcw className='h-3 w-3' />
+                          {item.status === GetOrderItemsWithUserDtoStatus.REFUNDED
+                            ? t('order_btn_refunded')
+                            : t('order_btn_refund')}
+                        </Button>
+                      )}
+                    </div>
+                  )}
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* Total Section */}
+      <div className='border-t p-4 bg-muted/20'>
+        <div className='flex items-center justify-between flex-wrap gap-4'>
+          <div className='flex gap-2'>
+            {isShowConfirmBtn && (
+              <Button
+                disabled={isLoadingDistributeFundsOrder}
+                onClick={() => distributeFundsOrder(order.id)}
+                variant='default'
+                size='sm'
+              >
+                <CircleDollarSignIcon className='h-4 w-4' />
+                {t('order_btn_confirm')}
+              </Button>
+            )}
+            {isShowRefundBtn && (
+              <Button
+                disabled={isLoadingRefundOrder}
+                onClick={() => refundOrder(order.id)}
+                variant='outline'
+                size='sm'
+              >
+                <RotateCcw className='h-4 w-4' />
+                {t('order_btn_refund_order')}
+              </Button>
+            )}
+          </div>
+          <div className='text-right'>
+            <p className='text-sm text-muted-foreground'>{t('order_total')}</p>
+            <p className='text-2xl font-bold text-shop-red'>{formatPrice(order.totalPrice)}</p>
+          </div>
+        </div>
+      </div>
     </div>
   );
 }
