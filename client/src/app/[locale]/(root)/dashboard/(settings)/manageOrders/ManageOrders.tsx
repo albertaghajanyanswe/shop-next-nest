@@ -14,10 +14,14 @@ import DataTableLoading from '@/components/ui/dataLoading/DataTableLoading';
 import { OrderDetailsModal } from '@/components/modals/orderDetailsModal/OrderDetailsModal';
 import { useGetAllOrders } from '@/hooks/queries/orders/useGetAllOrder';
 import { useTranslations } from 'next-intl';
+import { ViewToggle } from '@/components/customComponents/admin/ViewToggle';
+import { useViewMode } from '@/components/customComponents/admin/useViewMode';
+import { AdminOrderCard } from '@/components/customComponents/admin/AdminOrderCard';
 
 export default function ManageOrders() {
   const t = useTranslations('DashboardSettings');
   const { user } = useProfile();
+  const [viewMode, setViewMode] = useViewMode('manageOrders');
 
   const { queryParams, changePage, changeLimit, changeSearch, changeSort } =
     useQueryParams({
@@ -85,24 +89,38 @@ export default function ManageOrders() {
       <div className=''>
         <div className='mb-4 flex items-center justify-between'>
           <h1 className='text-2xl font-semibold'>{t('manage_orders_title')}</h1>
+          <ViewToggle viewMode={viewMode} onToggle={setViewMode} />
         </div>
         {isLoadingOrdersData ? (
           <DataTableLoading />
         ) : (
           <>
-            <DataTable
-              data={formattedOrders}
-              columns={orderColumns(t)}
-              totalCount={ordersData?.totalCount as number}
-              limit={queryParams?.params?.limit as number}
-              skip={queryParams?.params?.skip as number}
-              onPageChange={changePage}
-              onLimitChange={changeLimit}
-              queryParams={queryParams}
-              onChangeSearch={changeSearch}
-              onChangeSort={changeSort}
-              onRowClick={handleRowClick}
-            />
+            {viewMode === 'table' ? (
+              <DataTable
+                data={formattedOrders}
+                columns={orderColumns(t)}
+                totalCount={ordersData?.totalCount as number}
+                limit={queryParams?.params?.limit as number}
+                skip={queryParams?.params?.skip as number}
+                onPageChange={changePage}
+                onLimitChange={changeLimit}
+                queryParams={queryParams}
+                onChangeSearch={changeSearch}
+                onChangeSort={changeSort}
+                onRowClick={handleRowClick}
+              />
+            ) : (
+              <div className='mt-4 grid grid-cols-1 gap-3 xl:grid-cols-2'>
+                {ordersData?.orders?.map((order) => (
+                  <AdminOrderCard
+                    key={order.id}
+                    order={order}
+                    showConfirm={order.status === GetOrderDtoStatus.SUCCEEDED}
+                    showRefund={order.status === GetOrderDtoStatus.SUCCEEDED}
+                  />
+                ))}
+              </div>
+            )}
             {!!ordersData?.totalCount && (
               <CustomPagination
                 limit={queryParams?.params?.limit as number}
@@ -132,3 +150,4 @@ export default function ManageOrders() {
     </>
   );
 }
+

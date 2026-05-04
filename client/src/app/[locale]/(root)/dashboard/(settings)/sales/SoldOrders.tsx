@@ -11,10 +11,14 @@ import { useGetOrderItems } from '@/hooks/queries/orders/useGetOrderItems';
 import { OrderItemDetailsModal } from '@/components/modals/orderDetailsModal/OrderItemDetailsModal';
 import DataTableLoading from '@/components/ui/dataLoading/DataTableLoading';
 import { useTranslations } from 'next-intl';
+import { ViewToggle } from '@/components/customComponents/admin/ViewToggle';
+import { useViewMode } from '@/components/customComponents/admin/useViewMode';
+import { AdminOrderItemCard } from '@/components/customComponents/admin/AdminOrderItemCard';
 
 export default function SoldOrders() {
   const t = useTranslations('DashboardSettings');
   const { user } = useProfile();
+  const [viewMode, setViewMode] = useViewMode('soldOrders');
 
   const { queryParams, changePage, changeLimit, changeSearch, changeSort } =
     useQueryParams({
@@ -86,24 +90,39 @@ export default function SoldOrders() {
       <div className=''>
         <div className='mb-4 flex items-center justify-between'>
           <h1 className='text-2xl font-semibold'>{t('sold_items_title')}</h1>
+          <ViewToggle viewMode={viewMode} onToggle={setViewMode} />
         </div>
         {isLoadingOrderItems ? (
           <DataTableLoading />
         ) : (
           <>
-            <DataTable
-              columns={OrderItemColumns(t)}
-              data={formattedOrders}
-              totalCount={orderItemsData?.totalCount as number}
-              limit={queryParams?.params?.limit as number}
-              skip={queryParams?.params?.skip as number}
-              onPageChange={changePage}
-              onLimitChange={changeLimit}
-              queryParams={queryParams}
-              onChangeSearch={changeSearch}
-              onChangeSort={changeSort}
-              onRowClick={handleRowClick}
-            />
+            {viewMode === 'table' ? (
+              <DataTable
+                columns={OrderItemColumns(t)}
+                data={formattedOrders}
+                totalCount={orderItemsData?.totalCount as number}
+                limit={queryParams?.params?.limit as number}
+                skip={queryParams?.params?.skip as number}
+                onPageChange={changePage}
+                onLimitChange={changeLimit}
+                queryParams={queryParams}
+                onChangeSearch={changeSearch}
+                onChangeSort={changeSort}
+                onRowClick={handleRowClick}
+              />
+            ) : (
+              <div className='mt-4 grid grid-cols-1 gap-3 xl:grid-cols-2'>
+                {orderItemsData?.orderItems?.map((orderItem) => (
+                  <AdminOrderItemCard
+                    key={orderItem.id}
+                    orderItem={orderItem}
+                    user={user}
+                    showConfirm
+                    showRefund
+                  />
+                ))}
+              </div>
+            )}
             {!!orderItemsData?.totalCount && (
               <CustomPagination
                 limit={queryParams?.params?.limit as number}
@@ -129,3 +148,4 @@ export default function SoldOrders() {
     </>
   );
 }
+
