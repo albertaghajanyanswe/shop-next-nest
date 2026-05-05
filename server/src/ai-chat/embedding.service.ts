@@ -24,6 +24,7 @@ export class EmbeddingService implements OnModuleInit {
   }
 
   async generateEmbedding(text: string): Promise<number[]> {
+    this.logger.log(`generateEmbedding: ${text}`);
     if (!this.isInitialized || !this.embedder) {
       throw new Error('Embedding model not initialized');
     }
@@ -35,6 +36,8 @@ export class EmbeddingService implements OnModuleInit {
         normalize: true,
       });
 
+      this.logger.log(`generateEmbedding result: ${Array.from(output.data)}`);
+
       // Convert to array
       return Array.from(output.data);
     } catch (error) {
@@ -44,6 +47,8 @@ export class EmbeddingService implements OnModuleInit {
   }
 
   async generateBatchEmbeddings(texts: string[]): Promise<number[][]> {
+    this.logger.log(`generateBatchEmbeddings: ${texts}`);
+
     if (!this.isInitialized || !this.embedder) {
       throw new Error('Embedding model not initialized');
     }
@@ -55,6 +60,8 @@ export class EmbeddingService implements OnModuleInit {
         const embedding = await this.generateEmbedding(text);
         embeddings.push(embedding);
       }
+
+      this.logger.log(`generateBatchEmbeddings result: ${embeddings}`);
 
       return embeddings;
     } catch (error) {

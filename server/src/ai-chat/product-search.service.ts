@@ -3,6 +3,11 @@ import { PrismaService } from '../prisma.service';
 import { Prisma } from '@prisma/client';
 import { EmbeddingService } from './embedding.service';
 
+export interface ProductDetailFilter {
+  operator: '>' | '<' | '>=' | '<=' | '=';
+  value: string;
+}
+
 export interface ProductSearchFilters {
   categories?: string[];
   brand?: string;
@@ -10,7 +15,8 @@ export interface ProductSearchFilters {
   store?: string;
   title?: string;
   description?: string;
-  productDetails?: Record<string, string>;
+  productDetails?: Record<string, string | ProductDetailFilter>;
+  productDetailsLogic?: 'AND' | 'OR';
   minPrice?: number;
   maxPrice?: number;
 }
@@ -87,6 +93,19 @@ type ProductWithRelations = Prisma.ProductGetPayload<{
 export class ProductSearchService {
   private readonly logger = new Logger(ProductSearchService.name);
 
+  // Synonym mapping for product detail keys
+  private readonly synonymMap: Record<string, string[]> = {
+    memory: ['memory', 'storage', 'rom', 'встроенная память', 'память', 'ssd', 'hard disk'],
+    ram: ['ram', 'оперативная память', 'озу'],
+    cpu: ['cpu', 'processor', 'процессор'],
+    display: ['display', 'screen type', 'screen', 'экран', 'дисплей', 'тип экрана'],
+    battery: ['battery', 'батарея', 'аккумулятор'],
+    camera: ['camera', 'камера'],
+    weight: ['weight', 'вес'],
+    color: ['color', 'цвет'],
+    os: ['os', 'operating system', 'операционная система'],
+  };
+
   constructor(
     private readonly prisma: PrismaService,
     private readonly embeddingService: EmbeddingService,
@@ -126,7 +145,10 @@ export class ProductSearchService {
     limit = 10,
   ): Promise<ProductSearchResult[]> {
     try {
-      this.logger.log(`Searching products with filters:`, filters);
+      this.logger.log(
+        `Product search Searching products with filters:`,
+        filters,
+      );
 
       const whereConditions: any[] = [
         { isPublished: true },
@@ -221,26 +243,72 @@ export class ProductSearchService {
       }
 
       // Product details filters
-      if (filters.productDetails && Object.keys(filters.productDetails).length > 0) {
-        const detailConditions = Object.entries(filters.productDetails).map(
-          ([key, value]) => ({
-            productDetails: {
-              some: {
-                key: {
-                  contains: key,
-                  mode: 'insensitive',
-                },
-                value: {
-                  contains: value,
-                  mode: 'insensitive',
-                },
+      if (
+        filters.productDetails &&
+        Object.keys(filters.productDetails).length > 0
+      ) {
+        // Get all products first, then filter in memory for complex comparisons
+        const allProducts = await this.prisma.product.findMany({
+          where: {
+            AND: whereConditions,
+          },
+          include: {
+            store: {
+              select: {
+                id: true,
+                title: true,
               },
             },
-          }),
+            category: {
+              select: {
+                id: true,
+                name: true,
+              },
+            },
+            brand: {
+              select: {
+                id: true,
+                name: true,
+              },
+            },
+            color: {
+              select: {
+                id: true,
+                name: true,
+                value: true,
+              },
+            },
+            productDetails: {
+              select: {
+                key: true,
+                value: true,
+              },
+            },
+          },
+        });
+
+        // Filter products based on productDetails with comparisons
+        const filteredProducts = allProducts.filter((product) =>
+          this.matchesProductDetails(
+            product.productDetails,
+            filters.productDetails!,
+            filters.productDetailsLogic || 'AND',
+          ),
         );
-        whereConditions.push(...detailConditions);
+
+        this.logger.log(
+          `Filtered ${filteredProducts.length} products from ${allProducts.length} based on productDetails`,
+        );
+
+        return filteredProducts
+          .slice(0, limit)
+          .map((product) => this.mapProductToResult(product));
       }
 
+      this.logger.log(
+        'searchProductsWithFilters: whereConditions - ',
+        whereConditions,
+      );
       const products = await this.prisma.product.findMany({
         where: {
           AND: whereConditions,
@@ -297,9 +365,8 @@ export class ProductSearchService {
   ): Promise<ProductSearchResult[]> {
     try {
       // Generate embedding for query
-      const queryEmbedding = await this.embeddingService.generateEmbedding(
-        query,
-      );
+      const queryEmbedding =
+        await this.embeddingService.generateEmbedding(query);
 
       // Get all products with embeddings
       const products = await this.prisma.product.findMany({
@@ -509,9 +576,8 @@ export class ProductSearchService {
       const searchableText = this.createSearchableText(product);
 
       // Generate embedding
-      const embedding = await this.embeddingService.generateEmbedding(
-        searchableText,
-      );
+      const embedding =
+        await this.embeddingService.generateEmbedding(searchableText);
 
       // Save to database
       await this.prisma.product.update({
@@ -605,5 +671,157 @@ export class ProductSearchService {
       color: product.color,
       productDetails: product.productDetails,
     };
+  }
+
+  /**
+   * Extract numeric value from string like "130 GB", "130GB", "130"
+   */
+  private extractNumericValue(value: string): number | null {
+    const match = value.match(/(\d+(?:\.\d+)?)/);
+    return match ? parseFloat(match[1]) : null;
+  }
+
+  /**
+   * Find canonical key from synonyms (case-insensitive)
+   */
+  private findCanonicalKey(searchKey: string): string {
+    const lowerKey = searchKey.toLowerCase().trim();
+
+    // First, try exact match with canonical keys
+    for (const canonical of Object.keys(this.synonymMap)) {
+      if (lowerKey === canonical) {
+        return canonical;
+      }
+    }
+
+    // Then, try synonym matching
+    for (const [canonical, synonyms] of Object.entries(this.synonymMap)) {
+      if (synonyms.some((syn) => lowerKey.includes(syn.toLowerCase()) || syn.toLowerCase().includes(lowerKey))) {
+        return canonical;
+      }
+    }
+
+    return lowerKey;
+  }
+
+  /**
+   * Check if product details match the filter criteria
+   */
+  private matchesProductDetails(
+    productDetails: Array<{ key: string; value: string }>,
+    filterDetails: Record<string, string | ProductDetailFilter>,
+    logic: 'AND' | 'OR' = 'AND',
+  ): boolean {
+    this.logger.log(`Matching with logic: ${logic}`);
+
+    const results: boolean[] = [];
+
+    for (const [filterKey, filterValue] of Object.entries(filterDetails)) {
+      const canonicalFilterKey = this.findCanonicalKey(filterKey);
+
+      this.logger.log(
+        `Matching filter key "${filterKey}" → canonical: "${canonicalFilterKey}"`,
+      );
+
+      // Find matching product detail by canonical key
+      const matchingDetail = productDetails.find((detail) => {
+        const canonicalDetailKey = this.findCanonicalKey(detail.key);
+        return canonicalDetailKey === canonicalFilterKey;
+      });
+
+      if (!matchingDetail) {
+        this.logger.log(
+          `No matching detail found for "${filterKey}". Available keys: ${productDetails.map((d) => d.key).join(', ')}`,
+        );
+        results.push(false);
+
+        // For AND logic, if any condition fails, return false immediately
+        if (logic === 'AND') {
+          return false;
+        }
+        continue;
+      }
+
+      this.logger.log(
+        `Found matching detail: ${matchingDetail.key} = ${matchingDetail.value}`,
+      );
+
+      let conditionMet = false;
+
+      // Handle comparison operators
+      if (typeof filterValue === 'object' && 'operator' in filterValue) {
+        const productValue = this.extractNumericValue(matchingDetail.value);
+        const filterNumValue = this.extractNumericValue(filterValue.value);
+
+        this.logger.log(
+          `Comparing: ${productValue} ${filterValue.operator} ${filterNumValue}`,
+        );
+
+        if (productValue === null || filterNumValue === null) {
+          this.logger.warn(
+            `Could not extract numeric values: product="${matchingDetail.value}", filter="${filterValue.value}"`,
+          );
+          conditionMet = false;
+        } else {
+          conditionMet = this.compareValues(
+            productValue,
+            filterValue.operator,
+            filterNumValue,
+          );
+        }
+
+        this.logger.log(`Comparison result: ${conditionMet}`);
+      } else {
+        // Exact string match (case-insensitive contains)
+        const filterStr = String(filterValue).toLowerCase();
+        conditionMet = matchingDetail.value.toLowerCase().includes(filterStr);
+
+        this.logger.log(
+          `String match: "${matchingDetail.value}" contains "${filterStr}" = ${conditionMet}`,
+        );
+      }
+
+      results.push(conditionMet);
+
+      // For AND logic, if any condition fails, return false immediately
+      if (logic === 'AND' && !conditionMet) {
+        return false;
+      }
+
+      // For OR logic, if any condition succeeds, return true immediately
+      if (logic === 'OR' && conditionMet) {
+        return true;
+      }
+    }
+
+    // For AND logic: all conditions must be true (we already returned false if any failed)
+    // For OR logic: at least one condition must be true
+    const finalResult = logic === 'AND' ? results.every((r) => r) : results.some((r) => r);
+    this.logger.log(`Final result (${logic}): ${finalResult}`);
+    return finalResult;
+  }
+
+  /**
+   * Compare numeric values based on operator
+   */
+  private compareValues(
+    productValue: number,
+    operator: string,
+    filterValue: number,
+  ): boolean {
+    switch (operator) {
+      case '>':
+        return productValue > filterValue;
+      case '<':
+        return productValue < filterValue;
+      case '>=':
+        return productValue >= filterValue;
+      case '<=':
+        return productValue <= filterValue;
+      case '=':
+        return productValue === filterValue;
+      default:
+        return false;
+    }
   }
 }

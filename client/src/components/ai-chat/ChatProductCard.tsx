@@ -117,16 +117,6 @@ export function ChatProductCard({ product }: ChatProductCardProps) {
             <ExternalLink className='h-3 w-3' />
             View
           </Link>
-          {product.quantity > 0 && (
-            <button
-              className='bg-shop-light-primary flex items-center justify-center rounded-md px-2 py-1.5 text-xs font-medium text-white transition-opacity hover:opacity-90'
-              onClick={() => {
-                console.log('Add to cart:', product.id);
-              }}
-            >
-              <ShoppingCart className='h-3 w-3' />
-            </button>
-          )}
         </div>
       </div>
     </div>

@@ -49,7 +49,7 @@ export class AiChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
 
     try {
       this.logger.log(
-        `Received query from session ${sessionId}: ${query.substring(0, 50)}...`,
+        `handleChatQuery: session - ${sessionId}: query - ${query.substring(0, 50)}...`,
       );
 
       // Create abort controller for this stream

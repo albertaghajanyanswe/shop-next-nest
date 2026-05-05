@@ -1,9 +1,11 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { OpenRouterService, ChatMessage, Tool } from './openrouter.service';
-import {
-  ProductSearchService,
+import { ProductSearchService } from './product-search.service';
+
+import type {
   ProductSearchResult,
   ProductSearchFilters,
+  ProductDetailFilter,
 } from './product-search.service';
 
 export interface ChatContext {
@@ -20,25 +22,59 @@ Your job is to:
 1. Understand user queries and extract structured filters:
    - categories (array of category names, e.g., ["tv", "notebook"])
    - brand name
-   - color name
-   - productDetails (its a list of key values e.g key: Ram, values: 32GB)
+   - color name (ONLY for product color, NOT for display/screen specifications)
+   - productDetails (object with key-value pairs AND comparison operators)
    - store title
    - product title
-   - product description
+   - product description (ONLY for general product description, NOT for technical specs)
 
-2. NEVER invent products. You must ONLY use results returned from the search tool.
+2. CRITICAL: Technical specifications ALWAYS go to productDetails, NOT to description:
+   - Display/Screen specs (IPS, OLED, Retina, etc.) → productDetails.display
+   - Memory/Storage (GB, TB) → productDetails.memory
+   - RAM → productDetails.ram
+   - Battery (mAh) → productDetails.battery
+   - CPU/Processor → productDetails.cpu
+   - Screen size, resolution → productDetails
 
-3. When a user sends a query:
+3. IMPORTANT: When parsing productDetails with comparisons:
+   - Recognize synonyms: "memory", "storage", "ROM" are the same
+   - Extract comparison operators: "больше" (>), "меньше" (<), "минимум" (>=), "максимум" (<=), exact match (=)
+   - Extract numeric values from strings like "130 GB", "130GB", "130" → 130
+   - Use semantic field names: "memory" for storage/ROM, "ram" for RAM, "cpu" for processor, "display" for screen type, "battery" for battery capacity
+
+   CRITICAL - Smart RAM/Memory Detection:
+   - RAM (оперативная память) is typically 2-32 GB in smartphones/laptops
+   - Memory/Storage (встроенная память) is typically 64-2048 GB
+   - If user says "RAM" but value is > 32GB, they mean "memory" (storage), NOT RAM
+   - If user says "memory" but value is < 32GB, check context - could be RAM or storage
+
+   Examples:
+   - "RAM больше 120GB" → { "memory": { "operator": ">", "value": "120" } } (120GB is storage, not RAM!)
+   - "RAM 8GB" → { "ram": { "operator": "=", "value": "8" } } (8GB is actual RAM)
+   - "memory больше 130GB" → { "memory": { "operator": ">", "value": "130" } }
+   - "RAM минимум 8GB" → { "ram": { "operator": ">=", "value": "8" } }
+   - "storage 256GB" → { "memory": { "operator": "=", "value": "256" } }
+   - "battery меньше 5000 mAh" → { "battery": { "operator": "<", "value": "5000" } }
+   - "display IPS" → { "display": "IPS" }
+
+4. NEVER invent products. You must ONLY use results returned from the search tool.
+
+5. Logical Operators for productDetails:
+   - When user says "и" (and) or lists multiple conditions → use productDetailsLogic: "AND" (all must match)
+   - When user says "или" (or) → use productDetailsLogic: "OR" (at least one must match)
+   - Default is "AND" if not specified
+
+6. When a user sends a query:
    - Parse it into structured filters
    - If user asks for MULTIPLE categories (e.g., "tvs and notebooks"), put them in categories array
    - Call the "searchProducts" tool with extracted parameters
 
-4. Response format:
+5. Response format:
    - You MUST stream your response progressively in chunks
    - First send a short acknowledgement message
    - Then stream product cards one by one
 
-5. Each product must be returned in JSON format (NOT plain text):
+6. Each product must be returned in JSON format (NOT plain text):
 
 {
   "type": "product_card",
@@ -55,16 +91,16 @@ Your job is to:
   }
 }
 
-6. If no products found:
+7. If no products found:
    - Suggest alternatives (different brand, color, specs)
 
-7. Support interruption:
+8. Support interruption:
    - If a new user message arrives, STOP current response immediately
    - Do not continue previous results
 
-8. Be concise. Do not output unnecessary explanations.
+9. Be concise. Do not output unnecessary explanations.
 
-9. Always prioritize relevance over quantity.
+10. Always prioritize relevance over quantity.
 
 Examples:
 
@@ -74,8 +110,50 @@ Tool call:
   "categories": ["laptop"],
   "brand": "Lenovo",
   "color": "black",
-  "productDetails": { "ram": "32GB" },
+  "productDetails": { "ram": { "operator": "=", "value": "32" } },
   "store": "Electronics"
+}
+
+User: "Find iPhone with RAM more than 120GB"
+Tool call:
+{
+  "categories": ["smartphone"],
+  "brand": "Apple",
+  "productDetails": { "memory": { "operator": ">", "value": "120" } }
+}
+Note: User said "RAM" but 120GB is storage, not RAM. Corrected to "memory".
+
+User: "Find iPhone with memory more than 130GB"
+Tool call:
+{
+  "categories": ["smartphone"],
+  "brand": "Apple",
+  "productDetails": { "memory": { "operator": ">", "value": "130" } }
+}
+
+User: "Find iPhone with memory more than 256GB, battery less than 5000 mAh, and IPS display"
+Tool call:
+{
+  "categories": ["smartphone"],
+  "brand": "Apple",
+  "productDetails": {
+    "memory": { "operator": ">", "value": "256" },
+    "battery": { "operator": "<", "value": "5000" },
+    "display": "IPS"
+  },
+  "productDetailsLogic": "AND"
+}
+
+User: "Find iPhone with RAM more than 8GB OR memory more than 256GB"
+Tool call:
+{
+  "categories": ["smartphone"],
+  "brand": "Apple",
+  "productDetails": {
+    "ram": { "operator": ">", "value": "8" },
+    "memory": { "operator": ">", "value": "256" }
+  },
+  "productDetailsLogic": "OR"
 }
 
 User: "Find tvs and notebooks"
@@ -135,10 +213,29 @@ Chunk 3:
           productDetails: {
             type: 'object',
             description:
-              'Product specifications as key-value pairs (e.g., {"ram": "32GB", "cpu": "Intel i7"})',
+              'Product specifications with comparison operators. Each key maps to either a string (exact match) or an object with operator and value. Operators: ">" (greater), "<" (less), ">=" (gte), "<=" (lte), "=" (equals). Use semantic keys: "memory" for storage/ROM, "ram" for RAM. Examples: {"memory": {"operator": ">", "value": "130"}}, {"ram": {"operator": ">=", "value": "8"}}',
             additionalProperties: {
-              type: 'string',
+              oneOf: [
+                { type: 'string' },
+                {
+                  type: 'object',
+                  properties: {
+                    operator: {
+                      type: 'string',
+                      enum: ['>', '<', '>=', '<=', '='],
+                    },
+                    value: { type: 'string' },
+                  },
+                  required: ['operator', 'value'],
+                },
+              ],
             },
+          },
+          productDetailsLogic: {
+            type: 'string',
+            enum: ['AND', 'OR'],
+            description:
+              'Logical operator for combining productDetails filters. Use "AND" when user says "и" (and) - all conditions must match. Use "OR" when user says "или" (or) - at least one condition must match. Default is "AND".',
           },
           minPrice: {
             type: 'number',
@@ -165,7 +262,7 @@ Chunk 3:
   ): AsyncGenerator<{ type: 'text' | 'product_card'; data: any }> {
     try {
       this.logger.log(
-        `Processing query for session: ${context.sessionId} - ${query.substring(0, 30)}`,
+        `processQuery: session - ${context.sessionId}, query - ${query.substring(0, 30)}`,
       );
 
       const messages: ChatMessage[] = [
@@ -196,17 +293,23 @@ Chunk 3:
 
           hasToolCalls = true;
           hasProcessedToolCall = true;
-          this.logger.log('✅ Processing first tool call');
 
           const toolCalls = chunk.data;
 
+          this.logger.log('✅ processQuery: toolCalls - ', toolCalls);
           for (const toolCall of toolCalls) {
             if (toolCall.function.name === 'searchProducts') {
               let filters: ProductSearchFilters;
               try {
                 filters = JSON.parse(toolCall.function.arguments);
+                this.logger.log(
+                  '✅ processQuery: toolCall - filters - ',
+                  filters,
+                );
               } catch (e) {
-                this.logger.error(`Failed to parse searchProducts arguments: ${toolCall.function.arguments}`);
+                this.logger.error(
+                  `Failed to parse searchProducts arguments: ${toolCall.function.arguments}`,
+                );
                 yield {
                   type: 'text',
                   data: 'Sorry, I had trouble understanding your product search criteria. Please try rephrasing.',
@@ -214,7 +317,10 @@ Chunk 3:
                 continue;
               }
 
-              this.logger.log('Searching products with filters:', filters);
+              this.logger.log(
+                'AI-chat Searching products with filters:',
+                filters,
+              );
 
               const products =
                 await this.productSearchService.searchProductsWithFilters(

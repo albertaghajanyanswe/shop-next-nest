@@ -68,7 +68,7 @@ export class OpenRouterService {
         this.configService.get<string>('OPENROUTER_MODEL') ||
         'meta-llama/llama-3.3-70b-instruct:free';
 
-      this.logger.log(`Using OpenRouter model: ${model}`);
+      this.logger.log(`streamChatCompletion: ${messages}, \ntools - ${tools}`);
 
       const requestParams: OpenAI.Chat.ChatCompletionCreateParamsStreaming = {
         model: model,
