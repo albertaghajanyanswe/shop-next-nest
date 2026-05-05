@@ -1,6 +1,7 @@
 import { PropsWithChildren } from 'react';
 import { Header } from './header/Header';
 import Footer from './footer/Footer';
+import { AiChatWidget } from '@/components/ai-chat';
 
 export function MainLayout({ children }: PropsWithChildren<unknown>) {
   return (
@@ -10,6 +11,7 @@ export function MainLayout({ children }: PropsWithChildren<unknown>) {
         <main>{children}</main>
         <Footer />
       </div>
+      <AiChatWidget />
     </div>
   );
 }

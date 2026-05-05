@@ -192,7 +192,7 @@ export class ProductService {
       );
       return productsWithSoldCount;
     }
-    const productIds = mostPopularProducts.map((item) => item.productId);
+    const productIds = mostPopularProducts.map((item) => item.productId).filter(Boolean);
 
     const products = await this.prisma.product.findMany({
       where: {

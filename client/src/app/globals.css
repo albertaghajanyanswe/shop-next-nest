@@ -44,6 +44,15 @@
     }
   }
 
+  @keyframes blink {
+    0%, 20% {
+      opacity: 0;
+    }
+    40%, 100% {
+      opacity: 1;
+    }
+  }
+
   --animate-bounceDot1: bounceDot 2.1s infinite ease-in-out;
   --animate-bounceDot2: bounceDot 2.1s infinite ease-in-out 0.3s;
   --animate-bounceDot3: bounceDot 2.1s infinite ease-in-out 0.6s;

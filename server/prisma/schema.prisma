@@ -130,6 +130,9 @@ model Product {
   isOriginal   Boolean @default(true)
   quantity    Int     @default(1)
 
+  // Embedding vector for semantic search (stored as JSON array)
+  embedding Json?
+
   @@map("product")
 
   @@index([id])
