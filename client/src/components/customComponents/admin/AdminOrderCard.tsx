@@ -14,7 +14,16 @@ import {
   generateImgPath,
 } from '@/utils/imageUtils';
 import { Button } from '@/components/ui/Button';
-import { CircleDollarSignIcon, RotateCcw, Package, User, Mail, Calendar, Hash, ShoppingBag } from 'lucide-react';
+import {
+  CircleDollarSignIcon,
+  RotateCcw,
+  Package,
+  User,
+  Mail,
+  Calendar,
+  Hash,
+  ShoppingBag,
+} from 'lucide-react';
 import { useDistributeFundsOrder } from '@/hooks/stripe/useDistributeFundsOrder';
 import { useRefundOrder } from '@/hooks/stripe/useRefundOrder';
 import { useDistributeFundsOrderItem } from '@/hooks/stripe/useDistributeFundsOrderItem';
@@ -36,33 +45,47 @@ export function AdminOrderCard({
   const t = useTranslations('Modals');
   const dashT = useTranslations('DashboardSettings');
 
-  const { distributeFundsOrder, isLoadingDistributeFundsOrder } = useDistributeFundsOrder();
+  const { distributeFundsOrder, isLoadingDistributeFundsOrder } =
+    useDistributeFundsOrder();
   const { refundOrder, isLoadingRefundOrder } = useRefundOrder();
-  const { distributeFundsOrderItem, isLoadingDistributeFundsOrderItem } = useDistributeFundsOrderItem();
+  const { distributeFundsOrderItem, isLoadingDistributeFundsOrderItem } =
+    useDistributeFundsOrderItem();
   const { refundOrderItem, isLoadingRefundOrderItem } = useRefundOrderItem();
 
-  const isShowRefundBtn = user?.role === 'SUPER_ADMIN' && order.id && showRefund;
-  const isShowConfirmBtn = user?.role === 'SUPER_ADMIN' && order.id && showConfirm;
+  const isShowRefundBtn =
+    user?.role === 'SUPER_ADMIN' && order.id && showRefund;
+  const isShowConfirmBtn =
+    user?.role === 'SUPER_ADMIN' && order.id && showConfirm;
 
   return (
-    <div className='rounded-xl border bg-card shadow-sm transition-all hover:shadow-md overflow-hidden'>
+    <div className='bg-card overflow-hidden rounded-xl border shadow-sm transition-all hover:shadow-md'>
       {/* Header Section */}
-      <div className='bg-shop-green-hover p-4 border-b'>
+      <div className='bg-shop-green-hover border-b p-4'>
         <div className='flex flex-wrap items-start justify-between gap-4'>
-          <div className='space-y-2 flex-1 min-w-0'>
-            <div className='flex items-center gap-2 flex-wrap'>
-              <Hash className='h-4 w-4 text-muted-foreground flex-shrink-0' />
-              <span className='text-sm font-medium text-muted-foreground'>{t('order_info_id')}:</span>
-              <span className='text-sm font-mono break-all'>{order.id}</span>
+          <div className='min-w-0 flex-1 space-y-2'>
+            <div className='flex flex-wrap items-center gap-2'>
+              <Hash className='text-muted-foreground h-4 w-4 flex-shrink-0' />
+              <span className='text-muted-foreground text-sm font-medium'>
+                {t('order_info_id')}:
+              </span>
+              <span className='font-mono text-sm break-all'>{order.id}</span>
             </div>
             <div className='flex items-center gap-2'>
-              <Package className='h-4 w-4 text-muted-foreground flex-shrink-0' />
-              <span className='text-sm font-medium text-muted-foreground'>{t('order_info_type')}:</span>
-              <span className='text-sm'>{order.subscriptionId ? dashT('type_subscription') : dashT('type_product')}</span>
+              <Package className='text-muted-foreground h-4 w-4 flex-shrink-0' />
+              <span className='text-muted-foreground text-sm font-medium'>
+                {t('order_info_type')}:
+              </span>
+              <span className='text-sm'>
+                {order.subscriptionId
+                  ? dashT('type_subscription')
+                  : dashT('type_product')}
+              </span>
             </div>
           </div>
           <div className='flex items-center gap-2'>
-            <span className={`px-3 py-1 rounded-full text-sm font-semibold ${STATUS_COLOR[order.status]}`}>
+            <span
+              className={`rounded-full px-3 py-1 text-sm font-semibold ${STATUS_COLOR[order.status]}`}
+            >
               {order.status}
             </span>
           </div>
@@ -70,34 +93,47 @@ export function AdminOrderCard({
       </div>
 
       {/* Customer Info Section */}
-      <div className='p-4 bg-muted/30 border-b'>
-        <div className='grid grid-cols-1 sm:grid-cols-2 gap-3'>
+      <div className='bg-muted/30 border-b p-4'>
+        <div className='grid grid-cols-1 gap-3 sm:grid-cols-2'>
           <div className='flex items-center gap-2'>
-            <User className='h-4 w-4 text-muted-foreground flex-shrink-0' />
+            <User className='text-muted-foreground h-4 w-4 flex-shrink-0' />
             <div className='min-w-0 flex-1'>
-              <p className='text-xs text-muted-foreground'>{t('order_info_customer')}</p>
-              <p className='text-sm font-medium truncate'>{order.user.name}</p>
+              <p className='text-muted-foreground text-xs'>
+                {t('order_info_customer')}
+              </p>
+              <p className='truncate text-sm font-medium'>{order.user.name}</p>
             </div>
           </div>
           <div className='flex items-center gap-2'>
-            <Mail className='h-4 w-4 text-muted-foreground flex-shrink-0' />
+            <Mail className='text-muted-foreground h-4 w-4 flex-shrink-0' />
             <div className='min-w-0 flex-1'>
-              <p className='text-xs text-muted-foreground'>{t('order_info_email')}</p>
-              <p className='text-sm font-medium truncate'>{order.user.email}</p>
+              <p className='text-muted-foreground text-xs'>
+                {t('order_info_email')}
+              </p>
+              <p className='truncate text-sm font-medium'>{order.user.email}</p>
             </div>
           </div>
           <div className='flex items-center gap-2'>
-            <Calendar className='h-4 w-4 text-muted-foreground flex-shrink-0' />
+            <Calendar className='text-muted-foreground h-4 w-4 flex-shrink-0' />
             <div className='min-w-0 flex-1'>
-              <p className='text-xs text-muted-foreground'>{t('order_info_date')}</p>
-              <p className='text-sm font-medium'>{formatDateWithHour(order.createdAt as string)}</p>
+              <p className='text-muted-foreground text-xs'>
+                {t('order_info_date')}
+              </p>
+              <p className='text-sm font-medium'>
+                {formatDateWithHour(order.createdAt as string)}
+              </p>
             </div>
           </div>
           <div className='flex items-center gap-2'>
-            <ShoppingBag className='h-4 w-4 text-muted-foreground flex-shrink-0' />
+            <ShoppingBag className='text-muted-foreground h-4 w-4 flex-shrink-0' />
             <div className='min-w-0 flex-1'>
-              <p className='text-xs text-muted-foreground'>{t('order_items_title')}</p>
-              <p className='text-sm font-medium'>{order.orderItems.length} {order.orderItems.length === 1 ? 'item' : 'items'}</p>
+              <p className='text-muted-foreground text-xs'>
+                {t('order_items_title')}
+              </p>
+              <p className='text-sm font-medium'>
+                {order.orderItems.length}{' '}
+                {order.orderItems.length === 1 ? 'item' : 'items'}
+              </p>
             </div>
           </div>
         </div>
@@ -105,46 +141,75 @@ export function AdminOrderCard({
 
       {/* Order Items Section */}
       <div className='p-4'>
-        <h3 className='text-sm font-semibold mb-3'>{t('order_items_title')}</h3>
-        <div className='space-y-3 max-h-[400px] overflow-y-auto pr-2'>
+        <h3 className='mb-3 text-sm font-semibold'>{t('order_items_title')}</h3>
+        <div className='max-h-[400px] space-y-3 overflow-y-auto pr-2'>
           {order.orderItems.map((item) => (
             <div
               key={item.id}
-              className='border rounded-lg p-3 bg-shop-green-hover/50 hover:bg-shop-green-hover transition-colors'
+              className='bg-shop-green-hover/50 hover:bg-shop-green-hover rounded-lg border p-3 transition-colors'
             >
               <div className='flex gap-3'>
-                <div className='relative h-16 w-16 flex-shrink-0 rounded-md overflow-hidden bg-background'>
+                <div className='bg-background relative h-16 w-16 flex-shrink-0 overflow-hidden rounded-md'>
                   <Image
-                    src={generateImgPath(item.cachedProductImages[0], categoryImgParams)}
+                    src={generateImgPath(
+                      item.cachedProductImages[0],
+                      categoryImgParams
+                    )}
                     alt={item.cachedProductTitle as string}
                     width={64}
                     height={64}
-                    {...(generateImgPath(item.cachedProductImages[0], categoryImgBlurParams) && {
+                    {...(generateImgPath(
+                      item.cachedProductImages[0],
+                      categoryImgBlurParams
+                    ) && {
                       placeholder: 'blur',
-                      blurDataURL: generateImgPath(item.cachedProductImages[0], categoryImgBlurParams),
+                      blurDataURL: generateImgPath(
+                        item.cachedProductImages[0],
+                        categoryImgBlurParams
+                      ),
                     })}
-                    className='object-cover h-full w-full'
+                    className='h-full w-full object-cover'
                   />
                 </div>
-                <div className='flex-1 min-w-0 space-y-2'>
-                  <p className='text-sm font-medium line-clamp-2'>{item.cachedProductTitle}</p>
-                  <div className='flex flex-wrap gap-x-4 gap-y-1 text-xs text-muted-foreground'>
-                    <span>{t('order_col_user')}: {item.user.email}</span>
-                    <span>{t('order_col_quantity')}: {item.quantity}</span>
-                    <span className='text-shop-red font-semibold'>${item.price.toFixed(2)}</span>
+                <div className='min-w-0 flex-1 space-y-2'>
+                  <p className='line-clamp-2 text-sm font-medium'>
+                    {item.cachedProductTitle}
+                  </p>
+                  <div className='text-muted-foreground flex flex-wrap gap-x-4 gap-y-1 text-xs'>
+                    <span>
+                      {t('order_col_user')}: {item.user.email}
+                    </span>
+                    <span>
+                      {t('order_col_quantity')}: {item.quantity}
+                    </span>
+                    <span className='text-shop-red font-semibold'>
+                      ${item.price.toFixed(2)}
+                    </span>
                   </div>
                   <div className='space-y-1 text-xs'>
                     <div className='flex justify-between'>
-                      <span className='text-muted-foreground'>{t('order_item_id')}:</span>
-                      <span className='font-mono text-xs break-all ml-2'>{item.id}</span>
+                      <span className='text-muted-foreground'>
+                        {t('order_item_id')}:
+                      </span>
+                      <span className='ml-2 font-mono text-xs break-all'>
+                        {item.id}
+                      </span>
                     </div>
                     <div className='flex justify-between'>
-                      <span className='text-muted-foreground'>{t('order_product_id')}:</span>
-                      <span className='font-mono text-xs break-all ml-2'>{item.productId}</span>
+                      <span className='text-muted-foreground'>
+                        {t('order_product_id')}:
+                      </span>
+                      <span className='ml-2 font-mono text-xs break-all'>
+                        {item.productId}
+                      </span>
                     </div>
                     <div className='flex justify-between'>
-                      <span className='text-muted-foreground'>{t('order_store_id')}:</span>
-                      <span className='font-mono text-xs break-all ml-2'>{item.storeId}</span>
+                      <span className='text-muted-foreground'>
+                        {t('order_store_id')}:
+                      </span>
+                      <span className='ml-2 font-mono text-xs break-all'>
+                        {item.storeId}
+                      </span>
                     </div>
                   </div>
                   {(showConfirm || showRefund) && (
@@ -153,10 +218,14 @@ export function AdminOrderCard({
                         <Button
                           disabled={
                             isLoadingDistributeFundsOrderItem ||
-                            item.status === GetOrderItemsWithUserDtoStatus.CONFIRMED
+                            item.status ===
+                              GetOrderItemsWithUserDtoStatus.CONFIRMED
                           }
                           onClick={() => {
-                            if (item.status !== GetOrderItemsWithUserDtoStatus.CONFIRMED) {
+                            if (
+                              item.status !==
+                              GetOrderItemsWithUserDtoStatus.CONFIRMED
+                            ) {
                               distributeFundsOrderItem(item.id);
                             }
                           }}
@@ -165,7 +234,8 @@ export function AdminOrderCard({
                           className='text-xs'
                         >
                           <CircleDollarSignIcon className='h-3 w-3' />
-                          {item.status === GetOrderItemsWithUserDtoStatus.CONFIRMED
+                          {item.status ===
+                          GetOrderItemsWithUserDtoStatus.CONFIRMED
                             ? t('order_btn_confirmed')
                             : t('order_btn_confirm')}
                         </Button>
@@ -174,13 +244,17 @@ export function AdminOrderCard({
                         <Button
                           disabled={
                             isLoadingRefundOrderItem ||
-                            item.status === GetOrderItemsWithUserDtoStatus.REFUNDED ||
-                            item.status === GetOrderItemsWithUserDtoStatus.CONFIRMED
+                            item.status ===
+                              GetOrderItemsWithUserDtoStatus.REFUNDED ||
+                            item.status ===
+                              GetOrderItemsWithUserDtoStatus.CONFIRMED
                           }
                           onClick={() => {
                             if (
-                              item.status !== GetOrderItemsWithUserDtoStatus.REFUNDED &&
-                              item.status !== GetOrderItemsWithUserDtoStatus.CONFIRMED
+                              item.status !==
+                                GetOrderItemsWithUserDtoStatus.REFUNDED &&
+                              item.status !==
+                                GetOrderItemsWithUserDtoStatus.CONFIRMED
                             ) {
                               refundOrderItem(item.id);
                             }
@@ -190,7 +264,8 @@ export function AdminOrderCard({
                           className='text-xs'
                         >
                           <RotateCcw className='h-3 w-3' />
-                          {item.status === GetOrderItemsWithUserDtoStatus.REFUNDED
+                          {item.status ===
+                          GetOrderItemsWithUserDtoStatus.REFUNDED
                             ? t('order_btn_refunded')
                             : t('order_btn_refund')}
                         </Button>
@@ -205,8 +280,8 @@ export function AdminOrderCard({
       </div>
 
       {/* Total Section */}
-      <div className='border-t p-4 bg-muted/20'>
-        <div className='flex items-center justify-between flex-wrap gap-4'>
+      <div className='bg-muted/20 border-t p-4'>
+        <div className='flex flex-wrap items-center justify-between gap-4'>
           <div className='flex gap-2'>
             {isShowConfirmBtn && (
               <Button
@@ -232,8 +307,10 @@ export function AdminOrderCard({
             )}
           </div>
           <div className='text-right'>
-            <p className='text-sm text-muted-foreground'>{t('order_total')}</p>
-            <p className='text-2xl font-bold text-shop-red'>{formatPrice(order.totalPrice)}</p>
+            <p className='text-muted-foreground text-sm'>{t('order_total')}</p>
+            <p className='text-shop-red text-2xl font-bold'>
+              {formatPrice(order.totalPrice)}
+            </p>
           </div>
         </div>
       </div>

@@ -13,7 +13,7 @@ export function AdminReviewCard({ review }: AdminReviewCardProps) {
   const starCount = review.rating?.split(' ').length ?? 0;
 
   return (
-    <div className='bg-shop-white border-shop-primary/15 flex flex-col gap-2 rounded-lg border p-3 shadow-sm transition-all duration-200 hover:-translate-y-0.5 hover:shadow-md xs:p-4'>
+    <div className='bg-shop-white border-shop-primary/15 xs:p-4 flex flex-col gap-2 rounded-lg border p-3 shadow-sm transition-all duration-200 hover:-translate-y-0.5 hover:shadow-md'>
       {/* Header */}
       <div className='flex items-start justify-between gap-2'>
         <div className='flex items-center gap-2'>

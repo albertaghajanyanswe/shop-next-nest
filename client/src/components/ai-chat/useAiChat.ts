@@ -27,10 +27,8 @@ interface UseAiChatReturn {
 }
 
 export function useAiChat(options: UseAiChatOptions = {}): UseAiChatReturn {
-  const {
-    serverUrl = process.env.NEXT_PUBLIC_SERVER_URL,
-    autoConnect = true,
-  } = options;
+  const { serverUrl = process.env.NEXT_PUBLIC_SERVER_URL, autoConnect = true } =
+    options;
 
   const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [isConnected, setIsConnected] = useState(false);
@@ -66,66 +64,69 @@ export function useAiChat(options: UseAiChatOptions = {}): UseAiChatReturn {
       console.log('AI Chat connected:', data);
     });
 
-    socket.on('chat:stream', (data: {
-      sessionId: string;
-      type: 'text' | 'product_card' | 'done';
-      chunk?: string;
-      data?: any;
-      done: boolean;
-    }) => {
-      if (data.done || data.type === 'done') {
-        const textToSave = streamingTextRef.current;
-        if (textToSave) {
-          setMessages((msgs) => [
-            ...msgs,
-            {
-              role: 'assistant',
-              content: textToSave,
-              timestamp: Date.now(),
-              type: 'text',
-            },
-          ]);
-        }
-        setCurrentStreamingMessage('');
-        streamingTextRef.current = '';
-        setShowStreamingMessage(true);
-        setIsStreaming(false);
-      } else if (data.type === 'text' && data.chunk) {
-        // Accumulate text and show it
-        streamingTextRef.current += data.chunk;
-        setCurrentStreamingMessage(streamingTextRef.current);
-        setShowStreamingMessage(true);
-      } else if (data.type === 'product_card' && data.data) {
-        // Save text before card
-        const textToSave = streamingTextRef.current;
-        if (textToSave) {
-          setMessages((msgs) => [
-            ...msgs,
-            {
-              role: 'assistant',
-              content: textToSave,
-              timestamp: Date.now(),
-              type: 'text',
-            },
-          ]);
-        }
-        setCurrentStreamingMessage('');
-        streamingTextRef.current = '';
-        setShowStreamingMessage(false); // Don't show in return
+    socket.on(
+      'chat:stream',
+      (data: {
+        sessionId: string;
+        type: 'text' | 'product_card' | 'done';
+        chunk?: string;
+        data?: any;
+        done: boolean;
+      }) => {
+        if (data.done || data.type === 'done') {
+          const textToSave = streamingTextRef.current;
+          if (textToSave) {
+            setMessages((msgs) => [
+              ...msgs,
+              {
+                role: 'assistant',
+                content: textToSave,
+                timestamp: Date.now(),
+                type: 'text',
+              },
+            ]);
+          }
+          setCurrentStreamingMessage('');
+          streamingTextRef.current = '';
+          setShowStreamingMessage(true);
+          setIsStreaming(false);
+        } else if (data.type === 'text' && data.chunk) {
+          // Accumulate text and show it
+          streamingTextRef.current += data.chunk;
+          setCurrentStreamingMessage(streamingTextRef.current);
+          setShowStreamingMessage(true);
+        } else if (data.type === 'product_card' && data.data) {
+          // Save text before card
+          const textToSave = streamingTextRef.current;
+          if (textToSave) {
+            setMessages((msgs) => [
+              ...msgs,
+              {
+                role: 'assistant',
+                content: textToSave,
+                timestamp: Date.now(),
+                type: 'text',
+              },
+            ]);
+          }
+          setCurrentStreamingMessage('');
+          streamingTextRef.current = '';
+          setShowStreamingMessage(false); // Don't show in return
 
-        // Add product card
-        setMessages((prev) => [
-          ...prev,
-          {
-            role: 'assistant',
-            content: '',
-            timestamp: Date.now(),
-            type: 'product_card',
-            productCard: data.data,
-          },
-        ]);
+          // Add product card
+          setMessages((prev) => [
+            ...prev,
+            {
+              role: 'assistant',
+              content: '',
+              timestamp: Date.now(),
+              type: 'product_card',
+              productCard: data.data,
+            },
+          ]);
+        }
       }
-    });
+    );
 
     socket.on('chat:error', (data: { sessionId: string; error: string }) => {
       setError(data.error);
@@ -151,36 +152,39 @@ export function useAiChat(options: UseAiChatOptions = {}): UseAiChatReturn {
     };
   }, [serverUrl, autoConnect]);
 
-  const sendMessage = useCallback((message: string) => {
-    if (!socketRef.current || !isConnected) {
-      setError('Not connected to chat server');
-      return;
-    }
+  const sendMessage = useCallback(
+    (message: string) => {
+      if (!socketRef.current || !isConnected) {
+        setError('Not connected to chat server');
+        return;
+      }
 
-    if (isStreaming) {
-      setError('Please wait for the current message to complete');
-      return;
-    }
+      if (isStreaming) {
+        setError('Please wait for the current message to complete');
+        return;
+      }
 
-    setError(null);
-    setIsStreaming(true);
+      setError(null);
+      setIsStreaming(true);
 
-    // Add user message to chat
-    const userMessage: ChatMessage = {
-      role: 'user',
-      content: message,
-      timestamp: Date.now(),
-    };
+      // Add user message to chat
+      const userMessage: ChatMessage = {
+        role: 'user',
+        content: message,
+        timestamp: Date.now(),
+      };
 
-    setMessages((prev) => [...prev, userMessage]);
+      setMessages((prev) => [...prev, userMessage]);
 
-    // Send to server
-    socketRef.current.emit('chat:query', {
-      query: message,
-      sessionId: sessionIdRef.current,
-      messages: messages,
-    });
-  }, [isConnected, isStreaming, messages]);
+      // Send to server
+      socketRef.current.emit('chat:query', {
+        query: message,
+        sessionId: sessionIdRef.current,
+        messages: messages,
+      });
+    },
+    [isConnected, isStreaming, messages]
+  );
 
   const abortStream = useCallback(() => {
     if (socketRef.current && isStreaming) {
@@ -201,17 +205,18 @@ export function useAiChat(options: UseAiChatOptions = {}): UseAiChatReturn {
   }, []);
 
   return {
-    messages: currentStreamingMessage && showStreamingMessage
-      ? [
-          ...messages,
-          {
-            role: 'assistant',
-            content: currentStreamingMessage,
-            timestamp: Date.now(),
-            type: 'text' as const,
-          },
-        ]
-      : messages,
+    messages:
+      currentStreamingMessage && showStreamingMessage
+        ? [
+            ...messages,
+            {
+              role: 'assistant',
+              content: currentStreamingMessage,
+              timestamp: Date.now(),
+              type: 'text' as const,
+            },
+          ]
+        : messages,
     isConnected,
     isStreaming,
     sendMessage,

@@ -33,7 +33,7 @@ function ProductCardInfoUnMemo({
             aria-label={`Go to slide ${index + 1}`}
             className={`h-1.5 w-1.5 cursor-pointer rounded-full transition-all ${
               activeIndex === index
-                ? 'w-3 bg-shop-primary-text'
+                ? 'bg-shop-primary-text w-3'
                 : 'bg-neutral-400'
             }`}
           />

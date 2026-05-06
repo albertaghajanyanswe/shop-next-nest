@@ -11,7 +11,12 @@ import {
 } from '@/components/ui/DropdownMenu';
 import { STORE_URL } from '@/config/url.config';
 import { IColorColumn } from '@/shared/types/color.interface';
-import { CalendarDays, ExternalLink, MoreHorizontal, Pencil } from 'lucide-react';
+import {
+  CalendarDays,
+  ExternalLink,
+  MoreHorizontal,
+  Pencil,
+} from 'lucide-react';
 
 type TF = (key: string) => string;
 
@@ -25,7 +30,7 @@ export function AdminColorCard({ color, t }: AdminColorCardProps) {
     <div className='bg-shop-white border-shop-primary/15 group relative flex flex-col overflow-hidden rounded-lg border shadow-sm transition-all duration-200 hover:-translate-y-0.5 hover:shadow-md'>
       {/* Color swatch */}
       <div
-        className='relative h-24 w-full xs:h-32'
+        className='xs:h-32 relative h-24 w-full'
         style={{ backgroundColor: color.value }}
       >
         {/* Actions */}
@@ -60,7 +65,7 @@ export function AdminColorCard({ color, t }: AdminColorCardProps) {
       </div>
 
       {/* Info */}
-      <div className='flex flex-col gap-1 p-2 xs:p-3'>
+      <div className='xs:p-3 flex flex-col gap-1 p-2'>
         <div className='flex items-center gap-2'>
           <div
             className='size-4 shrink-0 rounded-full border'
@@ -70,7 +75,9 @@ export function AdminColorCard({ color, t }: AdminColorCardProps) {
             {color.name}
           </p>
         </div>
-        <p className='text-muted-foreground font-mono text-[10px]'>{color.value}</p>
+        <p className='text-muted-foreground font-mono text-[10px]'>
+          {color.value}
+        </p>
         <p className='text-muted-foreground flex items-center gap-1 text-[10px]'>
           <CalendarDays className='size-3' />
           {color.createdAt}

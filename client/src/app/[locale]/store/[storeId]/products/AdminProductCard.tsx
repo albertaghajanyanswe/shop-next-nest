@@ -43,7 +43,7 @@ export function AdminProductCard({ product, t }: AdminProductCardProps) {
   return (
     <div className='bg-shop-white border-shop-primary/15 group relative flex flex-col overflow-hidden rounded-lg border shadow-sm transition-all duration-200 hover:-translate-y-0.5 hover:shadow-md'>
       {/* Image */}
-      <div className='bg-shop-light-bg relative h-36 overflow-hidden xs:h-44'>
+      <div className='bg-shop-light-bg xs:h-44 relative h-36 overflow-hidden'>
         <Image
           src={generateImgPath(product.image as string)}
           alt={product.title}
@@ -53,7 +53,7 @@ export function AdminProductCard({ product, t }: AdminProductCardProps) {
         {/* Badges */}
         <div className='absolute top-1.5 left-1.5 flex flex-col gap-1'>
           {product.isPublished ? (
-            <Badge className='bg-shop-primary/80 px-1.5 py-0 text-[10px] text-white hover:bg-shop-primary/80'>
+            <Badge className='bg-shop-primary/80 hover:bg-shop-primary/80 px-1.5 py-0 text-[10px] text-white'>
               {t('published')}
             </Badge>
           ) : (
@@ -144,14 +144,16 @@ export function AdminProductCard({ product, t }: AdminProductCardProps) {
       </div>
 
       {/* Info */}
-      <div className='flex flex-1 flex-col gap-1 p-2 xs:p-3'>
+      <div className='xs:p-3 flex flex-1 flex-col gap-1 p-2'>
         <Link href={STORE_URL.productEdit(product.storeId, product.id)}>
-          <p className='text-shop-primary-text line-clamp-2 min-h-8 text-xs font-semibold leading-tight hover:text-shop-light-primary sm:text-sm'>
+          <p className='text-shop-primary-text hover:text-shop-light-primary line-clamp-2 min-h-8 text-xs leading-tight font-semibold sm:text-sm'>
             {product.title}
           </p>
         </Link>
         {product.category && (
-          <p className='text-muted-foreground text-[10px]'>{product.category}</p>
+          <p className='text-muted-foreground text-[10px]'>
+            {product.category}
+          </p>
         )}
 
         <div className='mt-auto pt-1'>
@@ -167,7 +169,7 @@ export function AdminProductCard({ product, t }: AdminProductCardProps) {
               </span>
             </div>
           </div>
-          <div className='mt-1.5 flex items-center gap-2 border-t border-shop-primary/10 pt-1.5 text-[10px]'>
+          <div className='border-shop-primary/10 mt-1.5 flex items-center gap-2 border-t pt-1.5 text-[10px]'>
             <span className='text-muted-foreground flex items-center gap-0.5'>
               {product.isOriginal ? (
                 <CheckCircle className='text-shop-light-primary size-3.5' />

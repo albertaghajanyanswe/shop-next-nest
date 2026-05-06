@@ -86,7 +86,12 @@ export function Brands() {
         {viewMode === 'card' ? (
           <div className='mt-4 grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5'>
             {formattedBrands.map((brand) => (
-              <AdminBrandCard key={brand.id} brand={brand} storeId={storeId} t={t} />
+              <AdminBrandCard
+                key={brand.id}
+                brand={brand}
+                storeId={storeId}
+                t={t}
+              />
             ))}
           </div>
         ) : (

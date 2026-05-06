@@ -133,7 +133,7 @@ export function AiChatWidget() {
                       <button
                         key={category.id}
                         onClick={() => sendMessage(category.name)}
-                        className='bg-primary/10 hover:bg-primary/20 text-primary rounded-full border border-primary px-2 py-1 text-xs transition-colors'
+                        className='bg-primary/10 hover:bg-primary/20 text-primary border-primary rounded-full border px-2 py-1 text-xs transition-colors'
                       >
                         {category.name}
                       </button>
@@ -220,7 +220,7 @@ export function AiChatWidget() {
                 onKeyPress={handleKeyPress}
                 placeholder='Ask me something'
                 disabled={!isConnected || isStreaming}
-                className='text-neutral-900 focus:border-shop-primary flex-1 resize-none rounded-lg border border-neutral-300 px-3 py-2 text-sm focus:outline-none disabled:cursor-not-allowed disabled:bg-neutral-100'
+                className='focus:border-shop-primary flex-1 resize-none rounded-lg border border-neutral-300 px-3 py-2 text-sm text-neutral-900 focus:outline-none disabled:cursor-not-allowed disabled:bg-neutral-100'
                 rows={1}
               />
               <button

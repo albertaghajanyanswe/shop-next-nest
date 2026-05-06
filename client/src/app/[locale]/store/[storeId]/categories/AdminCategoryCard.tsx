@@ -14,7 +14,13 @@ import { PUBLIC_URL, STORE_URL } from '@/config/url.config';
 import { useDeleteCategory } from '@/hooks/queries/categories/useDeleteCategory';
 import { ICategoryColumn } from '@/shared/types/category.interface';
 import { generateImgPath } from '@/utils/imageUtils';
-import { CalendarDays, ExternalLink, MoreHorizontal, Pencil, Trash2 } from 'lucide-react';
+import {
+  CalendarDays,
+  ExternalLink,
+  MoreHorizontal,
+  Pencil,
+  Trash2,
+} from 'lucide-react';
 
 type TF = (key: string) => string;
 
@@ -24,13 +30,17 @@ interface AdminCategoryCardProps {
   t: TF;
 }
 
-export function AdminCategoryCard({ category, storeId, t }: AdminCategoryCardProps) {
+export function AdminCategoryCard({
+  category,
+  storeId,
+  t,
+}: AdminCategoryCardProps) {
   const { deleteCategory, isLoadingDelete } = useDeleteCategory();
 
   return (
     <div className='bg-shop-white border-shop-primary/15 group relative flex flex-col overflow-hidden rounded-lg border shadow-sm transition-all duration-200 hover:-translate-y-0.5 hover:shadow-md'>
       {/* Image */}
-      <div className='bg-shop-light-bg relative h-32 overflow-hidden xs:h-40'>
+      <div className='bg-shop-light-bg xs:h-40 relative h-32 overflow-hidden'>
         <Image
           src={generateImgPath(category.image as string)}
           alt={category.name}
@@ -57,8 +67,11 @@ export function AdminCategoryCard({ category, storeId, t }: AdminCategoryCardPro
                   {t('category_page')}
                 </DropdownMenuItem>
               </Link>
-              {(storeId === category.storeId || category.isCurrentUserAdmin) && (
-                <Link href={STORE_URL.categoryEdit(category.storeId, category.id)}>
+              {(storeId === category.storeId ||
+                category.isCurrentUserAdmin) && (
+                <Link
+                  href={STORE_URL.categoryEdit(category.storeId, category.id)}
+                >
                   <DropdownMenuItem>
                     <Pencil className='mr-2 size-4' />
                     {t('edit_category')}
@@ -83,7 +96,7 @@ export function AdminCategoryCard({ category, storeId, t }: AdminCategoryCardPro
       </div>
 
       {/* Info */}
-      <div className='flex flex-col gap-1 p-2 xs:p-3'>
+      <div className='xs:p-3 flex flex-col gap-1 p-2'>
         <p className='text-shop-primary-text line-clamp-1 text-xs font-semibold sm:text-sm'>
           {category.name}
         </p>

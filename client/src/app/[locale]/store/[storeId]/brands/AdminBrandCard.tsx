@@ -14,7 +14,13 @@ import { STORE_URL } from '@/config/url.config';
 import { useDeleteBrand } from '@/hooks/queries/brands/useDeleteBrand';
 import { IBrandColumn } from '@/shared/types/brand.interface';
 import { generateImgPath } from '@/utils/imageUtils';
-import { CalendarDays, ExternalLink, MoreHorizontal, Pencil, Trash2 } from 'lucide-react';
+import {
+  CalendarDays,
+  ExternalLink,
+  MoreHorizontal,
+  Pencil,
+  Trash2,
+} from 'lucide-react';
 
 type TF = (key: string) => string;
 
@@ -30,7 +36,7 @@ export function AdminBrandCard({ brand, storeId, t }: AdminBrandCardProps) {
   return (
     <div className='bg-shop-white border-shop-primary/15 group relative flex flex-col overflow-hidden rounded-lg border shadow-sm transition-all duration-200 hover:-translate-y-0.5 hover:shadow-md'>
       {/* Image */}
-      <div className='bg-shop-light-bg relative h-32 overflow-hidden xs:h-40'>
+      <div className='bg-shop-light-bg xs:h-40 relative h-32 overflow-hidden'>
         <Image
           src={generateImgPath(brand.image as string)}
           alt={brand.name}
@@ -83,7 +89,7 @@ export function AdminBrandCard({ brand, storeId, t }: AdminBrandCardProps) {
       </div>
 
       {/* Info */}
-      <div className='flex flex-col gap-1 p-2 xs:p-3'>
+      <div className='xs:p-3 flex flex-col gap-1 p-2'>
         <p className='text-shop-primary-text line-clamp-1 text-xs font-semibold sm:text-sm'>
           {brand.name}
         </p>

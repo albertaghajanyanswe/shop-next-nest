@@ -7,7 +7,9 @@ import { ViewMode } from './ViewToggle';
  * Persists the admin card/table view mode in localStorage per page key.
  * This prevents the view from resetting when pagination changes the URL.
  */
-export function useViewMode(storageKey: string): [ViewMode, (mode: ViewMode) => void] {
+export function useViewMode(
+  storageKey: string
+): [ViewMode, (mode: ViewMode) => void] {
   const [viewMode, setViewModeState] = useState<ViewMode>('table');
 
   // Read from localStorage once on mount
