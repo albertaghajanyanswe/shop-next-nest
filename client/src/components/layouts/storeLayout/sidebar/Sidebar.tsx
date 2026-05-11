@@ -1,11 +1,95 @@
+'use client';
+
+import { useState } from 'react';
 import { Logo } from '../../mainLayout/header/logo/Logo';
 import { Navigation } from './navigation/Navigation';
+import { LogOut, ArrowLeft } from 'lucide-react';
+import { authService } from '@/services/auth/auth.service';
+import { useRouter } from 'next/navigation';
+import { PUBLIC_URL } from '@/config/url.config';
+import { cn } from '@/utils/common';
 
-export function Sidebar() {
+interface SidebarProps {
+  isCollapsed?: boolean;
+  onCollapsedChange?: (collapsed: boolean) => void;
+}
+
+export function Sidebar({ isCollapsed, onCollapsedChange }: SidebarProps) {
+  const [internalCollapsed, setInternalCollapsed] = useState(false);
+  const router = useRouter();
+
+  const collapsed = isCollapsed !== undefined ? isCollapsed : internalCollapsed;
+  const setCollapsed = (val: boolean) => {
+    setInternalCollapsed(val);
+    onCollapsedChange?.(val);
+  };
+
+  const handleLogout = async () => {
+    try {
+      await authService.logout();
+    } catch {
+      // ignore
+    } finally {
+      router.push(PUBLIC_URL.auth());
+    }
+  };
+
   return (
-    <div className='bg-shop-light-bg flex h-full flex-col overflow-y-auto border-r px-5 pt-4'>
-      <Logo />
-      <Navigation />
+    <div
+      className={cn(
+        'bg-shop-light-bg relative flex h-full flex-col border-r transition-all duration-300 ease-in-out',
+        collapsed ? 'w-[72px]' : 'w-full lg:w-64'
+      )}
+    >
+      {/* ── HEADER ── */}
+      <div
+        className={cn(
+          'flex h-[70px] shrink-0 items-center border-b px-4',
+          collapsed ? 'justify-center' : 'justify-start gap-x-2'
+        )}
+      >
+        {collapsed ? (
+          <div className='bg-shop-primary flex size-9 items-center justify-center rounded-lg'>
+            <span className='text-sm font-black text-white'>S</span>
+          </div>
+        ) : (
+          <Logo />
+        )}
+      </div>
+
+      {/* ── COLLAPSE TOGGLE — sits on the border ── */}
+      <button
+        onClick={() => setCollapsed(!collapsed)}
+        title={collapsed ? 'Expand sidebar' : 'Collapse sidebar'}
+        className='bg-primary-600 hover:bg-primary-700 absolute -right-3 top-14 z-60 flex size-6 cursor-pointer items-center justify-center rounded-full border shadow-sm transition-all duration-200 hover:text-white'
+      >
+        <ArrowLeft
+          className={cn(
+            'size-3.5 transition-transform duration-300',
+            collapsed && 'rotate-180'
+          )}
+        />
+      </button>
+
+      {/* ── NAV ── */}
+      <div className='flex flex-1 flex-col overflow-y-auto overflow-x-hidden px-3 py-4'>
+        <Navigation collapsed={collapsed} />
+      </div>
+
+      {/* ── FOOTER ── */}
+      <div className='shrink-0 border-t px-3 py-3'>
+        <button
+          onClick={handleLogout}
+          title='Logout'
+          className={cn(
+            'text-shop-muted-text-7 hover:bg-shop-primary/10 hover:text-shop-primary flex w-full cursor-pointer items-center rounded-lg bg-transparent px-3 py-2.5 text-sm font-medium transition-all duration-200',
+            collapsed ? 'justify-center' : 'gap-x-3'
+          )}
+        >
+          <LogOut className='size-5 shrink-0' />
+          {!collapsed && <span>Logout</span>}
+        </button>
+      </div>
     </div>
   );
 }

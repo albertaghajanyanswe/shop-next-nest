@@ -45,10 +45,12 @@
   }
 
   @keyframes blink {
-    0%, 20% {
+    0%,
+    20% {
       opacity: 0;
     }
-    40%, 100% {
+    40%,
+    100% {
       opacity: 1;
     }
   }
@@ -78,7 +80,7 @@
   --color-shop-primary-text: #000000;
   --color-shop-muted-text-7: #374151;
   --color-shop-muted-text-6: #4b5563;
-  --color-shop-muted-text-5: #6B7280;
+  --color-shop-muted-text-5: #6b7280;
   --color-shop-bg-default: #ffffff;
   --color-shop-bg-light: var(--color-neutral-50);
 
@@ -92,6 +94,17 @@
   --color-primary-700: #063d29;
   --color-primary-800: #052f21;
   --color-primary-900: #031f16;
+
+  /* --color-primary-50: #ebfffe;
+  --color-primary-100: #cefffd;
+  --color-primary-200: #a2fffd;
+  --color-primary-300: #63fdfb;
+  --color-primary-400: #1cf3f4;
+  --color-primary-500: #00d6da;
+  --color-primary-600: #03abb7;
+  --color-primary-700: #0a8692;
+  --color-primary-800: #126d78;
+  --color-primary-900: #063c46; */
 
   --color-secondary-50: #eef2ff;
   --color-secondary-100: #e0e7ff;
@@ -220,8 +233,64 @@
   --radius: 0.5rem;
 }
 
-.dark {
+/* :root {
+  --background: oklch(1 0 0);
+  --foreground: oklch(0.129 0.042 264.695);
+  --card: oklch(0.97614 0 169.7);
+  --card-foreground: oklch(0.5 0.08 195);
+  --popover: oklch(1 0 0);
+  --popover-foreground: oklch(0.129 0.042 264.695);
 
+  --primary: oklch(0.52 0.12 195);
+  --primary-foreground: oklch(1 0 0);
+
+  --secondary: oklch(0.97 0.01 195);
+  --secondary-foreground: oklch(0.208 0.042 265.755);
+
+  --muted: oklch(0.93826 0.016 195);
+  --muted-foreground: oklch(0.49 0.05 195);
+
+  --accent: oklch(0.97 0.01 195);
+  --accent-foreground: oklch(0.208 0.042 265.755);
+
+  --destructive: oklch(0.577 0.245 27.325);
+  --destructive-foreground: oklch(0.02 0.06 195);
+
+  --border: oklch(0.929 0.013 255.508);
+  --input: oklch(0.86983 0.02 195);
+  --ring: oklch(0.7 0.05 195);
+
+  --chart-1: oklch(0.81105 0.08 195);
+  --chart-2: oklch(0.61365 0.12 195);
+  --chart-3: oklch(0.5141 0.14 195);
+  --chart-4: oklch(0.39814 0.13 195);
+  --chart-5: oklch(0 0 0);
+
+  --sidebar: oklch(0.32048 0.06 195);
+  --sidebar-foreground: oklch(1 0 0);
+  --sidebar-primary: oklch(0.52 0.12 195);
+  --sidebar-primary-foreground: oklch(1 0 0);
+  --sidebar-accent: oklch(0.23994 0.06 195);
+  --sidebar-accent-foreground: oklch(1 0 195);
+  --sidebar-border: oklch(0.9 0.008 195);
+  --sidebar-ring: oklch(0.7 0.05 195);
+
+  --header: oklch(1 0 0);
+  --header-foreground: oklch(0.52 0.12 195);
+  --footer: oklch(0.32048 0.06 195);
+  --footer-foreground: oklch(1 0 0);
+
+  --code: oklch(0.98 0.005 195);
+  --code-foreground: oklch(0.5 0.08 195);
+  --code-highlight: oklch(0.64 0.01 195);
+  --code-number: oklch(0.54 0.02 195);
+  --code-selection: oklch(0.96 0.01 195);
+  --code-border: oklch(0.9 0.008 195);
+
+  --radius: 0.5rem;
+} */
+
+.dark {
   --color-dark-1: #0a0a0f;
   --color-dark-2: #111118;
   --color-dark-3: #1a1a24;
@@ -275,38 +344,38 @@
 
   --background: var(--color-dark-1);
   --foreground: #fafafa;
-  
+
   --card: var(--color-dark-2);
   --card-foreground: #fafafa;
-  
+
   --popover: var(--color-dark-2);
   --popover-foreground: #fafafa;
-  
+
   --primary: var(--color-primary-700);
   --primary-foreground: #ffffff;
-  
+
   --secondary: var(--color-secondary-800);
   --secondary-foreground: #fafafa;
-  
+
   --muted: var(--color-dark-3);
   --muted-foreground: var(--color-neutral-200);
-  
+
   --accent: var(--color-dark-3);
   --accent-foreground: #fafafa;
-  
+
   --destructive: #ef4444;
   --destructive-foreground: #fafafa;
-  
+
   --border: var(--color-dark-4);
   --input: var(--color-dark-4);
   --ring: var(--color-primary-700);
-  
+
   --chart-1: #c84614;
   --chart-2: #ff8544;
   --chart-3: #fb5f16;
   --chart-4: #eb4407;
   --chart-5: #9e3612;
-  
+
   --sidebar: var(--color-dark-2);
   --sidebar-foreground: #fafafa;
   --sidebar-primary: var(--color-primary-700);
@@ -336,7 +405,7 @@
   --color-shop-light-primary: var(--color-primary-400);
   --color-shop-orange: var(--color-primary-500);
   --color-shop-red: #ef4444;
-  --color-shop-dark-color: #FAFAFA;
+  --color-shop-dark-color: #fafafa;
   --color-shop-light-color: var(--color-neutral-300);
   --color-shop-light-orange: var(--color-primary-900);
   --color-shop-green-hover: var(--color-dark-3);
@@ -411,7 +480,6 @@
 }
 */
 
-
 /* :root {
   --radius: 0.625rem;
   --background: oklch(1 0 0);
@@ -456,7 +524,9 @@
   body {
     @apply bg-background text-foreground;
   }
-  input, textarea, select {
+  input,
+  textarea,
+  select {
     @apply text-foreground;
   }
 }

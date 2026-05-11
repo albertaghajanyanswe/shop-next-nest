@@ -69,7 +69,7 @@ export function Categories() {
       {isLoadingCategoriesData ? (
         <DataTableLoading />
       ) : (
-        <div className='flex items-center justify-between'>
+        <div className='flex flex-col items-start justify-between gap-4 sm:flex-row sm:items-center'>
           <Heading
             title={`${t('categories_title')} (${categoriesData?.totalCount})`}
             description={t('categories_description')}

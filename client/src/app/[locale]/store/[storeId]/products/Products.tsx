@@ -70,7 +70,7 @@ export function Products() {
       {isLoadingProductsData ? (
         <DataTableLoading />
       ) : (
-        <div className='flex items-center justify-between'>
+        <div className='flex flex-col items-start justify-between gap-4 sm:flex-row sm:items-center'>
           <Heading
             title={`${t('products_title')} (${productsData?.totalCount})`}
             description={t('products_description')}

@@ -15,7 +15,11 @@ import { MenuItem } from './MenuItem';
 import { IMenuItem } from './menu.interface';
 import { useTranslations } from 'next-intl';
 
-export function Navigation() {
+interface NavigationProps {
+  collapsed?: boolean;
+}
+
+export function Navigation({ collapsed }: NavigationProps) {
   const params = useParams<{ storeId: string }>();
   const t = useTranslations('Navigation');
 
@@ -57,10 +61,10 @@ export function Navigation() {
     },
   ];
   return (
-    <div className='mt-6 flex w-full flex-1 flex-col'>
+    <div className='flex w-full flex-1 flex-col'>
       <div className='flex w-full flex-col space-y-1'>
         {routes.map((route) => (
-          <MenuItem key={route.value} route={route} />
+          <MenuItem key={route.value} route={route} showOnlyIcon={collapsed} />
         ))}
       </div>
     </div>
