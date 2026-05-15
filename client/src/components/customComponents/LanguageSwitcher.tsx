@@ -16,12 +16,12 @@ export function LanguageSwitcher() {
   };
 
   return (
-    <div className='flex flex-col items-start gap-8'>
-      <ButtonGroup>
+    <div className='flex flex-col items-start gap-8 w-full'>
+      <ButtonGroup className='w-full'>
         <Button
           variant={locale === 'en' ? 'default' : 'outline'}
           onClick={() => switchLocale('en')}
-          className={`w-12 rounded-sm px-3 py-1 text-xs font-semibold transition-colors`}
+          className={`w-[50%] rounded-sm px-3 py-1 text-xs font-semibold transition-colors`}
         >
           EN
         </Button>
@@ -29,7 +29,7 @@ export function LanguageSwitcher() {
           // disabled
           variant={locale === 'ru' ? 'default' : 'outline'}
           onClick={() => switchLocale('ru')}
-          className={`w-12 rounded-sm px-3 py-1 text-xs font-semibold transition-colors`}
+          className={`w-[50%] rounded-sm px-3 py-1 text-xs font-semibold transition-colors`}
         >
           RU
         </Button>

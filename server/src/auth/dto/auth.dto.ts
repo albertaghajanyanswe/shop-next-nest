@@ -107,7 +107,4 @@ export class AuthResponseDto {
     description: 'ID of the user',
   })
   user: User;
-
-  @ApiProperty({ example: 'accessToken123', description: 'Access token' })
-  accessToken: string;
 }

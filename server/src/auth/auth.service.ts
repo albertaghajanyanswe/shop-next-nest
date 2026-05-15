@@ -20,6 +20,7 @@ import { EnumRole, EnumSubscriptionType } from '@prisma/client';
 export class AuthService {
   EXPIRE_DAY_REFRESH_TOKEN = 1;
   REFRESH_TOKEN_NAME = 'refreshToken';
+  ACCESS_TOKEN_NAME = 'accessToken';
 
   private readonly logger = new Logger(AuthService.name);
 
@@ -132,6 +133,22 @@ export class AuthService {
           isDefaultStore: true,
         },
       });
+
+      await this.stripeService.createCustomer(user.id);
+
+      const plan = await this.prismaService.plan.findFirst({
+        where: { planId: EnumSubscriptionType.FREE },
+      });
+      if (!plan) {
+        throw new NotFoundException('Free plan not found');
+      }
+      try {
+        await this.stripeService.createCheckoutSessionSubscription(user, plan);
+      } catch (e) {
+        this.logger.error(
+          `Failed to create Stripe subscription for user ${user.id}: ${e.message}`,
+        );
+      }
     }
 
     const tokens = this.issueTokens(user.id);
@@ -143,6 +160,20 @@ export class AuthService {
       process.env.NODE_ENV === 'production' ||
       process.env.SERVER_DOMAIN === 'localhost';
     return isSecure;
+  }
+
+  addAccessTokenToResponse(res: Response, accessToken: string) {
+    const expiresIn = new Date();
+    expiresIn.setHours(expiresIn.getHours() + 1);
+    res.cookie(this.ACCESS_TOKEN_NAME, accessToken, {
+      httpOnly: true,
+      ...(this.checkSecureCookie()
+        ? { domain: this.configService.get<string>(EnvVariables.SERVER_DOMAIN) }
+        : {}),
+      secure: this.checkSecureCookie() ? true : false,
+      expires: expiresIn,
+      sameSite: 'lax',
+    });
   }
 
   addRefreshTokenToResponse(res: Response, refreshToken: string) {
@@ -160,6 +191,18 @@ export class AuthService {
         : {}),
       secure: this.checkSecureCookie() ? true : false,
       expires: expiresIn,
+      sameSite: 'lax',
+    });
+  }
+
+  removeAccessTokenFromResponse(res: Response) {
+    res.cookie(this.ACCESS_TOKEN_NAME, '', {
+      httpOnly: true,
+      ...(this.checkSecureCookie()
+        ? { domain: this.configService.get<string>(EnvVariables.SERVER_DOMAIN) }
+        : {}),
+      expires: new Date(0),
+      secure: this.checkSecureCookie() ? true : false,
       sameSite: 'lax',
     });
   }

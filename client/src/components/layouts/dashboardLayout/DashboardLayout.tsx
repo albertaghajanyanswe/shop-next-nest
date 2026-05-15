@@ -1,8 +1,6 @@
 'use client';
 
-import { saveTokenStorage } from '@/services/auth/auth-token.service';
-import { useRouter, useSearchParams } from 'next/navigation';
-import { PropsWithChildren, useEffect, useState } from 'react';
+import { PropsWithChildren, useState } from 'react';
 import { useProfile } from '@/hooks/useProfile';
 import { Button } from '@/components/ui/Button';
 import {
@@ -75,22 +73,13 @@ const menuItems = (user: GetUserDto, t: any) => {
 };
 
 export function DashboardLayout({ children }: PropsWithChildren<unknown>) {
-  const searchParams = useSearchParams();
   const [collapsed, setCollapsed] = useState(false);
-  const router = useRouter();
   const { logout } = useLogout();
   const t = useTranslations('Dashboard');
 
   const handleLayout = () => {
     logout();
   };
-
-  useEffect(() => {
-    const accessToken = searchParams.get('accessToken');
-    if (accessToken) {
-      saveTokenStorage(accessToken);
-    }
-  }, [searchParams]);
 
   const { user } = useProfile();
 
@@ -118,7 +107,7 @@ export function DashboardLayout({ children }: PropsWithChildren<unknown>) {
               <span className='text-shop-primary-text font-medium'>
                 {user.name}
               </span>
-              <span className='text-shop-muted-text-7 text-sm'>
+              <span className='text-shop-muted-text-7 text-xs font-medium break-all'>
                 {user.email}
               </span>
             </div>
@@ -165,7 +154,7 @@ export function DashboardLayout({ children }: PropsWithChildren<unknown>) {
           <div className='inset-y-0 z-50 flex h-full flex-col'>
             <aside
               className={cn(
-                'flex flex-col rounded-md shadow-sm card-profile transition-all duration-300',
+                'card-profile flex flex-col rounded-md shadow-sm transition-all duration-300',
                 collapsed ? 'w-20 items-center p-2' : 'w-64 p-2'
               )}
             >
@@ -199,15 +188,13 @@ export function DashboardLayout({ children }: PropsWithChildren<unknown>) {
                   alt={user?.name || 'User img'}
                   width={42}
                   height={42}
-                  className='w-9 rounded-full sm:w-10'
+                  className='max-h-10 max-w-10 rounded-full border border-primary-300 p-1 transition-transform duration-500 hover:scale-105 w-10 cursor-pointer'
                   priority={false}
                 />
                 {!collapsed && (
                   <div className='flex w-full flex-1 flex-col'>
-                    <span className='font-medium text-white'>
-                      {user.name}
-                    </span>
-                    <span className='text-sm text-white'>
+                    <span className='font-medium text-white'>{user.name}</span>
+                    <span className='text-xs font-medium break-all text-white'>
                       {user.email}
                     </span>
                   </div>

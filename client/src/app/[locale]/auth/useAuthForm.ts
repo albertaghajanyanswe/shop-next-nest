@@ -1,6 +1,6 @@
 'use client';
 import { ErrorResponse } from '@/api/api.interceptors';
-import { DASHBOARD_URL, PUBLIC_URL } from '@/config/url.config';
+import { PUBLIC_URL } from '@/config/url.config';
 import { AuthResponseDto, RegisterDto } from '@/generated/orval/types';
 import { authService } from '@/services/auth/auth.service';
 import { QUERY_KEYS } from '@/shared/queryConstants';

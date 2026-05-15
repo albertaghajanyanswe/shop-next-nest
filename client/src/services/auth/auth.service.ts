@@ -1,6 +1,6 @@
 import { axiosClassic } from '@/api/api.interceptors';
 import { API_URL } from '@/config/api.config';
-import { removeFromStorage, saveTokenStorage } from './auth-token.service';
+import { removeFromStorage } from './auth-token.service';
 import {
   AuthResponseDto,
   LoginDto,
@@ -19,9 +19,6 @@ class AuthService {
       data,
     });
 
-    if (response.data.accessToken) {
-      saveTokenStorage(response.data.accessToken);
-    }
     localStorage.setItem('userId', response.data.user.id);
     await resetStoreForNewUser();
     return response.data;
@@ -32,10 +29,6 @@ class AuthService {
       url: API_URL.auth('/login/access-token'),
       method: 'POST',
     });
-
-    if (response.data.accessToken) {
-      saveTokenStorage(response.data.accessToken);
-    }
 
     return response;
   }

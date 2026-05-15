@@ -18,7 +18,7 @@ const UserAvatarComponent = ({ user, url }: UserAvatarProps) => (
       alt={user?.name || 'User img'}
       width={42}
       height={42}
-      className='w-9 rounded-full border p-0.5 transition-transform duration-500 group-hover:scale-105 sm:w-10'
+      className='max-h-10 max-w-10 rounded-full border p-0.5 transition-transform duration-500 group-hover:scale-105 w-10'
       priority={false}
     />
   </Link>

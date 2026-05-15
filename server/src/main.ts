@@ -12,6 +12,9 @@ import { join } from 'path';
 async function bootstrap() {
   const app = await NestFactory.create<NestExpressApplication>(AppModule);
   const logger = new Logger(AppModule.name);
+  // app.setGlobalPrefix('api', {
+  //   exclude: ['/auth/google', '/auth/google/callback'],
+  // });
   app.setGlobalPrefix('api');
   app.set('trust proxy', true);
   app.use(cookieParser());

@@ -30,9 +30,10 @@ export class AuthController {
     @Body() loginDto: LoginDto,
     @Res({ passthrough: true }) res: Response,
   ) {
-    const { refreshToken, ...response } =
+    const { refreshToken, accessToken, ...response } =
       await this.authService.login(loginDto);
 
+    this.authService.addAccessTokenToResponse(res, accessToken);
     this.authService.addRefreshTokenToResponse(res, refreshToken);
 
     return response;
@@ -47,9 +48,10 @@ export class AuthController {
     @Body() registerDto: RegisterDto,
     @Res({ passthrough: true }) res: Response,
   ) {
-    const { refreshToken, ...response } =
+    const { refreshToken, accessToken, ...response } =
       await this.authService.register(registerDto);
 
+    this.authService.addAccessTokenToResponse(res, accessToken);
     this.authService.addRefreshTokenToResponse(res, refreshToken);
 
     return response;
@@ -67,14 +69,15 @@ export class AuthController {
       req.cookies[this.authService.REFRESH_TOKEN_NAME];
 
     if (!refreshTokenFromCookie) {
+      this.authService.removeAccessTokenFromResponse(res);
       this.authService.removeRefreshTokenToResponse(res);
       throw new UnauthorizedException('Refresh token is missing');
     }
 
-    const { refreshToken, ...response } = await this.authService.getNewTokens(
-      refreshTokenFromCookie,
-    );
+    const { refreshToken, accessToken, ...response } =
+      await this.authService.getNewTokens(refreshTokenFromCookie);
 
+    this.authService.addAccessTokenToResponse(res, accessToken);
     this.authService.addRefreshTokenToResponse(res, refreshToken);
 
     return response;
@@ -83,6 +86,7 @@ export class AuthController {
   @HttpCode(200)
   @Post('logout')
   async logout(@Res({ passthrough: true }) res: Response) {
+    this.authService.removeAccessTokenFromResponse(res);
     this.authService.removeRefreshTokenToResponse(res);
     return { message: 'Logged out successfully' };
   }
@@ -93,19 +97,27 @@ export class AuthController {
     console.log('\n\n Google OAuth started');
   }
 
+  /*Create credetials here https://console.cloud.google.com/apis/credentials?authuser=1&project=shop-dev-468813&supportedpurview=project
+# 1. Click Create credetials
+# 2. OAuth client ID
+# 3. Web app
+# 4. Authorized JavaScript origins - set <server_url> (e.g. http://localhost:4000)
+# 5. Authorized redirect URIs - set <server_url>/auth/google/callback(e.g. http://localhost:4000/auth/google/callback)
+# 6. Update env GOOGLE_CLIENT_ID and GOOGLE_CLIENT_SECRET
+*/
+
   @Get('google/callback')
   @UseGuards(AuthGuard('google'))
   async googleAuthCallback(
     @Req() req: any,
     @Res({ passthrough: true }) res: Response,
   ) {
-    const { refreshToken, ...response } =
+    const { refreshToken, accessToken, ...response } =
       await this.authService.validateOAuthLogin(req);
 
+    this.authService.addAccessTokenToResponse(res, accessToken);
     this.authService.addRefreshTokenToResponse(res, refreshToken);
 
-    return res.redirect(
-      `${process.env['CLIENT_URL']}/dashboard?accessToken=${response.accessToken}`,
-    );
+    return res.redirect(`${process.env['CLIENT_URL']}/dashboard/settings`);
   }
 }

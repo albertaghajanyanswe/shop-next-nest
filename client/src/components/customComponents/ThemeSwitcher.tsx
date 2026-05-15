@@ -12,12 +12,12 @@ export function ThemeSwitcher() {
   const t = useTranslations('AccountSettings');
 
   return (
-    <ButtonGroup>
+    <ButtonGroup className='w-full'>
       <Button
         variant={theme !== 'dark' ? 'default' : 'outline'}
         size='icon'
         onClick={() => setTheme('light')}
-        className='w-12'
+        className='w-[50%]'
       >
         <Sun className='h-[1.2rem] w-[1.2rem]' />
         <span className='sr-only'>{t('light')}</span>
@@ -27,7 +27,7 @@ export function ThemeSwitcher() {
         variant={theme === 'dark' ? 'default' : 'outline'}
         size='icon'
         onClick={() => setTheme('dark')}
-        className='w-12'
+        className='w-[50%]'
       >
         <Moon className='h-[1.2rem] w-[1.2rem]' />
         <span className='sr-only'>{t('dark')}</span>

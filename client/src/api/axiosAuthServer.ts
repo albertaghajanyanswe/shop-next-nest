@@ -5,12 +5,10 @@ import { API_BASE } from './api.interceptors';
 export async function AxiosAuthServer() {
   const cookiesStore = await cookies();
 
-  const token = cookiesStore.get('accessToken')?.value;
   return axios.create({
     baseURL: `${API_BASE}/api`,
-    headers: {
-      Authorization: token ? `Bearer ${token}` : '',
-    },
+    headers: {},
+    withCredentials: true,
   });
 }
 

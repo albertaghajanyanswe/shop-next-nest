@@ -7,7 +7,6 @@ import axios, {
 import { NEXT_PUBLIC_SERVER_URL } from '@/config/api.config';
 import { errorCatch, getContentType } from './api.helper';
 import {
-  getAccessToken,
   removeFromStorage,
 } from '@/services/auth/auth-token.service';
 import { authService } from '@/services/auth/auth.service';
@@ -34,10 +33,6 @@ export const axiosClassic: AxiosInstance = axios.create(options);
 export const axiosWithAuth: AxiosInstance = axios.create(options);
 
 axiosWithAuth.interceptors.request.use(async (config) => {
-  const accessToken = getAccessToken();
-  if (config.headers && accessToken) {
-    config.headers.Authorization = `Bearer ${accessToken}`;
-  }
   return config;
 });
 
