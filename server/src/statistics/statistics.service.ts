@@ -45,6 +45,195 @@ export class StatisticsService {
     return { monthlySales, lastUsers };
   }
 
+  async getTopProducts(storeId: string, limit: number = 10) {
+    const products = await this.prisma.product.findMany({
+      where: { storeId },
+      select: {
+        id: true,
+        title: true,
+        price: true,
+        images: true,
+        category: {
+          select: {
+            name: true,
+          },
+        },
+        orderItems: {
+          where: { storeId },
+          select: {
+            quantity: true,
+            price: true,
+          },
+        },
+      },
+    });
+
+    const productsWithSales = products.map((product) => {
+      const totalSold = product.orderItems.reduce(
+        (sum, item) => sum + item.quantity,
+        0
+      );
+      const totalRevenue = product.orderItems.reduce(
+        (sum, item) => sum + item.price * item.quantity,
+        0
+      );
+
+      return {
+        id: product.id,
+        name: product.title,
+        price: product.price,
+        image: product.images?.[0] || null,
+        category: product.category?.name || 'Uncategorized',
+        sold: totalSold,
+        revenue: totalRevenue,
+      };
+    });
+
+    return productsWithSales
+      .sort((a, b) => b.sold - a.sold)
+      .slice(0, limit);
+  }
+
+  async getCategorySales(storeId: string) {
+    const categories = await this.prisma.category.findMany({
+      where: {},
+      select: {
+        id: true,
+        name: true,
+        products: {
+          select: {
+            orderItems: {
+              where: { storeId },
+              select: {
+                price: true,
+                quantity: true,
+              },
+            },
+          },
+        },
+      },
+    });
+
+    const categorySales = categories.map((category) => {
+      const totalRevenue = category.products.reduce((sum, product) => {
+        return (
+          sum +
+          product.orderItems.reduce(
+            (itemSum, item) => itemSum + item.price * item.quantity,
+            0
+          )
+        );
+      }, 0);
+
+      return {
+        id: category.id,
+        name: category.name,
+        revenue: totalRevenue,
+      };
+    });
+
+    const totalRevenue = categorySales.reduce((sum, cat) => sum + cat.revenue, 0);
+
+    return categorySales
+      .map((cat) => ({
+        ...cat,
+        percentage: totalRevenue > 0 ? (cat.revenue / totalRevenue) * 100 : 0,
+      }))
+      .filter((cat) => cat.percentage > 0)
+      .sort((a, b) => b.revenue - a.revenue);
+  }
+
+  async getSalesHistory(storeId: string, range: '1w' | '1m' | '6m' | '1y' | 'all') {
+    let startDate: Date;
+    let groupBy: 'day' | 'month' | 'year';
+
+    switch (range) {
+      case '1w':
+        startDate = dayjs().subtract(7, 'days').startOf('day').toDate();
+        groupBy = 'day';
+        break;
+      case '1m':
+        startDate = dayjs().subtract(30, 'days').startOf('day').toDate();
+        groupBy = 'day';
+        break;
+      case '6m':
+        startDate = dayjs().subtract(6, 'months').startOf('month').toDate();
+        groupBy = 'month';
+        break;
+      case '1y':
+        startDate = dayjs().subtract(1, 'year').startOf('month').toDate();
+        groupBy = 'month';
+        break;
+      case 'all':
+        startDate = new Date('2000-01-01');
+        groupBy = 'year';
+        break;
+    }
+
+    const endDate = dayjs().endOf('day').toDate();
+
+    const orders = await this.prisma.order.findMany({
+      where: {
+        createdAt: {
+          gte: startDate,
+          lte: endDate,
+        },
+        orderItems: {
+          some: { storeId },
+        },
+      },
+      include: {
+        orderItems: {
+          where: { storeId },
+        },
+      },
+      orderBy: {
+        createdAt: 'asc',
+      },
+    });
+
+    const salesByPeriod = new Map<string, { profit: number; timestamp: number }>();
+
+    orders.forEach((order) => {
+      const orderDate = new Date(order.createdAt);
+      let periodKey: string;
+
+      if (groupBy === 'day') {
+        periodKey = `${orderDate.getDate()} ${monthNames[orderDate.getMonth()]}`;
+      } else if (groupBy === 'month') {
+        periodKey = monthNames[orderDate.getMonth()];
+      } else {
+        periodKey = orderDate.getFullYear().toString();
+      }
+
+      const total = order.orderItems.reduce((sum, item) => {
+        return sum + item.price * item.quantity;
+      }, 0);
+
+      if (salesByPeriod.has(periodKey)) {
+        const existing = salesByPeriod.get(periodKey)!;
+        salesByPeriod.set(periodKey, {
+          profit: existing.profit + total,
+          timestamp: existing.timestamp,
+        });
+      } else {
+        salesByPeriod.set(periodKey, {
+          profit: total,
+          timestamp: orderDate.getTime(),
+        });
+      }
+    });
+
+    return Array.from(salesByPeriod, ([date, data]) => ({
+      date,
+      profit: data.profit,
+      profitLabel: `${data.profit} $`,
+      timestamp: data.timestamp,
+    }))
+      .sort((a, b) => a.timestamp - b.timestamp)
+      .map(({ date, profit }) => ({ date, profit }));
+  }
+
   private async calculateTotalRevenue(storeId: string) {
     const orders = await this.prisma.order.findMany({
       where: {

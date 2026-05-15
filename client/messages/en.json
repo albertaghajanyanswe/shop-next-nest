@@ -19,8 +19,20 @@
     "last_month_profit": "Last month profit",
     "profit_usd": "Profit (USD)",
     "last_users": "Last Users",
+    "recent_buyers": "Recent Buyers",
     "no_users": "This store has no users",
-    "middle_statistics": "middle statistics"
+    "middle_statistics": "middle statistics",
+    "profit_overview": "Profit Overview",
+    "revenue_trend": "Revenue trend",
+    "total": "Total",
+    "sales_by_category": "Sales by Category",
+    "share_of_total_revenue": "Share of total revenue",
+    "percentage": "Percentage",
+    "top_products": "Top 10 Products",
+    "product": "Product",
+    "price": "Price",
+    "sold": "Sold",
+    "category": "Category"
   },
   "Footer": {
     "buy_sell_follow": "Buy, Sell, and Follow your Favorites Products",
@@ -216,7 +228,12 @@
     "published": "Published",
     "draft": "Draft",
     "out_of_stock": "Out of stock",
-    "in_stock": "In stock"
+    "in_stock": "In stock",
+    "loading": "Loading...",
+    "sales_history": "Sales history",
+    "categories": "Categories",
+    "products": "Products",
+    "main_statistics": "Main statistics"
   },
   "DashboardSettings": {
     "manage_orders_title": "Manage all orders",

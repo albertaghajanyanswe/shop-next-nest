@@ -1,5 +1,4 @@
 import { useGetStatistics } from '@/hooks/queries/statistics/useGetStatistics';
-import { Overview } from './Overview';
 import { LastUsers } from './LastUsers';
 import NoDataFound from '@/components/customComponents/loading/NoDataFound';
 import { useTranslations } from 'next-intl';
@@ -17,12 +16,9 @@ export function MiddleStatistics() {
   const hasLastUsers = !!middleStatistics?.lastUsers?.length;
   const hasData = hasMonthlySales || hasLastUsers;
   return hasData ? (
-    <div className='mt-6 grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-8'>
+    <div className='grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-8'>
       <>
-        <div className='col-span-1 lg:col-span-4 xl:col-span-4'>
-          <Overview data={middleStatistics?.monthlySales || []} />
-        </div>
-        <div className='col-span-1 lg:col-span-4'>
+        <div className='col-span-2 lg:col-span-8'>
           <LastUsers data={middleStatistics?.lastUsers || []} />
         </div>
       </>

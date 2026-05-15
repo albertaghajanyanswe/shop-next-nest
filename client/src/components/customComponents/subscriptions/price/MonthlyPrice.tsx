@@ -8,12 +8,12 @@ interface MonthlyPriceProps {
 function MonthlyPrice({ price, isPopular }: MonthlyPriceProps) {
   return (
     <div
-      className={`h-16 ${isPopular ? 'text-neutral-900' : 'text-shop-primary-text'}`}
+      className={`h-16 text-shop-primary-text`}
     >
       <p className='text-3xl font-semibold lg:text-4xl'>
         ${price}
         <span
-          className={`text-sm font-medium ${isPopular ? 'text-neutral-900' : 'text-shop-muted-text-7'}`}
+          className={`text-sm font-medium text-shop-muted-text-7`}
         >
           /monthly
         </span>

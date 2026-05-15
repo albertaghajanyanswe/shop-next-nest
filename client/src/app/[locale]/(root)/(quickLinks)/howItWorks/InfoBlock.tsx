@@ -9,7 +9,7 @@ function InfoBlock() {
 
   if (locale === 'ru') {
     return (
-      <div className='from-primary-100 to-primary-400 dark:from-primary-200 dark:to-primary-600 mt-3 rounded-md bg-linear-to-r p-4'>
+      <div className='card-linear-grad dark:card-flame mt-3 rounded-md bg-linear-to-r p-4'>
         <h2 className='mb-2 text-xl leading-relaxed font-semibold'>
           Продавайте на {SITE_NAME} с уверенностью
         </h2>
@@ -71,8 +71,8 @@ function InfoBlock() {
 
   return (
     <>
-      <div className='from-primary-100 to-primary-400 dark:from-primary-200 dark:to-primary-600 mt-3 rounded-md bg-linear-to-r p-4'>
-        <h2 className='mb-2 text-xl leading-relaxed font-semibold'>
+      <div className='card-linear-grad dark:card-flame mt-3 rounded-md bg-linear-to-r p-4'>
+        <h2 className='mb-2 text-xl leading-relaxed font-semibold text-white'>
           Sell on {SITE_NAME} with confidence
         </h2>
         <Image

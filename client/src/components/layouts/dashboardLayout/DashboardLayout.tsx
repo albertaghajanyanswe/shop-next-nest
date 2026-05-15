@@ -124,7 +124,7 @@ export function DashboardLayout({ children }: PropsWithChildren<unknown>) {
             </div>
           </Card>
           {!collapsed && (
-            <div className='from-primary-100 to-primary-400 dark:from-primary-200 dark:to-primary-600 mb-4 rounded-md bg-linear-to-r p-2 text-sm text-neutral-900'>
+            <div className='card-instagram dark:card-flame mb-4 rounded-md bg-linear-to-r p-2 text-sm text-white'>
               <div className='flex items-center gap-2'>
                 <ArrowUpCircle className='h-6 min-h-6 w-6 min-w-6 text-purple-600' />
                 <span>{t('Upgrade plan')}</span>
@@ -165,7 +165,7 @@ export function DashboardLayout({ children }: PropsWithChildren<unknown>) {
           <div className='inset-y-0 z-50 flex h-full flex-col'>
             <aside
               className={cn(
-                'flex flex-col rounded-md shadow-sm transition-all duration-300',
+                'flex flex-col rounded-md shadow-sm card-profile transition-all duration-300',
                 collapsed ? 'w-20 items-center p-2' : 'w-64 p-2'
               )}
             >
@@ -187,7 +187,7 @@ export function DashboardLayout({ children }: PropsWithChildren<unknown>) {
               {/* User card */}
               <Card
                 className={cn(
-                  'from-primary-50 to-primary-200 dark:from-primary-100 dark:to-primary-400 mt-4 flex items-center gap-3 bg-linear-to-r p-3 shadow-none transition-all',
+                  'card-linear-grad dark:card-flame mt-4 flex items-center gap-3 bg-linear-to-r p-3 shadow-none transition-all',
                   collapsed ? 'flex-col p-2' : ''
                 )}
               >
@@ -204,10 +204,10 @@ export function DashboardLayout({ children }: PropsWithChildren<unknown>) {
                 />
                 {!collapsed && (
                   <div className='flex w-full flex-1 flex-col'>
-                    <span className='font-medium text-neutral-900'>
+                    <span className='font-medium text-white'>
                       {user.name}
                     </span>
-                    <span className='text-sm text-neutral-600'>
+                    <span className='text-sm text-white'>
                       {user.email}
                     </span>
                   </div>
@@ -216,7 +216,7 @@ export function DashboardLayout({ children }: PropsWithChildren<unknown>) {
 
               {/* Upgrade block */}
               {!collapsed && (
-                <div className='from-primary-100 to-primary-400 dark:from-primary-200 dark:to-primary-600 mt-3 rounded-md bg-linear-to-r p-3 text-sm text-neutral-900'>
+                <div className='card-instagram dark:card-flame mt-3 rounded-md bg-linear-to-r p-3 text-sm text-white'>
                   <div className='flex items-center gap-2'>
                     <ArrowUpCircle className='h-8 w-8 text-purple-600' />
                     <span>{t('Upgrade plan')}</span>

@@ -108,3 +108,30 @@ export const STATUS_COLOR: Record<GetOrderDtoStatus, string> = {
   EXPIRED: 'text-red-600',
   PAUSED: 'text-blue-600',
 };
+
+export const generateColorFromName = (name: string): string => {
+  let hash = 0;
+  for (let i = 0; i < name.length; i++) {
+    hash = (hash << 5) - hash + name.charCodeAt(i);
+    hash = hash & hash;
+  }
+
+  const hue = Math.abs(hash) % 360;
+  const saturation = 60 + (Math.abs(hash) % 20);
+  const lightness = 50 + (Math.abs(hash) % 15);
+
+  return `hsl(${hue}, ${saturation}%, ${lightness}%)`;
+};
+
+export const stringToColour = (str: string) => {
+  let hash = 0;
+  str.split('').forEach(char => {
+    hash = char.charCodeAt(0) + ((hash << 5) - hash)
+  })
+  let colour = '#'
+  for (let i = 0; i < 3; i++) {
+    const value = (hash >> (i * 8)) & 0xff
+    colour += value.toString(16).padStart(2, '0')
+  }
+  return colour
+}

@@ -23,7 +23,7 @@ export function Header() {
             <>
               <StoreSwitcher items={user.stores as GetStoreDto[]} />
               <Link
-                href={DASHBOARD_URL.home()}
+                href={DASHBOARD_URL.settings()}
                 className='flex items-center gap-x-2'
               >
                 <Image

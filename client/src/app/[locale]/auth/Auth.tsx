@@ -26,13 +26,13 @@ export default function Auth() {
   return (
     <div className='grid min-h-screen grid-cols-1 p-0 lg:grid-cols-2'>
       <div
-        className={`bg-shop-white from-primary-100 to-primary-400 dark:from-primary-100 dark:to-primary-400 relative hidden flex-col items-center justify-center overflow-hidden border-none bg-linear-to-r p-6 text-neutral-700 shadow-none lg:flex`}
+        className={`card-linear-grad dark:card-flame relative hidden flex-col items-center justify-center overflow-hidden border-none bg-linear-to-r p-6 shadow-none lg:flex`}
       >
-        <h1 className='max-w-[80%] text-center text-3xl'>
+        <h1 className='max-w-[80%] text-center text-3xl text-white font-semobold'>
           Your smart shopping starts here...
         </h1>
 
-        <p className='text-md mt-6 text-center text-neutral-600'>
+        <p className='text-md mt-6 text-center text-neutral-100 font-semobold'>
           Discover quality products, trusted brands, and great deals — all in
           one place. Enjoy a smooth shopping experience, clear pricing, and
           carefully selected items for everyday life.
@@ -60,13 +60,13 @@ export default function Auth() {
               >
                 <AuthFields form={form} isPending={isPending} isReg={isReg} />
                 {isReg && !isLoadingPlans && (
-                  <div className='from-primary-100 to-primary-400 dark:from-primary-200 dark:to-primary-600 space-y-2 rounded-xl bg-linear-to-r p-3'>
+                  <div className='card-linear-grad space-y-2 rounded-xl p-3'>
                     {free?.features.map((perk) => (
                       <div
                         key={perk}
-                        className='text-primary-600 flex items-center gap-2 text-sm font-medium'
+                        className='text-white flex items-center gap-2 text-sm font-medium'
                       >
-                        <CheckCircle2 className='text-primary-600 size-5 shrink-0' />
+                        <CheckCircle2 className='text-white size-5 shrink-0' />
                         {perk}
                       </div>
                     ))}

@@ -159,17 +159,17 @@ export default function SubscriptionCards({
             key={plan.planId}
             className={`bg-shop-white relative flex flex-col overflow-hidden border-none shadow-none ${
               plan.isPopular
-                ? 'from-primary-200 to-primary-600 bg-linear-to-r'
+                ? 'card-linear-grad dark:card-flame bg-linear-to-r'
                 : ''
             }`}
           >
-            <CardHeader className='text-neutral-900'>
+            <CardHeader className='text-white'>
               <CardTitle
-                className={`flex h-6 items-center justify-between ${plan.isPopular ? 'text-neutral-900' : 'text-shop-primary-text'}`}
+                className={`flex h-6 items-center justify-between text-shop-primary-text`}
               >
                 {getPlanName(plan.planId)}
                 {plan.isPopular && (
-                  <span className='absolute top-0 right-0 flex w-fit items-center justify-center rounded-bl-full bg-emerald-800 px-[10px] py-[4px] text-xs font-semibold text-white'>
+                  <span className='absolute top-0 right-0 flex w-fit items-center justify-center rounded-bl-full bg-primary-800 px-[10px] py-[4px] text-xs font-semibold text-white'>
                     Popular
                   </span>
                 )}

@@ -19,9 +19,9 @@ export const StripeActionBlock: React.FC<StripeActionBlockProps> = ({
   btnDisabled = false,
 }) => {
   return (
-    <div className='from-primary-100 to-primary-400 dark:from-primary-200 dark:to-primary-600 rounded-md border bg-linear-to-r p-4'>
-      <p className='mb-3 text-xl font-semibold text-neutral-900'>{title}</p>
-      <div className='mb-4 text-sm leading-relaxed whitespace-pre-line text-neutral-900'>
+    <div className='card-linear-grad dark:card-flame rounded-md border bg-linear-to-r p-4'>
+      <p className='mb-3 text-xl font-semibold text-white'>{title}</p>
+      <div className='mb-4 text-sm leading-relaxed whitespace-pre-line text-white'>
         {description}
       </div>
       <Button

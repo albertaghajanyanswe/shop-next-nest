@@ -19,8 +19,20 @@
     "last_month_profit": "Прибыль за прошлый месяц",
     "profit_usd": "Прибыль (USD)",
     "last_users": "Последние пользователи",
+    "recent_buyers": "Недавние покупатели",
     "no_users": "В этом магазине пока нет пользователей",
-    "middle_statistics": "статистики"
+    "middle_statistics": "статистики",
+    "profit_overview": "Обзор прибыли",
+    "revenue_trend": "Тренд доходов",
+    "total": "Итого",
+    "sales_by_category": "Продажи по категориям",
+    "share_of_total_revenue": "Доля от общего дохода",
+    "percentage": "Процент",
+    "top_products": "Топ 10 товаров",
+    "product": "Товар",
+    "price": "Цена",
+    "sold": "Продано",
+    "category": "Категория"
   },
   "Footer": {
     "buy_sell_follow": "Покупайте, продавайте и следите за любимыми товарами",
@@ -216,7 +228,10 @@
     "published": "Опубликован",
     "draft": "Черновик",
     "out_of_stock": "Нет в наличии",
-    "in_stock": "В наличии"
+    "in_stock": "В наличии",
+    "sales_history": "История продаж",
+    "categories": "Категории",
+    "products": "Товары"
   },
   "DashboardSettings": {
     "manage_orders_title": "Управление заказами",

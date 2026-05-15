@@ -15,7 +15,7 @@ export function StoreLayout({ children }: PropsWithChildren<unknown>) {
         {/* Desktop sidebar */}
         <div
           className={cn(
-            'fixed inset-y-0 z-50 hidden h-full flex-col overflow-visible transition-all duration-300 ease-in-out lg:flex',
+            'left-sidebar fixed inset-y-0 z-50 hidden h-full flex-col overflow-visible transition-all duration-300 ease-in-out lg:flex',
             collapsed ? 'w-[72px]' : 'w-64'
           )}
         >

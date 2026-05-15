@@ -291,11 +291,17 @@
 } */
 
 .dark {
-  --color-dark-1: #0a0a0f;
+  /* --color-dark-1: #0a0a0f;
   --color-dark-2: #111118;
   --color-dark-3: #1a1a24;
   --color-dark-4: #22222f;
-  --color-dark-5: #2e2e3e;
+  --color-dark-5: #2e2e3e; */
+
+  --color-dark-1: #0f1117;
+  --color-dark-2: #161a23;
+  --color-dark-3: #1d2330;
+  --color-dark-4: #252c3b;
+  --color-dark-5: #313a4d;
 
   /* Redefined for dark theme */
   --color-primary-50: #fff4ed;
@@ -547,3 +553,222 @@
 .thin-scrollbar::-webkit-scrollbar-thumb:hover {
   background-color: rgba(0, 0, 0, 0.4);
 }
+
+/* Main statistics cards*/
+
+.card-green {
+  background:
+    radial-gradient(
+      ellipse 100% 60% at 95% 5%,
+      oklch(0.5 0.2 150 / 0.4) 0%,
+      transparent 70%
+    ),
+    radial-gradient(
+      ellipse 60% 60% at 5% 95%,
+      oklch(0.5 0.2 150 / 0.25) 0%,
+      transparent 60%
+    ),
+    linear-gradient(
+      135deg,
+      oklch(0.5 0.2 150 / 0.15) 0%,
+      oklch(0.98 0.008 150) 100%
+    );
+  border-color: oklch(0.5 0.2 150 / 0.25);
+}
+
+.card-blue {
+  background:
+    radial-gradient(
+      ellipse 100% 60% at 95% 5%,
+      oklch(0.52 0.16 210 / 0.4) 0%,
+      transparent 70%
+    ),
+    radial-gradient(
+      ellipse 60% 60% at 5% 95%,
+      oklch(0.52 0.16 210 / 0.25) 0%,
+      transparent 60%
+    ),
+    linear-gradient(
+      135deg,
+      oklch(0.52 0.16 210 / 0.15) 0%,
+      oklch(0.98 0.008 210) 100%
+    );
+  border-color: oklch(0.52 0.16 210 / 0.25);
+}
+
+.card-yellow {
+  background:
+    radial-gradient(
+      ellipse 100% 60% at 95% 5%,
+      oklch(0.66 0.2 55 / 0.4) 0%,
+      transparent 70%
+    ),
+    radial-gradient(
+      ellipse 60% 60% at 5% 95%,
+      oklch(0.66 0.2 55 / 0.25) 0%,
+      transparent 60%
+    ),
+    linear-gradient(
+      135deg,
+      oklch(0.66 0.2 55 / 0.15) 0%,
+      oklch(0.98 0.008 55) 100%
+    );
+  border-color: oklch(0.66 0.2 55 / 0.25);
+}
+
+.card-lime {
+  background:
+    radial-gradient(
+      ellipse 100% 60% at 95% 5%,
+      oklch(0.64 0.2 85 / 0.4) 0%,
+      transparent 70%
+    ),
+    radial-gradient(
+      ellipse 60% 60% at 5% 95%,
+      oklch(0.64 0.2 85 / 0.25) 0%,
+      transparent 60%
+    ),
+    linear-gradient(
+      135deg,
+      oklch(0.64 0.2 85 / 0.15) 0%,
+      oklch(0.98 0.008 85) 100%
+    );
+  border-color: oklch(0.64 0.2 85 / 0.25);
+}
+
+/* Main statistics cards - Dark mode */
+
+.dark .card-green {
+  background:
+    radial-gradient(
+      ellipse 100% 60% at 95% 5%,
+      oklch(0.5 0.2 150 / 0.5) 0%,
+      transparent 70%
+    ),
+    radial-gradient(
+      ellipse 60% 60% at 5% 95%,
+      oklch(0.5 0.2 150 / 0.3) 0%,
+      transparent 60%
+    ),
+    linear-gradient(
+      135deg,
+      oklch(0.5 0.2 150 / 0.2) 0%,
+      oklch(0.15 0.04 150) 100%
+    );
+  border-color: oklch(0.5 0.2 150 / 0.4);
+}
+
+.dark .card-blue {
+  background:
+    radial-gradient(
+      ellipse 100% 60% at 95% 5%,
+      oklch(0.52 0.16 210 / 0.5) 0%,
+      transparent 70%
+    ),
+    radial-gradient(
+      ellipse 60% 60% at 5% 95%,
+      oklch(0.52 0.16 210 / 0.3) 0%,
+      transparent 60%
+    ),
+    linear-gradient(
+      135deg,
+      oklch(0.52 0.16 210 / 0.2) 0%,
+      oklch(0.15 0.04 210) 100%
+    );
+  border-color: oklch(0.52 0.16 210 / 0.4);
+}
+
+.dark .card-yellow {
+  background:
+    radial-gradient(
+      ellipse 100% 60% at 95% 5%,
+      oklch(0.66 0.2 55 / 0.5) 0%,
+      transparent 70%
+    ),
+    radial-gradient(
+      ellipse 60% 60% at 5% 95%,
+      oklch(0.66 0.2 55 / 0.3) 0%,
+      transparent 60%
+    ),
+    linear-gradient(
+      135deg,
+      oklch(0.66 0.2 55 / 0.2) 0%,
+      oklch(0.16 0.04 55) 100%
+    );
+  border-color: oklch(0.66 0.2 55 / 0.4);
+}
+
+.dark .card-lime {
+  background:
+    radial-gradient(
+      ellipse 100% 60% at 95% 5%,
+      oklch(0.64 0.2 85 / 0.5) 0%,
+      transparent 70%
+    ),
+    radial-gradient(
+      ellipse 60% 60% at 5% 95%,
+      oklch(0.64 0.2 85 / 0.3) 0%,
+      transparent 60%
+    ),
+    linear-gradient(
+      135deg,
+      oklch(0.64 0.2 85 / 0.2) 0%,
+      oklch(0.16 0.04 85) 100%
+    );
+  border-color: oklch(0.64 0.2 85 / 0.4);
+}
+
+/* Linear gradient cards */
+
+.card-linear-grad {
+  background: #134e5e; /* fallback for old browsers */
+  background: -webkit-linear-gradient(
+    to right,
+    #71b280,
+    #134e5e
+  ); /* Chrome 10-25, Safari 5.1-6 */
+  background: linear-gradient(
+    to right,
+    #71b280,
+    #134e5e
+  ); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+}
+
+.dark .card-linear-grad {
+  background: #8e0e00; /* fallback for old browsers */
+  background: -webkit-linear-gradient(
+    to right,
+    #1f1c18,
+    #8e0e00
+  ); /* Chrome 10-25, Safari 5.1-6 */
+  background: linear-gradient(
+    to right,
+    #1f1c18,
+    #8e0e00
+  ); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+}
+
+.card-profile {
+  box-shadow:
+    0 1px 3px var(--color-primary-700),
+    0 4px 12px var(--color-primary-700),
+    0 0 0 1px var(--color-primary-700);
+}
+
+.card-instagram {
+  background: #833ab4; /* fallback for old browsers */
+  background: -webkit-linear-gradient(
+    to right,
+    #fcb045,
+    #fd1d1d,
+    #833ab4
+  ); /* Chrome 10-25, Safari 5.1-6 */
+  background: linear-gradient(
+    to right,
+    #fcb045,
+    #fd1d1d,
+    #833ab4
+  ); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+}
+
+/* https://uigradients.com */
