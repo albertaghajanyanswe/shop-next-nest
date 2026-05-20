@@ -15,6 +15,7 @@ import QueryString from 'qs';
 import { getTranslations } from 'next-intl/server';
 import { LanguageSwitcher } from '@/components/customComponents/LanguageSwitcher';
 import { ThemeSwitcher } from '@/components/customComponents/ThemeSwitcher';
+import { NewsletterSubscription } from './NewsletterSubscription';
 
 export const revalidate = 300;
 
@@ -129,12 +130,7 @@ export default async function Footer() {
             <p className='text-shop-muted-text-6 mb-4 text-sm'>
               {t('subscribe_desc')}
             </p>
-            <div className='flex flex-col space-y-4'>
-              <Input placeholder={t('enter_email')} />
-              <Button variant='default' size='lg' disabled>
-                {t('subscribe')}
-              </Button>
-            </div>
+            <NewsletterSubscription />
           </div>
         </div>
       </div>

@@ -529,6 +529,19 @@ enum EnumRole {
   SUPER_ADMIN
 }
 
+model EmailSubscription {
+  id        String   @id @default(cuid())
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  email String @unique
+  isActive Boolean @default(true) @map("is_active")
+
+  @@map("email_subscription")
+  @@index([email])
+  @@index([isActive])
+}
+
 enum EnumProductIntendedFor {
   FREE
   SALE

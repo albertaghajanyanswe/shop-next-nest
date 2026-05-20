@@ -14,6 +14,25 @@ class MailerService {
     return res;
   }
 
+  async subscribe(data: { email: string }) {
+    const res = await axiosClassic({
+      url: API_URL.mailer(`/subscribe`),
+      method: 'POST',
+      data,
+    });
+
+    return res;
+  }
+
+  async unsubscribe(email: string) {
+    const res = await axiosClassic({
+      url: API_URL.mailer(`/unsubscribe/${email}`),
+      method: 'DELETE',
+    });
+
+    return res;
+  }
+
   async forgotPassword(email: string) {
     const res = await axiosClassic({
       url: API_URL.auth(`/forgot-password`),

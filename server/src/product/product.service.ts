@@ -15,6 +15,7 @@ import { QueryPayloadBuilderService } from 'src/queryPayloadBuilder/QueryPayload
 import { CloudinaryFileService } from 'src/cloudinary-file/cloudinary-file.service';
 import { GetSubscriptionsDto } from 'src/subscription/dto/subscription.dto';
 import { EnumSubscriptionStatus } from '@prisma/client';
+import { SubscriptionService } from 'src/mailer/subscription.service';
 
 @Injectable()
 export class ProductService {
@@ -24,6 +25,7 @@ export class ProductService {
     private readonly prisma: PrismaService,
     private readonly queryBuilderService: QueryPayloadBuilderService,
     private readonly cloudinaryFileService: CloudinaryFileService,
+    private readonly subscriptionService: SubscriptionService,
   ) {}
 
   getDefaultWhere() {
@@ -264,7 +266,7 @@ export class ProductService {
   }
 
   async create(storeId: string, userId: string, dto: ProductDto) {
-    return this.prisma.product.create({
+    const product = await this.prisma.product.create({
       data: {
         title: dto.title,
         description: dto.description,
@@ -289,7 +291,20 @@ export class ProductService {
             },
           }),
       },
+      include: {
+        store: true,
+        category: true,
+        brand: true,
+      },
     });
+
+    if (product.isPublished) {
+      this.subscriptionService.sendNewProductNotification(product).catch((err) => {
+        this.logger.error('Failed to send product notifications:', err);
+      });
+    }
+
+    return product;
   }
 
   async update(id: string, dto: ProductDto) {

@@ -7,7 +7,6 @@
     "placeholder": "Search products...",
     "search": "Search products"
   },
-
   "CreateStoreModal": {
     "title": "Create Store",
     "description": "Create a new store to start selling your products.",
@@ -42,7 +41,9 @@
     "subscribe_desc": "Subscribe to our newsletter to receive updates and exclusive offers.",
     "enter_email": "Enter your email",
     "subscribe": "Subscribe",
-    "all_rights": "All rights reserved."
+    "all_rights": "All rights reserved.",
+    "subscribing": "Subscribing...",
+    "subscribe_error": "Failed to subscribe"
   },
   "FooterLinks": {
     "How It Works": "How It Works",

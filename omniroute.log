@@ -1,0 +1,324 @@
+  [2m📋 Loaded env from /home/albert/Desktop/GIT/swe-repo/shop-next-nest/.env[0m
+
+[36m   ____                  _ ____              _
+   / __ \                (_) __ \            | |
+  | |  | |_ __ ___  _ __ _| |__) |___  _   _| |_ ___
+  | |  | | '_ ` _ \| '_ \ |  _  // _ \| | | | __/ _ \
+  | |__| | | | | | | | | | | | \ \ (_) | |_| | ||  __/
+   \____/|_| |_| |_|_| |_|_|_|  \_\___/ \__,_|\__\___|
+[0m
+  [2m⏳ Starting server...[0m
+
+▲ Next.js 16.2.2
+- Local:         http://localhost:20128
+- Network:       http://0.0.0.0:20128
+✓ Ready in 0ms
+
+  [32m✔ OmniRoute is running![0m
+
+  [1m  Dashboard:[0m  http://localhost:20128
+  [1m  API Base:[0m   http://localhost:20128/v1
+
+  [2m  Point your CLI tool (Cursor, Cline, Codex) to:[0m
+  [33m  http://localhost:20128/v1[0m
+
+  [2m  Press Ctrl+C to stop[0m
+  
+[CREDENTIALS] No external credentials file found, using defaults.
+[DB] SQLite database ready: /home/albert/.omniroute/storage.sqlite
+[STARTUP] Global fetch proxy patch initialized
+[Shutdown] Graceful shutdown handlers registered.
+[STARTUP] Quota cache background refresh started
+[ProviderLimitsSync] Scheduler started — interval: 70m
+[STARTUP] Provider limits sync scheduler started
+[COMPLIANCE] Audit log table initialized
+[HealthCheck] Starting proactive token health-check (tick every 60s)
+[ModelSync] Scheduler started — interval: 24h
+[proxyLogger] Loaded 200 proxy logs from SQLite
+[ModelSync] Scheduler started — interval: 24h
+[LocalHealthCheck] Starting local provider health check (initial delay 15s)
+[ModelSync] No connections with autoSync enabled — skipping cycle
+[ModelSync] No connections with autoSync enabled — skipping cycle
+[HealthCheck] Refreshing kiro/26ac5741-aadc-4156-8d26-79965e39c5d8 (token expiring soon)
+[HealthCheck] [TOKEN_REFRESH] Successfully refreshed Kiro AWS token
+[HealthCheck] ✓ kiro/26ac5741-aadc-4156-8d26-79965e39c5d8 refreshed
+[DB] Backup created: /home/albert/.omniroute/db_backups/db_2026-05-20T15-50-59-844Z_pre-write.sqlite (4628480 bytes)
+[SSE] Translators initialized for /v1/messages
+{"level":30,"time":"2026-05-20T15:54:23.338Z","service":"omniroute","module":"sse","tag":"HTTP","method":"POST","path":"/v1/v1/messages | kr/claude-haiku-4.5 | 1 msgs","msg":"📥 POST /v1/v1/messages | kr/claude-haiku-4.5 | 1 msgs"}
+{"level":30,"time":"2026-05-20T15:54:23.341Z","service":"omniroute","module":"sse","tag":"ROUTING","msg":"kr/claude-haiku-4.5 → kiro/claude-haiku-4.5"}
+{"level":30,"time":"2026-05-20T15:54:23.343Z","service":"omniroute","module":"sse","tag":"AUTH","msg":"Using kiro account: bd6ffd9d..."}
+{"level":30,"time":"2026-05-20T15:54:23.358Z","service":"omniroute","module":"sse","tag":"HTTP","method":"POST","path":"/v1/v1/messages | kr/claude-haiku-4.5 | 1 msgs | 26 tools","msg":"📥 POST /v1/v1/messages | kr/claude-haiku-4.5 | 1 msgs | 26 tools"}
+{"level":30,"time":"2026-05-20T15:54:23.359Z","service":"omniroute","module":"sse","tag":"ROUTING","msg":"kr/claude-haiku-4.5 → kiro/claude-haiku-4.5"}
+{"level":30,"time":"2026-05-20T15:54:23.359Z","service":"omniroute","module":"sse","tag":"AUTH","msg":"Using kiro account: bd6ffd9d..."}
+[19:54:25] 📊 [32m[USAGE] KIRO | in=4663 | out=19 | account=bd6ffd9d...[0m
+[19:54:25] 🌊 [STREAM] KIRO | claude-haiku-4.5 | 1948ms | complete
+[19:54:27] 📊 [32m[USAGE] KIRO | in=32927 | out=127 | account=bd6ffd9d...[0m
+[19:54:27] 🌊 [STREAM] KIRO | claude-haiku-4.5 | 4630ms | complete
+{"level":30,"time":"2026-05-20T15:54:28.093Z","service":"omniroute","module":"sse","tag":"HTTP","method":"POST","path":"/v1/v1/messages | kr/claude-haiku-4.5 | 3 msgs | 26 tools","msg":"📥 POST /v1/v1/messages | kr/claude-haiku-4.5 | 3 msgs | 26 tools"}
+{"level":30,"time":"2026-05-20T15:54:28.094Z","service":"omniroute","module":"sse","tag":"ROUTING","msg":"kr/claude-haiku-4.5 → kiro/claude-haiku-4.5"}
+{"level":30,"time":"2026-05-20T15:54:28.095Z","service":"omniroute","module":"sse","tag":"AUTH","msg":"Using kiro account: bd6ffd9d..."}
+[19:54:30] 📊 [32m[USAGE] KIRO | in=33202 | out=17 | account=bd6ffd9d...[0m
+[19:54:30] 🌊 [STREAM] KIRO | claude-haiku-4.5 | 2767ms | complete
+{"level":30,"time":"2026-05-20T15:54:30.881Z","service":"omniroute","module":"sse","tag":"HTTP","method":"POST","path":"/v1/v1/messages | kr/claude-haiku-4.5 | 5 msgs | 26 tools","msg":"📥 POST /v1/v1/messages | kr/claude-haiku-4.5 | 5 msgs | 26 tools"}
+{"level":30,"time":"2026-05-20T15:54:30.882Z","service":"omniroute","module":"sse","tag":"ROUTING","msg":"kr/claude-haiku-4.5 → kiro/claude-haiku-4.5"}
+{"level":30,"time":"2026-05-20T15:54:30.882Z","service":"omniroute","module":"sse","tag":"AUTH","msg":"Using kiro account: bd6ffd9d..."}
+[19:54:33] 📊 [32m[USAGE] KIRO | in=33367 | out=11 | account=bd6ffd9d...[0m
+[19:54:33] 🌊 [STREAM] KIRO | claude-haiku-4.5 | 2383ms | complete
+{"level":30,"time":"2026-05-20T15:54:33.288Z","service":"omniroute","module":"sse","tag":"HTTP","method":"POST","path":"/v1/v1/messages | kr/claude-haiku-4.5 | 7 msgs | 26 tools","msg":"📥 POST /v1/v1/messages | kr/claude-haiku-4.5 | 7 msgs | 26 tools"}
+{"level":30,"time":"2026-05-20T15:54:33.289Z","service":"omniroute","module":"sse","tag":"ROUTING","msg":"kr/claude-haiku-4.5 → kiro/claude-haiku-4.5"}
+{"level":30,"time":"2026-05-20T15:54:33.290Z","service":"omniroute","module":"sse","tag":"AUTH","msg":"Using kiro account: bd6ffd9d..."}
+[19:54:35] 📊 [32m[USAGE] KIRO | in=34208 | out=19 | account=bd6ffd9d...[0m
+[19:54:35] 🌊 [STREAM] KIRO | claude-haiku-4.5 | 2706ms | complete
+{"level":30,"time":"2026-05-20T15:54:36.028Z","service":"omniroute","module":"sse","tag":"HTTP","method":"POST","path":"/v1/v1/messages | kr/claude-haiku-4.5 | 9 msgs | 26 tools","msg":"📥 POST /v1/v1/messages | kr/claude-haiku-4.5 | 9 msgs | 26 tools"}
+{"level":30,"time":"2026-05-20T15:54:36.029Z","service":"omniroute","module":"sse","tag":"ROUTING","msg":"kr/claude-haiku-4.5 → kiro/claude-haiku-4.5"}
+{"level":30,"time":"2026-05-20T15:54:36.029Z","service":"omniroute","module":"sse","tag":"AUTH","msg":"Using kiro account: bd6ffd9d..."}
+[19:54:39] 📊 [32m[USAGE] KIRO | in=37999 | out=55 | account=bd6ffd9d...[0m
+[19:54:39] 🌊 [STREAM] KIRO | claude-haiku-4.5 | 3486ms | complete
+{"level":30,"time":"2026-05-20T15:54:39.548Z","service":"omniroute","module":"sse","tag":"HTTP","method":"POST","path":"/v1/v1/messages | kr/claude-haiku-4.5 | 11 msgs | 26 tools","msg":"📥 POST /v1/v1/messages | kr/claude-haiku-4.5 | 11 msgs | 26 tools"}
+{"level":30,"time":"2026-05-20T15:54:39.549Z","service":"omniroute","module":"sse","tag":"ROUTING","msg":"kr/claude-haiku-4.5 → kiro/claude-haiku-4.5"}
+{"level":30,"time":"2026-05-20T15:54:39.549Z","service":"omniroute","module":"sse","tag":"AUTH","msg":"Using kiro account: bd6ffd9d..."}
+[19:54:42] 📊 [32m[USAGE] KIRO | in=38519 | out=24 | account=bd6ffd9d...[0m
+[19:54:42] 🌊 [STREAM] KIRO | claude-haiku-4.5 | 2784ms | complete
+{"level":30,"time":"2026-05-20T15:54:42.369Z","service":"omniroute","module":"sse","tag":"HTTP","method":"POST","path":"/v1/v1/messages | kr/claude-haiku-4.5 | 13 msgs | 26 tools","msg":"📥 POST /v1/v1/messages | kr/claude-haiku-4.5 | 13 msgs | 26 tools"}
+{"level":30,"time":"2026-05-20T15:54:42.370Z","service":"omniroute","module":"sse","tag":"ROUTING","msg":"kr/claude-haiku-4.5 → kiro/claude-haiku-4.5"}
+{"level":30,"time":"2026-05-20T15:54:42.370Z","service":"omniroute","module":"sse","tag":"AUTH","msg":"Using kiro account: bd6ffd9d..."}
+[19:54:45] 📊 [32m[USAGE] KIRO | in=44176 | out=23 | account=bd6ffd9d...[0m
+[19:54:45] 🌊 [STREAM] KIRO | claude-haiku-4.5 | 3285ms | complete
+{"level":30,"time":"2026-05-20T15:54:45.705Z","service":"omniroute","module":"sse","tag":"HTTP","method":"POST","path":"/v1/v1/messages | kr/claude-haiku-4.5 | 15 msgs | 26 tools","msg":"📥 POST /v1/v1/messages | kr/claude-haiku-4.5 | 15 msgs | 26 tools"}
+{"level":30,"time":"2026-05-20T15:54:45.706Z","service":"omniroute","module":"sse","tag":"ROUTING","msg":"kr/claude-haiku-4.5 → kiro/claude-haiku-4.5"}
+{"level":30,"time":"2026-05-20T15:54:45.707Z","service":"omniroute","module":"sse","tag":"AUTH","msg":"Using kiro account: bd6ffd9d..."}
+[19:54:48] 📊 [32m[USAGE] KIRO | in=44483 | out=10 | account=bd6ffd9d...[0m
+[19:54:48] 🌊 [STREAM] KIRO | claude-haiku-4.5 | 2924ms | complete
+{"level":30,"time":"2026-05-20T15:54:48.660Z","service":"omniroute","module":"sse","tag":"HTTP","method":"POST","path":"/v1/v1/messages | kr/claude-haiku-4.5 | 17 msgs | 26 tools","msg":"📥 POST /v1/v1/messages | kr/claude-haiku-4.5 | 17 msgs | 26 tools"}
+{"level":30,"time":"2026-05-20T15:54:48.661Z","service":"omniroute","module":"sse","tag":"ROUTING","msg":"kr/claude-haiku-4.5 → kiro/claude-haiku-4.5"}
+{"level":30,"time":"2026-05-20T15:54:48.661Z","service":"omniroute","module":"sse","tag":"AUTH","msg":"Using kiro account: bd6ffd9d..."}
+[19:54:51] 📊 [32m[USAGE] KIRO | in=44710 | out=9 | account=bd6ffd9d...[0m
+[19:54:51] 🌊 [STREAM] KIRO | claude-haiku-4.5 | 2391ms | complete
+{"level":30,"time":"2026-05-20T15:54:51.087Z","service":"omniroute","module":"sse","tag":"HTTP","method":"POST","path":"/v1/v1/messages | kr/claude-haiku-4.5 | 19 msgs | 26 tools","msg":"📥 POST /v1/v1/messages | kr/claude-haiku-4.5 | 19 msgs | 26 tools"}
+{"level":30,"time":"2026-05-20T15:54:51.087Z","service":"omniroute","module":"sse","tag":"ROUTING","msg":"kr/claude-haiku-4.5 → kiro/claude-haiku-4.5"}
+{"level":30,"time":"2026-05-20T15:54:51.088Z","service":"omniroute","module":"sse","tag":"AUTH","msg":"Using kiro account: bd6ffd9d..."}
+[19:54:55] 📊 [32m[USAGE] KIRO | in=45951 | out=151 | account=bd6ffd9d...[0m
+[19:54:55] 🌊 [STREAM] KIRO | claude-haiku-4.5 | 4182ms | complete
+{"level":30,"time":"2026-05-20T15:54:55.300Z","service":"omniroute","module":"sse","tag":"HTTP","method":"POST","path":"/v1/v1/messages | kr/claude-haiku-4.5 | 21 msgs | 26 tools","msg":"📥 POST /v1/v1/messages | kr/claude-haiku-4.5 | 21 msgs | 26 tools"}
+{"level":30,"time":"2026-05-20T15:54:55.301Z","service":"omniroute","module":"sse","tag":"ROUTING","msg":"kr/claude-haiku-4.5 → kiro/claude-haiku-4.5"}
+{"level":30,"time":"2026-05-20T15:54:55.301Z","service":"omniroute","module":"sse","tag":"AUTH","msg":"Using kiro account: bd6ffd9d..."}
+[19:54:58] 📊 [32m[USAGE] KIRO | in=46421 | out=13 | account=bd6ffd9d...[0m
+[19:54:58] 🌊 [STREAM] KIRO | claude-haiku-4.5 | 3452ms | complete
+[HealthCheck] Refreshing kiro/bd6ffd9d-aa20-4a21-addc-7a5d50df8617 (interval: 60min)
+[HealthCheck] [TOKEN_REFRESH] Successfully refreshed Kiro AWS token
+[HealthCheck] ✓ kiro/bd6ffd9d-aa20-4a21-addc-7a5d50df8617 refreshed
+{"level":30,"time":"2026-05-20T15:55:09.374Z","service":"omniroute","module":"sse","tag":"HTTP","method":"POST","path":"/v1/v1/messages | kr/claude-haiku-4.5 | 23 msgs | 26 tools","msg":"📥 POST /v1/v1/messages | kr/claude-haiku-4.5 | 23 msgs | 26 tools"}
+{"level":30,"time":"2026-05-20T15:55:09.375Z","service":"omniroute","module":"sse","tag":"ROUTING","msg":"kr/claude-haiku-4.5 → kiro/claude-haiku-4.5"}
+{"level":30,"time":"2026-05-20T15:55:09.375Z","service":"omniroute","module":"sse","tag":"AUTH","msg":"Using kiro account: bd6ffd9d..."}
+[19:55:12] 📊 [32m[USAGE] KIRO | in=46643 | out=12 | account=bd6ffd9d...[0m
+[19:55:12] 🌊 [STREAM] KIRO | claude-haiku-4.5 | 3461ms | complete
+{"level":30,"time":"2026-05-20T15:55:14.011Z","service":"omniroute","module":"sse","tag":"HTTP","method":"POST","path":"/v1/v1/messages | kr/claude-haiku-4.5 | 25 msgs | 26 tools","msg":"📥 POST /v1/v1/messages | kr/claude-haiku-4.5 | 25 msgs | 26 tools"}
+{"level":30,"time":"2026-05-20T15:55:14.011Z","service":"omniroute","module":"sse","tag":"ROUTING","msg":"kr/claude-haiku-4.5 → kiro/claude-haiku-4.5"}
+{"level":30,"time":"2026-05-20T15:55:14.012Z","service":"omniroute","module":"sse","tag":"AUTH","msg":"Using kiro account: bd6ffd9d..."}
+[19:55:16] 📊 [32m[USAGE] KIRO | in=46901 | out=9 | account=bd6ffd9d...[0m
+[19:55:16] 🌊 [STREAM] KIRO | claude-haiku-4.5 | 2851ms | complete
+{"level":30,"time":"2026-05-20T15:55:18.647Z","service":"omniroute","module":"sse","tag":"HTTP","method":"POST","path":"/v1/v1/messages | kr/claude-haiku-4.5 | 27 msgs | 26 tools","msg":"📥 POST /v1/v1/messages | kr/claude-haiku-4.5 | 27 msgs | 26 tools"}
+{"level":30,"time":"2026-05-20T15:55:18.648Z","service":"omniroute","module":"sse","tag":"ROUTING","msg":"kr/claude-haiku-4.5 → kiro/claude-haiku-4.5"}
+{"level":30,"time":"2026-05-20T15:55:18.648Z","service":"omniroute","module":"sse","tag":"AUTH","msg":"Using kiro account: bd6ffd9d..."}
+[19:55:21] 📊 [32m[USAGE] KIRO | in=47243 | out=29 | account=bd6ffd9d...[0m
+[19:55:21] 🌊 [STREAM] KIRO | claude-haiku-4.5 | 3116ms | complete
+{"level":30,"time":"2026-05-20T15:55:21.842Z","service":"omniroute","module":"sse","tag":"HTTP","method":"POST","path":"/v1/v1/messages | kr/claude-haiku-4.5 | 29 msgs | 26 tools","msg":"📥 POST /v1/v1/messages | kr/claude-haiku-4.5 | 29 msgs | 26 tools"}
+{"level":30,"time":"2026-05-20T15:55:21.843Z","service":"omniroute","module":"sse","tag":"ROUTING","msg":"kr/claude-haiku-4.5 → kiro/claude-haiku-4.5"}
+{"level":30,"time":"2026-05-20T15:55:21.844Z","service":"omniroute","module":"sse","tag":"AUTH","msg":"Using kiro account: bd6ffd9d..."}
+[19:55:24] 📊 [32m[USAGE] KIRO | in=47604 | out=16 | account=bd6ffd9d...[0m
+[19:55:24] 🌊 [STREAM] KIRO | claude-haiku-4.5 | 3044ms | complete
+{"level":30,"time":"2026-05-20T15:55:24.925Z","service":"omniroute","module":"sse","tag":"HTTP","method":"POST","path":"/v1/v1/messages | kr/claude-haiku-4.5 | 31 msgs | 26 tools","msg":"📥 POST /v1/v1/messages | kr/claude-haiku-4.5 | 31 msgs | 26 tools"}
+{"level":30,"time":"2026-05-20T15:55:24.926Z","service":"omniroute","module":"sse","tag":"ROUTING","msg":"kr/claude-haiku-4.5 → kiro/claude-haiku-4.5"}
+{"level":30,"time":"2026-05-20T15:55:24.926Z","service":"omniroute","module":"sse","tag":"AUTH","msg":"Using kiro account: bd6ffd9d..."}
+[19:55:27] 📊 [32m[USAGE] KIRO | in=47992 | out=21 | account=bd6ffd9d...[0m
+[19:55:27] 🌊 [STREAM] KIRO | claude-haiku-4.5 | 2733ms | complete
+{"level":30,"time":"2026-05-20T15:55:27.684Z","service":"omniroute","module":"sse","tag":"HTTP","method":"POST","path":"/v1/v1/messages | kr/claude-haiku-4.5 | 33 msgs | 26 tools","msg":"📥 POST /v1/v1/messages | kr/claude-haiku-4.5 | 33 msgs | 26 tools"}
+{"level":30,"time":"2026-05-20T15:55:27.685Z","service":"omniroute","module":"sse","tag":"ROUTING","msg":"kr/claude-haiku-4.5 → kiro/claude-haiku-4.5"}
+{"level":30,"time":"2026-05-20T15:55:27.685Z","service":"omniroute","module":"sse","tag":"AUTH","msg":"Using kiro account: bd6ffd9d..."}
+[19:55:30] 📊 [32m[USAGE] KIRO | in=48295 | out=17 | account=bd6ffd9d...[0m
+[19:55:30] 🌊 [STREAM] KIRO | claude-haiku-4.5 | 2545ms | complete
+{"level":30,"time":"2026-05-20T15:55:30.252Z","service":"omniroute","module":"sse","tag":"HTTP","method":"POST","path":"/v1/v1/messages | kr/claude-haiku-4.5 | 35 msgs | 26 tools","msg":"📥 POST /v1/v1/messages | kr/claude-haiku-4.5 | 35 msgs | 26 tools"}
+{"level":30,"time":"2026-05-20T15:55:30.253Z","service":"omniroute","module":"sse","tag":"ROUTING","msg":"kr/claude-haiku-4.5 → kiro/claude-haiku-4.5"}
+{"level":30,"time":"2026-05-20T15:55:30.253Z","service":"omniroute","module":"sse","tag":"AUTH","msg":"Using kiro account: bd6ffd9d..."}
+[19:55:37] 📊 [32m[USAGE] KIRO | in=49796 | out=16 | account=bd6ffd9d...[0m
+[19:55:37] 🌊 [STREAM] KIRO | claude-haiku-4.5 | 6918ms | complete
+{"level":30,"time":"2026-05-20T15:55:40.882Z","service":"omniroute","module":"sse","tag":"HTTP","method":"POST","path":"/v1/v1/messages | kr/claude-haiku-4.5 | 37 msgs | 26 tools","msg":"📥 POST /v1/v1/messages | kr/claude-haiku-4.5 | 37 msgs | 26 tools"}
+{"level":30,"time":"2026-05-20T15:55:40.883Z","service":"omniroute","module":"sse","tag":"ROUTING","msg":"kr/claude-haiku-4.5 → kiro/claude-haiku-4.5"}
+{"level":30,"time":"2026-05-20T15:55:40.884Z","service":"omniroute","module":"sse","tag":"AUTH","msg":"Using kiro account: bd6ffd9d..."}
+[19:55:43] 📊 [32m[USAGE] KIRO | in=50086 | out=9 | account=bd6ffd9d...[0m
+[19:55:43] 🌊 [STREAM] KIRO | claude-haiku-4.5 | 3103ms | complete
+{"level":30,"time":"2026-05-20T15:57:13.528Z","service":"omniroute","module":"sse","tag":"HTTP","method":"POST","path":"/v1/v1/messages | kr/claude-haiku-4.5 | 39 msgs | 26 tools","msg":"📥 POST /v1/v1/messages | kr/claude-haiku-4.5 | 39 msgs | 26 tools"}
+{"level":30,"time":"2026-05-20T15:57:13.528Z","service":"omniroute","module":"sse","tag":"ROUTING","msg":"kr/claude-haiku-4.5 → kiro/claude-haiku-4.5"}
+{"level":30,"time":"2026-05-20T15:57:13.529Z","service":"omniroute","module":"sse","tag":"AUTH","msg":"Using kiro account: bd6ffd9d..."}
+[19:57:22] 📊 [32m[USAGE] KIRO | in=51377 | out=10 | account=bd6ffd9d...[0m
+[19:57:22] 🌊 [STREAM] KIRO | claude-haiku-4.5 | 8504ms | complete
+{"level":30,"time":"2026-05-20T15:57:23.750Z","service":"omniroute","module":"sse","tag":"HTTP","method":"POST","path":"/v1/v1/messages | kr/claude-haiku-4.5 | 41 msgs | 26 tools","msg":"📥 POST /v1/v1/messages | kr/claude-haiku-4.5 | 41 msgs | 26 tools"}
+{"level":30,"time":"2026-05-20T15:57:23.750Z","service":"omniroute","module":"sse","tag":"ROUTING","msg":"kr/claude-haiku-4.5 → kiro/claude-haiku-4.5"}
+{"level":30,"time":"2026-05-20T15:57:23.751Z","service":"omniroute","module":"sse","tag":"AUTH","msg":"Using kiro account: bd6ffd9d..."}
+[19:57:29] 📊 [32m[USAGE] KIRO | in=52126 | out=17 | account=bd6ffd9d...[0m
+[19:57:29] 🌊 [STREAM] KIRO | claude-haiku-4.5 | 5388ms | complete
+{"level":30,"time":"2026-05-20T15:59:18.900Z","service":"omniroute","module":"sse","tag":"HTTP","method":"POST","path":"/v1/v1/messages | kr/claude-haiku-4.5 | 43 msgs | 26 tools","msg":"📥 POST /v1/v1/messages | kr/claude-haiku-4.5 | 43 msgs | 26 tools"}
+{"level":30,"time":"2026-05-20T15:59:18.901Z","service":"omniroute","module":"sse","tag":"ROUTING","msg":"kr/claude-haiku-4.5 → kiro/claude-haiku-4.5"}
+{"level":30,"time":"2026-05-20T15:59:18.902Z","service":"omniroute","module":"sse","tag":"AUTH","msg":"Using kiro account: bd6ffd9d..."}
+[19:59:23] 📊 [32m[USAGE] KIRO | in=52667 | out=18 | account=bd6ffd9d...[0m
+[19:59:23] 🌊 [STREAM] KIRO | claude-haiku-4.5 | 4514ms | complete
+{"level":30,"time":"2026-05-20T15:59:26.460Z","service":"omniroute","module":"sse","tag":"HTTP","method":"POST","path":"/v1/v1/messages | kr/claude-haiku-4.5 | 45 msgs | 26 tools","msg":"📥 POST /v1/v1/messages | kr/claude-haiku-4.5 | 45 msgs | 26 tools"}
+{"level":30,"time":"2026-05-20T15:59:26.461Z","service":"omniroute","module":"sse","tag":"ROUTING","msg":"kr/claude-haiku-4.5 → kiro/claude-haiku-4.5"}
+{"level":30,"time":"2026-05-20T15:59:26.462Z","service":"omniroute","module":"sse","tag":"AUTH","msg":"Using kiro account: bd6ffd9d..."}
+[19:59:29] 📊 [32m[USAGE] KIRO | in=52888 | out=28 | account=bd6ffd9d...[0m
+[19:59:29] 🌊 [STREAM] KIRO | claude-haiku-4.5 | 2946ms | complete
+{"level":30,"time":"2026-05-20T15:59:29.468Z","service":"omniroute","module":"sse","tag":"HTTP","method":"POST","path":"/v1/v1/messages | kr/claude-haiku-4.5 | 47 msgs | 26 tools","msg":"📥 POST /v1/v1/messages | kr/claude-haiku-4.5 | 47 msgs | 26 tools"}
+{"level":30,"time":"2026-05-20T15:59:29.471Z","service":"omniroute","module":"sse","tag":"ROUTING","msg":"kr/claude-haiku-4.5 → kiro/claude-haiku-4.5"}
+{"level":30,"time":"2026-05-20T15:59:29.471Z","service":"omniroute","module":"sse","tag":"AUTH","msg":"Using kiro account: bd6ffd9d..."}
+[19:59:32] 📊 [32m[USAGE] KIRO | in=53153 | out=16 | account=bd6ffd9d...[0m
+[19:59:32] 🌊 [STREAM] KIRO | claude-haiku-4.5 | 3135ms | complete
+{"level":30,"time":"2026-05-20T15:59:32.637Z","service":"omniroute","module":"sse","tag":"HTTP","method":"POST","path":"/v1/v1/messages | kr/claude-haiku-4.5 | 49 msgs | 26 tools","msg":"📥 POST /v1/v1/messages | kr/claude-haiku-4.5 | 49 msgs | 26 tools"}
+{"level":30,"time":"2026-05-20T15:59:32.638Z","service":"omniroute","module":"sse","tag":"ROUTING","msg":"kr/claude-haiku-4.5 → kiro/claude-haiku-4.5"}
+{"level":30,"time":"2026-05-20T15:59:32.638Z","service":"omniroute","module":"sse","tag":"AUTH","msg":"Using kiro account: bd6ffd9d..."}
+[19:59:35] 📊 [32m[USAGE] KIRO | in=54330 | out=17 | account=bd6ffd9d...[0m
+[19:59:35] 🌊 [STREAM] KIRO | claude-haiku-4.5 | 3181ms | complete
+{"level":30,"time":"2026-05-20T15:59:35.853Z","service":"omniroute","module":"sse","tag":"HTTP","method":"POST","path":"/v1/v1/messages | kr/claude-haiku-4.5 | 51 msgs | 26 tools","msg":"📥 POST /v1/v1/messages | kr/claude-haiku-4.5 | 51 msgs | 26 tools"}
+{"level":30,"time":"2026-05-20T15:59:35.854Z","service":"omniroute","module":"sse","tag":"ROUTING","msg":"kr/claude-haiku-4.5 → kiro/claude-haiku-4.5"}
+{"level":30,"time":"2026-05-20T15:59:35.854Z","service":"omniroute","module":"sse","tag":"AUTH","msg":"Using kiro account: bd6ffd9d..."}
+[19:59:39] 📊 [32m[USAGE] KIRO | in=55486 | out=12 | account=bd6ffd9d...[0m
+[19:59:39] 🌊 [STREAM] KIRO | claude-haiku-4.5 | 3229ms | complete
+{"level":30,"time":"2026-05-20T15:59:39.116Z","service":"omniroute","module":"sse","tag":"HTTP","method":"POST","path":"/v1/v1/messages | kr/claude-haiku-4.5 | 53 msgs | 26 tools","msg":"📥 POST /v1/v1/messages | kr/claude-haiku-4.5 | 53 msgs | 26 tools"}
+{"level":30,"time":"2026-05-20T15:59:39.116Z","service":"omniroute","module":"sse","tag":"ROUTING","msg":"kr/claude-haiku-4.5 → kiro/claude-haiku-4.5"}
+{"level":30,"time":"2026-05-20T15:59:39.117Z","service":"omniroute","module":"sse","tag":"AUTH","msg":"Using kiro account: bd6ffd9d..."}
+[19:59:42] 📊 [32m[USAGE] KIRO | in=55681 | out=6 | account=bd6ffd9d...[0m
+[19:59:42] 🌊 [STREAM] KIRO | claude-haiku-4.5 | 3572ms | complete
+{"level":30,"time":"2026-05-20T15:59:42.718Z","service":"omniroute","module":"sse","tag":"HTTP","method":"POST","path":"/v1/v1/messages | kr/claude-haiku-4.5 | 55 msgs | 26 tools","msg":"📥 POST /v1/v1/messages | kr/claude-haiku-4.5 | 55 msgs | 26 tools"}
+{"level":30,"time":"2026-05-20T15:59:42.719Z","service":"omniroute","module":"sse","tag":"ROUTING","msg":"kr/claude-haiku-4.5 → kiro/claude-haiku-4.5"}
+{"level":30,"time":"2026-05-20T15:59:42.720Z","service":"omniroute","module":"sse","tag":"AUTH","msg":"Using kiro account: bd6ffd9d..."}
+[19:59:47] 📊 [32m[USAGE] KIRO | in=56756 | out=48 | account=bd6ffd9d...[0m
+[19:59:47] 🌊 [STREAM] KIRO | claude-haiku-4.5 | 4870ms | complete
+{"level":30,"time":"2026-05-20T15:59:47.615Z","service":"omniroute","module":"sse","tag":"HTTP","method":"POST","path":"/v1/v1/messages | kr/claude-haiku-4.5 | 57 msgs | 26 tools","msg":"📥 POST /v1/v1/messages | kr/claude-haiku-4.5 | 57 msgs | 26 tools"}
+{"level":30,"time":"2026-05-20T15:59:47.615Z","service":"omniroute","module":"sse","tag":"ROUTING","msg":"kr/claude-haiku-4.5 → kiro/claude-haiku-4.5"}
+{"level":30,"time":"2026-05-20T15:59:47.616Z","service":"omniroute","module":"sse","tag":"AUTH","msg":"Using kiro account: bd6ffd9d..."}
+[19:59:53] 📊 [32m[USAGE] KIRO | in=57822 | out=24 | account=bd6ffd9d...[0m
+[19:59:53] 🌊 [STREAM] KIRO | claude-haiku-4.5 | 5490ms | complete
+{"level":30,"time":"2026-05-20T15:59:57.420Z","service":"omniroute","module":"sse","tag":"HTTP","method":"POST","path":"/v1/v1/messages | kr/claude-haiku-4.5 | 59 msgs | 26 tools","msg":"📥 POST /v1/v1/messages | kr/claude-haiku-4.5 | 59 msgs | 26 tools"}
+{"level":30,"time":"2026-05-20T15:59:57.421Z","service":"omniroute","module":"sse","tag":"ROUTING","msg":"kr/claude-haiku-4.5 → kiro/claude-haiku-4.5"}
+{"level":30,"time":"2026-05-20T15:59:57.421Z","service":"omniroute","module":"sse","tag":"AUTH","msg":"Using kiro account: bd6ffd9d..."}
+[20:00:03] 📊 [32m[USAGE] KIRO | in=58657 | out=21 | account=bd6ffd9d...[0m
+[20:00:03] 🌊 [STREAM] KIRO | claude-haiku-4.5 | 5698ms | complete
+{"level":30,"time":"2026-05-20T16:00:31.425Z","service":"omniroute","module":"sse","tag":"HTTP","method":"POST","path":"/v1/v1/messages | kr/claude-haiku-4.5 | 61 msgs | 26 tools","msg":"📥 POST /v1/v1/messages | kr/claude-haiku-4.5 | 61 msgs | 26 tools"}
+{"level":30,"time":"2026-05-20T16:00:31.426Z","service":"omniroute","module":"sse","tag":"ROUTING","msg":"kr/claude-haiku-4.5 → kiro/claude-haiku-4.5"}
+{"level":30,"time":"2026-05-20T16:00:31.426Z","service":"omniroute","module":"sse","tag":"AUTH","msg":"Using kiro account: bd6ffd9d..."}
+[20:00:35] 📊 [32m[USAGE] KIRO | in=58958 | out=21 | account=bd6ffd9d...[0m
+[20:00:35] 🌊 [STREAM] KIRO | claude-haiku-4.5 | 3782ms | complete
+{"level":30,"time":"2026-05-20T16:00:35.247Z","service":"omniroute","module":"sse","tag":"HTTP","method":"POST","path":"/v1/v1/messages | kr/claude-haiku-4.5 | 63 msgs | 26 tools","msg":"📥 POST /v1/v1/messages | kr/claude-haiku-4.5 | 63 msgs | 26 tools"}
+{"level":30,"time":"2026-05-20T16:00:35.248Z","service":"omniroute","module":"sse","tag":"ROUTING","msg":"kr/claude-haiku-4.5 → kiro/claude-haiku-4.5"}
+{"level":30,"time":"2026-05-20T16:00:35.248Z","service":"omniroute","module":"sse","tag":"AUTH","msg":"Using kiro account: bd6ffd9d..."}
+[20:00:39] 📊 [32m[USAGE] KIRO | in=59371 | out=62 | account=bd6ffd9d...[0m
+[20:00:39] 🌊 [STREAM] KIRO | claude-haiku-4.5 | 4023ms | complete
+{"level":30,"time":"2026-05-20T16:00:48.547Z","service":"omniroute","module":"sse","tag":"HTTP","method":"POST","path":"/v1/v1/messages | kr/claude-haiku-4.5 | 65 msgs | 26 tools","msg":"📥 POST /v1/v1/messages | kr/claude-haiku-4.5 | 65 msgs | 26 tools"}
+{"level":30,"time":"2026-05-20T16:00:48.548Z","service":"omniroute","module":"sse","tag":"ROUTING","msg":"kr/claude-haiku-4.5 → kiro/claude-haiku-4.5"}
+{"level":30,"time":"2026-05-20T16:00:48.549Z","service":"omniroute","module":"sse","tag":"AUTH","msg":"Using kiro account: bd6ffd9d..."}
+[20:00:57] 📊 [32m[USAGE] KIRO | in=60808 | out=22 | account=bd6ffd9d...[0m
+[20:00:57] 🌊 [STREAM] KIRO | claude-haiku-4.5 | 8744ms | complete
+{"level":30,"time":"2026-05-20T16:01:14.776Z","service":"omniroute","module":"sse","tag":"HTTP","method":"POST","path":"/v1/v1/messages | kr/claude-haiku-4.5 | 67 msgs | 26 tools","msg":"📥 POST /v1/v1/messages | kr/claude-haiku-4.5 | 67 msgs | 26 tools"}
+{"level":30,"time":"2026-05-20T16:01:14.777Z","service":"omniroute","module":"sse","tag":"ROUTING","msg":"kr/claude-haiku-4.5 → kiro/claude-haiku-4.5"}
+{"level":30,"time":"2026-05-20T16:01:14.777Z","service":"omniroute","module":"sse","tag":"AUTH","msg":"Using kiro account: bd6ffd9d..."}
+[20:01:18] 📊 [32m[USAGE] KIRO | in=60989 | out=10 | account=bd6ffd9d...[0m
+[20:01:18] 🌊 [STREAM] KIRO | claude-haiku-4.5 | 3551ms | complete
+{"level":30,"time":"2026-05-20T16:01:29.688Z","service":"omniroute","module":"sse","tag":"HTTP","method":"POST","path":"/v1/v1/messages | kr/claude-haiku-4.5 | 69 msgs | 26 tools","msg":"📥 POST /v1/v1/messages | kr/claude-haiku-4.5 | 69 msgs | 26 tools"}
+{"level":30,"time":"2026-05-20T16:01:29.690Z","service":"omniroute","module":"sse","tag":"ROUTING","msg":"kr/claude-haiku-4.5 → kiro/claude-haiku-4.5"}
+{"level":30,"time":"2026-05-20T16:01:29.690Z","service":"omniroute","module":"sse","tag":"AUTH","msg":"Using kiro account: bd6ffd9d..."}
+[20:01:33] 📊 [32m[USAGE] KIRO | in=61172 | out=32 | account=bd6ffd9d...[0m
+[20:01:33] 🌊 [STREAM] KIRO | claude-haiku-4.5 | 3770ms | complete
+{"level":30,"time":"2026-05-20T16:01:33.487Z","service":"omniroute","module":"sse","tag":"HTTP","method":"POST","path":"/v1/v1/messages | kr/claude-haiku-4.5 | 71 msgs | 26 tools","msg":"📥 POST /v1/v1/messages | kr/claude-haiku-4.5 | 71 msgs | 26 tools"}
+{"level":30,"time":"2026-05-20T16:01:33.488Z","service":"omniroute","module":"sse","tag":"ROUTING","msg":"kr/claude-haiku-4.5 → kiro/claude-haiku-4.5"}
+{"level":30,"time":"2026-05-20T16:01:33.488Z","service":"omniroute","module":"sse","tag":"AUTH","msg":"Using kiro account: bd6ffd9d..."}
+[20:01:36] 📊 [32m[USAGE] KIRO | in=61456 | out=8 | account=bd6ffd9d...[0m
+[20:01:36] 🌊 [STREAM] KIRO | claude-haiku-4.5 | 3133ms | complete
+{"level":30,"time":"2026-05-20T16:01:36.660Z","service":"omniroute","module":"sse","tag":"HTTP","method":"POST","path":"/v1/v1/messages | kr/claude-haiku-4.5 | 73 msgs | 26 tools","msg":"📥 POST /v1/v1/messages | kr/claude-haiku-4.5 | 73 msgs | 26 tools"}
+{"level":30,"time":"2026-05-20T16:01:36.661Z","service":"omniroute","module":"sse","tag":"ROUTING","msg":"kr/claude-haiku-4.5 → kiro/claude-haiku-4.5"}
+{"level":30,"time":"2026-05-20T16:01:36.661Z","service":"omniroute","module":"sse","tag":"AUTH","msg":"Using kiro account: bd6ffd9d..."}
+[20:01:42] 📊 [32m[USAGE] KIRO | in=63919 | out=31 | account=bd6ffd9d...[0m
+[20:01:42] 🌊 [STREAM] KIRO | claude-haiku-4.5 | 6127ms | complete
+{"level":30,"time":"2026-05-20T16:02:07.180Z","service":"omniroute","module":"sse","tag":"HTTP","method":"POST","path":"/v1/v1/messages | kr/claude-haiku-4.5 | 75 msgs | 26 tools","msg":"📥 POST /v1/v1/messages | kr/claude-haiku-4.5 | 75 msgs | 26 tools"}
+{"level":30,"time":"2026-05-20T16:02:07.181Z","service":"omniroute","module":"sse","tag":"ROUTING","msg":"kr/claude-haiku-4.5 → kiro/claude-haiku-4.5"}
+{"level":30,"time":"2026-05-20T16:02:07.181Z","service":"omniroute","module":"sse","tag":"AUTH","msg":"Using kiro account: bd6ffd9d..."}
+[20:02:14] 📊 [32m[USAGE] KIRO | in=64141 | out=16 | account=bd6ffd9d...[0m
+[20:02:14] 🌊 [STREAM] KIRO | claude-haiku-4.5 | 6926ms | complete
+{"level":30,"time":"2026-05-20T16:02:14.151Z","service":"omniroute","module":"sse","tag":"HTTP","method":"POST","path":"/v1/v1/messages | kr/claude-haiku-4.5 | 77 msgs | 26 tools","msg":"📥 POST /v1/v1/messages | kr/claude-haiku-4.5 | 77 msgs | 26 tools"}
+{"level":30,"time":"2026-05-20T16:02:14.152Z","service":"omniroute","module":"sse","tag":"ROUTING","msg":"kr/claude-haiku-4.5 → kiro/claude-haiku-4.5"}
+{"level":30,"time":"2026-05-20T16:02:14.152Z","service":"omniroute","module":"sse","tag":"AUTH","msg":"Using kiro account: bd6ffd9d..."}
+[20:02:17] 📊 [32m[USAGE] KIRO | in=64348 | out=10 | account=bd6ffd9d...[0m
+[20:02:17] 🌊 [STREAM] KIRO | claude-haiku-4.5 | 3022ms | complete
+{"level":30,"time":"2026-05-20T16:02:17.209Z","service":"omniroute","module":"sse","tag":"HTTP","method":"POST","path":"/v1/v1/messages | kr/claude-haiku-4.5 | 79 msgs | 26 tools","msg":"📥 POST /v1/v1/messages | kr/claude-haiku-4.5 | 79 msgs | 26 tools"}
+{"level":30,"time":"2026-05-20T16:02:17.209Z","service":"omniroute","module":"sse","tag":"ROUTING","msg":"kr/claude-haiku-4.5 → kiro/claude-haiku-4.5"}
+{"level":30,"time":"2026-05-20T16:02:17.209Z","service":"omniroute","module":"sse","tag":"AUTH","msg":"Using kiro account: bd6ffd9d..."}
+[20:02:25] 📊 [32m[USAGE] KIRO | in=65609 | out=15 | account=bd6ffd9d...[0m
+[20:02:25] 🌊 [STREAM] KIRO | claude-haiku-4.5 | 8390ms | complete
+{"level":30,"time":"2026-05-20T16:02:29.698Z","service":"omniroute","module":"sse","tag":"HTTP","method":"POST","path":"/v1/v1/messages | kr/claude-haiku-4.5 | 81 msgs | 26 tools","msg":"📥 POST /v1/v1/messages | kr/claude-haiku-4.5 | 81 msgs | 26 tools"}
+{"level":30,"time":"2026-05-20T16:02:29.699Z","service":"omniroute","module":"sse","tag":"ROUTING","msg":"kr/claude-haiku-4.5 → kiro/claude-haiku-4.5"}
+{"level":30,"time":"2026-05-20T16:02:29.700Z","service":"omniroute","module":"sse","tag":"AUTH","msg":"Using kiro account: bd6ffd9d..."}
+[20:02:46] 📊 [32m[USAGE] KIRO | in=68943 | out=21 | account=bd6ffd9d...[0m
+[20:02:46] 🌊 [STREAM] KIRO | claude-haiku-4.5 | 17275ms | complete
+{"level":30,"time":"2026-05-20T16:02:56.125Z","service":"omniroute","module":"sse","tag":"HTTP","method":"POST","path":"/v1/v1/messages | kr/claude-haiku-4.5 | 83 msgs | 26 tools","msg":"📥 POST /v1/v1/messages | kr/claude-haiku-4.5 | 83 msgs | 26 tools"}
+{"level":30,"time":"2026-05-20T16:02:56.126Z","service":"omniroute","module":"sse","tag":"ROUTING","msg":"kr/claude-haiku-4.5 → kiro/claude-haiku-4.5"}
+{"level":30,"time":"2026-05-20T16:02:56.127Z","service":"omniroute","module":"sse","tag":"AUTH","msg":"Using kiro account: bd6ffd9d..."}
+[20:03:00] 📊 [32m[USAGE] KIRO | in=69151 | out=13 | account=bd6ffd9d...[0m
+[20:03:00] 🌊 [STREAM] KIRO | claude-haiku-4.5 | 4233ms | complete
+{"level":30,"time":"2026-05-20T16:03:37.377Z","service":"omniroute","module":"sse","tag":"HTTP","method":"POST","path":"/v1/v1/messages | kr/claude-haiku-4.5 | 85 msgs | 26 tools","msg":"📥 POST /v1/v1/messages | kr/claude-haiku-4.5 | 85 msgs | 26 tools"}
+{"level":30,"time":"2026-05-20T16:03:37.378Z","service":"omniroute","module":"sse","tag":"ROUTING","msg":"kr/claude-haiku-4.5 → kiro/claude-haiku-4.5"}
+{"level":30,"time":"2026-05-20T16:03:37.379Z","service":"omniroute","module":"sse","tag":"AUTH","msg":"Using kiro account: bd6ffd9d..."}
+[20:03:41] 📊 [32m[USAGE] KIRO | in=70560 | out=30 | account=bd6ffd9d...[0m
+[20:03:41] 🌊 [STREAM] KIRO | claude-haiku-4.5 | 4476ms | complete
+{"level":30,"time":"2026-05-20T16:03:54.043Z","service":"omniroute","module":"sse","tag":"HTTP","method":"POST","path":"/v1/v1/messages | kr/claude-haiku-4.5 | 87 msgs | 26 tools","msg":"📥 POST /v1/v1/messages | kr/claude-haiku-4.5 | 87 msgs | 26 tools"}
+{"level":30,"time":"2026-05-20T16:03:54.044Z","service":"omniroute","module":"sse","tag":"ROUTING","msg":"kr/claude-haiku-4.5 → kiro/claude-haiku-4.5"}
+{"level":30,"time":"2026-05-20T16:03:54.044Z","service":"omniroute","module":"sse","tag":"AUTH","msg":"Using kiro account: bd6ffd9d..."}
+[20:03:58] 📊 [32m[USAGE] KIRO | in=70758 | out=35 | account=bd6ffd9d...[0m
+[20:03:58] 🌊 [STREAM] KIRO | claude-haiku-4.5 | 4863ms | complete
+{"level":30,"time":"2026-05-20T16:03:58.956Z","service":"omniroute","module":"sse","tag":"HTTP","method":"POST","path":"/v1/v1/messages | kr/claude-haiku-4.5 | 89 msgs | 26 tools","msg":"📥 POST /v1/v1/messages | kr/claude-haiku-4.5 | 89 msgs | 26 tools"}
+{"level":30,"time":"2026-05-20T16:03:58.957Z","service":"omniroute","module":"sse","tag":"ROUTING","msg":"kr/claude-haiku-4.5 → kiro/claude-haiku-4.5"}
+{"level":30,"time":"2026-05-20T16:03:58.958Z","service":"omniroute","module":"sse","tag":"AUTH","msg":"Using kiro account: bd6ffd9d..."}
+[20:04:02] 📊 [32m[USAGE] KIRO | in=70924 | out=8 | account=bd6ffd9d...[0m
+[20:04:02] 🌊 [STREAM] KIRO | claude-haiku-4.5 | 3643ms | complete
+{"level":30,"time":"2026-05-20T16:04:02.645Z","service":"omniroute","module":"sse","tag":"HTTP","method":"POST","path":"/v1/v1/messages | kr/claude-haiku-4.5 | 91 msgs | 26 tools","msg":"📥 POST /v1/v1/messages | kr/claude-haiku-4.5 | 91 msgs | 26 tools"}
+{"level":30,"time":"2026-05-20T16:04:02.645Z","service":"omniroute","module":"sse","tag":"ROUTING","msg":"kr/claude-haiku-4.5 → kiro/claude-haiku-4.5"}
+{"level":30,"time":"2026-05-20T16:04:02.646Z","service":"omniroute","module":"sse","tag":"AUTH","msg":"Using kiro account: bd6ffd9d..."}
+[20:04:06] 📊 [32m[USAGE] KIRO | in=71554 | out=10 | account=bd6ffd9d...[0m
+[20:04:06] 🌊 [STREAM] KIRO | claude-haiku-4.5 | 3735ms | complete
+{"level":30,"time":"2026-05-20T16:04:06.406Z","service":"omniroute","module":"sse","tag":"HTTP","method":"POST","path":"/v1/v1/messages | kr/claude-haiku-4.5 | 93 msgs | 26 tools","msg":"📥 POST /v1/v1/messages | kr/claude-haiku-4.5 | 93 msgs | 26 tools"}
+{"level":30,"time":"2026-05-20T16:04:06.407Z","service":"omniroute","module":"sse","tag":"ROUTING","msg":"kr/claude-haiku-4.5 → kiro/claude-haiku-4.5"}
+{"level":30,"time":"2026-05-20T16:04:06.407Z","service":"omniroute","module":"sse","tag":"AUTH","msg":"Using kiro account: bd6ffd9d..."}
+[20:04:10] 📊 [32m[USAGE] KIRO | in=72154 | out=9 | account=bd6ffd9d...[0m
+[20:04:10] 🌊 [STREAM] KIRO | claude-haiku-4.5 | 3655ms | complete
+{"level":30,"time":"2026-05-20T16:04:10.082Z","service":"omniroute","module":"sse","tag":"HTTP","method":"POST","path":"/v1/v1/messages | kr/claude-haiku-4.5 | 95 msgs | 26 tools","msg":"📥 POST /v1/v1/messages | kr/claude-haiku-4.5 | 95 msgs | 26 tools"}
+{"level":30,"time":"2026-05-20T16:04:10.083Z","service":"omniroute","module":"sse","tag":"ROUTING","msg":"kr/claude-haiku-4.5 → kiro/claude-haiku-4.5"}
+{"level":30,"time":"2026-05-20T16:04:10.083Z","service":"omniroute","module":"sse","tag":"AUTH","msg":"Using kiro account: bd6ffd9d..."}
+[20:04:14] 📊 [32m[USAGE] KIRO | in=72428 | out=14 | account=bd6ffd9d...[0m
+[20:04:14] 🌊 [STREAM] KIRO | claude-haiku-4.5 | 4549ms | complete
+{"level":30,"time":"2026-05-20T16:04:14.662Z","service":"omniroute","module":"sse","tag":"HTTP","method":"POST","path":"/v1/v1/messages | kr/claude-haiku-4.5 | 97 msgs | 26 tools","msg":"📥 POST /v1/v1/messages | kr/claude-haiku-4.5 | 97 msgs | 26 tools"}
+{"level":30,"time":"2026-05-20T16:04:14.662Z","service":"omniroute","module":"sse","tag":"ROUTING","msg":"kr/claude-haiku-4.5 → kiro/claude-haiku-4.5"}
+{"level":30,"time":"2026-05-20T16:04:14.663Z","service":"omniroute","module":"sse","tag":"AUTH","msg":"Using kiro account: bd6ffd9d..."}
+[20:04:18] 📊 [32m[USAGE] KIRO | in=72820 | out=29 | account=bd6ffd9d...[0m
+[20:04:18] 🌊 [STREAM] KIRO | claude-haiku-4.5 | 4134ms | complete
+{"level":30,"time":"2026-05-20T16:04:18.831Z","service":"omniroute","module":"sse","tag":"HTTP","method":"POST","path":"/v1/v1/messages | kr/claude-haiku-4.5 | 99 msgs | 26 tools","msg":"📥 POST /v1/v1/messages | kr/claude-haiku-4.5 | 99 msgs | 26 tools"}
+{"level":30,"time":"2026-05-20T16:04:18.832Z","service":"omniroute","module":"sse","tag":"ROUTING","msg":"kr/claude-haiku-4.5 → kiro/claude-haiku-4.5"}
+{"level":30,"time":"2026-05-20T16:04:18.832Z","service":"omniroute","module":"sse","tag":"AUTH","msg":"Using kiro account: bd6ffd9d..."}
+[20:04:23] 📊 [32m[USAGE] KIRO | in=73598 | out=15 | account=bd6ffd9d...[0m
+[20:04:23] 🌊 [STREAM] KIRO | claude-haiku-4.5 | 4537ms | complete
+{"level":30,"time":"2026-05-20T16:04:32.980Z","service":"omniroute","module":"sse","tag":"HTTP","method":"POST","path":"/v1/v1/messages | kr/claude-haiku-4.5 | 101 msgs | 26 tools","msg":"📥 POST /v1/v1/messages | kr/claude-haiku-4.5 | 101 msgs | 26 tools"}
+{"level":30,"time":"2026-05-20T16:04:32.981Z","service":"omniroute","module":"sse","tag":"ROUTING","msg":"kr/claude-haiku-4.5 → kiro/claude-haiku-4.5"}
+{"level":30,"time":"2026-05-20T16:04:32.982Z","service":"omniroute","module":"sse","tag":"AUTH","msg":"Using kiro account: bd6ffd9d..."}
+[20:04:37] 📊 [32m[USAGE] KIRO | in=73903 | out=13 | account=bd6ffd9d...[0m
+[20:04:37] 🌊 [STREAM] KIRO | claude-haiku-4.5 | 4243ms | complete
+{"level":30,"time":"2026-05-20T16:04:46.082Z","service":"omniroute","module":"sse","tag":"HTTP","method":"POST","path":"/v1/v1/messages | kr/claude-haiku-4.5 | 103 msgs | 26 tools","msg":"📥 POST /v1/v1/messages | kr/claude-haiku-4.5 | 103 msgs | 26 tools"}
+{"level":30,"time":"2026-05-20T16:04:46.082Z","service":"omniroute","module":"sse","tag":"ROUTING","msg":"kr/claude-haiku-4.5 → kiro/claude-haiku-4.5"}
+{"level":30,"time":"2026-05-20T16:04:46.083Z","service":"omniroute","module":"sse","tag":"AUTH","msg":"Using kiro account: bd6ffd9d..."}
+[20:04:51] 📊 [32m[USAGE] KIRO | in=74039 | out=14 | account=bd6ffd9d...[0m
+[20:04:51] 🌊 [STREAM] KIRO | claude-haiku-4.5 | 5020ms | complete
+{"level":30,"time":"2026-05-20T16:04:51.127Z","service":"omniroute","module":"sse","tag":"HTTP","method":"POST","path":"/v1/v1/messages | kr/claude-haiku-4.5 | 105 msgs | 26 tools","msg":"📥 POST /v1/v1/messages | kr/claude-haiku-4.5 | 105 msgs | 26 tools"}
+{"level":30,"time":"2026-05-20T16:04:51.128Z","service":"omniroute","module":"sse","tag":"ROUTING","msg":"kr/claude-haiku-4.5 → kiro/claude-haiku-4.5"}
+{"level":30,"time":"2026-05-20T16:04:51.128Z","service":"omniroute","module":"sse","tag":"AUTH","msg":"Using kiro account: bd6ffd9d..."}
+[20:04:55] 📊 [32m[USAGE] KIRO | in=74309 | out=15 | account=bd6ffd9d...[0m
+[20:04:55] 🌊 [STREAM] KIRO | claude-haiku-4.5 | 4094ms | complete
+{"level":30,"time":"2026-05-20T16:04:56.896Z","service":"omniroute","module":"sse","tag":"HTTP","method":"POST","path":"/v1/v1/messages | kr/claude-haiku-4.5 | 107 msgs | 26 tools","msg":"📥 POST /v1/v1/messages | kr/claude-haiku-4.5 | 107 msgs | 26 tools"}
+{"level":30,"time":"2026-05-20T16:04:56.897Z","service":"omniroute","module":"sse","tag":"ROUTING","msg":"kr/claude-haiku-4.5 → kiro/claude-haiku-4.5"}
+{"level":30,"time":"2026-05-20T16:04:56.897Z","service":"omniroute","module":"sse","tag":"AUTH","msg":"Using kiro account: bd6ffd9d..."}
+[20:05:02] 📊 [32m[USAGE] KIRO | in=74895 | out=10 | account=bd6ffd9d...[0m
+[20:05:02] 🌊 [STREAM] KIRO | claude-haiku-4.5 | 5424ms | complete
