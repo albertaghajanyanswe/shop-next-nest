@@ -12,7 +12,7 @@ import {
   ValidationPipe,
 } from '@nestjs/common';
 import { AuthService } from './auth.service';
-import { RegisterDto, LoginDto, AuthResponseDto } from './dto/auth.dto';
+import { RegisterDto, LoginDto, AuthResponseDto, ForgotPasswordDto, ResetPasswordDto } from './dto/auth.dto';
 import type { Request, Response } from 'express';
 import { AuthGuard } from '@nestjs/passport';
 import { ApiOkResponse, ApiOperation } from '@nestjs/swagger';
@@ -89,6 +89,22 @@ export class AuthController {
     this.authService.removeAccessTokenFromResponse(res);
     this.authService.removeRefreshTokenToResponse(res);
     return { message: 'Logged out successfully' };
+  }
+
+  @ApiOperation({ summary: 'Request password reset' })
+  @UsePipes(new ValidationPipe())
+  @HttpCode(200)
+  @Post('forgot-password')
+  async forgotPassword(@Body() forgotPasswordDto: ForgotPasswordDto) {
+    return await this.authService.requestPasswordReset(forgotPasswordDto);
+  }
+
+  @ApiOperation({ summary: 'Reset password with token' })
+  @UsePipes(new ValidationPipe())
+  @HttpCode(200)
+  @Post('reset-password')
+  async resetPassword(@Body() resetPasswordDto: ResetPasswordDto) {
+    return await this.authService.resetPassword(resetPasswordDto);
   }
 
   @Get('google')

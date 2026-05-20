@@ -8,13 +8,15 @@ import {
 import { JwtService } from '@nestjs/jwt';
 import { PrismaService } from 'src/prisma.service';
 import { UserService } from 'src/user/user.service';
-import { RegisterDto, LoginDto } from './dto/auth.dto';
+import { RegisterDto, LoginDto, ForgotPasswordDto, ResetPasswordDto } from './dto/auth.dto';
 import { Response } from 'express';
 import { ConfigService } from '@nestjs/config';
-import { verify } from 'argon2';
+import { verify, hash } from 'argon2';
 import { StripeService } from 'src/payment/provider/stripe/stripe.service';
+import { MailerService } from 'src/mailer/mailer.service';
 import { EnvVariables } from 'src/utils/constants/variables';
 import { EnumRole, EnumSubscriptionType } from '@prisma/client';
+import { randomBytes } from 'crypto';
 
 @Injectable()
 export class AuthService {
@@ -30,6 +32,7 @@ export class AuthService {
     private readonly prismaService: PrismaService,
     private configService: ConfigService,
     private readonly stripeService: StripeService,
+    private readonly mailerService: MailerService,
   ) {}
 
   async login(loginDto: LoginDto) {
@@ -153,6 +156,62 @@ export class AuthService {
 
     const tokens = this.issueTokens(user.id);
     return { user, ...tokens };
+  }
+
+  async requestPasswordReset(forgotPasswordDto: ForgotPasswordDto) {
+    const user = await this.userService.getByEmail(forgotPasswordDto.email);
+    if (!user) {
+      this.logger.warn(`Password reset requested for non-existent email: ${forgotPasswordDto.email}`);
+      return { success: true, message: 'If email exists, reset link will be sent' };
+    }
+
+    const resetToken = randomBytes(32).toString('hex');
+    const resetTokenExpiry = new Date(Date.now() + 1000 * 60 * 60); // 1 hour
+
+    await this.prismaService.user.update({
+      where: { id: user.id },
+      data: {
+        resetToken,
+        resetTokenExpiry,
+      } as any,
+    });
+
+    await this.mailerService.sendPasswordResetEmail({
+      email: user.email,
+      name: user.name,
+      resetToken,
+    });
+
+    return { success: true, message: 'If email exists, reset link will be sent' };
+  }
+
+  async resetPassword(resetPasswordDto: ResetPasswordDto) {
+    const user = await this.prismaService.user.findFirst({
+      where: {
+        resetToken: resetPasswordDto.token,
+        resetTokenExpiry: {
+          gt: new Date(),
+        },
+      } as any,
+    });
+
+    if (!user) {
+      this.logger.error('Invalid or expired reset token');
+      throw new BadRequestException('Invalid or expired reset token');
+    }
+
+    const hashedPassword = await hash(resetPasswordDto.password);
+
+    await this.prismaService.user.update({
+      where: { id: user.id },
+      data: {
+        password: hashedPassword,
+        resetToken: null,
+        resetTokenExpiry: null,
+      } as any,
+    });
+
+    return { success: true, message: 'Password reset successfully' };
   }
 
   checkSecureCookie() {
