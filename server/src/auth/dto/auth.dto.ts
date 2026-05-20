@@ -108,3 +108,35 @@ export class AuthResponseDto {
   })
   user: User;
 }
+
+export class ForgotPasswordDto {
+  @ApiProperty({
+    required: true,
+    example: 'test@yopmail.com',
+    description: 'Email of the user',
+  })
+  @IsString({ message: 'Email is required' })
+  @IsEmail()
+  email: string;
+}
+
+export class ResetPasswordDto {
+  @ApiProperty({
+    required: true,
+    example: 'reset-token-here',
+    description: 'Reset token from email',
+  })
+  @IsString({ message: 'Token is required' })
+  token: string;
+
+  @ApiProperty({
+    required: true,
+    example: 'newPassword123',
+    description: 'New password',
+  })
+  @MinLength(6, {
+    message: 'Password must be at least 6 characters long',
+  })
+  @IsString({ message: 'Password is required' })
+  password: string;
+}

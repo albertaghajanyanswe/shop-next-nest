@@ -13,6 +13,26 @@ class MailerService {
 
     return res;
   }
+
+  async forgotPassword(email: string) {
+    const res = await axiosClassic({
+      url: API_URL.auth(`/forgot-password`),
+      method: 'POST',
+      data: { email },
+    });
+
+    return res;
+  }
+
+  async resetPassword(token: string, password: string) {
+    const res = await axiosClassic({
+      url: API_URL.auth(`/reset-password`),
+      method: 'POST',
+      data: { token, password },
+    });
+
+    return res;
+  }
 }
 
 export const mailerService = new MailerService();

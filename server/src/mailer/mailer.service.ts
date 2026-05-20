@@ -5,6 +5,7 @@ import { getMailerConfig } from 'src/config';
 import { ContactUsDto } from './dto/mailer.dto';
 import { render } from '@react-email/components';
 import { ContactUsTemplate } from './templates/contactUs.template';
+import { ResetPasswordTemplate } from './templates/resetPassword.template';
 
 @Injectable()
 export class MailerService {
@@ -50,6 +51,30 @@ export class MailerService {
       return { success: true, message: 'Email sent successfully.' };
     } catch (err) {
       console.error('contactUsMail - ', err);
+      return { success: false, message: 'Could not send email.' };
+    }
+  }
+
+  async sendPasswordResetEmail(data: {
+    email: string;
+    name: string;
+    resetToken: string;
+  }) {
+    const { email, name, resetToken } = data;
+    try {
+      const resetLink = `${process.env.CLIENT_URL}/reset-password?token=${resetToken}`;
+      const html = await render(ResetPasswordTemplate({ name, resetLink }));
+      await this.transporter.sendMail({
+        from: 'albert.aghajanyan.swe@gmail.com',
+        to: [email],
+        bcc: [],
+        subject: 'Reset Your Password',
+        text: '',
+        html: html,
+      });
+      return { success: true, message: 'Password reset email sent successfully.' };
+    } catch (err) {
+      console.error('sendPasswordResetEmail - ', err);
       return { success: false, message: 'Could not send email.' };
     }
   }
