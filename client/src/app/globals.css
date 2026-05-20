@@ -424,105 +424,6 @@
   --color-shop-bg-light: var(--color-dark-5);
 }
 
-/* .dark {
-  --background: oklch(0.21 0.006 285.885);
-  --foreground: oklch(1 0 0);
-  --card: oklch(0.21 0.006 285.885);
-  --card-foreground: oklch(1 0 0);
-  --popover: oklch(0.21 0.006 285.885);
-  --popover-foreground: oklch(1 0 0);
-  --primary: oklch(0.55 0.11 160);
-  --primary-foreground: oklch(0.21 0.006 285.885);
-  --secondary: oklch(0.274 0.006 286.033);
-  --secondary-foreground: oklch(1 0 0);
-  --muted: oklch(0.274 0.006 286.033);
-  --muted-foreground: oklch(0.705 0.015 286.067);
-  --accent: oklch(0.274 0.006 286.033);
-  --accent-foreground: oklch(1 0 0);
-  --destructive: oklch(0.577 0.245 27.325);
-  --destructive-foreground: oklch(1 0 0);
-  --border: oklch(0.274 0.006 286.033);
-  --input: oklch(0.274 0.006 286.033);
-  --ring: oklch(0.55 0.11 160);
-  --chart-1: oklch(0.488 0.243 264.376);
-  --chart-2: oklch(0.696 0.17 162.48);
-  --chart-3: oklch(0.769 0.188 70.08);
-  --chart-4: oklch(0.627 0.265 303.9);
-  --chart-5: oklch(0.645 0.246 16.439);
-  --sidebar: oklch(0.21 0.006 285.885);
-  --sidebar-foreground: oklch(1 0 0);
-  --sidebar-primary: oklch(0.55 0.11 160);
-  --sidebar-primary-foreground: oklch(0.21 0.006 285.885);
-  --sidebar-accent: oklch(0.274 0.006 286.033);
-  --sidebar-accent-foreground: oklch(1 0 0);
-  --sidebar-border: oklch(0.274 0.006 286.033);
-  --sidebar-ring: oklch(0.55 0.11 160);
-  --header: oklch(0.21 0.006 285.885);
-  --header-foreground: oklch(1 0 0);
-  --footer: oklch(0.21 0.006 285.885);
-  --footer-foreground: oklch(1 0 0);
-  --code: oklch(0.274 0.006 286.033);
-  --code-foreground: oklch(1 0 0);
-  --code-highlight: oklch(0.274 0.006 286.033);
-  --code-number: oklch(0.705 0.015 286.067);
-  --code-selection: oklch(0.21 0.006 285.885);
-  --code-border: oklch(0.274 0.006 286.033);
-  --radius: 0.625rem;
-
-  --color-shop-light-pink: #2a1e17;
-   --color-shop-primary: #4ade80;
-  --bg-shop-btn-primary: #4ade80;
-  --color-shop-light-bg: #27272a;
-  --color-shop-bg: #18181b;
-  --color-shop-light-primary: #4ade80;
-  --color-shop-orange: #fb923c;
-  --color-shop-red: #fb7185;
-  --color-shop-dark-color: #fafafa;
-  --color-shop-light-color: #a1a1aa;
-  --color-shop-light-orange: #5c201a;
-  --color-shop-green-hover: #113326;
-  --color-shop-white: #18181b;
-  --color-shop-primary-text: #ffffff;
-}
-*/
-
-/* :root {
-  --radius: 0.625rem;
-  --background: oklch(1 0 0);
-  --foreground: oklch(0.129 0.042 264.695);
-  --card: oklch(1 0 0);
-  --card-foreground: oklch(0.129 0.042 264.695);
-  --popover: oklch(1 0 0);
-  --popover-foreground: oklch(0.129 0.042 264.695);
-  --primary:oklch(0.3203 0.0653 162.87)
-  --primary-foreground: oklch(0.984 0.003 247.858);
-  --secondary: oklch(0.968 0.007 247.896);
-  --secondary-foreground: oklch(0.208 0.042 265.755);
-  --muted: oklch(0.968 0.007 247.896);
-  --muted-foreground: oklch(0.554 0.046 257.417);
-  --accent: oklch(0.968 0.007 247.896);
-  --accent-foreground: oklch(0.208 0.042 265.755);
-  --destructive: oklch(0.577 0.245 27.325);
-  --border: oklch(0.929 0.013 255.508);
-  --input: oklch(0.929 0.013 255.508);
-
-  --ring: oklch(0.704 0.04 256.788);
-  --chart-1: oklch(0.646 0.222 41.116);
-  --chart-2: oklch(0.6 0.118 184.704);
-  --chart-3: oklch(0.398 0.07 227.392);
-  --chart-4: oklch(0.828 0.189 84.429);
-  --chart-5: oklch(0.769 0.188 70.08);
-  --sidebar: oklch(0.984 0.003 247.858);
-  --sidebar-foreground: oklch(0.129 0.042 264.695);
-  --sidebar-primary: oklch(0.208 0.042 265.755);
-  --sidebar-primary-foreground: oklch(0.984 0.003 247.858);
-  --sidebar-accent: oklch(0.968 0.007 247.896);
-  --sidebar-accent-foreground: oklch(0.208 0.042 265.755);
-  --sidebar-border: oklch(0.929 0.013 255.508);
-  --sidebar-ring: oklch(0.704 0.04 256.788);
-}
-*/
-
 @layer base {
   * {
     @apply border-border outline-ring/50;
@@ -750,9 +651,16 @@
 
 .card-profile {
   box-shadow:
-    0 1px 3px var(--color-primary-700),
-    0 4px 12px var(--color-primary-700),
-    0 0 0 1px var(--color-primary-700);
+    0 1px 3px var(--color-neutral-300),
+    0 4px 12px var(--color-neutral-300),
+    0 0 0 1px var(--color-neutral-300);
+}
+
+.dark .card-profile {
+  box-shadow:
+    0 1px 3px var(--color-neutral-600),
+    0 4px 12px var(--color-neutral-600),
+    0 0 0 1px var(--color-neutral-600);
 }
 
 .card-instagram {
