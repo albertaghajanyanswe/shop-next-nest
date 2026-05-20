@@ -1,6 +1,10 @@
 import { axiosClassic } from '@/api/api.interceptors';
 import { API_URL } from '@/config/api.config';
-import { ContactUsDto } from '@/generated/orval/types';
+import {
+  ContactUsDto,
+  SubscribedEmailsDtoResponse,
+  SubscribeEmailDto,
+} from '@/generated/orval/types';
 
 class MailerService {
   constructor() {}
@@ -14,8 +18,8 @@ class MailerService {
     return res;
   }
 
-  async subscribe(data: { email: string }) {
-    const res = await axiosClassic({
+  async subscribe(data: SubscribeEmailDto) {
+    const res = await axiosClassic<SubscribedEmailsDtoResponse>({
       url: API_URL.mailer(`/subscribe`),
       method: 'POST',
       data,

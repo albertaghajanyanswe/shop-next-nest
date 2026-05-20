@@ -1,14 +1,18 @@
 import { Body, Controller, Post, Delete, Param } from '@nestjs/common';
 import { MailerService } from './mailer.service';
-import { SubscriptionService } from './subscription.service';
+import { SubscribeNewsService } from './subscribeNews.service';
 import { ContactUsDto } from './dto/mailer.dto';
-import { SubscribeEmailDto } from './dto/subscribe.dto';
+import {
+  SubscribedEmailsDtoResponse,
+  SubscribeEmailDto,
+} from './dto/subscribe.dto';
+import { ApiOkResponse } from '@nestjs/swagger';
 
 @Controller('mailer')
 export class MailerController {
   constructor(
     private readonly mailerService: MailerService,
-    private readonly subscriptionService: SubscriptionService,
+    private readonly subscribeNewsService: SubscribeNewsService,
   ) {}
 
   @Post('/contact-us')
@@ -17,12 +21,13 @@ export class MailerController {
   }
 
   @Post('/subscribe')
+  @ApiOkResponse({ type: SubscribedEmailsDtoResponse })
   async subscribe(@Body() subscribeEmailDto: SubscribeEmailDto) {
-    return await this.subscriptionService.subscribe(subscribeEmailDto);
+    return await this.subscribeNewsService.subscribe(subscribeEmailDto);
   }
 
   @Delete('/unsubscribe/:email')
   async unsubscribe(@Param('email') email: string) {
-    return await this.subscriptionService.unsubscribe(email);
+    return await this.subscribeNewsService.unsubscribe(email);
   }
 }

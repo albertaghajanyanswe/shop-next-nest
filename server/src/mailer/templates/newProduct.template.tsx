@@ -50,8 +50,8 @@ export function NewProductTemplate({
                     <Img
                       src={productImage}
                       alt={productName}
-                      className='w-full max-w-md mx-auto rounded-md'
-                      style={{ maxWidth: '100%', height: 'auto' }}
+                      className='w-[200px] h-[200px] mx-auto rounded-md'
+                      style={{ maxWidth: '100%', maxHeight: '100%' }}
                     />
                   )}
                 </Section>

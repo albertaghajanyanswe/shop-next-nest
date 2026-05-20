@@ -15,7 +15,7 @@ import { QueryPayloadBuilderService } from 'src/queryPayloadBuilder/QueryPayload
 import { CloudinaryFileService } from 'src/cloudinary-file/cloudinary-file.service';
 import { GetSubscriptionsDto } from 'src/subscription/dto/subscription.dto';
 import { EnumSubscriptionStatus } from '@prisma/client';
-import { SubscriptionService } from 'src/mailer/subscription.service';
+import { SubscribeNewsService } from 'src/mailer/subscribeNews.service';
 
 @Injectable()
 export class ProductService {
@@ -25,7 +25,7 @@ export class ProductService {
     private readonly prisma: PrismaService,
     private readonly queryBuilderService: QueryPayloadBuilderService,
     private readonly cloudinaryFileService: CloudinaryFileService,
-    private readonly subscriptionService: SubscriptionService,
+    private readonly subscribeNewsService: SubscribeNewsService,
   ) {}
 
   getDefaultWhere() {
@@ -194,7 +194,9 @@ export class ProductService {
       );
       return productsWithSoldCount;
     }
-    const productIds = mostPopularProducts.map((item) => item.productId).filter(Boolean);
+    const productIds = mostPopularProducts
+      .map((item) => item.productId)
+      .filter(Boolean);
 
     const products = await this.prisma.product.findMany({
       where: {
@@ -299,9 +301,11 @@ export class ProductService {
     });
 
     if (product.isPublished) {
-      this.subscriptionService.sendNewProductNotification(product).catch((err) => {
+      try {
+        await this.subscribeNewsService.sendNewProductNotification(product);
+      } catch (err) {
         this.logger.error('Failed to send product notifications:', err);
-      });
+      }
     }
 
     return product;

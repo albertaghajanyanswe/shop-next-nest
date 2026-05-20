@@ -6,3 +6,12 @@ export class SubscribeEmailDto {
   @IsEmail()
   email: string;
 }
+
+export class SubscribedEmailsDtoResponse {
+  @ApiProperty({ type: String, example: 'Successfuly subscribed' })
+  message: string;
+
+  @ApiProperty({ type: Boolean, example: true })
+  success: boolean;
+}
+  

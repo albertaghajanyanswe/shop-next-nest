@@ -16,6 +16,7 @@ import { CustomPagination } from '@/components/customComponents/CustomPagination
 import { useTranslations } from 'next-intl';
 import { ViewToggle } from '@/components/customComponents/admin/ViewToggle';
 import { AdminProductCard } from './AdminProductCard';
+import { NoProductsFound } from '@/components/customComponents/loading/NoProductsFound';
 
 export function Products() {
   const t = useTranslations('StorePages');
@@ -86,34 +87,42 @@ export function Products() {
           </div>
         </div>
       )}
-      <div className='w-full'>
-        {viewMode === 'card' ? (
-          <div className='mt-4 grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5'>
-            {formattedProducts.map((product) => (
-              <AdminProductCard key={product.id} product={product} t={t} />
-            ))}
-          </div>
-        ) : (
-          <DataTable
-            columns={productColumnList}
-            data={formattedProducts}
-            filterKey='title'
-            totalCount={productsData?.totalCount as number}
-            queryParams={queryParams}
-            onChangeSearch={changeSearch}
-            onChangeSort={changeSort}
-          />
-        )}
-        {!!productsData?.totalCount && (
-          <CustomPagination
-            limit={queryParams?.params?.limit as number}
-            total={productsData?.totalCount as number}
-            skip={queryParams?.params?.skip as number}
-            onPageChange={changePage}
-            onLimitChange={changeLimit}
-          />
-        )}
-      </div>
+      {!isLoadingProductsData &&
+      productsData?.products &&
+      productsData?.products?.length > 0 ? (
+        <div className='w-full'>
+          {viewMode === 'card' ? (
+            <div className='mt-4 grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5'>
+              {formattedProducts.map((product) => (
+                <AdminProductCard key={product.id} product={product} t={t} />
+              ))}
+            </div>
+          ) : (
+            <DataTable
+              columns={productColumnList}
+              data={formattedProducts}
+              filterKey='title'
+              totalCount={productsData?.totalCount as number}
+              queryParams={queryParams}
+              onChangeSearch={changeSearch}
+              onChangeSort={changeSort}
+            />
+          )}
+          {!!productsData?.totalCount && (
+            <CustomPagination
+              limit={queryParams?.params?.limit as number}
+              total={productsData?.totalCount as number}
+              skip={queryParams?.params?.skip as number}
+              onPageChange={changePage}
+              onLimitChange={changeLimit}
+            />
+          )}
+        </div>
+      ) : (
+        <div className='mt-6'>
+          <NoProductsFound />
+        </div>
+      )}
     </div>
   );
 }

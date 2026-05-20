@@ -3,12 +3,15 @@ import { ConfigService } from '@nestjs/config';
 import * as nodemailer from 'nodemailer';
 import { getMailerConfig } from 'src/config';
 import { PrismaService } from 'src/prisma.service';
-import { SubscribeEmailDto } from './dto/subscribe.dto';
+import {
+  SubscribedEmailsDtoResponse,
+  SubscribeEmailDto,
+} from './dto/subscribe.dto';
 import { render } from '@react-email/components';
 import { NewProductTemplate } from './templates/newProduct.template';
 
 @Injectable()
-export class SubscriptionService {
+export class SubscribeNewsService {
   private transporter;
 
   constructor(
@@ -20,17 +23,20 @@ export class SubscriptionService {
         getMailerConfig(this.configService),
       );
     } catch (err) {
-      console.error('SubscriptionService - ', err);
+      console.error('SubscribeNewsService - ', err);
     }
   }
 
-  async subscribe(data: SubscribeEmailDto) {
+  async subscribe(
+    data: SubscribeEmailDto,
+  ): Promise<SubscribedEmailsDtoResponse> {
     try {
       const { email } = data;
 
-      const existingSubscription = await this.prisma.emailSubscription.findUnique({
-        where: { email },
-      });
+      const existingSubscription =
+        await this.prisma.emailSubscription.findUnique({
+          where: { email },
+        });
 
       if (existingSubscription) {
         if (existingSubscription.isActive) {

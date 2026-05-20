@@ -23,12 +23,11 @@ export function NewsletterSubscription() {
     setIsLoading(true);
     try {
       const response = await mailerService.subscribe({ email });
-
-      if (response.success) {
-        toast.success(response.message);
+      if (response.data.success) {
+        toast.success(response.data.message);
         setEmail('');
       } else {
-        toast.error(response.message);
+        toast.error(response.data.message);
       }
     } catch (error) {
       toast.error(t('subscribe_error') || 'Failed to subscribe');
@@ -46,12 +45,7 @@ export function NewsletterSubscription() {
         onChange={(e) => setEmail(e.target.value)}
         disabled={isLoading}
       />
-      <Button
-        variant='default'
-        size='lg'
-        disabled={isLoading}
-        type='submit'
-      >
+      <Button variant='default' size='lg' disabled={isLoading} type='submit'>
         {isLoading ? t('subscribing') || 'Subscribing...' : t('subscribe')}
       </Button>
     </form>

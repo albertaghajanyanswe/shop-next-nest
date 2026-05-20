@@ -6,7 +6,7 @@
  * OpenAPI spec version: 0.0.1
  */
 
-/**
- * Stripe Transfer ID (optional)
- */
-export type GetOrderItemsWithUserDtoStripeTransferId = { [key: string]: unknown };
+export interface SubscribedEmailsDtoResponse {
+  message: string;
+  success: boolean;
+}
