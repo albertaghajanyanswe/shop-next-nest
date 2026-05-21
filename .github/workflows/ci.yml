@@ -60,6 +60,7 @@ jobs:
             NEXT_PUBLIC_SERVER_URL=${{ secrets.NEXT_PUBLIC_SERVER_URL }}
             NEXT_PUBLIC_SERVER_SERVICE=${{ secrets.NEXT_PUBLIC_SERVER_SERVICE }}
             NEXT_PUBLIC_ALLOW_PURCHASE=${{ secrets.NEXT_PUBLIC_ALLOW_PURCHASE }}
+            NEXT_PUBLIC_SHOW_ASSISTANT=${{ secrets.NEXT_PUBLIC_SHOW_ASSISTANT }}
           tags: |
             ${{ env.IMAGE_CLIENT }}:${{ steps.tag.outputs.tag }}
             ${{ env.IMAGE_CLIENT }}:latest
