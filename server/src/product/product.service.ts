@@ -128,19 +128,23 @@ export class ProductService {
     });
 
     console.log('\n\n [getByIdHelper] product = ', product);
-    const productWithSoldCount = this.getSoldCount([
-      product as unknown as GetProductWithDetails,
-    ])[0];
-    if (!productWithSoldCount) {
+    if (!product) {
       this.logger.error(`Product with ID ${id} not found.`);
       throw new NotFoundException('Product not found.');
     }
+
+    const productWithSoldCount = this.getSoldCount([product])[0];
 
     return productWithSoldCount;
   }
 
   async getById(id: string) {
-    return await this.getByIdHelper(id);
+    try {
+      return await this.getByIdHelper(id);
+    } catch (error) {
+      this.logger.error(`Product with ID ${id} not found.`);
+      throw new NotFoundException('Product not found.');
+    }
   }
 
   async getProductById(id: string) {
