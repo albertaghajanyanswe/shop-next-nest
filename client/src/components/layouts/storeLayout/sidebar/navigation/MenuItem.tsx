@@ -21,7 +21,7 @@ export function MenuItem({ route, showOnlyIcon, className }: MenuItemProps) {
       href={route.link}
       title={showOnlyIcon ? route.value : undefined}
       className={cn(
-        'group relative flex items-center rounded-xl px-3 py-2.5 text-sm font-medium transition-all duration-200 border-l-[3px]',
+        'group relative flex items-center rounded-xl border-l-[3px] px-3 py-2.5 text-sm font-medium transition-all duration-200',
         showOnlyIcon ? 'justify-center px-2' : 'gap-x-3',
         // Active: light tinted background + primary text + curved left border
         isActive && 'bg-primary-100 text-shop-primary border-shop-primary',

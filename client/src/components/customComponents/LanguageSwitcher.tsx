@@ -16,7 +16,7 @@ export function LanguageSwitcher() {
   };
 
   return (
-    <div className='flex flex-col items-start gap-8 w-full'>
+    <div className='flex w-full flex-col items-start gap-8'>
       <ButtonGroup className='w-full'>
         <Button
           variant={locale === 'en' ? 'default' : 'outline'}

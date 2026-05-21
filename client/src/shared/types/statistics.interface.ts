@@ -45,7 +45,7 @@ export interface ChartDataItem {
   percentage: number;
   revenue: number;
   fill?: string;
-};
+}
 
 export interface ISalesHistory {
   date: string;

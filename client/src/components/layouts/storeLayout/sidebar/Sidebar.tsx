@@ -61,7 +61,7 @@ export function Sidebar({ isCollapsed, onCollapsedChange }: SidebarProps) {
       <button
         onClick={() => setCollapsed(!collapsed)}
         title={collapsed ? 'Expand sidebar' : 'Collapse sidebar'}
-        className='bg-primary-600 hover:bg-primary-700 absolute -right-3 top-14 z-60 flex size-6 cursor-pointer items-center justify-center rounded-full border shadow-sm transition-all duration-200 text-white'
+        className='bg-primary-600 hover:bg-primary-700 absolute top-14 -right-3 z-60 flex size-6 cursor-pointer items-center justify-center rounded-full border text-white shadow-sm transition-all duration-200'
       >
         <ArrowLeft
           className={cn(
@@ -72,7 +72,7 @@ export function Sidebar({ isCollapsed, onCollapsedChange }: SidebarProps) {
       </button>
 
       {/* ── NAV ── */}
-      <div className='flex flex-1 flex-col overflow-y-auto overflow-x-hidden px-3 py-4'>
+      <div className='flex flex-1 flex-col overflow-x-hidden overflow-y-auto px-3 py-4'>
         <Navigation collapsed={collapsed} />
       </div>
 

@@ -188,7 +188,7 @@ export function DashboardLayout({ children }: PropsWithChildren<unknown>) {
                   alt={user?.name || 'User img'}
                   width={42}
                   height={42}
-                  className='max-h-10 max-w-10 rounded-full border border-primary-300 p-1 transition-transform duration-500 hover:scale-105 w-10 cursor-pointer'
+                  className='border-primary-300 max-h-10 w-10 max-w-10 cursor-pointer rounded-full border p-1 transition-transform duration-500 hover:scale-105'
                   priority={false}
                 />
                 {!collapsed && (

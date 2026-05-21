@@ -25,7 +25,7 @@ export function LastUsers({ data }: ILastUsersProps) {
 
   return (
     <Card className='gap-0! py-0!'>
-      <CardHeader className='flex-col items-stretch justify-between space-y-0 border-b px-4 [.border-b]:pb-4 py-4'>
+      <CardHeader className='flex-col items-stretch justify-between space-y-0 border-b px-4 py-4 [.border-b]:pb-4'>
         <CardTitle className='text-xl font-medium tracking-[0.1px]'>
           {t('recent_buyers')}
         </CardTitle>
@@ -45,20 +45,20 @@ export function LastUsers({ data }: ILastUsersProps) {
                   alt={user.name}
                   width={36}
                   height={36}
-                  className='rounded-full flex-shrink-0'
+                  className='flex-shrink-0 rounded-full'
                 />
               ) : (
-                <div className='w-9 h-9 rounded-full bg-primary text-primary-foreground flex items-center justify-center flex-shrink-0 text-xs font-semibold'>
+                <div className='bg-primary text-primary-foreground flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-full text-xs font-semibold'>
                   {getInitials(user.name)}
                 </div>
               )}
-              <div className='flex-1 min-w-0'>
-                <p className='text-sm font-medium truncate'>{user.name}</p>
-                <p className='text-xs text-muted-foreground truncate'>
+              <div className='min-w-0 flex-1'>
+                <p className='truncate text-sm font-medium'>{user.name}</p>
+                <p className='text-muted-foreground truncate text-xs'>
                   {user.email}
                 </p>
               </div>
-              <div className='text-right flex-shrink-0'>
+              <div className='flex-shrink-0 text-right'>
                 <p className='text-sm font-semibold'>
                   {formatPrice(user.total)}
                 </p>
@@ -66,7 +66,7 @@ export function LastUsers({ data }: ILastUsersProps) {
             </div>
           ))
         ) : (
-          <div className='py-8 text-center text-muted-foreground text-sm'>
+          <div className='text-muted-foreground py-8 text-center text-sm'>
             {t('no_users')}
           </div>
         )}

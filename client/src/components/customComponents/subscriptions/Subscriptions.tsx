@@ -165,11 +165,11 @@ export default function SubscriptionCards({
           >
             <CardHeader className='text-white'>
               <CardTitle
-                className={`flex h-6 items-center justify-between text-shop-primary-text`}
+                className={`text-shop-primary-text flex h-6 items-center justify-between`}
               >
                 {getPlanName(plan.planId)}
                 {plan.isPopular && (
-                  <span className='absolute top-0 right-0 flex w-fit items-center justify-center rounded-bl-full bg-primary-800 px-[10px] py-[4px] text-xs font-semibold text-white'>
+                  <span className='bg-primary-800 absolute top-0 right-0 flex w-fit items-center justify-center rounded-bl-full px-[10px] py-[4px] text-xs font-semibold text-white'>
                     Popular
                   </span>
                 )}

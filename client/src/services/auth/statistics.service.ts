@@ -45,7 +45,10 @@ class StatisticsService {
     return data;
   }
 
-  async getSalesHistory(storeId: string, range: '1w' | '1m' | '6m' | '1y' | 'all' = '1m') {
+  async getSalesHistory(
+    storeId: string,
+    range: '1w' | '1m' | '6m' | '1y' | 'all' = '1m'
+  ) {
     const { data } = await axiosWithAuth<ISalesHistory[]>({
       url: API_URL.statistics(`/sales-history/${storeId}?range=${range}`),
       method: 'GET',

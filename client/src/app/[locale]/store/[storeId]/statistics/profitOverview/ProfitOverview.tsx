@@ -76,10 +76,12 @@ export function ProfitOverview({
         <CardTitle>{t('profit_overview')}</CardTitle>
         <div className='mt-4 flex items-center gap-8 sm:mt-0'>
           <div className='text-right'>
-            <p className='text-xl font-semibold text-shop-red'>
+            <p className='text-shop-red text-xl font-semibold'>
               {formatPrice(totalRevenue)}
             </p>
-            <p className='text-neutral-900 text-xs font-semibold'>{t('total')}</p>
+            <p className='text-xs font-semibold text-neutral-900'>
+              {t('total')}
+            </p>
           </div>
           <Select
             disabled={isLoading}

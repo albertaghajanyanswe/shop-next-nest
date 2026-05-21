@@ -7,14 +7,10 @@ interface MonthlyPriceProps {
 
 function MonthlyPrice({ price, isPopular }: MonthlyPriceProps) {
   return (
-    <div
-      className={`h-16 text-shop-primary-text`}
-    >
+    <div className={`text-shop-primary-text h-16`}>
       <p className='text-3xl font-semibold lg:text-4xl'>
         ${price}
-        <span
-          className={`text-sm font-medium text-shop-muted-text-7`}
-        >
+        <span className={`text-shop-muted-text-7 text-sm font-medium`}>
           /monthly
         </span>
       </p>

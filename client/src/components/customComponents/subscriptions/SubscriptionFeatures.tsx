@@ -14,11 +14,9 @@ const SubscriptionFeatures = ({
       {features.map((feature) => (
         <li
           key={feature}
-          className={`flex items-center text-sm text-shop-primary-text`}
+          className={`text-shop-primary-text flex items-center text-sm`}
         >
-          <CheckCircle
-            className={`mr-2 h-4 w-4 text-shop-light-primary`}
-          />
+          <CheckCircle className={`text-shop-light-primary mr-2 h-4 w-4`} />
           {feature}
         </li>
       ))}

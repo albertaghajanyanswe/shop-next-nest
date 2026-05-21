@@ -9,24 +9,18 @@ interface AnnualPriceProps {
 
 function AnnualPrice({ price, full, discount, isPopular }: AnnualPriceProps) {
   return (
-    <div
-      className={`h-16 text-shop-primary-text`}
-    >
+    <div className={`text-shop-primary-text h-16`}>
       <div className='flex items-baseline gap-2'>
         <span className='text-3xl font-semibold lg:text-4xl'>
           ${price}
-          <span
-            className={`text-sm font-medium text-shop-muted-text-7`}
-          >
+          <span className={`text-shop-muted-text-7 text-sm font-medium`}>
             /annual
           </span>
         </span>
       </div>
 
       {price > 0 && (
-        <span
-          className={`text-xs font-semibold text-shop-light-primary`}
-        >
+        <span className={`text-shop-light-primary text-xs font-semibold`}>
           <span className='text-shop-red mr-2 text-sm line-through'>
             ${full}
           </span>

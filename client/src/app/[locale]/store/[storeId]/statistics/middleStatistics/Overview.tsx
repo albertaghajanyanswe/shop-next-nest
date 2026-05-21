@@ -47,9 +47,7 @@ export function Overview({ data }: IOverviewProps) {
           </p>
         </div>
         <div className='mt-4 text-right sm:mt-0'>
-          <p className='text-2xl font-semibold'>
-            {formatPrice(totalRevenue)}
-          </p>
+          <p className='text-2xl font-semibold'>{formatPrice(totalRevenue)}</p>
           <p className='text-muted-foreground text-xs'>{t('total')}</p>
         </div>
       </CardHeader>
