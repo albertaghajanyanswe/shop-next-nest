@@ -133,7 +133,9 @@ export class ProductService {
       throw new NotFoundException('Product not found.');
     }
 
-    const productWithSoldCount = this.getSoldCount([product])[0];
+    const productWithSoldCount = this.getSoldCount([
+      product as unknown as GetProductWithDetails,
+    ])[0];
 
     return productWithSoldCount;
   }
