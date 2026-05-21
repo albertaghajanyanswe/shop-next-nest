@@ -15,29 +15,29 @@ services:
     networks:
       - app-connect
 
-  # db:
-  #   container_name: db
-  #   image: postgres:latest
-  #   restart: always
-  #   env_file:
-  #     - ../../server/.env.dev
-  #   environment:
-  #     POSTGRES_USER: ${DB_USER}
-  #     POSTGRES_PASSWORD: ${DB_PASSWORD}
-  #     POSTGRES_DB: ${DB_DATABASE}
-  #     PGDATA: /var/lib/postgresql/data/pgdata
-  #   healthcheck:
-  #     test: ["CMD-SHELL", "pg_isready -U ${DB_USER} -d ${DB_DATABASE}"]
-  #     interval: 5s
-  #     timeout: 5s
-  #     retries: 5
-  #     start_period: 10s
-  #   ports:
-  #     - "5433:5432"
-  #   volumes:
-  #     - mystore_db_data:/var/lib/postgresql/data
-  #   networks:
-  #     - app-connect
+  db:
+    container_name: db
+    image: postgres:latest
+    restart: always
+    env_file:
+      - ../../server/.env.dev
+    environment:
+      POSTGRES_USER: ${DB_USER}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+      POSTGRES_DB: ${DB_DATABASE}
+      PGDATA: /var/lib/postgresql/data/pgdata
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${DB_USER} -d ${DB_DATABASE}"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
+    ports:
+      - "5433:5432"
+    volumes:
+      - mystore_db_data:/var/lib/postgresql/data
+    networks:
+      - app-connect
 
   server:
     container_name: shop-backend
@@ -46,9 +46,9 @@ services:
     ports:
       - "4000:4000"
       - "5555:5555"
-    # depends_on:
-    #   db:
-    #     condition: service_healthy
+    depends_on:
+      db:
+        condition: service_healthy
     env_file:
       - ../../server/.env.dev
     volumes:
@@ -83,7 +83,7 @@ services:
       - app-connect
 
 volumes:
-  # mystore_db_data:
+  mystore_db_data:
   images:
 
 networks:

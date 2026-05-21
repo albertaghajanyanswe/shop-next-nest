@@ -47,3 +47,12 @@ Example - ssh -i "mystore-frankfurt.pem" ubuntu@ec2-18-184-69-253.eu-central-1.c
 ##  CI / CD pipeline link
 https://www.youtube.com/watch?v=rRes9LM-Jh8
 
+
+#Create RDS DB
+1. Create RDS DB following this video
+ - http://youtube.com/watch?v=wL7ePO1vZ3Q
+2. If remote connection to db not worked check subnet group and security group of RDS DB, subnet should be public and security group should allow incoming connections from your IP address
+ 3. Click to the rds instance - Connect using - Endpoint
+    - Connectivity & security tab you can find subnets and secure group
+    - Click on the subnet -> Subnet ID -> Route table - Route table ID, on the routes table should see 0.0.0.0/0 route it means subnet public, in other case subnet private, if private you need to create public subnet
+ 
