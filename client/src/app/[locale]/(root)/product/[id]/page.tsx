@@ -10,14 +10,14 @@ import { cache } from 'react';
 
 export const revalidate = 300;
 
-export async function generateStaticParams() {
-  // TODO
-  const productsData = await productService.getAll();
-  const res = productsData?.products
-    ? productsData?.products?.map((product) => ({ id: product.id }))
-    : [];
-  return res;
-}
+// export async function generateStaticParams() {
+//   // TODO
+//   const productsData = await productService.getAll();
+//   const res = productsData?.products
+//     ? productsData?.products?.map((product) => ({ id: product.id }))
+//     : [];
+//   return res;
+// }
 
 export const getProducts = cache(async (id: string) => {
   const [product, similarProducts] = await Promise.all([
@@ -35,13 +35,11 @@ export async function generateMetadata({
 }: {
   params: Promise<{ id: string }>;
 }): Promise<Metadata> {
-  console.log('11111111111');
   const { id } = await params;
   const { product } = await getProducts(id);
 
   const brand = product?.brand?.name || '';
   const category = product?.category?.name || '';
-  console.log('22222222222');
 
   const breadcrumbJsonLd = {
     '@context': 'https://schema.org',
@@ -67,7 +65,6 @@ export async function generateMetadata({
       },
     ],
   };
-  console.log('333333333');
 
   const meta = generateMeta({
     title: `${SITE_NAME} | ${product.title}`,
@@ -91,7 +88,6 @@ export async function generateMetadata({
       'application/ld+json': JSON.stringify(breadcrumbJsonLd),
     },
   });
-  console.log('4444444444');
 
   return meta;
 }
@@ -103,12 +99,11 @@ export default async function ProductPage({
 }) {
   const { id } = await params;
   const { product, similarProducts } = await getProducts(id);
-  console.log('555555555 product = ', product);
-  console.log('555555555 similarProducts = ', similarProducts);
+
   return (
     <div className='global-container'>
       Test Product Page
-      {/* <Breadcrumbs
+      <Breadcrumbs
         items={[
           { title: 'Home', href: '/' },
           { title: 'Shop', href: PUBLIC_URL.shop() },
@@ -120,7 +115,7 @@ export default async function ProductPage({
         initialProduct={product}
         similarProducts={similarProducts}
         id={id}
-      /> */}
+      />
     </div>
   );
 }
