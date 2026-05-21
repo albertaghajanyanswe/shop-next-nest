@@ -5,7 +5,7 @@ import { AiChatService } from './ai-chat.service';
 import { OpenRouterService } from './openrouter.service';
 import { ProductSearchService } from './product-search.service';
 import { PrismaService } from '../prisma.service';
-import { EmbeddingService } from './embedding.service';
+// import { EmbeddingService } from './embedding.service';
 
 @Module({
   imports: [ConfigModule],
@@ -15,7 +15,7 @@ import { EmbeddingService } from './embedding.service';
     OpenRouterService,
     ProductSearchService,
     PrismaService,
-    EmbeddingService,
+    // EmbeddingService,
   ],
   exports: [AiChatService],
 })

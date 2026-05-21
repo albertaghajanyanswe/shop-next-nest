@@ -1,7 +1,7 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { PrismaService } from '../prisma.service';
 import { Prisma } from '@prisma/client';
-import { EmbeddingService } from './embedding.service';
+// import { EmbeddingService } from './embedding.service';
 
 export interface ProductDetailFilter {
   operator: '>' | '<' | '>=' | '<=' | '=';
@@ -108,37 +108,37 @@ export class ProductSearchService {
 
   constructor(
     private readonly prisma: PrismaService,
-    private readonly embeddingService: EmbeddingService,
+    // private readonly embeddingService: EmbeddingService,
   ) {}
 
-  async searchProducts(
-    query: string,
-    limit = 10,
-  ): Promise<ProductSearchResult[]> {
-    try {
-      this.logger.log(`Searching products with query: "${query}"`);
+  // async searchProducts(
+  //   query: string,
+  //   limit = 10,
+  // ): Promise<ProductSearchResult[]> {
+  //   try {
+  //     this.logger.log(`Searching products with query: "${query}"`);
 
-      // Try semantic search first if embedding service is ready
-      if (this.embeddingService.isReady()) {
-        const semanticResults = await this.semanticSearch(query, limit);
-        if (semanticResults.length > 0) {
-          this.logger.log(
-            `Found ${semanticResults.length} products via semantic search`,
-          );
-          return semanticResults;
-        }
-      }
+  //     // Try semantic search first if embedding service is ready
+  //     if (this.embeddingService.isReady()) {
+  //       const semanticResults = await this.semanticSearch(query, limit);
+  //       if (semanticResults.length > 0) {
+  //         this.logger.log(
+  //           `Found ${semanticResults.length} products via semantic search`,
+  //         );
+  //         return semanticResults;
+  //       }
+  //     }
 
-      // Fallback to keyword search
-      this.logger.log('Falling back to keyword search');
-      return await this.keywordSearch(query, limit);
-    } catch (error) {
-      this.logger.error(
-        `Error searching products: ${error instanceof Error ? error.message : 'Unknown error'}`,
-      );
-      throw error;
-    }
-  }
+  //     // Fallback to keyword search
+  //     this.logger.log('Falling back to keyword search');
+  //     return await this.keywordSearch(query, limit);
+  //   } catch (error) {
+  //     this.logger.error(
+  //       `Error searching products: ${error instanceof Error ? error.message : 'Unknown error'}`,
+  //     );
+  //     throw error;
+  //   }
+  // }
 
   async searchProductsWithFilters(
     filters: ProductSearchFilters,
@@ -359,90 +359,90 @@ export class ProductSearchService {
     }
   }
 
-  private async semanticSearch(
-    query: string,
-    limit: number,
-  ): Promise<ProductSearchResult[]> {
-    try {
-      // Generate embedding for query
-      const queryEmbedding =
-        await this.embeddingService.generateEmbedding(query);
+  // private async semanticSearch(
+  //   query: string,
+  //   limit: number,
+  // ): Promise<ProductSearchResult[]> {
+  //   try {
+  //     // Generate embedding for query
+  //     const queryEmbedding =
+  //       await this.embeddingService.generateEmbedding(query);
 
-      // Get all products with embeddings
-      const products = await this.prisma.product.findMany({
-        where: {
-          AND: [
-            { isPublished: true },
-            { isBlocked: false },
-            { embedding: { not: Prisma.JsonNull } },
-          ],
-        },
-        include: {
-          store: {
-            select: {
-              id: true,
-              title: true,
-            },
-          },
-          category: {
-            select: {
-              id: true,
-              name: true,
-            },
-          },
-          brand: {
-            select: {
-              id: true,
-              name: true,
-            },
-          },
-          color: {
-            select: {
-              id: true,
-              name: true,
-              value: true,
-            },
-          },
-          productDetails: {
-            select: {
-              key: true,
-              value: true,
-            },
-          },
-        },
-      });
+  //     // Get all products with embeddings
+  //     const products = await this.prisma.product.findMany({
+  //       where: {
+  //         AND: [
+  //           { isPublished: true },
+  //           { isBlocked: false },
+  //           { embedding: { not: Prisma.JsonNull } },
+  //         ],
+  //       },
+  //       include: {
+  //         store: {
+  //           select: {
+  //             id: true,
+  //             title: true,
+  //           },
+  //         },
+  //         category: {
+  //           select: {
+  //             id: true,
+  //             name: true,
+  //           },
+  //         },
+  //         brand: {
+  //           select: {
+  //             id: true,
+  //             name: true,
+  //           },
+  //         },
+  //         color: {
+  //           select: {
+  //             id: true,
+  //             name: true,
+  //             value: true,
+  //           },
+  //         },
+  //         productDetails: {
+  //           select: {
+  //             key: true,
+  //             value: true,
+  //           },
+  //         },
+  //       },
+  //     });
 
-      // Calculate similarity scores
-      const productsWithScores = products
-        .map((product) => {
-          const productEmbedding = product.embedding as number[];
-          const similarity = this.embeddingService.cosineSimilarity(
-            queryEmbedding,
-            productEmbedding,
-          );
+  //     // Calculate similarity scores
+  //     const productsWithScores = products
+  //       .map((product) => {
+  //         const productEmbedding = product.embedding as number[];
+  //         const similarity = this.embeddingService.cosineSimilarity(
+  //           queryEmbedding,
+  //           productEmbedding,
+  //         );
 
-          return {
-            product,
-            similarity,
-          };
-        })
-        .filter((item) => item.similarity > 0.5) // Threshold for relevance
-        .sort((a, b) => b.similarity - a.similarity)
-        .slice(0, limit);
+  //         return {
+  //           product,
+  //           similarity,
+  //         };
+  //       })
+  //       .filter((item) => item.similarity > 0.5) // Threshold for relevance
+  //       .sort((a, b) => b.similarity - a.similarity)
+  //       .slice(0, limit);
 
-      this.logger.log(
-        `Semantic search found ${productsWithScores.length} products`,
-      );
+  //     this.logger.log(
+  //       `Semantic search found ${productsWithScores.length} products`,
+  //     );
 
-      return productsWithScores.map((item) => ({
-        ...this.mapProductToResult(item.product),
-        similarity: item.similarity,
-      }));
-    } catch (error) {
-      this.logger.error('Error in semantic search:', error);
-      return [];
-    }
-  }
+  //     return productsWithScores.map((item) => ({
+  //       ...this.mapProductToResult(item.product),
+  //       similarity: item.similarity,
+  //     }));
+  //   } catch (error) {
+  //     this.logger.error('Error in semantic search:', error);
+  //     return [];
+  //   }
+  // }
 
   private async keywordSearch(
     query: string,
@@ -557,43 +557,43 @@ export class ProductSearchService {
     return products.map((product) => this.mapProductToResult(product));
   }
 
-  async generateProductEmbedding(productId: string): Promise<void> {
-    try {
-      const product = await this.prisma.product.findUnique({
-        where: { id: productId },
-        include: {
-          category: true,
-          brand: true,
-          productDetails: true,
-        },
-      });
+  // async generateProductEmbedding(productId: string): Promise<void> {
+  //   try {
+  //     const product = await this.prisma.product.findUnique({
+  //       where: { id: productId },
+  //       include: {
+  //         category: true,
+  //         brand: true,
+  //         productDetails: true,
+  //       },
+  //     });
 
-      if (!product) {
-        throw new Error(`Product ${productId} not found`);
-      }
+  //     if (!product) {
+  //       throw new Error(`Product ${productId} not found`);
+  //     }
 
-      // Create searchable text from product data
-      const searchableText = this.createSearchableText(product);
+  //     // Create searchable text from product data
+  //     const searchableText = this.createSearchableText(product);
 
-      // Generate embedding
-      const embedding =
-        await this.embeddingService.generateEmbedding(searchableText);
+  //     // Generate embedding
+  //     const embedding =
+  //       await this.embeddingService.generateEmbedding(searchableText);
 
-      // Save to database
-      await this.prisma.product.update({
-        where: { id: productId },
-        data: { embedding: embedding as unknown as Prisma.InputJsonValue },
-      });
+  //     // Save to database
+  //     await this.prisma.product.update({
+  //       where: { id: productId },
+  //       data: { embedding: embedding as unknown as Prisma.InputJsonValue },
+  //     });
 
-      this.logger.log(`Generated embedding for product: ${product.title}`);
-    } catch (error) {
-      this.logger.error(
-        `Error generating embedding for product ${productId}:`,
-        error,
-      );
-      throw error;
-    }
-  }
+  //     this.logger.log(`Generated embedding for product: ${product.title}`);
+  //   } catch (error) {
+  //     this.logger.error(
+  //       `Error generating embedding for product ${productId}:`,
+  //       error,
+  //     );
+  //     throw error;
+  //   }
+  // }
 
   async generateAllEmbeddings(): Promise<void> {
     try {
