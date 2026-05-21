@@ -90,23 +90,23 @@ fi
 
 echo -e "${GREEN}✓ Images exist${NC}"
 
-# -----------------------------
-# Backup DB
-# -----------------------------
-if docker ps --format '{{.Names}}' | grep -q "^$DB_CONTAINER\$"; then
-  echo -e "${YELLOW}Creating DB backup...${NC}"
+# # -----------------------------
+# # Backup DB
+# # -----------------------------
+# if docker ps --format '{{.Names}}' | grep -q "^$DB_CONTAINER\$"; then
+#   echo -e "${YELLOW}Creating DB backup...${NC}"
 
-  if docker exec "$DB_CONTAINER" pg_dump -U "$DB_USER" "$DB_NAME" > "$BACKUP_FILE" 2>/dev/null; then
-    echo -e "${GREEN}✓ Backup created: $BACKUP_FILE${NC}"
+#   if docker exec "$DB_CONTAINER" pg_dump -U "$DB_USER" "$DB_NAME" > "$BACKUP_FILE" 2>/dev/null; then
+#     echo -e "${GREEN}✓ Backup created: $BACKUP_FILE${NC}"
 
-    # Оставляем последние 10 бэкапов
-    ls -t "$BACKUP_DIR"/db_backup_*.sql 2>/dev/null | tail -n +11 | xargs -r rm || true
-  else
-    echo -e "${YELLOW}⚠ Backup failed${NC}"
-  fi
-else
-  echo -e "${YELLOW}⚠ DB container not running, skipping backup${NC}"
-fi
+#     # Оставляем последние 10 бэкапов
+#     ls -t "$BACKUP_DIR"/db_backup_*.sql 2>/dev/null | tail -n +11 | xargs -r rm || true
+#   else
+#     echo -e "${YELLOW}⚠ Backup failed${NC}"
+#   fi
+# else
+#   echo -e "${YELLOW}⚠ DB container not running, skipping backup${NC}"
+# fi
 
 # -----------------------------
 # Pull
