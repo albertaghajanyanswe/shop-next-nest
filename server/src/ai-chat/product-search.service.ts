@@ -595,30 +595,30 @@ export class ProductSearchService {
   //   }
   // }
 
-  async generateAllEmbeddings(): Promise<void> {
-    try {
-      const products = await this.prisma.product.findMany({
-        where: {
-          isPublished: true,
-          isBlocked: false,
-        },
-        select: { id: true },
-      });
+  // async generateAllEmbeddings(): Promise<void> {
+  //   try {
+  //     const products = await this.prisma.product.findMany({
+  //       where: {
+  //         isPublished: true,
+  //         isBlocked: false,
+  //       },
+  //       select: { id: true },
+  //     });
 
-      this.logger.log(
-        `Generating embeddings for ${products.length} products...`,
-      );
+  //     this.logger.log(
+  //       `Generating embeddings for ${products.length} products...`,
+  //     );
 
-      for (const product of products) {
-        await this.generateProductEmbedding(product.id);
-      }
+  //     for (const product of products) {
+  //       await this.generateProductEmbedding(product.id);
+  //     }
 
-      this.logger.log('All embeddings generated successfully');
-    } catch (error) {
-      this.logger.error('Error generating all embeddings:', error);
-      throw error;
-    }
-  }
+  //     this.logger.log('All embeddings generated successfully');
+  //   } catch (error) {
+  //     this.logger.error('Error generating all embeddings:', error);
+  //     throw error;
+  //   }
+  // }
 
   private createSearchableText(product: any): string {
     const parts: string[] = [];
