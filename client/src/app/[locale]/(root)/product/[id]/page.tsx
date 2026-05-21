@@ -35,11 +35,13 @@ export async function generateMetadata({
 }: {
   params: Promise<{ id: string }>;
 }): Promise<Metadata> {
+  console.log('11111111111');
   const { id } = await params;
   const { product } = await getProducts(id);
 
   const brand = product?.brand?.name || '';
   const category = product?.category?.name || '';
+  console.log('22222222222');
 
   const breadcrumbJsonLd = {
     '@context': 'https://schema.org',
@@ -65,6 +67,7 @@ export async function generateMetadata({
       },
     ],
   };
+  console.log('333333333');
 
   const meta = generateMeta({
     title: `${SITE_NAME} | ${product.title}`,
@@ -88,6 +91,8 @@ export async function generateMetadata({
       'application/ld+json': JSON.stringify(breadcrumbJsonLd),
     },
   });
+  console.log('4444444444');
+
   return meta;
 }
 
@@ -98,7 +103,8 @@ export default async function ProductPage({
 }) {
   const { id } = await params;
   const { product, similarProducts } = await getProducts(id);
-
+  console.log('555555555 product = ', product);
+  console.log('555555555 similarProducts = ', similarProducts);
   return (
     <div className='global-container'>
       <Breadcrumbs
