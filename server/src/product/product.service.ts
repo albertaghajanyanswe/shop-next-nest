@@ -58,6 +58,7 @@ export class ProductService {
         },
       },
     });
+    console.log('\n\n [getAll] products = ', products);
     const productsWithSoldCount = this.getSoldCount(products);
     const totalCount = await this.prisma.product.count({
       where: { ...where, ...this.getDefaultWhere() },
@@ -93,6 +94,7 @@ export class ProductService {
     });
     console.log('getby store id products = ', products);
 
+    console.log('\n\n [getByStoreId] products = ', products);
     const productsWithSoldCount = this.getSoldCount(products);
     const totalCount = await this.prisma.product.count({
       where: payload.where,
@@ -125,6 +127,7 @@ export class ProductService {
       },
     });
 
+    console.log('\n\n [getByIdHelper] product = ', product);
     const productWithSoldCount = this.getSoldCount([
       product as unknown as GetProductWithDetails,
     ])[0];
@@ -191,6 +194,7 @@ export class ProductService {
           },
         });
 
+        console.log('\n\n [getMostPopular] 1 allProducts = ', allProducts);
         const productsWithSoldCount = this.getSoldCount(
           allProducts as unknown as GetProductWithDetails[],
         );
@@ -220,6 +224,7 @@ export class ProductService {
         ...(payload.skip ? { skip: payload.skip } : {}),
       });
 
+      console.log('\n\n [getMostPopular] 2 products = ', products);
       const productsWithSoldCount = this.getSoldCount(
         products as unknown as GetProductWithDetails[],
       );
@@ -267,6 +272,7 @@ export class ProductService {
       ...rest,
     });
 
+    console.log('\n\n [getSimilar] similarProducts = ', similarProducts);
     const similarProductsWithSoldCount = this.getSoldCount(
       similarProducts as unknown as GetProductWithDetails[],
     );
