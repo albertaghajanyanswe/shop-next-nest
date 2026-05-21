@@ -10,14 +10,14 @@ import { cache } from 'react';
 
 export const revalidate = 300;
 
-export async function generateStaticParams() {
-  // TODO
-  const productsData = await productService.getAll();
-  const res = productsData?.products
-    ? productsData?.products?.map((product) => ({ id: product.id }))
-    : [];
-  return res;
-}
+// export async function generateStaticParams() {
+//   // TODO
+//   const productsData = await productService.getAll();
+//   const res = productsData?.products
+//     ? productsData?.products?.map((product) => ({ id: product.id }))
+//     : [];
+//   return res;
+// }
 
 export const getProducts = cache(async (id: string) => {
   const [product, similarProducts] = await Promise.all([
@@ -107,7 +107,8 @@ export default async function ProductPage({
   console.log('555555555 similarProducts = ', similarProducts);
   return (
     <div className='global-container'>
-      <Breadcrumbs
+      Test Product Page
+      {/* <Breadcrumbs
         items={[
           { title: 'Home', href: '/' },
           { title: 'Shop', href: PUBLIC_URL.shop() },
@@ -119,7 +120,7 @@ export default async function ProductPage({
         initialProduct={product}
         similarProducts={similarProducts}
         id={id}
-      />
+      /> */}
     </div>
   );
 }

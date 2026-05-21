@@ -58,7 +58,7 @@ export function generateMeta(props: MetaProps): Metadata {
       title,
       description,
       url: fullUrl,
-      siteName: process.env.NEXT_PUBLIC_SITE_NAME || 'My Site',
+      siteName: process?.env?.NEXT_PUBLIC_SITE_NAME || 'My Store',
       locale: 'en_US',
       images: [
         {
