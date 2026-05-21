@@ -38,11 +38,21 @@ class AuthService {
       url: API_URL.auth('/logout'),
       method: 'POST',
     });
-    if (response.data) {
-      removeFromStorage();
-    }
+    // if (response.data) {
+    //   removeFromStorage();
+    // }
     localStorage.removeItem('userId');
     await resetStoreForNewUser();
+    return response;
+  }
+
+  async onlyLogout() {
+    const response = await axiosClassic({
+      url: API_URL.auth('/logout'),
+      method: 'POST',
+    });
+    // removeFromStorage();
+    localStorage.removeItem('userId');
     return response;
   }
 }

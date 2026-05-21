@@ -12,7 +12,13 @@ import {
   ValidationPipe,
 } from '@nestjs/common';
 import { AuthService } from './auth.service';
-import { RegisterDto, LoginDto, AuthResponseDto, ForgotPasswordDto, ResetPasswordDto } from './dto/auth.dto';
+import {
+  RegisterDto,
+  LoginDto,
+  AuthResponseDto,
+  ForgotPasswordDto,
+  ResetPasswordDto,
+} from './dto/auth.dto';
 import type { Request, Response } from 'express';
 import { AuthGuard } from '@nestjs/passport';
 import { ApiOkResponse, ApiOperation } from '@nestjs/swagger';
@@ -57,10 +63,11 @@ export class AuthController {
     return response;
   }
 
+  @ApiOperation({ summary: 'User login access token' })
+  @ApiOkResponse({ type: AuthResponseDto })
   @UsePipes(new ValidationPipe())
   @HttpCode(200)
   @Post('login/access-token')
-  @ApiOkResponse({ type: AuthResponseDto })
   async getNewTokens(
     @Req() req: Request,
     @Res({ passthrough: true }) res: Response,

@@ -91,6 +91,7 @@ export class ProductService {
         },
       },
     });
+    console.log('getby store id products = ', products);
 
     const productsWithSoldCount = this.getSoldCount(products);
     const totalCount = await this.prisma.product.count({
@@ -153,29 +154,57 @@ export class ProductService {
   }
 
   async getMostPopular(params?: string) {
-    const payload = this.queryBuilderService.build({
-      queryParams: params || '',
-    });
-    const mostPopularProducts = await this.prisma.orderItem.groupBy({
-      by: ['productId'],
-      _count: {
-        id: true,
-      },
-      orderBy: {
+    try {
+      const payload = this.queryBuilderService.build({
+        queryParams: params || '',
+      });
+      const mostPopularProducts = await this.prisma.orderItem.groupBy({
+        by: ['productId'],
         _count: {
-          id: 'desc',
+          id: true,
         },
-      },
-      ...(payload.take ? { take: payload.take } : {}),
-      ...(payload.skip ? { skip: payload.skip } : {}),
-    });
-
-    if (!mostPopularProducts.length) {
-      const allProducts = this.prisma.product.findMany({
+        orderBy: {
+          _count: {
+            id: 'desc',
+          },
+        },
         ...(payload.take ? { take: payload.take } : {}),
         ...(payload.skip ? { skip: payload.skip } : {}),
-        orderBy: {
-          totalViews: 'desc',
+      });
+
+      if (!mostPopularProducts.length) {
+        const allProducts = await this.prisma.product.findMany({
+          ...(payload.take ? { take: payload.take } : {}),
+          ...(payload.skip ? { skip: payload.skip } : {}),
+          orderBy: {
+            totalViews: 'desc',
+          },
+          include: {
+            category: true,
+            brand: true,
+            store: true,
+            orderItems: {
+              select: {
+                quantity: true,
+              },
+            },
+          },
+        });
+
+        const productsWithSoldCount = this.getSoldCount(
+          allProducts as unknown as GetProductWithDetails[],
+        );
+        return productsWithSoldCount;
+      }
+      const productIds = mostPopularProducts
+        .map((item) => item.productId)
+        .filter(Boolean);
+
+      const products = await this.prisma.product.findMany({
+        where: {
+          id: {
+            in: productIds as string[],
+          },
         },
         include: {
           category: true,
@@ -187,41 +216,18 @@ export class ProductService {
             },
           },
         },
+        ...(payload.take ? { take: payload.take } : {}),
+        ...(payload.skip ? { skip: payload.skip } : {}),
       });
 
       const productsWithSoldCount = this.getSoldCount(
-        allProducts as unknown as GetProductWithDetails[],
+        products as unknown as GetProductWithDetails[],
       );
       return productsWithSoldCount;
+    } catch (error) {
+      this.logger.error('Failed to get most popular products:', error);
+      return [];
     }
-    const productIds = mostPopularProducts
-      .map((item) => item.productId)
-      .filter(Boolean);
-
-    const products = await this.prisma.product.findMany({
-      where: {
-        id: {
-          in: productIds as string[],
-        },
-      },
-      include: {
-        category: true,
-        brand: true,
-        store: true,
-        orderItems: {
-          select: {
-            quantity: true,
-          },
-        },
-      },
-      ...(payload.take ? { take: payload.take } : {}),
-      ...(payload.skip ? { skip: payload.skip } : {}),
-    });
-
-    const productsWithSoldCount = this.getSoldCount(
-      products as unknown as GetProductWithDetails[],
-    );
-    return productsWithSoldCount;
   }
 
   async getSimilar(id: string, params?: string) {
@@ -449,6 +455,9 @@ export class ProductService {
   }
 
   getSoldCount(products: GetProductWithDetails[]) {
+    if (!products) {
+      return [];
+    }
     const productsWithSoldCount = products.map((product) => {
       const soldCount = product.orderItems?.reduce(
         (sum, item) => sum + item.quantity,

@@ -6,9 +6,7 @@ import axios, {
 } from 'axios';
 import { NEXT_PUBLIC_SERVER_URL } from '@/config/api.config';
 import { errorCatch, getContentType } from './api.helper';
-import {
-  removeFromStorage,
-} from '@/services/auth/auth-token.service';
+import { removeFromStorage } from '@/services/auth/auth-token.service';
 import { authService } from '@/services/auth/auth.service';
 import { EnvVariables } from '@/shared/envVariables';
 import { PUBLIC_URL } from '@/config/url.config';
@@ -63,7 +61,8 @@ axiosWithAuth.interceptors.response.use(
           errorCatch(error) === 'User not found' ||
           errorCatch(error) === 'Refresh token is missing'
         ) {
-          removeFromStorage();
+          await authService.onlyLogout();
+          // removeFromStorage();
         }
       }
     }
