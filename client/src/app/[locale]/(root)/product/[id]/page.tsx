@@ -10,14 +10,14 @@ import { cache } from 'react';
 
 export const revalidate = 300;
 
-// export async function generateStaticParams() {
-//   // TODO
-//   const productsData = await productService.getAll();
-//   const res = productsData?.products
-//     ? productsData?.products?.map((product) => ({ id: product.id }))
-//     : [];
-//   return res;
-// }
+export async function generateStaticParams() {
+  // TODO
+  const productsData = await productService.getAll();
+  const res = productsData?.products
+    ? productsData?.products?.map((product) => ({ id: product.id }))
+    : [];
+  return res;
+}
 
 export const getProducts = cache(async (id: string) => {
   const [product, similarProducts] = await Promise.all([
