@@ -43,7 +43,10 @@ export default async function PaymentPage({
   return (
     <div className='global-container'>
       <Breadcrumbs
-        items={[{ title: headerT('Home'), href: '/' }, { title: t('breadcrumb') }]}
+        items={[
+          { title: headerT('Home'), href: '/' },
+          { title: t('breadcrumb') },
+        ]}
         classNames='mt-4'
       />
       <PaymentSuccessPage orderId={orderId} />

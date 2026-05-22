@@ -56,7 +56,9 @@ function SubscriptionHeader({
       <Label className='text-shop-primary-text' htmlFor='period'>
         {t('annual')}{' '}
         <span className='text-shop-light-primary font-semibold'>
-          {t('save_discount', { discount: calculateDiscount(GetPlansDtoPlanId.ADVANCED) })}
+          {t('save_discount', {
+            discount: calculateDiscount(GetPlansDtoPlanId.ADVANCED),
+          })}
         </span>
       </Label>
     </div>

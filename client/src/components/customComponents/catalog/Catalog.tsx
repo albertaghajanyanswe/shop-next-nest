@@ -65,7 +65,7 @@ export function Catalog({
         {linkTitle && link && (
           <Link
             href={link}
-            className='text-primary-700 hover:text-primary-700/70 bg-shop-bg-default hidden rounded-md px-2 py-1 border text-sm font-medium whitespace-nowrap shadow-sm md:flex'
+            className='text-primary-700 hover:text-primary-700/70 bg-shop-bg-default hidden rounded-md border px-2 py-1 text-sm font-medium whitespace-nowrap shadow-sm md:flex'
           >
             {linkTitle}
           </Link>

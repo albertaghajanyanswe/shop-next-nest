@@ -9,7 +9,7 @@ export function MainStatistics() {
   const { mainStatistics, isLoadingMainStatistics } = useGetStatistics();
 
   if (isLoadingMainStatistics) {
-    return <Loading text={t('loading')} />
+    return <Loading text={t('loading')} />;
   }
 
   const hasData = !!mainStatistics?.length;

@@ -16,7 +16,9 @@ const SubscriptionFeatures = ({
           key={feature}
           className={`${isPopular ? 'text-white' : 'text-shop-primary-text'} flex items-center text-sm`}
         >
-          <CheckCircle className={`${isPopular ? 'text-white' : 'text-shop-light-primary'} mr-2 h-4 w-4`} />
+          <CheckCircle
+            className={`${isPopular ? 'text-white' : 'text-shop-light-primary'} mr-2 h-4 w-4`}
+          />
           {feature}
         </li>
       ))}

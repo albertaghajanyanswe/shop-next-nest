@@ -77,7 +77,9 @@ export function Colors() {
           </div>
         </div>
       )}
-      {!isLoadingColorsData && colorsData?.colors && colorsData?.colors?.length > 0 ? (
+      {!isLoadingColorsData &&
+      colorsData?.colors &&
+      colorsData?.colors?.length > 0 ? (
         <div className='mt-3'>
           {viewMode === 'card' ? (
             <div className='mt-4 grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5'>

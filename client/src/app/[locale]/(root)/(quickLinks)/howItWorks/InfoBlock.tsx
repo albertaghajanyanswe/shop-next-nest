@@ -10,7 +10,7 @@ function InfoBlock() {
   return (
     <>
       <div className='card-linear-grad dark:card-flame mt-3 rounded-md bg-linear-to-r p-4'>
-        <h2 className='mb-2 text-xl leading-relaxed font-semibold text-shop-primary-text'>
+        <h2 className='text-shop-primary-text mb-2 text-xl leading-relaxed font-semibold'>
           {t('info_block_title', { siteName: SITE_NAME })}
         </h2>
         <Image
@@ -31,27 +31,27 @@ function InfoBlock() {
         </p>
 
         <ul className='text-shop-primary-text grid list-inside list-disc grid-cols-1 gap-2 md:grid-cols-2'>
-          <li className='flex flex-row items-center justify-start gap-4 text-shop-primary-text font-medium'>
+          <li className='text-shop-primary-text flex flex-row items-center justify-start gap-4 font-medium'>
             <CheckCircle className='h-4 w-4 text-emerald-200' />
             {t('info_block_item_1')}
           </li>
-          <li className='flex flex-row items-center justify-start gap-4 text-shop-primary-text font-medium'>
+          <li className='text-shop-primary-text flex flex-row items-center justify-start gap-4 font-medium'>
             <CheckCircle className='h-4 w-4 text-emerald-200' />
             {t('info_block_item_2')}
           </li>
-          <li className='flex flex-row items-center justify-start gap-4 text-shop-primary-text font-medium'>
+          <li className='text-shop-primary-text flex flex-row items-center justify-start gap-4 font-medium'>
             <CheckCircle className='h-4 w-4 text-emerald-200' />
             {t('info_block_item_3')}
           </li>
-          <li className='flex flex-row items-center justify-start gap-4 text-shop-primary-text font-medium'>
+          <li className='text-shop-primary-text flex flex-row items-center justify-start gap-4 font-medium'>
             <CheckCircle className='h-4 w-4 text-emerald-200' />
             {t('info_block_item_4')}
           </li>
-          <li className='flex flex-row items-center justify-start gap-4 text-shop-primary-text font-medium'>
+          <li className='text-shop-primary-text flex flex-row items-center justify-start gap-4 font-medium'>
             <CheckCircle className='h-4 w-4 text-emerald-200' />
             {t('info_block_item_5')}
           </li>
-          <li className='flex flex-row items-center justify-start gap-4 text-shop-primary-text font-medium'>
+          <li className='text-shop-primary-text flex flex-row items-center justify-start gap-4 font-medium'>
             <CheckCircle className='h-4 w-4 text-emerald-200' />
             {t('info_block_item_6')}
           </li>

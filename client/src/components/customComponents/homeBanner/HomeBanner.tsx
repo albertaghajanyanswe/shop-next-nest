@@ -30,7 +30,7 @@ function HomeBannerComponent() {
                 <div className='relative h-full max-w-screen-xl px-4'>
                   <div className='global-container relative h-full content-center space-y-5 py-10 sm:py-15 lg:space-y-10 lg:py-20'>
                     <div className='flex max-w-full flex-col gap-4 sm:max-w-[60%]'>
-                      <h1 className='text-black text-xl font-semibold sm:text-2xl lg:text-3xl'>
+                      <h1 className='text-xl font-semibold text-black sm:text-2xl lg:text-3xl'>
                         {t('banner_title')}
                       </h1>
                       <Link href={PUBLIC_URL.shop()}>

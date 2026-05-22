@@ -86,7 +86,9 @@ export function Categories() {
           </div>
         </div>
       )}
-      {!isLoadingCategoriesData && categoriesData?.categories && categoriesData?.categories?.length > 0 ? (
+      {!isLoadingCategoriesData &&
+      categoriesData?.categories &&
+      categoriesData?.categories?.length > 0 ? (
         <div className='w-full'>
           {viewMode === 'card' ? (
             <div className='mt-4 grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5'>

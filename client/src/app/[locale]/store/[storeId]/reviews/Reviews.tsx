@@ -67,7 +67,9 @@ export function Reviews() {
           <ViewToggle viewMode={viewMode} onToggle={setViewMode} />
         </div>
       )}
-      {!isLoadingReviewsData && reviewsData?.reviews && reviewsData?.reviews?.length > 0 ? (
+      {!isLoadingReviewsData &&
+      reviewsData?.reviews &&
+      reviewsData?.reviews?.length > 0 ? (
         <div className='mt-3'>
           {viewMode === 'card' ? (
             <div className='mt-4 grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3'>

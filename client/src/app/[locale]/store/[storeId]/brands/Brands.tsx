@@ -83,7 +83,9 @@ export function Brands() {
           </div>
         </div>
       )}
-      {!isLoadingBrandsData && brandsData?.brands && brandsData?.brands?.length > 0 ? (
+      {!isLoadingBrandsData &&
+      brandsData?.brands &&
+      brandsData?.brands?.length > 0 ? (
         <div className='mt-3'>
           {viewMode === 'card' ? (
             <div className='mt-4 grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5'>

@@ -22,7 +22,9 @@ function AnnualPrice({ price, full, discount, isPopular }: AnnualPriceProps) {
       </div>
 
       {price > 0 && (
-        <span className={`${isPopular ? 'text-white' : 'text-shop-light-primary'} text-xs font-semibold`}>
+        <span
+          className={`${isPopular ? 'text-white' : 'text-shop-light-primary'} text-xs font-semibold`}
+        >
           <span className='text-shop-red mr-2 text-sm line-through'>
             ${full}
           </span>

@@ -123,7 +123,7 @@ export function AiChatWidget() {
                   <div className='absolute top-10 left-10 h-8 w-14 -rotate-45 rounded-full bg-white/60 blur-sm'></div>
                 </div>
 
-                <h2 className='text-center text-2xl leading-[1.2] font-semibold tracking-tight text-black whitespace-pre-line'>
+                <h2 className='text-center text-2xl leading-[1.2] font-semibold tracking-tight whitespace-pre-line text-black'>
                   {t('greeting')}
                 </h2>
 

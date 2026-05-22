@@ -58,7 +58,10 @@ export default function StoresPage({
           <p className='mt-2 mb-6 line-clamp-2 text-sm font-medium text-neutral-500'>
             {t('description')}
           </p>
-          <SearchInput placeholder={t('search_placeholder')} redirectToShop={false} />
+          <SearchInput
+            placeholder={t('search_placeholder')}
+            redirectToShop={false}
+          />
         </div>
       </div>
       <div className='relative mt-4'>

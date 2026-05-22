@@ -73,7 +73,9 @@ function FavoriteButton({
         <>
           <AiOutlineHeart className='size-4' />
           {!onlyIcon && (
-            <span className='text-shop-primary-text'>{t('add_to_favorites')}</span>
+            <span className='text-shop-primary-text'>
+              {t('add_to_favorites')}
+            </span>
           )}
         </>
       )}
