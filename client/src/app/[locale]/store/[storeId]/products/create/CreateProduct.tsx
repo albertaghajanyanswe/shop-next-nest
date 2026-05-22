@@ -14,13 +14,12 @@ export function CreateProduct() {
   const isLoading =
     isLoadingCategoriesData || isLoadingColorsData || isLoadingBrandsData;
 
-  if (isLoading) return <div>{t('loading')}</div>;
-
   return (
     <ProductForm
       categories={categoriesData?.categories || []}
       colors={colorsData?.colors || []}
       brands={brandsData?.brands || []}
+      isLoadingData={isLoading}
     />
   );
 }

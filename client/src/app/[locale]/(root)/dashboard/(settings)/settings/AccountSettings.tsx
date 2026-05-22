@@ -7,8 +7,6 @@ import { stripeService } from '@/services/stripe.service.ts';
 import { StripeActionBlock } from './StripeActionBlock';
 import { useProfile } from '@/hooks/useProfile';
 import { EnvVariables } from '@/shared/envVariables';
-import { LanguageSwitcher } from '@/components/customComponents/LanguageSwitcher';
-import { ThemeSwitcher } from '@/components/customComponents/ThemeSwitcher';
 
 export default function AccountSettings() {
   const t = useTranslations('AccountSettings');
@@ -28,10 +26,7 @@ export default function AccountSettings() {
   };
 
   return (
-    <div className='flex flex-col gap-4'>
-      <LanguageSwitcher />
-      <ThemeSwitcher />
-
+    <div className='flex flex-col gap-4 p-4'>
       <StripeActionBlock
         title={t('register_stripe')}
         description={

@@ -61,7 +61,7 @@ export function CustomComboBox({
           variant='outline'
           role='combobox'
           className={cn(
-            'relative w-full justify-between pr-10 font-normal',
+            'bg-white relative w-full justify-between pr-10 font-normal',
             !selectedName && 'text-muted-foreground',
             error && 'border-red-500',
             className

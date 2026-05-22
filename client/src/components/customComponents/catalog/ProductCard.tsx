@@ -49,9 +49,9 @@ function ProductCard({ product }: ProductCardProps) {
   const outOfStock = product.quantity === 0;
   return (
     <div
-      className={`group border-shop-primary/15 xs:text-sm bg-shop-white relative flex flex-col rounded-md border text-xs ${outOfStock ? 'opacity-70' : ''}`}
+      className={`shadow-md border-none group xs:text-sm bg-shop-white relative flex flex-col rounded-md border text-xs ${outOfStock ? 'opacity-70' : ''}`}
     >
-      <div className='group bg-shop_light_bg relative overflow-hidden'>
+      <div className='group bg-shop_light_bg relative overflow-hidden rounded-t-md'>
         <Carousel setApi={setCarouselApi}>
           <CarouselContent>
             {product.images.map((image) => (

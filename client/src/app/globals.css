@@ -64,25 +64,37 @@
   --animate-scale-pulse-fast: scale-pulse 0.6s ease-in-out infinite;
 
   /* --font-poppins: Poppins, sans-serif; */
-  --color-shop-light-pink: #fcf0e4;
-  --color-shop-primary: #063c28;
-  --color-shop-light-primary: #3b9c3c;
-  --color-shop-btn-primary: #063d29;
-  --color-shop-light-bg: #f6f6f6;
-  --color-shop-bg: #f1f3f8;
-  --color-shop-orange: #fb6c08;
-  --color-shop-red: #f02757;
-  --color-shop-dark-color: #151515;
-  --color-shop-light-color: #52525b;
-  --color-shop-light-orange: #fca99b;
-  --color-shop-green-hover: #eff7f4;
-  --color-shop-white: #ffffff;
-  --color-shop-primary-text: #000000;
-  --color-shop-muted-text-7: #374151;
-  --color-shop-muted-text-6: #4b5563;
-  --color-shop-muted-text-5: #6b7280;
-  --color-shop-bg-default: #ffffff;
+  --color-shop-light-pink: #fdf2e9;
+  --color-shop-primary: #067a40;
+  --color-shop-light-primary: #3db86b;
+  --color-shop-btn-primary: #067a40;
+  --color-shop-orange: #e8650a;
+  --color-shop-red: #d42a4a;
+  --color-shop-dark-color: #1a1a14;
+  --color-shop-light-color: #5c5952;
+  --color-shop-light-orange: #fde8d8;
+  --color-shop-green-hover: #eaf7ef;
+  --color-shop-primary-text: #1a1a14;
+  --color-shop-muted-text-7: #3c3a36;
+  --color-shop-muted-text-6: #5c5952;
+  --color-shop-muted-text-5: #7d7a70;
+  --color-shop-light-bg: #f7f5f2;
+  --color-shop-bg: #f2efe9;
+  --color-shop-bg-2: #e6dfd8;
+  --color-shop-white: #fefcf9;
+  --color-shop-bg-default: #fefcf9;
   --color-shop-bg-light: var(--color-neutral-50);
+
+  /* --color-primary-50: #eafbf1;
+  --color-primary-100: #d8ebe5;
+  --color-primary-200: #c9f2da;
+  --color-primary-300: #9be5b5;
+  --color-primary-400: #33ba67;
+  --color-primary-500: #0d9e4e;
+  --color-primary-600: #05803d;
+  --color-primary-700: #066633;
+  --color-primary-800: #0a522c;
+  --color-primary-900: #094424; */
 
   --color-primary-50: #e9f9f2;
   --color-primary-100: #d8ebe5;
@@ -95,17 +107,6 @@
   --color-primary-800: #052f21;
   --color-primary-900: #031f16;
 
-  /* --color-primary-50: #ebfffe;
-  --color-primary-100: #cefffd;
-  --color-primary-200: #a2fffd;
-  --color-primary-300: #63fdfb;
-  --color-primary-400: #1cf3f4;
-  --color-primary-500: #00d6da;
-  --color-primary-600: #03abb7;
-  --color-primary-700: #0a8692;
-  --color-primary-800: #126d78;
-  --color-primary-900: #063c46; */
-
   --color-secondary-50: #eef2ff;
   --color-secondary-100: #e0e7ff;
   --color-secondary-200: #c7d2fe;
@@ -117,7 +118,7 @@
   --color-secondary-800: #312e81;
   --color-secondary-900: #1e1b4b;
 
-  --color-neutral-50: #f9fafb;
+  /* --color-neutral-50: #f9fafb;
   --color-neutral-100: #f3f4f6;
   --color-neutral-200: #e5e7eb;
   --color-neutral-300: #d1d5db;
@@ -126,7 +127,18 @@
   --color-neutral-600: #4b5563;
   --color-neutral-700: #374151;
   --color-neutral-800: #1f2937;
-  --color-neutral-900: #111827;
+  --color-neutral-900: #111827; */
+
+  --color-neutral-50: #f6f5f3;
+  --color-neutral-100: #eceae6;
+  --color-neutral-200: #d5d1ca;
+  --color-neutral-300: #b4afa5;
+  --color-neutral-400: #8b867a;
+  --color-neutral-500: #6d685c;
+  --color-neutral-600: #555046;
+  --color-neutral-700: #443f37;
+  --color-neutral-800: #2f2b25;
+  --color-neutral-900: #1a1713;
 
   --breakpoint-xxs: 320px;
   --breakpoint-xs: 480px;
@@ -291,20 +303,14 @@
 } */
 
 .dark {
-  /* --color-dark-1: #0a0a0f;
-  --color-dark-2: #111118;
-  --color-dark-3: #1a1a24;
-  --color-dark-4: #22222f;
-  --color-dark-5: #2e2e3e; */
-
-  --color-dark-1: #0f1117;
-  --color-dark-2: #161a23;
-  --color-dark-3: #1d2330;
-  --color-dark-4: #252c3b;
-  --color-dark-5: #313a4d;
+  --color-dark-1: #11130e;
+  --color-dark-2: #181a14;
+  --color-dark-3: #20221b;
+  --color-dark-4: #282b22;
+  --color-dark-5: #34372c;
 
   /* Redefined for dark theme */
-  --color-primary-50: #fff4ed;
+  /* --color-primary-50: #fff4ed;
   --color-primary-100: #ffe6d5;
   --color-primary-200: #ffcca8;
   --color-primary-300: #ffab74;
@@ -313,7 +319,18 @@
   --color-primary-600: #eb4407;
   --color-primary-700: #c84614;
   --color-primary-800: #9e3612;
-  --color-primary-900: #802f12;
+  --color-primary-900: #802f12; */
+
+  --color-primary-50: #fdf2e9;
+  --color-primary-100: #fae1cc;
+  --color-primary-200: #f5c49e;
+  --color-primary-300: #eea26a;
+  --color-primary-400: #e8823e;
+  --color-primary-500: #e36922;
+  --color-primary-600: #d05518;
+  --color-primary-700: #ad4316;
+  --color-primary-800: #8a3719;
+  --color-primary-900: #6f2e18;
 
   --color-secondary-50: #edf3fa;
   --color-secondary-100: #d7e4f4;
@@ -337,16 +354,16 @@
   --color-secondary-800: #0f172a;
   --color-secondary-900: #020617; */
 
-  --color-neutral-50: #f7f7f9;
-  --color-neutral-100: #ededf1;
-  --color-neutral-200: #d6d7de;
-  --color-neutral-300: #b5b6c3;
-  --color-neutral-400: #8c8fa1;
-  --color-neutral-500: #6b6e82;
-  --color-neutral-600: #525364;
-  --color-neutral-700: #424350;
-  --color-neutral-800: #2e2e3e;
-  --color-neutral-900: #1a1a24;
+  --color-neutral-50: #f6f5f3;
+  --color-neutral-100: #eceae6;
+  --color-neutral-200: #d5d1ca;
+  --color-neutral-300: #b4afa5;
+  --color-neutral-400: #8b867a;
+  --color-neutral-500: #6d685c;
+  --color-neutral-600: #555046;
+  --color-neutral-700: #443f37;
+  --color-neutral-800: #2f2b25;
+  --color-neutral-900: #1a1713;
 
   --background: var(--color-dark-1);
   --foreground: #fafafa;
@@ -408,6 +425,7 @@
   --color-shop-btn-primary: var(--color-primary-700);
   --color-shop-light-bg: var(--color-dark-3);
   --color-shop-bg: var(--color-dark-1);
+  --color-shop-bg-2: var(--color-dark-2);
   --color-shop-light-primary: var(--color-primary-400);
   --color-shop-orange: var(--color-primary-500);
   --color-shop-red: #ef4444;
@@ -420,7 +438,7 @@
   --color-shop-muted-text-7: var(--color-neutral-200);
   --color-shop-muted-text-6: var(--color-neutral-300);
   --color-shop-muted-text-5: var(--color-neutral-400);
-  --color-shop-bg-default: var(--color-dark-1);
+  --color-shop-bg-default: var(--color-dark-2);
   --color-shop-bg-light: var(--color-dark-5);
 }
 
@@ -636,24 +654,24 @@
 }
 
 .dark .card-linear-grad {
-  background: #8e0e00; /* fallback for old browsers */
+  background: #659999; /* fallback for old browsers */
   background: -webkit-linear-gradient(
     to right,
-    #1f1c18,
-    #8e0e00
+    #f4791f,
+    #659999
   ); /* Chrome 10-25, Safari 5.1-6 */
   background: linear-gradient(
     to right,
-    #1f1c18,
-    #8e0e00
+    #f4791f,
+    #659999
   ); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
 }
 
 .card-profile {
-  box-shadow:
+  /* box-shadow:
     0 1px 3px var(--color-neutral-300),
     0 4px 12px var(--color-neutral-300),
-    0 0 0 1px var(--color-neutral-300);
+    0 0 0 1px var(--color-neutral-300); */
 }
 
 .dark .card-profile {

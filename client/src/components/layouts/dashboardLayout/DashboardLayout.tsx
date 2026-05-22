@@ -94,8 +94,7 @@ export function DashboardLayout({ children }: PropsWithChildren<unknown>) {
           <Card className='bg-shop-white flex items-center gap-3 p-3 shadow-none'>
             <Image
               src={
-                generateImgPath(user?.picture || '') ||
-                '/images/no-user-image.png'
+                generateImgPath(user?.picture || '') || '/images/no-user.jpg'
               }
               alt={user?.name || 'User img'}
               width={42}
@@ -154,7 +153,7 @@ export function DashboardLayout({ children }: PropsWithChildren<unknown>) {
           <div className='inset-y-0 z-50 flex h-full flex-col'>
             <aside
               className={cn(
-                'card-profile flex flex-col rounded-md shadow-sm transition-all duration-300',
+                'card-profile bg-shop-bg-default flex flex-col rounded-md shadow-sm transition-all duration-300',
                 collapsed ? 'w-20 items-center p-2' : 'w-64 p-2'
               )}
             >
@@ -183,7 +182,7 @@ export function DashboardLayout({ children }: PropsWithChildren<unknown>) {
                 <Image
                   src={
                     generateImgPath(user?.picture || '') ||
-                    '/images/no-user-image.png'
+                    '/images/no-user.jpg'
                   }
                   alt={user?.name || 'User img'}
                   width={42}
@@ -246,7 +245,9 @@ export function DashboardLayout({ children }: PropsWithChildren<unknown>) {
             </aside>
           </div>
         </div>
-        <main className='w-full'>{children}</main>
+        <main className='bg-shop-bg-default w-full rounded-md shadow-md'>
+          {children}
+        </main>
       </div>
 
       {/* Main content for mobile/tablet */}

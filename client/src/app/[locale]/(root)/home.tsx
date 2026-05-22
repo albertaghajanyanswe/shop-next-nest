@@ -33,7 +33,7 @@ export default function Home({ products, categories, brands }: HomeProps) {
           />
         </div>
       )}
-      <div className='global-container mt-8 flex-1'>
+      <div className='global-container my-8 flex-1'>
         <Catalog
           title={t('most_popular_title')}
           description={t('most_popular_description')}
@@ -44,7 +44,7 @@ export default function Home({ products, categories, brands }: HomeProps) {
         />
       </div>
       {brands && brands.length > 0 && (
-        <div className='global-container mt-8 flex-1 py-6'>
+        <div className='global-container flex-1 py-6'>
           <ShopByCard
             title={t('brands_title')}
             description={t('brands_description')}

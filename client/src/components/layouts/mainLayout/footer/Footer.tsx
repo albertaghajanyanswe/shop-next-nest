@@ -37,7 +37,7 @@ export default async function Footer() {
   const tLinks = await getTranslations('FooterLinks');
 
   return (
-    <footer className='global-container bg-shop-bg w-full border-t'>
+    <footer className='global-container bg-shop-bg-2 w-full border-t'>
       <div>
         {/* ===== Top Contact Row ===== */}
         {/* <div className='container grid grid-cols-2 gap-8 py-6 md:grid-cols-4'>
@@ -134,7 +134,7 @@ export default async function Footer() {
           </div>
         </div>
       </div>
-      <hr className='border-gray-200' />
+      <hr className='border-neutral-300' />
 
       {/* Bottom */}
       <div className='text-shop-muted-text-6 py-6 text-center'>

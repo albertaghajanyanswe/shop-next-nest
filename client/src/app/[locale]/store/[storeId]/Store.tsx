@@ -8,6 +8,7 @@ import { ProfitOverview } from './statistics/profitOverview/ProfitOverview';
 import { useGetStatistics } from '@/hooks/queries/statistics/useGetStatistics';
 import NoDataFound from '@/components/customComponents/loading/NoDataFound';
 import { useTranslations } from 'next-intl';
+import Loading from '@/components/customComponents/loading/Loading';
 
 export default function Store() {
   const t = useTranslations('StorePages');
@@ -40,7 +41,7 @@ export default function Store() {
       <div className='mt-6 grid grid-cols-1 gap-6 lg:grid-cols-2'>
         <div>
           {isLoadingCategorySales ? (
-            <div>{t('loading')}</div>
+            <Loading />
           ) : categorySales?.length ? (
             <CategorySales data={categorySales} />
           ) : (

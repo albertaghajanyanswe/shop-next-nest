@@ -10,7 +10,7 @@ interface ProductInfoItemProps {
 function ProductInfoItem({ leftText, rightText, link }: ProductInfoItemProps) {
   const t = useTranslations('ProductInfo');
   return (
-    <div className='dark:border-shop-bg-light flex items-baseline justify-between border-b border-neutral-200 pb-3 last:border-0'>
+    <div className='dark:border-shop-bg-light flex items-baseline justify-between py-1 last:border-0'>
       <dt className='text-shop-muted-text-7 text-sm font-semibold'>
         {leftText}
       </dt>

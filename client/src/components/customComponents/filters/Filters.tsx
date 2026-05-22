@@ -146,7 +146,7 @@ export default function Filters({ categories, brands, stores }: FilterProps) {
       </div>
 
       {/* DESKTOP SIDEBAR */}
-      <div className='bg-shop-light-bg hidden h-max rounded-md p-4 pb-8 md:block'>
+      <div className='bg-shop-bg-default hidden h-max rounded-md p-4 pb-8 md:block'>
         <FiltersContent
           categories={categories}
           brands={brands}

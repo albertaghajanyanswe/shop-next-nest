@@ -5,7 +5,7 @@ import { AiChatWidget } from '@/components/ai-chat';
 
 export function MainLayout({ children }: PropsWithChildren<unknown>) {
   return (
-    <div className='flex h-full flex-col'>
+    <div className='flex h-full flex-col bg-shop-bg'>
       <div className='flex min-h-screen flex-col'>
         <Header />
         <main>{children}</main>

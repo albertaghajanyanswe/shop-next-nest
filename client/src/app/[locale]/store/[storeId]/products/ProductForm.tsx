@@ -40,12 +40,14 @@ import { CirclePlus, Trash2 } from 'lucide-react';
 import { useMemo } from 'react';
 import { SubmitHandler, useFieldArray, useForm } from 'react-hook-form';
 import { useTranslations } from 'next-intl';
+import Loading from '@/components/customComponents/loading/Loading';
 
 interface ProductFormProps {
   product?: GetProductWithDetails;
   categories: GetCategoryDto[];
   colors: GetColorDto[];
   brands: GetBrandDto[];
+  isLoadingData: boolean;
 }
 
 export function ProductForm({
@@ -53,6 +55,7 @@ export function ProductForm({
   categories,
   colors,
   brands,
+  isLoadingData,
 }: ProductFormProps) {
   const t = useTranslations('StorePages');
   const { user, isLoading: isLoadingUser, canCreateProduct } = useProfile();
@@ -62,9 +65,7 @@ export function ProductForm({
   const { deleteProduct, isLoadingDelete } = useDeleteProduct();
 
   const title = product ? t('update_product') : t('create_product');
-  const description = product
-    ? t('update_product_details')
-    : t('add_product');
+  const description = product ? t('update_product_details') : t('add_product');
   const action = product ? t('save') : t('create_action');
 
   const form = useForm<IProductInput>({
@@ -129,372 +130,394 @@ export function ProductForm({
           </ConfirmModal>
         )}
       </div>
-      <Form {...form}>
-        <form
-          onSubmit={form.handleSubmit(onSubmit)}
-          className='h-full space-y-6'
-        >
-          <FormField
-            control={form.control}
-            name='images'
-            rules={{ required: t('form_product_images_required') }}
-            render={({ field }) => {
-              return (
-                <FormItem className='mt-4'>
-                  <FormLabel>{t('form_product_images')}</FormLabel>
-                  <FormControl>
-                    <ImageUpload
-                      isDisabled={isLoading}
-                      onChange={field.onChange}
-                      value={field.value}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              );
-            }}
-          />
-          <div className='grid items-start gap-4 sm:grid-cols-2'>
+      {isLoadingData && <Loading text={t('loading')} />}
+      {!isLoadingData && (
+        <Form {...form}>
+          <form
+            onSubmit={form.handleSubmit(onSubmit)}
+            className='h-full space-y-6'
+          >
             <FormField
               control={form.control}
-              name='title'
-              rules={{ required: t('form_product_name_required') }}
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>{t('form_product_name')}</FormLabel>
-                  <FormControl>
-                    <Input
-                      placeholder={t('form_product_name_placeholder')}
-                      disabled={isLoading}
-                      {...field}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-
-            <FormField
-              control={form.control}
-              name='price'
-              rules={{ required: t('form_product_price_required') }}
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>{t('form_product_price')}</FormLabel>
-                  <FormControl>
-                    <Input
-                      placeholder={t('form_product_price_placeholder')}
-                      disabled={isLoading}
-                      {...field}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-          </div>
-          <div className='grid items-start gap-4 sm:grid-cols-3'>
-            <FormField
-              control={form.control}
-              name='colorId'
-              render={({ field, fieldState }) => (
-                <FormItem>
-                  <FormLabel>{t('form_product_color')}</FormLabel>
-                  <FormControl>
-                    <CustomComboBox
-                      options={colors}
-                      value={field.value}
-                      onChange={field.onChange}
-                      placeholder={t('form_product_color_placeholder')}
-                      disabled={isLoading}
-                      error={fieldState?.error?.message}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-
-            <FormField
-              control={form.control}
-              name='categoryId'
-              rules={{ required: t('form_product_category_required') }}
-              render={({ field, fieldState }) => (
-                <FormItem>
-                  <FormLabel>{t('form_product_category')}</FormLabel>
-                  <FormControl>
-                    <CustomComboBox
-                      options={categories}
-                      value={field.value}
-                      onChange={field.onChange}
-                      placeholder={t('form_product_category_placeholder')}
-                      disabled={isLoading}
-                      error={fieldState?.error?.message}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-
-            <FormField
-              control={form.control}
-              name='brandId'
-              rules={{ required: t('form_product_brand_required') }}
-              render={({ field, fieldState }) => (
-                <FormItem>
-                  <FormLabel>{t('form_product_brand')}</FormLabel>
-                  <FormControl>
-                    <CustomComboBox
-                      options={brands}
-                      value={field.value}
-                      onChange={field.onChange}
-                      placeholder={t('form_product_brand_placeholder')}
-                      disabled={isLoading}
-                      error={fieldState?.error?.message}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-          </div>
-
-          <div className='grid items-start gap-4 sm:grid-cols-3'>
-            <FormField
-              control={form.control}
-              name='intendedFor'
-              rules={{ required: t('form_product_intended_for_required') }}
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>{t('form_product_intended_for')}</FormLabel>
-                  <Select
-                    disabled={isLoading}
-                    onValueChange={field.onChange}
-                    defaultValue={field.value as unknown as string}
-                  >
+              name='images'
+              rules={{ required: t('form_product_images_required') }}
+              render={({ field }) => {
+                return (
+                  <FormItem className='mt-4'>
+                    <FormLabel>{t('form_product_images')}</FormLabel>
                     <FormControl>
-                      <SelectTrigger className='w-full'>
-                        <SelectValue placeholder={t('form_product_intended_for_placeholder')} />
-                      </SelectTrigger>
+                      <ImageUpload
+                        isDisabled={isLoading}
+                        onChange={field.onChange}
+                        value={field.value}
+                      />
                     </FormControl>
-                    <SelectContent>
-                      {[
-                        { id: 'FREE', title: t('free') },
-                        { id: 'SALE', title: t('sale') },
-                        { id: 'RENT', title: t('rent') },
-                      ].map((state) => (
-                        <SelectItem key={state.id} value={state.id}>
-                          {state.title}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name='state'
-              rules={{ required: t('form_product_state_required') }}
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>{t('form_product_state')}</FormLabel>
-                  <Select
-                    disabled={isLoading}
-                    onValueChange={field.onChange}
-                    defaultValue={field.value as unknown as string}
-                  >
-                    <FormControl>
-                      <SelectTrigger className='w-full'>
-                        <SelectValue placeholder={t('form_product_state_placeholder')} />
-                      </SelectTrigger>
-                    </FormControl>
-                    <SelectContent>
-                      {[
-                        { id: 'NEW', title: t('state_new') },
-                        { id: 'USED', title: t('state_used') },
-                      ].map((state) => (
-                        <SelectItem key={state.id} value={state.id}>
-                          {state.title}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-
-            <FormField
-              control={form.control}
-              name='quantity'
-              rules={{
-                required: t('form_product_quantity_required'),
+                    <FormMessage />
+                  </FormItem>
+                );
               }}
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>{t('form_product_quantity')}</FormLabel>
-                  <FormControl>
-                    <Input
-                      type='number'
-                      placeholder={t('form_product_quantity_placeholder')}
-                      disabled={isLoading}
-                      {...field}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
             />
-          </div>
+            <div className='grid items-start gap-4 sm:grid-cols-2'>
+              <FormField
+                control={form.control}
+                name='title'
+                rules={{ required: t('form_product_name_required') }}
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>{t('form_product_name')}</FormLabel>
+                    <FormControl>
+                      <Input
+                        placeholder={t('form_product_name_placeholder')}
+                        disabled={isLoading}
+                        {...field}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
 
-          <FormField
-            control={form.control}
-            name='description'
-            rules={{ required: t('form_product_description_required') }}
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>{t('form_product_description')}</FormLabel>
-                <FormControl>
-                  <Textarea
-                    placeholder={t('form_product_description_placeholder')}
-                    disabled={isLoading}
-                    {...field}
-                  />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          <div className='grid items-start gap-4 sm:grid-cols-3'>
-            <FormField
-              control={form.control}
-              name='isOriginal'
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>{t('form_product_is_original')}</FormLabel>
-                  <FormControl>
-                    <Switch
-                      id='isOriginal'
-                      {...field}
-                      checked={field.value}
-                      onCheckedChange={field.onChange}
-                      disabled={isLoading}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name='isPublished'
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>{t('form_product_is_published')}</FormLabel>
-                  <FormControl>
-                    <Switch
-                      id='isPublished'
-                      {...field}
-                      checked={field.value}
-                      onCheckedChange={field.onChange}
-                      disabled={isLoading}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-          </div>
+              <FormField
+                control={form.control}
+                name='price'
+                rules={{ required: t('form_product_price_required') }}
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>{t('form_product_price')}</FormLabel>
+                    <FormControl>
+                      <Input
+                        placeholder={t('form_product_price_placeholder')}
+                        disabled={isLoading}
+                        {...field}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            </div>
+            <div className='grid items-start gap-4 sm:grid-cols-3'>
+              <FormField
+                control={form.control}
+                name='colorId'
+                render={({ field, fieldState }) => (
+                  <FormItem>
+                    <FormLabel>{t('form_product_color')}</FormLabel>
+                    <FormControl>
+                      <CustomComboBox
+                        options={colors}
+                        value={field.value}
+                        onChange={field.onChange}
+                        placeholder={t('form_product_color_placeholder')}
+                        disabled={isLoading}
+                        error={fieldState?.error?.message}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
 
-          <div className='space-y-4'>
-            <div className='flex items-center justify-between'>
-              <p className='text-lg font-medium'>{t('form_product_details')}</p>
+              <FormField
+                control={form.control}
+                name='categoryId'
+                rules={{ required: t('form_product_category_required') }}
+                render={({ field, fieldState }) => (
+                  <FormItem>
+                    <FormLabel>{t('form_product_category')}</FormLabel>
+                    <FormControl>
+                      <CustomComboBox
+                        options={categories}
+                        value={field.value}
+                        onChange={field.onChange}
+                        placeholder={t('form_product_category_placeholder')}
+                        disabled={isLoading}
+                        error={fieldState?.error?.message}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
 
-              <Button
-                type='button'
-                variant='secondary'
-                size='sm'
-                onClick={() => append({ key: '', value: '' })}
-              >
-                <CirclePlus className='size-4' />
-                <span className='ml-2'>{t('form_product_details_add')}</span>
-              </Button>
+              <FormField
+                control={form.control}
+                name='brandId'
+                rules={{ required: t('form_product_brand_required') }}
+                render={({ field, fieldState }) => (
+                  <FormItem>
+                    <FormLabel>{t('form_product_brand')}</FormLabel>
+                    <FormControl>
+                      <CustomComboBox
+                        options={brands}
+                        value={field.value}
+                        onChange={field.onChange}
+                        placeholder={t('form_product_brand_placeholder')}
+                        disabled={isLoading}
+                        error={fieldState?.error?.message}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
             </div>
 
-            {attributeFields.map((field, index) => (
-              <div className='flex flex-row items-center gap-4' key={field.id}>
-                <div className='grid w-full items-start gap-4 sm:grid-cols-2'>
-                  <FormField
-                    control={form.control}
-                    name={`productDetails.${index}.key`}
-                    rules={{ required: t('form_product_details_key_required') }}
-                    render={({ field, fieldState }) => (
-                      <FormItem>
-                        <FormControl>
-                          <Input
-                            id={`productDetails-${index}-key`}
-                            placeholder={t('form_product_details_key_placeholder')}
-                            className={`${fieldState.error ? 'border-destructive focus:border-destructive hover:border-destructive border-1' : ''}`}
-                            {...field}
+            <div className='grid items-start gap-4 sm:grid-cols-3'>
+              <FormField
+                control={form.control}
+                name='intendedFor'
+                rules={{ required: t('form_product_intended_for_required') }}
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>{t('form_product_intended_for')}</FormLabel>
+                    <Select
+                      disabled={isLoading}
+                      onValueChange={field.onChange}
+                      defaultValue={field.value as unknown as string}
+                    >
+                      <FormControl>
+                        <SelectTrigger className='w-full'>
+                          <SelectValue
+                            placeholder={t(
+                              'form_product_intended_for_placeholder'
+                            )}
                           />
-                        </FormControl>
-                        {fieldState.error && (
-                          <p className='text-destructive text-sm'>
-                            {fieldState.error.message}
-                          </p>
-                        )}
-                      </FormItem>
-                    )}
-                  />
+                        </SelectTrigger>
+                      </FormControl>
+                      <SelectContent>
+                        {[
+                          { id: 'FREE', title: t('free') },
+                          { id: 'SALE', title: t('sale') },
+                          { id: 'RENT', title: t('rent') },
+                        ].map((state) => (
+                          <SelectItem key={state.id} value={state.id}>
+                            {state.title}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name='state'
+                rules={{ required: t('form_product_state_required') }}
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>{t('form_product_state')}</FormLabel>
+                    <Select
+                      disabled={isLoading}
+                      onValueChange={field.onChange}
+                      defaultValue={field.value as unknown as string}
+                    >
+                      <FormControl>
+                        <SelectTrigger className='w-full'>
+                          <SelectValue
+                            placeholder={t('form_product_state_placeholder')}
+                          />
+                        </SelectTrigger>
+                      </FormControl>
+                      <SelectContent>
+                        {[
+                          { id: 'NEW', title: t('state_new') },
+                          { id: 'USED', title: t('state_used') },
+                        ].map((state) => (
+                          <SelectItem key={state.id} value={state.id}>
+                            {state.title}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
 
-                  <FormField
-                    control={form.control}
-                    name={`productDetails.${index}.value`}
-                    rules={{ required: t('form_product_details_value_required') }}
-                    render={({ field, fieldState }) => (
-                      <FormItem>
-                        <FormControl>
-                          <Input
-                            id={`productDetails-${index}-value`}
-                            placeholder={t('form_product_details_value_placeholder')}
-                            className={`${fieldState.error ? 'border-destructive focus:border-destructive hover:border-destructive border-1' : ''}`}
-                            {...field}
-                          />
-                        </FormControl>
-                        {fieldState.error && (
-                          <p className='text-destructive text-sm'>
-                            {fieldState.error.message}
-                          </p>
-                        )}
-                      </FormItem>
-                    )}
-                  />
-                </div>
+              <FormField
+                control={form.control}
+                name='quantity'
+                rules={{
+                  required: t('form_product_quantity_required'),
+                }}
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>{t('form_product_quantity')}</FormLabel>
+                    <FormControl>
+                      <Input
+                        type='number'
+                        placeholder={t('form_product_quantity_placeholder')}
+                        disabled={isLoading}
+                        {...field}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            </div>
+
+            <FormField
+              control={form.control}
+              name='description'
+              rules={{ required: t('form_product_description_required') }}
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>{t('form_product_description')}</FormLabel>
+                  <FormControl>
+                    <Textarea
+                      placeholder={t('form_product_description_placeholder')}
+                      disabled={isLoading}
+                      {...field}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <div className='grid items-start gap-4 sm:grid-cols-3'>
+              <FormField
+                control={form.control}
+                name='isOriginal'
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>{t('form_product_is_original')}</FormLabel>
+                    <FormControl>
+                      <Switch
+                        id='isOriginal'
+                        {...field}
+                        checked={field.value}
+                        onCheckedChange={field.onChange}
+                        disabled={isLoading}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name='isPublished'
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>{t('form_product_is_published')}</FormLabel>
+                    <FormControl>
+                      <Switch
+                        id='isPublished'
+                        {...field}
+                        checked={field.value}
+                        onCheckedChange={field.onChange}
+                        disabled={isLoading}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            </div>
+
+            <div className='space-y-4'>
+              <div className='flex items-center justify-between'>
+                <p className='text-lg font-medium'>
+                  {t('form_product_details')}
+                </p>
+
                 <Button
                   type='button'
-                  variant='ghost'
-                  className='text-red-500 hover:bg-red-500/5'
-                  onClick={() => remove(index)}
+                  variant='primary'
+                  size='sm'
+                  onClick={() => append({ key: '', value: '' })}
                 >
-                  <Trash2 className='size-4 text-red-500 hover:text-red-600' />
+                  <CirclePlus className='size-4' />
+                  <span className='ml-2'>{t('form_product_details_add')}</span>
                 </Button>
               </div>
-            ))}
-          </div>
 
-          <Button
-            variant='default'
-            disabled={
-              isLoading || !isFormDirty || (!product && !canCreateProduct)
-            }
-          >
-            {action}
-          </Button>
-        </form>
-      </Form>
+              {attributeFields.map((field, index) => (
+                <div
+                  className='flex flex-row items-center gap-4'
+                  key={field.id}
+                >
+                  <div className='grid w-full items-start gap-4 sm:grid-cols-2'>
+                    <FormField
+                      control={form.control}
+                      name={`productDetails.${index}.key`}
+                      rules={{
+                        required: t('form_product_details_key_required'),
+                      }}
+                      render={({ field, fieldState }) => (
+                        <FormItem>
+                          <FormControl>
+                            <Input
+                              id={`productDetails-${index}-key`}
+                              placeholder={t(
+                                'form_product_details_key_placeholder'
+                              )}
+                              className={`${fieldState.error ? 'border-destructive focus:border-destructive hover:border-destructive border-1' : ''}`}
+                              {...field}
+                            />
+                          </FormControl>
+                          {fieldState.error && (
+                            <p className='text-destructive text-sm'>
+                              {fieldState.error.message}
+                            </p>
+                          )}
+                        </FormItem>
+                      )}
+                    />
+
+                    <FormField
+                      control={form.control}
+                      name={`productDetails.${index}.value`}
+                      rules={{
+                        required: t('form_product_details_value_required'),
+                      }}
+                      render={({ field, fieldState }) => (
+                        <FormItem>
+                          <FormControl>
+                            <Input
+                              id={`productDetails-${index}-value`}
+                              placeholder={t(
+                                'form_product_details_value_placeholder'
+                              )}
+                              className={`${fieldState.error ? 'border-destructive focus:border-destructive hover:border-destructive border-1' : ''}`}
+                              {...field}
+                            />
+                          </FormControl>
+                          {fieldState.error && (
+                            <p className='text-destructive text-sm'>
+                              {fieldState.error.message}
+                            </p>
+                          )}
+                        </FormItem>
+                      )}
+                    />
+                  </div>
+                  <Button
+                    type='button'
+                    variant='ghost'
+                    className='text-red-500 hover:bg-red-500/5'
+                    onClick={() => remove(index)}
+                  >
+                    <Trash2 className='size-4 text-red-500 hover:text-red-600' />
+                  </Button>
+                </div>
+              ))}
+            </div>
+
+            <Button
+              variant='default'
+              disabled={
+                isLoading || !isFormDirty || (!product && !canCreateProduct)
+              }
+            >
+              {action}
+            </Button>
+          </form>
+        </Form>
+      )}
     </div>
   );
 }

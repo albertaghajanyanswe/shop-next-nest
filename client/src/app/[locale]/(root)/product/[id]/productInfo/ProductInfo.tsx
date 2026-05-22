@@ -63,7 +63,7 @@ export default function ProductInfo({ product }: ProductInfoProps) {
       itemType='https://schema.org/Product'
       className='relative flex w-full flex-col gap-3'
     >
-      <div className='dark:md:border-shop-bg-light dark:border-dark-3 relative flex w-full flex-col gap-3 md:rounded-md md:border md:border-neutral-100 md:p-6'>
+      <div className='dark:md:border-shop-bg-light dark:border-dark-3 bg-shop-bg-default relative flex w-full flex-col gap-3 shadow-md md:rounded-md md:border md:border-neutral-100 md:p-6'>
         <div className='space-y-2'>
           <div className='flex flex-row gap-2'>
             {product.isOriginal && (
@@ -96,12 +96,12 @@ export default function ProductInfo({ product }: ProductInfoProps) {
                 </span>
               )}
           </div>
-          <hr className='my-3' />
+          {/* <hr className='my-3' /> */}
           <ShowMoreText
             className='text-muted-foreground text-sm'
             text={product.description as unknown as string}
           />
-          <hr className='my-3' />
+          <hr className='my-3 bg-neutral-300' />
 
           <ProductInfoItem
             leftText={t('store')}
@@ -133,11 +133,13 @@ export default function ProductInfo({ product }: ProductInfoProps) {
               </div>
             </div>
           )}
+          <hr className='my-3 bg-neutral-300' />
+
           <ProductRating
             productReviews={product.reviews || []}
             leftTitle={t('average_rating')}
           />
-          <div className='mt-6 flex items-start gap-x-2'>
+          <div className='mt-6 mb-4 flex items-start gap-x-2'>
             <ProductInfoAction product={product} />
           </div>
           <FavoriteButton

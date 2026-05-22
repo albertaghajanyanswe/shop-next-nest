@@ -19,7 +19,7 @@ const UserAvatarComponent = ({ user, url }: UserAvatarProps) => {
       className='group bg-shop-bg relative min-w-8 rounded-full sm:min-w-10'
     >
       <Image
-        src={generateImgPath(user?.picture || '') || '/images/no-user-image.png'}
+        src={generateImgPath(user?.picture || '') || '/images/no-user.jpg'}
         alt={user?.name || t('user_img_alt')}
         width={42}
         height={42}

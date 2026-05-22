@@ -95,9 +95,9 @@ export function ImageUpload({
           className={cn(
             'group cursor-pointer rounded-lg border-2 border-dashed p-4 text-center transition-colors sm:p-6',
             isDragActive
-              ? 'border-shop-light-primary text-shop-light-primary bg-primary-100'
-              : 'hover:border-shop-light-primary hover:text-shop-light-primary border-gray-300',
-            (isUploading || isDisabled) && 'cursor-not-allowed opacity-50'
+              ? 'border-shop-light-primary text-shop-light-primary'
+              : 'hover:border-shop-light-primary hover:text-shop-light-primary border-gray-300 bg-shop-light-bg',
+            (isUploading || isDisabled) && 'cursor-not-allowed opacity-50 bg-shop-light-bg'
           )}
         >
           <input {...getInputProps()} />

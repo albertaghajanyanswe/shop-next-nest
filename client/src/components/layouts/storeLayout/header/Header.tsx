@@ -29,7 +29,7 @@ export function Header() {
                 <Image
                   src={
                     generateImgPath(user.picture as string) ||
-                    `/images/no-user-image.png`
+                    `/images/no-user.jpg`
                   }
                   alt={user.name}
                   width={42}

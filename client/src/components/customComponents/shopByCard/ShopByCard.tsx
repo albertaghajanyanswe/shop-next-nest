@@ -50,7 +50,7 @@ const ShopByCardComponent = ({
         {linkTitle && (
           <Link
             href={PUBLIC_URL.shop()}
-            className='text-primary hover:text-primary/70 hidden text-sm font-medium whitespace-nowrap md:flex'
+            className='text-primary hover:text-primary/70 bg-shop-bg-default hidden rounded-md border px-2 py-1 text-sm font-medium whitespace-nowrap shadow-sm md:flex'
           >
             {linkTitle}
           </Link>
@@ -68,7 +68,7 @@ const ShopByCardComponent = ({
                     { skipNulls: true }
                   )
                 )}
-                className='bg-shop-light-bg group hoverEffect hover:bg-shop-light-bg xs:flex-row flex h-28 flex-col items-center justify-center gap-2 overflow-hidden rounded-md p-2 text-center sm:flex-col lg:h-24 lg:flex-row'
+                className='bg-shop-white group hoverEffect hover:bg-shop-light-bg xs:flex-row flex h-28 flex-col items-center justify-center gap-2 overflow-hidden rounded-md p-2 text-center shadow-md sm:flex-col lg:h-24 lg:flex-row'
               >
                 {item.images[0] ? (
                   <div className='relative h-18 w-18'>

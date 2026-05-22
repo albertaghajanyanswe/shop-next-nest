@@ -17,7 +17,7 @@ function HomeBannerComponent() {
             <div className='relative h-auto max-h-[450px] min-h-[300px] w-full min-w-0 shrink-0 grow-0 basis-full px-0 lg:min-h-[450px]'>
               <Image
                 // src='https://res.cloudinary.com/dvuo50sjj/image/upload/w_2000,f_auto,q_auto/v1764674699/banner_wmezby.png'
-                src='/banner/banner-1.png'
+                src='/banner/banner-9.png'
                 className='h-full w-full object-cover opacity-90'
                 width={2000}
                 height={350}
@@ -27,7 +27,7 @@ function HomeBannerComponent() {
               />
 
               <div className='bg-darkColor/20 absolute inset-0'>
-                <div className='relative mx-auto h-full max-w-screen-xl px-4'>
+                <div className='relative h-full max-w-screen-xl px-4'>
                   <div className='global-container relative h-full content-center space-y-5 py-10 sm:py-15 lg:space-y-10 lg:py-20'>
                     <div className='flex max-w-full flex-col gap-4 sm:max-w-[60%]'>
                       <h1 className='text-black text-xl font-semibold sm:text-2xl lg:text-3xl'>

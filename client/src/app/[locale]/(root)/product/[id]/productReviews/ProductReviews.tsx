@@ -64,7 +64,7 @@ function ProductReviews({ product }: ProductReviewsProps) {
                     <Image
                       src={
                         generateImgPath(review.user?.picture || '') ||
-                        '/images/no-user-image.png'
+                        '/images/no-user.jpg'
                       }
                       alt={review.user.name}
                       width={40}

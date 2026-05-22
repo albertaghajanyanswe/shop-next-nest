@@ -24,7 +24,7 @@ export function MiddleStatistics() {
       </>
     </div>
   ) : (
-    <div className='mt-4'>
+    <div>
       <NoDataFound entityName={t('middle_statistics')} />
     </div>
   );
