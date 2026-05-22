@@ -1,3 +1,5 @@
+'use client';
+
 import { ConfirmModal } from '@/components/modals/ConfirmModal';
 import { Button } from '@/components/ui/Button';
 import {
@@ -19,6 +21,7 @@ import { useDeleteBrand } from '@/hooks/queries/brands/useDeleteBrand';
 import { GetBrandDto, GetCategoryDto } from '@/generated/orval/types';
 import { Textarea } from '@/components/ui/Textarea';
 import { ImageUpload } from '@/components/ui/formElements/image-upload/ImageUpload';
+import { useTranslations } from 'next-intl';
 
 interface BrandFormProps {
   brand?: GetBrandDto;
@@ -26,13 +29,14 @@ interface BrandFormProps {
 }
 
 export function BrandForm({ brand }: BrandFormProps) {
+  const t = useTranslations('StorePages');
   const { createBrand, isLoadingCreate } = useCreateBrand();
   const { updateBrand, isLoadingUpdate } = useUpdateBrand();
   const { deleteBrand, isLoadingDelete } = useDeleteBrand();
 
-  const title = brand ? 'Update brand' : 'Create Brand';
-  const description = brand ? 'Update brand details' : 'Add new brand to store';
-  const action = brand ? 'Save' : 'Create';
+  const title = brand ? t('update_brand') : t('create_brand');
+  const description = brand ? t('update_brand_details') : t('add_brand');
+  const action = brand ? t('save') : t('create_action');
 
   const form = useForm<IBrandInput>({
     mode: 'onChange',
@@ -40,7 +44,6 @@ export function BrandForm({ brand }: BrandFormProps) {
       name: brand?.name || '',
       description: brand?.description || '',
       images: brand?.images || [],
-      // categoryId: brand?.categoryId || '',
     },
   });
 
@@ -62,10 +65,10 @@ export function BrandForm({ brand }: BrandFormProps) {
         {brand && (
           <ConfirmModal
             handleConfirm={() => deleteBrand()}
-            title='Delete Brand'
-            description='This action cannot be undone. This will permanently delete your color from our servers.'
-            confirmText='Delete'
-            cancelText='Cancel'
+            title={t('delete_brand_title')}
+            description={t('delete_brand_description')}
+            confirmText={t('confirm_delete')}
+            cancelText={t('cancel')}
           >
             <Button variant='default' size='icon' disabled={isLoadingDelete}>
               <Trash2 className='size-4' />
@@ -82,11 +85,11 @@ export function BrandForm({ brand }: BrandFormProps) {
             <FormField
               control={form.control}
               name='images'
-              rules={{ required: 'Upload at least one image' }}
+              rules={{ required: t('form_images_required') }}
               render={({ field }) => {
                 return (
                   <FormItem className='mt-4'>
-                    <FormLabel>Images</FormLabel>
+                    <FormLabel>{t('form_images')}</FormLabel>
                     <FormControl>
                       <ImageUpload
                         isDisabled={isLoading}
@@ -103,13 +106,13 @@ export function BrandForm({ brand }: BrandFormProps) {
             <FormField
               control={form.control}
               name='name'
-              rules={{ required: 'Brand name is required' }}
+              rules={{ required: t('form_brand_name_required') }}
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Brand name</FormLabel>
+                  <FormLabel>{t('form_brand_name')}</FormLabel>
                   <FormControl>
                     <Input
-                      placeholder='Brand name'
+                      placeholder={t('form_brand_name_placeholder')}
                       disabled={isLoading}
                       {...field}
                     />
@@ -121,13 +124,13 @@ export function BrandForm({ brand }: BrandFormProps) {
             <FormField
               control={form.control}
               name='description'
-              rules={{ required: 'Brand description is required' }}
+              rules={{ required: t('form_brand_description_required') }}
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Brand description</FormLabel>
+                  <FormLabel>{t('form_brand_description')}</FormLabel>
                   <FormControl>
                     <Textarea
-                      placeholder='Brand description'
+                      placeholder={t('form_brand_description_placeholder')}
                       disabled={isLoading}
                       {...field}
                     />

@@ -1,3 +1,4 @@
+import { useTranslations } from 'next-intl';
 import Link from 'next/link';
 import { memo } from 'react';
 
@@ -7,6 +8,7 @@ interface ProductInfoItemProps {
   link: string;
 }
 function ProductInfoItem({ leftText, rightText, link }: ProductInfoItemProps) {
+  const t = useTranslations('ProductInfo');
   return (
     <div className='dark:border-shop-bg-light flex items-baseline justify-between border-b border-neutral-200 pb-3 last:border-0'>
       <dt className='text-shop-muted-text-7 text-sm font-semibold'>
@@ -16,7 +18,7 @@ function ProductInfoItem({ leftText, rightText, link }: ProductInfoItemProps) {
         <Link
           href={link}
           className='text-shop-light-primary mt-1 text-xs font-medium hover:underline sm:text-sm'
-          aria-label='Go to shop'
+          aria-label={t('go_to_shop')}
         >
           {rightText}
         </Link>

@@ -1,17 +1,18 @@
 import { Metadata } from 'next';
 import { notFound } from 'next/navigation';
+import { getTranslations } from 'next-intl/server';
 import { productService } from '@/services/product.service';
 import Product from './Product';
 import { generateMeta, POPULAR_KEYWORDS } from '@/components/meta/Meta';
-import { SITE_DESCRIPTION, SITE_NAME } from '@/utils/constants';
+import { SITE_NAME } from '@/utils/constants';
 import Breadcrumbs from '@/components/customComponents/Breadcrumbs';
 import { PUBLIC_URL } from '@/config/url.config';
 import { cache } from 'react';
 
 export const revalidate = 300;
 
+// TODO
 // export async function generateStaticParams() {
-//   // TODO
 //   const productsData = await productService.getAll();
 //   const res = productsData?.products
 //     ? productsData?.products?.map((product) => ({ id: product.id }))
@@ -99,14 +100,14 @@ export default async function ProductPage({
 }) {
   const { id } = await params;
   const { product, similarProducts } = await getProducts(id);
+  const t = await getTranslations('HeaderMenu');
 
   return (
     <div className='global-container'>
-      Test Product Page
       <Breadcrumbs
         items={[
-          { title: 'Home', href: '/' },
-          { title: 'Shop', href: PUBLIC_URL.shop() },
+          { title: t('Home'), href: '/' },
+          { title: t('Shop'), href: PUBLIC_URL.shop() },
           { title: product.title },
         ]}
         classNames='mt-4'

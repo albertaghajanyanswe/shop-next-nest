@@ -1,3 +1,6 @@
+'use client';
+
+import { useTranslations } from 'next-intl';
 import { Button } from '@/components/ui/Button';
 import { CustomTooltip } from '@/components/customComponents/CustomTooltip';
 import { STORE_URL } from '@/config/url.config';
@@ -16,6 +19,7 @@ function EditProductButton({
   className = '',
   onlyIcon = true,
 }: EditProductButtonProps) {
+  const t = useTranslations('EditProductButton');
   const button = (
     <Link
       className={className}
@@ -24,18 +28,18 @@ function EditProductButton({
       <Button
         variant='outline'
         size={onlyIcon ? 'icon' : 'default'}
-        aria-label='Edit product'
+        aria-label={t('edit_product')}
         className='w-full'
       >
         <Pencil className='size-4' />
         {!onlyIcon && (
-          <span className='text-shop-primary-text'>Edit product</span>
+          <span className='text-shop-primary-text'>{t('edit_product')}</span>
         )}
       </Button>
     </Link>
   );
   return onlyIcon ? (
-    <CustomTooltip text='Edit product'>{button}</CustomTooltip>
+    <CustomTooltip text={t('edit_product')}>{button}</CustomTooltip>
   ) : (
     button
   );

@@ -18,6 +18,7 @@ import {
 import { GetStoreDto } from '@/generated/orval/types';
 import QueryString from 'qs';
 import { ShowMoreText } from './ShowMoreText';
+import { useTranslations } from 'next-intl';
 
 interface StoreCardProps {
   store: GetStoreDto;
@@ -36,6 +37,7 @@ export function StoreCard({
   heightClass = 'h-60 sm:h-80',
   imgClass = 'object-cover lg:object-contain',
 }: StoreCardProps) {
+  const t = useTranslations('StoreCard');
   const [carouselApi, setCarouselApi] = useState<CarouselApi | null>(null);
   const [activeIndex, setActiveIndex] = useState(0);
 
@@ -90,7 +92,7 @@ export function StoreCard({
                     //     { skipNulls: true }
                     //   )
                     // )}
-                    aria-label='Go to shop'
+                    aria-label={t('go_to_shop')}
                   >
                     <div className={`relative ${heightClass} w-full`}>
                       <Image
@@ -135,7 +137,7 @@ export function StoreCard({
                 className={`h-2 w-2 rounded-full transition ${
                   activeIndex === index ? 'bg-black' : 'bg-shop-white'
                 }`}
-                aria-label={`Go to slide ${index + 1}`}
+                aria-label={t('go_to_slide', { index: index + 1 })}
               />
             ))}
           </div>
@@ -170,7 +172,7 @@ export function StoreCard({
           )}
           {store.phone && (
             <p className='text-shop-muted-text-6 text-xs'>
-              Phone number: {store.phone}
+              {t('phone_number')} {store.phone}
             </p>
           )}
         </div>

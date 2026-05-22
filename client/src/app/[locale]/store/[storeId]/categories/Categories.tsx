@@ -19,6 +19,7 @@ import { CustomPagination } from '@/components/customComponents/CustomPagination
 import { useTranslations } from 'next-intl';
 import { ViewToggle } from '@/components/customComponents/admin/ViewToggle';
 import { AdminCategoryCard } from './AdminCategoryCard';
+import NoDataFound from '@/components/customComponents/loading/NoDataFound';
 
 export function Categories() {
   const t = useTranslations('StorePages');
@@ -85,39 +86,45 @@ export function Categories() {
           </div>
         </div>
       )}
-      <div className='w-full'>
-        {viewMode === 'card' ? (
-          <div className='mt-4 grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5'>
-            {formattedCategories.map((category) => (
-              <AdminCategoryCard
-                key={category.id}
-                category={category}
-                storeId={storeId}
-                t={t}
-              />
-            ))}
-          </div>
-        ) : (
-          <DataTable
-            columns={categoryColumnList}
-            data={formattedCategories}
-            filterKey='name'
-            totalCount={categoriesData?.totalCount as number}
-            queryParams={queryParams}
-            onChangeSearch={changeSearch}
-            onChangeSort={changeSort}
-          />
-        )}
-        {!!categoriesData?.totalCount && (
-          <CustomPagination
-            limit={queryParams?.params?.limit as number}
-            total={categoriesData?.totalCount as number}
-            skip={queryParams?.params?.skip as number}
-            onPageChange={changePage}
-            onLimitChange={changeLimit}
-          />
-        )}
-      </div>
+      {!isLoadingCategoriesData && categoriesData?.categories && categoriesData?.categories?.length > 0 ? (
+        <div className='w-full'>
+          {viewMode === 'card' ? (
+            <div className='mt-4 grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5'>
+              {formattedCategories.map((category) => (
+                <AdminCategoryCard
+                  key={category.id}
+                  category={category}
+                  storeId={storeId}
+                  t={t}
+                />
+              ))}
+            </div>
+          ) : (
+            <DataTable
+              columns={categoryColumnList}
+              data={formattedCategories}
+              filterKey='name'
+              totalCount={categoriesData?.totalCount as number}
+              queryParams={queryParams}
+              onChangeSearch={changeSearch}
+              onChangeSort={changeSort}
+            />
+          )}
+          {!!categoriesData?.totalCount && (
+            <CustomPagination
+              limit={queryParams?.params?.limit as number}
+              total={categoriesData?.totalCount as number}
+              skip={queryParams?.params?.skip as number}
+              onPageChange={changePage}
+              onLimitChange={changeLimit}
+            />
+          )}
+        </div>
+      ) : (
+        <div className='mt-6'>
+          <NoDataFound entityName={t('categories_title')} />
+        </div>
+      )}
     </div>
   );
 }

@@ -1,3 +1,5 @@
+'use client';
+
 import Breadcrumbs from '@/components/customComponents/Breadcrumbs';
 import PageHeader from '@/components/customComponents/PageHeader';
 import { Separator } from '@/components/ui/Separator';
@@ -6,101 +8,104 @@ import HowItWorksSection from './HowItWorksSection';
 import { Card, CardContent } from '@/components/ui/Card';
 import Image from 'next/image';
 import InfoBlock from './InfoBlock';
-import { useLocale } from 'next-intl';
+import { useLocale, useTranslations } from 'next-intl';
 
 export default function HowItWorksPage() {
   const locale = useLocale();
+  const t = useTranslations('HowItWorks');
+  const headerT = useTranslations('HeaderMenu');
 
   if (locale === 'ru') {
     return (
       <>
         <Breadcrumbs
           items={[
-            { title: 'Главная', href: '/' },
-            { title: 'Как это работает' },
+            { title: headerT('Home'), href: '/' },
+            { title: t('breadcrumb_title') },
           ]}
         />
         <PageHeader
-          title='Как это работает'
-          description='Пошаговые руководства, которые помогут вам с легкостью создавать магазины и добавлять товары.'
+          title={t('page_title')}
+          description={t('page_description')}
           classNames='mt-4'
         />
         <div className='space-y-12'>
           <InfoBlock />
           <HowItWorksSection
-            title='Как зарегистрироваться в качестве продавца и создать привязанный аккаунт Stripe. Это необходимо, если вы хотите продавать товары, так как доходы от продаж будут перечисляться на этот счет после подтверждения.'
+            title={t('section_1_title')}
             steps={[
-              'Войдите на платформу',
-              'Нажмите на аватар пользователя в шапке',
-              'Нажмите "Настройки аккаунта" в боковом меню',
-              'Нажмите кнопку "Регистрация в Stripe как продавец"',
-              'Заполните необходимую информацию на странице Stripe и отправьте',
+              t('section_1_step_1'),
+              t('section_1_step_2'),
+              t('section_1_step_3'),
+              t('section_1_step_4'),
+              t('section_1_step_5'),
             ]}
             imageSrc='/howItWorks/seller.png'
           />
           <HowItWorksSection
-            title='Как войти в панель управления Stripe в качестве продавца'
+            title={t('section_2_title')}
             steps={[
-              'Войдите на платформу',
-              'Нажмите на аватар пользователя в шапке',
-              'Нажмите "Настройки аккаунта" в боковом меню',
-              'Нажмите кнопку "Войти в панель управления Stripe"',
+              t('section_2_step_1'),
+              t('section_2_step_2'),
+              t('section_2_step_3'),
+              t('section_2_step_4'),
             ]}
             imageSrc='/howItWorks/seller.png'
           />
           <HowItWorksSection
-            title='Как создать новый магазин'
+            title={t('section_3_title')}
             steps={[
-              'Войдите на платформу',
-              'Нажмите "Мои магазины" в шапке',
-              'В правой части шапки откройте выпадающее меню магазина',
-              'Выберите "Создать новый магазин"',
-              'После создания вы можете редактировать детали магазина в разделе "Настройки магазина" в боковом меню',
+              t('section_3_step_1'),
+              t('section_3_step_2'),
+              t('section_3_step_3'),
+              t('section_3_step_4'),
+              t('section_3_step_5'),
             ]}
             videoSrc='/howItWorks/product.webm'
           />
           <HowItWorksSection
-            title='Как создать новый товар'
+            title={t('section_4_title')}
             steps={[
-              'Войдите на платформу',
-              'Нажмите "Мои магазины" в шапке',
-              'Откройте выпадающее меню магазина в правой части шапки',
-              'Выберите магазин, в который хотите добавить товар',
-              'В левом боковом меню перейдите в раздел "Товары"',
-              'Нажмите "Сохранить/Создать" чтобы добавить новый товар',
+              t('section_4_step_1'),
+              t('section_4_step_2'),
+              t('section_4_step_3'),
+              t('section_4_step_4'),
+              t('section_4_step_5'),
+              t('section_4_step_6'),
             ]}
             videoSrc='/howItWorks/store.webm'
           />
           <HowItWorksSection
-            title='Как купить товар'
+            title={t('section_5_title')}
             steps={[
-              'Войдите на платформу',
-              'Нажмите "Магазин" в шапке',
-              'Добавьте товары в корзину',
-              'Нажмите кнопку "Оформление заказа" и завершите покупку',
+              t('section_5_step_1'),
+              t('section_5_step_2'),
+              t('section_5_step_3'),
+              t('section_5_step_4'),
             ]}
             videoSrc='/howItWorks/buy.webm'
           />
           <HowItWorksSection
-            title='Как посмотреть свои покупки'
+            title={t('section_6_title')}
             steps={[
-              'Войдите на платформу',
-              'Нажмите на иконку аватара в шапке',
-              'Выберите "Мои заказы" в боковом меню',
-              'Посмотрите историю ваших заказов',
-              'Нажмите на заказ, чтобы увидеть детали',
-              'Вы можете подтвердить получение покупки, нажав кнопку подтверждения в модальном окне.',
+              t('section_6_step_1'),
+              t('section_6_step_2'),
+              t('section_6_step_3'),
+              t('section_6_step_4'),
+              t('section_6_step_5'),
+              t('section_6_step_6'),
             ]}
             videoSrc='/howItWorks/orders.webm'
           />
           <HowItWorksSection
-            title='Как посмотреть свои продажи в качестве продавца'
+            title={t('section_7_title')}
             steps={[
-              'Войдите на платформу',
-              'Нажмите на иконку аватара в шапке',
-              'Выберите "Мои продажи" в боковом меню',
-              'Посмотрите историю ваших продаж',
-              'Нажмите на продажу, чтобы увидеть детали',
+              t('section_7_step_1'),
+              t('section_7_step_2'),
+              t('section_7_step_3'),
+              t('section_7_step_4'),
+              t('section_7_step_5'),
+              t('section_7_step_6'),
             ]}
             videoSrc='/howItWorks/sales.webm'
           />
@@ -113,12 +118,15 @@ export default function HowItWorksPage() {
   return (
     <>
       <Breadcrumbs
-        items={[{ title: 'Home', href: '/' }, { title: 'How It Works' }]}
+        items={[
+          { title: headerT('Home'), href: '/' },
+          { title: t('breadcrumb_title') },
+        ]}
       />
 
       <PageHeader
-        title='How It Works'
-        description='Step-by-step guides to help you create stores and add products with ease.'
+        title={t('page_title')}
+        description={t('page_description')}
         classNames='mt-4'
       />
 
@@ -126,87 +134,85 @@ export default function HowItWorksPage() {
         <InfoBlock />
 
         <HowItWorksSection
-          title='How to register as a seller and create a connected Stripe account. This is a must if you want to sell products, because sales revenue will be transferred to this account after confirmation.'
+          title={t('section_1_title')}
           steps={[
-            'Log in to the platform',
-            'Click on User Avatar in the header',
-            'Click on Account Settings from the sidebar menu',
-            'Click on Register on Stripe as a seller button',
-            'Fill in the required information on the Stripe page and submit',
+            t('section_1_step_1'),
+            t('section_1_step_2'),
+            t('section_1_step_3'),
+            t('section_1_step_4'),
+            t('section_1_step_5'),
           ]}
           imageSrc='/howItWorks/seller.png'
         />
 
         <HowItWorksSection
-          title='How to login Stripe dashboard as a seller'
+          title={t('section_2_title')}
           steps={[
-            'Log in to the platform',
-            'Click on User Avatar in the header',
-            'Click on Account Settings from the sidebar menu',
-            'Click on Login to Stripe Dashboard button',
+            t('section_2_step_1'),
+            t('section_2_step_2'),
+            t('section_2_step_3'),
+            t('section_2_step_4'),
           ]}
           imageSrc='/howItWorks/seller.png'
         />
-        {/* SECTION 1 */}
         <HowItWorksSection
-          title='How to create a new store'
+          title={t('section_3_title')}
           steps={[
-            'Log in to the platform',
-            'Click on MyStores in the header',
-            'In the right side of the header, open the store dropdown menu',
-            'Select Create new store',
-            'After creation, you can edit store details in "Store settings" from the sidebar',
+            t('section_3_step_1'),
+            t('section_3_step_2'),
+            t('section_3_step_3'),
+            t('section_3_step_4'),
+            t('section_3_step_5'),
           ]}
           videoSrc='/howItWorks/product.webm'
         />
 
-        {/* SECTION 2 */}
         <HowItWorksSection
-          title='How to create a new product'
+          title={t('section_4_title')}
           steps={[
-            'Log in to the platform',
-            'Click on MyStores in the header',
-            'Open the store dropdown menu on the right side of the header',
-            'Select the store where you want to add a product',
-            'From the left sidebar, go to Products',
-            'Click Create to add a new product',
+            t('section_4_step_1'),
+            t('section_4_step_2'),
+            t('section_4_step_3'),
+            t('section_4_step_4'),
+            t('section_4_step_5'),
+            t('section_4_step_6'),
           ]}
           videoSrc='/howItWorks/store.webm'
         />
 
         <HowItWorksSection
-          title='How to buy product'
+          title={t('section_5_title')}
           steps={[
-            'Log in to the platform',
-            'Click on Shop in the header',
-            'Add products to your cart',
-            'Click on Checkout button and complete your purchase',
+            t('section_5_step_1'),
+            t('section_5_step_2'),
+            t('section_5_step_3'),
+            t('section_5_step_4'),
           ]}
           videoSrc='/howItWorks/buy.webm'
         />
 
         <HowItWorksSection
-          title='How to see your purchases'
+          title={t('section_6_title')}
           steps={[
-            'Log in to the platform',
-            'Click on Avatar icon in the header',
-            'Select My orders from the sidebar menu',
-            'View your orders history',
-            'Click on an order to see details',
-            'You can confirm receipt of your purchase by clicking Confirm button from details modal if you are the buyer or the admin of the store from which the product was purchased.',
+            t('section_6_step_1'),
+            t('section_6_step_2'),
+            t('section_6_step_3'),
+            t('section_6_step_4'),
+            t('section_6_step_5'),
+            t('section_6_step_6'),
           ]}
           videoSrc='/howItWorks/orders.webm'
         />
 
         <HowItWorksSection
-          title='How to see your sales products as a seller'
+          title={t('section_7_title')}
           steps={[
-            'Log in to the platform',
-            'Click on Avatar icon in the header',
-            'Select My sales from the sidebar menu',
-            'View your sales history',
-            'Click on a sale to see details',
-            'You can confirm receipt of your purchase by clicking Confirm button from details modal if you are the buyer or the admin of the store from which the product was purchased.',
+            t('section_7_step_1'),
+            t('section_7_step_2'),
+            t('section_7_step_3'),
+            t('section_7_step_4'),
+            t('section_7_step_5'),
+            t('section_7_step_6'),
           ]}
           videoSrc='/howItWorks/sales.webm'
         />

@@ -1,3 +1,4 @@
+import { useTranslations } from 'next-intl';
 import {
   GetPlansDto,
   GetPlansDtoPeriod,
@@ -17,6 +18,7 @@ function SubscriptionHeader({
   period,
   setPeriod,
 }: ISubscriptionHeaderProps) {
+  const t = useTranslations('Subscriptions');
   const findPlan = useCallback(
     (planId: string) => plans.find((p) => p.planId === planId),
     [plans]
@@ -40,7 +42,7 @@ function SubscriptionHeader({
   return (
     <div className='flex items-center justify-center space-x-2'>
       <Label className='text-shop-primary-text' htmlFor='period'>
-        Monthly
+        {t('monthly')}
       </Label>
       <Switch
         id='period'
@@ -52,9 +54,9 @@ function SubscriptionHeader({
         }
       />
       <Label className='text-shop-primary-text' htmlFor='period'>
-        Annual{' '}
+        {t('annual')}{' '}
         <span className='text-shop-light-primary font-semibold'>
-          (save {calculateDiscount(GetPlansDtoPlanId.ADVANCED)}%)
+          {t('save_discount', { discount: calculateDiscount(GetPlansDtoPlanId.ADVANCED) })}
         </span>
       </Label>
     </div>

@@ -1,141 +1,140 @@
+'use client';
+
 import Breadcrumbs from '@/components/customComponents/Breadcrumbs';
 import PageHeader from '@/components/customComponents/PageHeader';
 import { SITE_NAME } from '@/utils/constants';
-import { useLocale } from 'next-intl';
-import TermsPageRu from './TermsPageRu';
+import { useTranslations } from 'next-intl';
 
 export default function TermsPage() {
-  const locale = useLocale();
-  if (locale === 'ru') return <TermsPageRu />;
+  const t = useTranslations('TermsPage');
+  const headerT = useTranslations('HeaderMenu');
 
   return (
     <>
       <Breadcrumbs
-        items={[{ title: 'Home', href: '/' }, { title: 'Terms & Conditions' }]}
+        items={[
+          { title: headerT('Home'), href: '/' },
+          { title: t('breadcrumb_terms') },
+        ]}
       />
 
       <PageHeader
-        title='Terms & Service'
-        description='Please read these terms carefully before using our services.'
+        title={t('page_title')}
+        description={t('page_description')}
         classNames='mt-4'
       />
-
-      <p className='mb-4 text-sm text-neutral-500'>
-        Last updated: {new Date().toLocaleDateString()}
-      </p>
 
       <div className='space-y-6 text-sm leading-relaxed'>
         <section className='space-y-2'>
           <h2 className='text-shop-primary-text text-lg font-semibold'>
-            1. Acceptance of Terms
+            {t('section_1_title')}
           </h2>
           <p className='text-shop-muted-text-7'>
-            By accessing or using <b>{SITE_NAME}</b>, you agree to be bound by
-            these Terms of Service. If you do not agree with any part of these
-            terms, you must stop using the platform.
+            {t.rich('section_1_text', {
+              siteName: (chunks) => <b>{chunks}</b>,
+              siteNameValue: SITE_NAME,
+            })}
           </p>
         </section>
 
         <section className='space-y-2'>
           <h2 className='text-shop-primary-text text-lg font-semibold'>
-            2. User Responsibility
+            {t('section_2_title')}
           </h2>
           <p className='text-shop-muted-text-7'>
-            You are solely responsible for all information, content, and
-            materials that you submit or publish on <b>{SITE_NAME}</b> and for
-            any consequences that may result from it.
+            {t.rich('section_2_text_1', {
+              siteName: (chunks) => <b>{chunks}</b>,
+              siteNameValue: SITE_NAME,
+            })}
+          </p>
+          <p className='text-shop-muted-text-7'>{t('section_2_text_2')}</p>
+        </section>
+
+        <section className='space-y-2'>
+          <h2 className='text-shop-primary-text text-lg font-semibold'>
+            {t('section_3_title')}
+          </h2>
+          <p className='text-shop-muted-text-7'>
+            {t.rich('section_3_text_1', {
+              siteName: (chunks) => <b>{chunks}</b>,
+              siteNameValue: SITE_NAME,
+            })}
+          </p>
+          <p className='text-shop-muted-text-7'>{t('section_3_text_2')}</p>
+        </section>
+
+        <section className='space-y-2'>
+          <h2 className='text-shop-primary-text text-lg font-semibold'>
+            {t('section_4_title')}
+          </h2>
+          <p className='text-shop-muted-text-7'>
+            {t.rich('section_4_text_1', {
+              siteName: (chunks) => <b>{chunks}</b>,
+              siteNameValue: SITE_NAME,
+            })}
           </p>
           <p className='text-shop-muted-text-7'>
-            You confirm that all information provided is accurate, lawful, and
-            that you have all necessary rights, licenses, and permissions to
-            publish such content.
+            {t.rich('section_4_text_2', {
+              siteName: (chunks) => <b>{chunks}</b>,
+              siteNameValue: SITE_NAME,
+            })}
           </p>
         </section>
 
         <section className='space-y-2'>
           <h2 className='text-shop-primary-text text-lg font-semibold'>
-            3. Intellectual Property
-          </h2>
-          <p className='text-shop-muted-text-7'>
-            All content available on <b>{SITE_NAME}</b>, unless otherwise
-            stated, is protected by copyright and belongs to <b>{SITE_NAME}</b>{' '}
-            or the respective rights holders.
-          </p>
-          <p className='text-shop-muted-text-7'>
-            You may not copy, reproduce, distribute, or use any content from the
-            platform without prior written consent.
-          </p>
-        </section>
-
-        <section className='space-y-2'>
-          <h2 className='text-shop-primary-text text-lg font-semibold'>
-            4. Listings & Transactions
-          </h2>
-          <p className='text-shop-muted-text-7'>
-            <b>{SITE_NAME}</b> is an online platform that enables users to post
-            listings for buying and selling legally permitted goods and
-            services.
-          </p>
-          <p className='text-shop-muted-text-7'>
-            <b>{SITE_NAME}</b> is not a party to any transaction between users
-            and does not guarantee the quality, legality, safety, or accuracy of
-            listings.
-          </p>
-        </section>
-
-        <section className='space-y-2'>
-          <h2 className='text-shop-primary-text text-lg font-semibold'>
-            5. Prohibited Activities
+            {t('section_5_title')}
           </h2>
           <ul className='text-shop-muted-text-7 list-disc space-y-1 pl-5'>
-            <li>Posting false, misleading, or unlawful content</li>
-            <li>Using automated tools to access the platform</li>
-            <li>Interfering with the normal operation of the service</li>
-            <li>Posting illegal goods, services, or materials</li>
-            <li>Violating the rights of other users or third parties</li>
+            <li>{t('section_5_item_1')}</li>
+            <li>{t('section_5_item_2')}</li>
+            <li>{t('section_5_item_3')}</li>
+            <li>{t('section_5_item_4')}</li>
+            <li>{t('section_5_item_5')}</li>
           </ul>
         </section>
 
         <section className='space-y-2'>
           <h2 className='text-shop-primary-text text-lg font-semibold'>
-            6. Limitation of Liability
+            {t('section_6_title')}
           </h2>
           <p className='text-shop-muted-text-7'>
-            <b>{SITE_NAME}</b> shall not be liable for any damages, losses, or
-            disputes arising from transactions between users.
+            {t.rich('section_6_text', {
+              siteName: (chunks) => <b>{chunks}</b>,
+              siteNameValue: SITE_NAME,
+            })}
           </p>
         </section>
 
         <section className='space-y-2'>
           <h2 className='text-shop-primary-text text-lg font-semibold'>
-            7. Account Termination
+            {t('section_7_title')}
           </h2>
           <p className='text-shop-muted-text-7'>
-            <b>{SITE_NAME}</b> reserves the right to suspend or terminate user
-            accounts, remove listings, or restrict access at its sole discretion
-            if these Terms are violated.
+            {t.rich('section_7_text', {
+              siteName: (chunks) => <b>{chunks}</b>,
+              siteNameValue: SITE_NAME,
+            })}
           </p>
         </section>
 
         <section className='space-y-2'>
           <h2 className='text-shop-primary-text text-lg font-semibold'>
-            8. Changes to Terms
+            {t('section_8_title')}
           </h2>
           <p className='text-shop-muted-text-7'>
-            <b>{SITE_NAME}</b> may update these Terms of Service at any time
-            without prior notice. Continued use of the platform constitutes
-            acceptance of the updated terms.
+            {t.rich('section_8_text', {
+              siteName: (chunks) => <b>{chunks}</b>,
+              siteNameValue: SITE_NAME,
+            })}
           </p>
         </section>
 
         <section className='space-y-2'>
           <h2 className='text-shop-primary-text text-lg font-semibold'>
-            9. Termination by User
+            {t('section_9_title')}
           </h2>
-          <p className='text-shop-muted-text-7'>
-            You may terminate your account at any time without prior notice.
-            Upon termination, you must stop using the platform.
-          </p>
+          <p className='text-shop-muted-text-7'>{t('section_9_text')}</p>
         </section>
       </div>
     </>

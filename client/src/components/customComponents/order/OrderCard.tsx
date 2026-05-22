@@ -1,14 +1,18 @@
+'use client';
+
 import Image from 'next/image';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/Card';
 import { Separator } from '@/components/ui/Separator';
 import { Badge } from '@/components/ui/Badge';
 import { GetOrderWithItemsDto } from '@/generated/orval/types';
+import { useTranslations } from 'next-intl';
 
 interface OrderCardProps {
   order: GetOrderWithItemsDto;
 }
 
 export default function OrderCard({ order }: OrderCardProps) {
+  const t = useTranslations('OrderCard');
   const total = order.orderItems.reduce(
     (sum, item) => sum + item.price * item.quantity,
     0
@@ -16,11 +20,10 @@ export default function OrderCard({ order }: OrderCardProps) {
 
   return (
     <Card className='bg-shop-white w-full max-w-md rounded-xl border p-3'>
-      {/* Header */}
       <div className='mb-2 flex items-center justify-between'>
         <div className='flex flex-col'>
           <span className='text-shop-muted-text-5 text-xs font-medium'>
-            Order
+            {t('order')}
           </span>
           <span className='max-w-[180px] truncate text-sm font-semibold'>
             {order.id}
@@ -35,16 +38,14 @@ export default function OrderCard({ order }: OrderCardProps) {
         </Badge>
       </div>
 
-      {/* Compact horizontal tiles (like marketplace) */}
       <div className='flex gap-2 overflow-x-auto py-1'>
         {(order.orderItems || []).map((item) => (
           <div
             key={item.id}
             className='bg-shop-white flex min-w-[72px] flex-1 flex-col items-center rounded-md border p-1 shadow-sm'
-            aria-label={`Order item ${item.cachedProductTitle}`}
+            aria-label={`${t('order')} ${t('id')} ${item.cachedProductTitle}`}
           >
             <div className='relative h-12 w-12 overflow-hidden rounded-md border bg-gray-50'>
-              {/* next/image with fixed parent size works with fill */}
               <Image
                 src={item.cachedProductImages[0]}
                 alt={item.cachedProductTitle as string}
@@ -62,7 +63,7 @@ export default function OrderCard({ order }: OrderCardProps) {
               ${item.price}
             </span>
             <span className='text-shop-muted-text-5 text-[9px]'>
-              ID: {String(item.id).slice(0, 8)}
+              {t('id')} {String(item.id).slice(0, 8)}
             </span>
           </div>
         ))}
@@ -70,15 +71,14 @@ export default function OrderCard({ order }: OrderCardProps) {
 
       <Separator className='my-2' />
 
-      {/* Footer: totals and quick actions */}
       <div className='flex items-center justify-between text-sm font-semibold'>
         <div className='flex items-baseline gap-2'>
-          <span className='text-shop-muted-text-5 text-xs'>Items:</span>
+          <span className='text-shop-muted-text-5 text-xs'>{t('items')}</span>
           <span className='text-sm'>{(order.orderItems || []).length}</span>
         </div>
 
         <div className='flex items-center gap-3'>
-          <span className='text-sm'>Total</span>
+          <span className='text-sm'>{t('total')}</span>
           <span className='text-sm'>${total}</span>
         </div>
       </div>

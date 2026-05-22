@@ -1,4 +1,5 @@
 import { Metadata } from 'next';
+import { getTranslations } from 'next-intl/server';
 import { storeService } from '@/services/store.service';
 import {
   COlLAGE_IMG,
@@ -11,6 +12,7 @@ import { PUBLIC_URL } from '@/config/url.config';
 import StoresPage from './StoresPage';
 
 export async function generateMetadata(): Promise<Metadata> {
+  const t = await getTranslations('StoresPage');
   const storesData = await storeService.getAll({ limit: 5, skip: 0 });
 
   const topStores = Array.from(
@@ -25,7 +27,7 @@ export async function generateMetadata(): Promise<Metadata> {
   const description = `Explore all products at ${SITE_NAME} — from ${storesList} top stores.`;
 
   const meta = generateMeta({
-    title: `${SITE_NAME} | Stores`,
+    title: `${SITE_NAME} | ${t('title')}`,
     description,
     image: COlLAGE_IMG,
     isPublic: true,
@@ -41,18 +43,18 @@ export async function generateMetadata(): Promise<Metadata> {
 export const revalidate = 60;
 
 async function getStores() {
-  // TODO
   const stores = await storeService.getAll();
   return stores;
 }
 
 export default async function Stores() {
   const storesData = await getStores();
+  const t = await getTranslations('HeaderMenu');
 
   return (
     <div className='global-container my-6'>
       <Breadcrumbs
-        items={[{ title: 'Home', href: '/' }, { title: 'Stores' }]}
+        items={[{ title: t('Home'), href: '/' }, { title: t('Stores') }]}
         classNames='mt-4'
       />
 

@@ -13,6 +13,7 @@ import { CustomPagination } from '@/components/customComponents/CustomPagination
 import { useTranslations } from 'next-intl';
 import { ViewToggle } from '@/components/customComponents/admin/ViewToggle';
 import { AdminReviewCard } from './AdminReviewCard';
+import NoDataFound from '@/components/customComponents/loading/NoDataFound';
 
 export function Reviews() {
   const t = useTranslations('StorePages');
@@ -66,34 +67,40 @@ export function Reviews() {
           <ViewToggle viewMode={viewMode} onToggle={setViewMode} />
         </div>
       )}
-      <div className='mt-3'>
-        {viewMode === 'card' ? (
-          <div className='mt-4 grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3'>
-            {formattedReviews.map((review) => (
-              <AdminReviewCard key={review.id} review={review} t={t} />
-            ))}
-          </div>
-        ) : (
-          <DataTable
-            columns={reviewColumnList}
-            data={formattedReviews}
-            filterKey='username'
-            totalCount={reviewsData?.totalCount as number}
-            queryParams={queryParams}
-            onChangeSearch={changeSearch}
-            onChangeSort={changeSort}
-          />
-        )}
-        {!!reviewsData?.totalCount && (
-          <CustomPagination
-            limit={queryParams?.params?.limit as number}
-            total={reviewsData?.totalCount as number}
-            skip={queryParams?.params?.skip as number}
-            onPageChange={changePage}
-            onLimitChange={changeLimit}
-          />
-        )}
-      </div>
+      {!isLoadingReviewsData && reviewsData?.reviews && reviewsData?.reviews?.length > 0 ? (
+        <div className='mt-3'>
+          {viewMode === 'card' ? (
+            <div className='mt-4 grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3'>
+              {formattedReviews.map((review) => (
+                <AdminReviewCard key={review.id} review={review} t={t} />
+              ))}
+            </div>
+          ) : (
+            <DataTable
+              columns={reviewColumnList}
+              data={formattedReviews}
+              filterKey='username'
+              totalCount={reviewsData?.totalCount as number}
+              queryParams={queryParams}
+              onChangeSearch={changeSearch}
+              onChangeSort={changeSort}
+            />
+          )}
+          {!!reviewsData?.totalCount && (
+            <CustomPagination
+              limit={queryParams?.params?.limit as number}
+              total={reviewsData?.totalCount as number}
+              skip={queryParams?.params?.skip as number}
+              onPageChange={changePage}
+              onLimitChange={changeLimit}
+            />
+          )}
+        </div>
+      ) : (
+        <div className='mt-6'>
+          <NoDataFound entityName={t('reviews_title')} />
+        </div>
+      )}
     </div>
   );
 }

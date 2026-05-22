@@ -2,6 +2,7 @@
 
 import { LayoutGrid, List } from 'lucide-react';
 import { Button } from '@/components/ui/Button';
+import { useTranslations } from 'next-intl';
 
 export type ViewMode = 'table' | 'card';
 
@@ -11,6 +12,7 @@ interface ViewToggleProps {
 }
 
 export function ViewToggle({ viewMode, onToggle }: ViewToggleProps) {
+  const t = useTranslations('ViewToggle');
   return (
     <div className='flex items-center rounded-md border'>
       <Button
@@ -18,7 +20,7 @@ export function ViewToggle({ viewMode, onToggle }: ViewToggleProps) {
         size='sm'
         className='rounded-r-none px-2.5'
         onClick={() => onToggle('table')}
-        title='Table view'
+        title={t('table_view')}
       >
         <List className='size-4' />
       </Button>
@@ -27,7 +29,7 @@ export function ViewToggle({ viewMode, onToggle }: ViewToggleProps) {
         size='sm'
         className='rounded-l-none px-2.5'
         onClick={() => onToggle('card')}
-        title='Card view'
+        title={t('card_view')}
       >
         <LayoutGrid className='size-4' />
       </Button>

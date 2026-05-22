@@ -1,24 +1,22 @@
-import { fetchAxiosAuthServer } from '@/api/axiosAuthServer';
+'use client';
+
 import SubscriptionCards from '@/components/customComponents/subscriptions/Subscriptions';
-import { API_URL } from '@/config/api.config';
-import { GetPlansDto, GetSubscriptionDto } from '@/generated/orval/types';
+import Loading from '@/components/customComponents/loading/Loading';
+import { useGetPlans } from '@/hooks/stripe/useGetPlans';
+import { useGetSubscriptions } from '@/hooks/stripe/useGetSubscriptions';
 
-export const revalidate = 60;
+export default function Subscriptions() {
+  const { plans, isLoadingPlans } = useGetPlans();
+  const { subscriptions, isLoadingSubscriptions } = useGetSubscriptions();
 
-// TODO axiosAuthServer example
+  if (isLoadingPlans || isLoadingSubscriptions) {
+    return <Loading />;
+  }
 
-async function getPlans() {
-  return fetchAxiosAuthServer<GetPlansDto[]>(API_URL.plans());
-}
-
-async function getSubscriptions() {
-  return fetchAxiosAuthServer<GetSubscriptionDto[]>(API_URL.subscriptions());
-}
-
-export default async function Subscriptions() {
-  const [plans, subscriptions] = await Promise.all([
-    getPlans(),
-    getSubscriptions(),
-  ]);
-  return <SubscriptionCards plans={plans} subscriptions={subscriptions} />;
+  return (
+    <SubscriptionCards
+      plans={plans || []}
+      subscriptions={subscriptions || []}
+    />
+  );
 }

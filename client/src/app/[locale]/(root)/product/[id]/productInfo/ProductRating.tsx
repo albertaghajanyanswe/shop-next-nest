@@ -1,3 +1,4 @@
+import { useTranslations } from 'next-intl';
 import { GetReviewWithUserDto } from '@/generated/orval/types';
 import { Star } from 'lucide-react';
 import { memo } from 'react';
@@ -11,6 +12,7 @@ const ProductRatingComponent = ({
   leftTitle?: string;
   className?: string;
 }) => {
+  const t = useTranslations('ProductRating');
   const rating = productReviews
     ? Math.round(
         productReviews.reduce((acc, review) => acc + review.rating, 0) /
@@ -31,7 +33,7 @@ const ProductRatingComponent = ({
         <span className='shrink-0'>{rating.toFixed(1) || ' '}</span>
 
         <span className='text-muted-foreground truncate'>
-          {` • ${productReviews?.length} reviews`}
+          {t('reviews_count', { count: productReviews?.length })}
         </span>
       </div>
     </div>

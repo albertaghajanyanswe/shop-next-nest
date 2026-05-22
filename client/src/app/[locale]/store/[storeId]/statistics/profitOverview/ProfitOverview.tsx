@@ -180,7 +180,7 @@ export function ProfitOverview({
           </ChartContainer>
         ) : (
           <div className='text-muted-foreground flex h-[300px] items-center justify-center'>
-            No data available for this period
+            {t('no_data_available')}
           </div>
         )}
       </CardContent>

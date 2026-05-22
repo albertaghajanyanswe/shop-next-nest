@@ -1,3 +1,5 @@
+'use client';
+
 import Link from 'next/link';
 import { CarouselApi } from '@/components/ui/Carousel';
 import { PUBLIC_URL } from '@/config/url.config';
@@ -8,6 +10,7 @@ import QueryString from 'qs';
 import { usePathname } from 'next/navigation';
 import { ProductRating } from '@/app/[locale]/(root)/product/[id]/productInfo/ProductRating';
 import ProductSoldCount from '@/app/[locale]/(root)/product/[id]/productInfo/ProductSoldCount';
+import { useTranslations } from 'next-intl';
 
 interface ProductCardInfoProps {
   product: GetProductWithDetails;
@@ -20,6 +23,7 @@ function ProductCardInfoUnMemo({
   carouselApi,
   activeIndex,
 }: ProductCardInfoProps) {
+  const t = useTranslations('ProductCardInfo');
   const pathname = usePathname();
   const isShopPage = pathname === PUBLIC_URL.shop();
 
@@ -30,7 +34,7 @@ function ProductCardInfoUnMemo({
           <button
             onClick={() => carouselApi?.scrollTo(index)}
             key={index}
-            aria-label={`Go to slide ${index + 1}`}
+            aria-label={t('go_to_slide', { index: index + 1 })}
             className={`h-1.5 w-1.5 cursor-pointer rounded-full transition-all ${
               activeIndex === index
                 ? 'bg-shop-primary-text w-3'
@@ -59,7 +63,7 @@ function ProductCardInfoUnMemo({
               )
             )}
             className='text-shop-light-primary xs:block hidden text-xs hover:underline sm:text-sm'
-            aria-label='Go to shop'
+            aria-label={t('go_to_shop')}
           >
             {product.store?.title}
           </Link>
@@ -77,7 +81,7 @@ function ProductCardInfoUnMemo({
               )
             )}
             className='text-shop-light-primary xs:block hidden text-xs hover:underline sm:text-sm'
-            aria-label='Go to shop'
+            aria-label={t('go_to_shop')}
           >
             {product.category?.name}
           </Link>
@@ -94,7 +98,7 @@ function ProductCardInfoUnMemo({
           </span>
         )}
       </div>
-      <div className='xs:flex-col my-2 flex flex-row items-end justify-between gap-1 md:flex-row'>
+      <div className='xs:flex-col my-2 flex flex-row flex-wrap items-end justify-between gap-1 md:flex-row'>
         <ProductSoldCount soldCount={product.soldCount} />
         <ProductRating className='' productReviews={product.reviews || []} />
       </div>

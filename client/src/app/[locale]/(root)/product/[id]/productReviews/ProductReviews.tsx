@@ -1,3 +1,4 @@
+import { useTranslations } from 'next-intl';
 import { ConfirmModal } from '@/components/modals/ConfirmModal';
 import { ReviewModal } from '@/components/modals/ReviewModal';
 import { Button } from '@/components/ui/Button';
@@ -18,18 +19,19 @@ export interface ProductReviewsProps {
 }
 
 function ProductReviews({ product }: ProductReviewsProps) {
+  const t = useTranslations('ProductReviews');
   const { user } = useProfile();
   const { deleteReview, isLoadingDelete } = useDeleteReview();
 
   return (
     <div className='mt-2'>
       <div className='flex items-center justify-between'>
-        <p className='text-2xl font-semibold'>Reviews</p>
+        <p className='text-2xl font-semibold'>{t('title')}</p>
         {user && (
           <ReviewModal storeId={product.storeId as string}>
             <Button variant='secondary'>
               <CirclePlus className='mr-2 size-5' />
-              Add review
+              {t('add_review')}
             </Button>
           </ReviewModal>
         )}
@@ -93,7 +95,7 @@ function ProductReviews({ product }: ProductReviewsProps) {
             </div>
           ))
         ) : (
-          <NoDataFound entityName='Reviews' />
+          <NoDataFound entityName={t('title')} />
         )}
       </div>
     </div>

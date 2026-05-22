@@ -20,7 +20,7 @@
     "last_users": "Last Users",
     "recent_buyers": "Recent Buyers",
     "no_users": "This store has no users",
-    "middle_statistics": "middle statistics",
+    "middle_statistics": "Middle statistics",
     "profit_overview": "Profit Overview",
     "revenue_trend": "Revenue trend",
     "total": "Total",
@@ -31,7 +31,8 @@
     "product": "Product",
     "price": "Price",
     "sold": "Sold",
-    "category": "Category"
+    "category": "Category",
+    "no_data_available": "No data available for this period"
   },
   "Footer": {
     "buy_sell_follow": "Buy, Sell, and Follow your Favorites Products",
@@ -98,12 +99,14 @@
     "Faqs": {
       "title": "Frequently Asked Questions",
       "description": "Find answers to the most common questions from our customers.",
-      "q1_title": "How long does shipping take?",
-      "q1_content": "3-7 business days on average.",
-      "q2_title": "What is your return policy?",
-      "q2_content": "14 days money-back guarantee.",
-      "q3_title": "What payment methods do you accept?",
-      "q3_content": "Visa, Master"
+      "q1_title": "Does the platform handle delivery of my order?",
+      "q1_content": "No. {siteName} is an online marketplace that connects buyers with sellers. We do not provide shipping, logistics, tracking, or delivery services. All delivery arrangements, costs, and timelines are the sole responsibility of the seller and the buyer.",
+      "q2_title": "Who is responsible if my package is lost, damaged, or delayed?",
+      "q2_content": "The seller is responsible for proper packaging and shipping of your order. As a buyer, you are responsible for verifying the seller's reliability before purchasing. {siteName} does not assume any liability for shipping issues, delays, or damages during transit.",
+      "q3_title": "What should I do if a seller doesn't ship my order?",
+      "q3_content": "If a seller fails to ship your order, you should contact them directly to resolve the issue. {siteName} provides a marketplace platform for transactions but does not control or enforce seller shipping timelines. We recommend purchasing goods only from official and verified sources to ensure product authenticity and a reliable shopping experience.",
+      "q4_title": "Can I choose my own courier or shipping method?",
+      "q4_content": "Yes. Sellers are free to choose any courier, postal service, or delivery method. {siteName} does not require or recommend specific shipping providers. Sellers are fully responsible for fulfilling orders and providing shipment details to buyers."
     }
   },
   "HeaderMenu": {
@@ -165,6 +168,7 @@
     "products": "Products"
   },
   "StorePages": {
+    "title": "Statistics",
     "create": "Create",
     "action": "Action",
     "actions": "Actions",
@@ -233,7 +237,95 @@
     "categories": "Categories",
     "products": "Products",
     "main_statistics": "Main statistics",
-    "categories_statistics": "categories statistics"
+    "categories_statistics": "categories statistics",
+    "save": "Save",
+    "create_action": "Create",
+    "update_brand": "Update brand",
+    "create_brand": "Create Brand",
+    "update_brand_details": "Update brand details",
+    "add_brand": "Add new brand to store",
+    "delete_brand_title": "Delete Brand",
+    "delete_brand_description": "This action cannot be undone. This will permanently delete your brand from our servers.",
+    "form_brand_name": "Brand name",
+    "form_brand_name_placeholder": "Brand name",
+    "form_brand_name_required": "Brand name is required",
+    "form_brand_description": "Brand description",
+    "form_brand_description_placeholder": "Brand description",
+    "form_brand_description_required": "Brand description is required",
+    "brand_not_found": "Brand not found",
+    "update_category": "Update category",
+    "create_category": "Create Category",
+    "update_category_details": "Update category details",
+    "add_category": "Add new category to store",
+    "delete_category_title": "Delete Category",
+    "delete_category_description": "This action cannot be undone. This will permanently delete your category from our servers.",
+    "form_category_name": "Category name",
+    "form_category_name_placeholder": "Category name",
+    "form_category_name_required": "Category name is required",
+    "form_category_description": "Category description",
+    "form_category_description_placeholder": "Category description",
+    "form_category_description_required": "Category description is required",
+    "category_not_found": "Category not found",
+    "update_color": "Update color",
+    "create_color": "Create Color",
+    "update_color_details": "Update color details",
+    "add_color": "Add new color to store",
+    "delete_color_title": "Delete Color",
+    "delete_color_description": "This action cannot be undone. This will permanently delete your color from our servers.",
+    "form_color_name": "Color name",
+    "form_color_name_placeholder": "Color name",
+    "form_color_name_required": "Color name is required",
+    "form_color_value": "Color value",
+    "form_color_value_required": "Color value is required",
+    "color_not_found": "Color not found",
+    "update_product": "Update product",
+    "create_product": "Create Product",
+    "update_product_details": "Update product details",
+    "add_product": "Add new product to store",
+    "delete_product_title": "Delete Product",
+    "delete_product_description": "This action cannot be undone. This will permanently delete your product from our servers.",
+    "form_product_name": "Product name",
+    "form_product_name_placeholder": "Product name",
+    "form_product_name_required": "Product name is required",
+    "form_product_price": "Price",
+    "form_product_price_placeholder": "Price",
+    "form_product_price_required": "Price is required",
+    "form_product_category": "Category",
+    "form_product_category_placeholder": "Select a category",
+    "form_product_category_required": "Category is required",
+    "form_product_brand": "Brand",
+    "form_product_brand_placeholder": "Select a brand",
+    "form_product_brand_required": "Brand is required",
+    "form_product_intended_for": "Intended For",
+    "form_product_intended_for_placeholder": "Select a target",
+    "form_product_intended_for_required": "Intended for is required",
+    "form_product_state": "State",
+    "form_product_state_placeholder": "Select a state",
+    "form_product_state_required": "State is required",
+    "form_product_color": "Color",
+    "form_product_color_placeholder": "Select a color",
+    "form_product_quantity": "Quantity",
+    "form_product_quantity_placeholder": "Quantity",
+    "form_product_quantity_required": "Quantity is required",
+    "form_product_description": "Product description",
+    "form_product_description_placeholder": "Product description",
+    "form_product_description_required": "Description is required",
+    "form_product_is_original": "Is Original",
+    "form_product_is_published": "Is Published",
+    "form_product_details": "Product details",
+    "form_product_details_add": "Add new info",
+    "form_product_details_key_placeholder": "Key (e.g. Height)",
+    "form_product_details_key_required": "Key is required",
+    "form_product_details_value_placeholder": "Value (e.g. 50 sm)",
+    "form_product_details_value_required": "Value is required",
+    "form_product_images": "Images",
+    "form_product_images_required": "Upload at least one image",
+    "free": "FREE",
+    "sale": "SALE",
+    "rent": "RENT",
+    "state_new": "New",
+    "state_used": "Used",
+    "product_not_found": "Product not found"
   },
   "DashboardSettings": {
     "manage_orders_title": "Manage all orders",
@@ -379,7 +471,14 @@
     "forgot_password": "Forgot Password?",
     "password_strength_weak": "Weak",
     "password_strength_medium": "Medium",
-    "password_strength_strong": "Strong"
+    "password_strength_strong": "Strong",
+    "name_placeholder": "Name",
+    "name_required": "Name is required",
+    "phone_placeholder": "Phone",
+    "country_placeholder": "Country",
+    "city_placeholder": "City",
+    "address_placeholder": "Address",
+    "postal_code_placeholder": "Postal code"
   },
   "ForgotPassword": {
     "title": "Forgot Password",
@@ -415,5 +514,376 @@
     "error_message": "Failed to reset password",
     "back_to_login": "Back to Login",
     "go_to_login": "Go to Login"
+  },
+  "Pages": {
+    "manage_store": "Manage store",
+    "products": "Products",
+    "create_product": "Create Product",
+    "edit_product": "Edit Product",
+    "categories": "Categories",
+    "create_category": "Create Category",
+    "edit_category": "Edit Category",
+    "brands": "Brands",
+    "create_brand": "Create Brand",
+    "edit_brand": "Edit Brand",
+    "colors": "Colors",
+    "create_color": "Create Color",
+    "edit_color": "Edit Color",
+    "reviews": "Reviews",
+    "store_settings": "Store Settings",
+    "store_categories": "Categories",
+    "store_brands": "Brands",
+    "store_edit_brand": "Edit Brand",
+    "dashboard": "Dashboard",
+    "favorites": "Favorites",
+    "my_orders": "My Orders",
+    "purchased_orders": "My Orders",
+    "sold_items": "Sold items",
+    "account_settings": "Account Settings",
+    "subscriptions": "Subscriptions",
+    "user_profile": "User profile",
+    "auth_page": "Auth page"
+  },
+  "PaymentSuccess": {
+    "title": "Payment Success",
+    "loading": "Loading your order details...",
+    "breadcrumb": "Payment success"
+  },
+  "StoresPage": {
+    "title": "Stores",
+    "description": "You can quickly find the store you need and follow the link to view available products.",
+    "search_placeholder": "Search stores..."
+  },
+  "ThanksPage": {
+    "title": "Thanks for your order",
+    "description": "Thank you for your trust. Your order has been placed successfully."
+  },
+  "Billing": {
+    "operation_succeeded": "Operation Succeeded",
+    "operation_succeeded_desc": "You have successfully subscribed to the plan <planId>{planIdValue}</planId>. You can close this window now.",
+    "downgrade_succeeded": "Downgrade Succeeded",
+    "downgrade_succeeded_desc": "You have successfully downgraded to the plan <planId>{planIdValue}</planId>. You can close this window now.",
+    "cancel_succeeded": "Cancel Succeeded",
+    "cancel_succeeded_desc": "You have successfully canceled your subscription. You can close this window now.",
+    "something_went_wrong": "Something went wrong",
+    "something_went_wrong_desc": "Please try again later or contact support.",
+    "page_title": "Billing result"
+  },
+  "PrivacyPage": {
+    "breadcrumb_home": "Home",
+    "breadcrumb_privacy": "Privacy Policy",
+    "page_title": "Privacy Policy",
+    "page_description": "Your privacy is important to us. This policy explains how we handle your data.",
+    "intro": "This Privacy Policy outlines how {siteName} (\"we\", \"our\", \"us\") collects, uses, and protects your personal information when you visit or make a purchase from our website.",
+    "section_1_title": "1. Information We Collect",
+    "section_1_intro": "We may collect the following categories of personal information:",
+    "section_1_item_1": "Contact details (name, email, phone number)",
+    "section_1_item_2": "Order information (billing & shipping details)",
+    "section_1_item_3": "Browsing behavior, analytics data, and device information",
+    "section_1_item_4": "Payment details (processed securely via third-party providers)",
+    "section_2_title": "2. How We Use Your Information",
+    "section_2_intro": "Your data may be used for:",
+    "section_2_item_1": "Order processing and customer support",
+    "section_2_item_2": "Account creation and authentication",
+    "section_2_item_3": "Improving website functionality and shopping experience",
+    "section_2_item_4": "Marketing communications (with your consent)",
+    "section_2_item_5": "Fraud prevention and platform security",
+    "section_3_title": "3. Cookies & Tracking Technologies",
+    "section_3_text": "We use cookies, analytics tools, and similar technologies to personalize content, analyze performance, and improve user experience. You can modify cookie settings in your browser at any time.",
+    "section_4_title": "4. Data Sharing",
+    "section_4_intro": "We may share your data only when necessary, including with:",
+    "section_4_item_1": "Shipping and delivery partners",
+    "section_4_item_2": "Payment processors",
+    "section_4_item_3": "Analytics and marketing platforms",
+    "section_4_item_4": "Legal authorities when required by law",
+    "section_5_title": "5. Data Protection & Security",
+    "section_5_text": "We implement industry-standard security measures to safeguard your personal information. However, no electronic storage or transmission is completely secure, and we cannot guarantee absolute protection.",
+    "section_6_title": "6. Your Rights",
+    "section_6_intro": "You may have the following rights depending on your location:",
+    "section_6_item_1": "Access, update, or delete your data",
+    "section_6_item_2": "Opt-out of marketing communications",
+    "section_6_item_3": "Request data portability",
+    "section_6_item_4": "Withdraw consent at any time",
+    "section_7_title": "7. International Data Transfers",
+    "section_7_text": "If you access our website outside your country, your data may be transferred across jurisdictions with different data protection laws.",
+    "section_8_title": "8. Updates to This Policy",
+    "section_8_text": "We may revise this Privacy Policy periodically. Updated policies take effect upon publication on this page.",
+    "section_9_title": "9. Contact Us",
+    "section_9_prefix": "For privacy-related inquiries, contact us at ",
+    "section_9_suffix": "."
+  },
+  "TermsPage": {
+    "breadcrumb_home": "Home",
+    "breadcrumb_terms": "Terms & Conditions",
+    "page_title": "Terms & Service",
+    "page_description": "Please read these terms carefully before using our services.",
+    "section_1_title": "1. Acceptance of Terms",
+    "section_1_text": "By accessing or using <siteName>{siteNameValue}</siteName>, you agree to be bound by these Terms of Service. If you do not agree with any part of these terms, you must stop using the platform.",
+    "section_2_title": "2. User Responsibility",
+    "section_2_text_1": "You are solely responsible for all information, content, and materials that you submit or publish on <siteName>{siteNameValue}</siteName> and for any consequences that may result from it.",
+    "section_2_text_2": "You confirm that all information provided is accurate, lawful, and that you have all necessary rights, licenses, and permissions to publish such content.",
+    "section_3_title": "3. Intellectual Property",
+    "section_3_text_1": "All content available on <siteName>{siteNameValue}</siteName>, unless otherwise stated, is protected by copyright and belongs to <siteName>{siteNameValue}</siteName> or the respective rights holders.",
+    "section_3_text_2": "You may not copy, reproduce, distribute, or use any content from the platform without prior written consent.",
+    "section_4_title": "4. Listings & Transactions",
+    "section_4_text_1": "<siteName>{siteNameValue}</siteName> is an online platform that enables users to post listings for buying and selling legally permitted goods and services.",
+    "section_4_text_2": "<siteName>{siteNameValue}</siteName> is not a party to any transaction between users and does not guarantee the quality, legality, safety, or accuracy of listings.",
+    "section_5_title": "5. Prohibited Activities",
+    "section_5_item_1": "Posting false, misleading, or unlawful content",
+    "section_5_item_2": "Using automated tools to access the platform",
+    "section_5_item_3": "Interfering with the normal operation of the service",
+    "section_5_item_4": "Posting illegal goods, services, or materials",
+    "section_5_item_5": "Violating the rights of other users or third parties",
+    "section_6_title": "6. Limitation of Liability",
+    "section_6_text": "<siteName>{siteNameValue}</siteName> shall not be liable for any damages, losses, or disputes arising from transactions between users.",
+    "section_7_title": "7. Account Termination",
+    "section_7_text": "<siteName>{siteNameValue}</siteName> reserves the right to suspend or terminate user accounts, remove listings, or restrict access at its sole discretion if these Terms are violated.",
+    "section_8_title": "8. Changes to Terms",
+    "section_8_text": "<siteName>{siteNameValue}</siteName> may update these Terms of Service at any time without prior notice. Continued use of the platform constitutes acceptance of the updated terms.",
+    "section_9_title": "9. Termination by User",
+    "section_9_text": "You may terminate your account at any time without prior notice. Upon termination, you must stop using the platform."
+  },
+  "HowItWorks": {
+    "breadcrumb_home": "Home",
+    "breadcrumb_title": "How It Works",
+    "page_title": "How It Works",
+    "page_description": "Step-by-step guides to help you create stores and add products with ease.",
+    "section_1_title": "How to register as a seller and create a connected Stripe account. This is a must if you want to sell products, because sales revenue will be transferred to this account after confirmation.",
+    "section_1_step_1": "Log in to the platform",
+    "section_1_step_2": "Click on User Avatar in the header",
+    "section_1_step_3": "Click on Account Settings from the sidebar menu",
+    "section_1_step_4": "Click on Register on Stripe as a seller button",
+    "section_1_step_5": "Fill in the required information on the Stripe page and submit",
+    "section_2_title": "How to login Stripe dashboard as a seller",
+    "section_2_step_1": "Log in to the platform",
+    "section_2_step_2": "Click on User Avatar in the header",
+    "section_2_step_3": "Click on Account Settings from the sidebar menu",
+    "section_2_step_4": "Click on Login to Stripe Dashboard button",
+    "section_3_title": "How to create a new store",
+    "section_3_step_1": "Log in to the platform",
+    "section_3_step_2": "Click on MyStores in the header",
+    "section_3_step_3": "In the right side of the header, open the store dropdown menu",
+    "section_3_step_4": "Select Create new store",
+    "section_3_step_5": "After creation, you can edit store details in \"Store settings\" from the sidebar",
+    "section_4_title": "How to create a new product",
+    "section_4_step_1": "Log in to the platform",
+    "section_4_step_2": "Click on MyStores in the header",
+    "section_4_step_3": "Open the store dropdown menu on the right side of the header",
+    "section_4_step_4": "Select the store where you want to add a product",
+    "section_4_step_5": "From the left sidebar, go to Products",
+    "section_4_step_6": "Click Create to add a new product",
+    "section_5_title": "How to buy product",
+    "section_5_step_1": "Log in to the platform",
+    "section_5_step_2": "Click on Shop in the header",
+    "section_5_step_3": "Add products to your cart",
+    "section_5_step_4": "Click on Checkout button and complete your purchase",
+    "section_6_title": "How to see your purchases",
+    "section_6_step_1": "Log in to the platform",
+    "section_6_step_2": "Click on Avatar icon in the header",
+    "section_6_step_3": "Select My orders from the sidebar menu",
+    "section_6_step_4": "View your orders history",
+    "section_6_step_5": "Click on an order to see details",
+    "section_6_step_6": "You can confirm receipt of your purchase by clicking Confirm button from details modal if you are the buyer or the admin of the store from which the product was purchased.",
+    "section_7_title": "How to see your sales products as a seller",
+    "section_7_step_1": "Log in to the platform",
+    "section_7_step_2": "Click on Avatar icon in the header",
+    "section_7_step_3": "Select My sales from the sidebar menu",
+    "section_7_step_4": "View your sales history",
+    "section_7_step_5": "Click on a sale to see details",
+    "section_7_step_6": "You can confirm receipt of your purchase by clicking Confirm button from details modal if you are the buyer or the admin of the store from which the product was purchased.",
+    "info_block_title": "Sell on {siteName} with confidence",
+    "info_block_intro": "MyStores is your personal seller dashboard. It is designed for users who want to sell products, manage inventory (create and manage stores, products, categories, brands and colors), and track store sales performance — all in one place.",
+    "info_block_my_stores_intro": "From the MyStores section in the header, you can:",
+    "info_block_item_1": "Create and manage multiple stores",
+    "info_block_item_2": "Create, edit, and manage products",
+    "info_block_item_3": "Create product categories, brands and colors",
+    "info_block_item_4": "View analytics for each store",
+    "info_block_item_5": "Track revenue and sold products",
+    "info_block_item_6": "See how many products are available and sold",
+    "info_block_outro": "Each store has its own dashboard where you can monitor sales, manage content, and make data-driven decisions to grow your business."
+  },
+  "EditProductButton": {
+    "edit_product": "Edit product"
+  },
+  "FavoriteButton": {
+    "login_required": "Please login to add product in favorite",
+    "toggle_favorite": "Toggle favorite",
+    "remove_from_favorites": "Remove from favorites",
+    "add_to_favorites": "Add to favorites"
+  },
+  "ProductReviews": {
+    "title": "Reviews",
+    "add_review": "Add review"
+  },
+  "ProductInfo": {
+    "original": "Original",
+    "in_stock": "In Stock:",
+    "store": "Store",
+    "category": "Category",
+    "intended_for": "Intended For",
+    "color": "Color:",
+    "average_rating": "Average rating: ",
+    "na": "N/A",
+    "go_to_shop": "Go to shop"
+  },
+  "ProductSoldCount": {
+    "sold": "{soldCount} sold"
+  },
+  "ProductRating": {
+    "reviews_count": " \u2022 {count} reviews"
+  },
+  "ProductPage": {
+    "loading": "Loading...",
+    "details_tab": "Details",
+    "description_tab": "Description",
+    "reviews_tab": "Reviews",
+    "similar_products": "Similar products"
+  },
+  "ProductDetails": {
+    "title": "Product details",
+    "no_data_entity": "product details"
+  },
+  "AiChat": {
+    "open_chat": "Open AI Chat",
+    "assistant_title": "AI Shopping Assistant",
+    "connected": "Connected",
+    "disconnected": "Disconnected",
+    "close_chat": "Close chat",
+    "greeting": "What can I help you\nwith today ?",
+    "ai_label": "AI",
+    "typing": "typing the answer of your question",
+    "clear_chat": "Clear chat",
+    "input_placeholder": "Ask me something",
+    "stop": "Stop",
+    "send": "Send"
+  },
+  "ChatProductCard": {
+    "out_of_stock": "Out of Stock",
+    "view": "View"
+  },
+  "OrderCard": {
+    "order": "Order",
+    "id": "ID:",
+    "items": "Items:",
+    "total": "Total"
+  },
+  "StoreNote": {
+    "title": "IMPORTANT NOTE !",
+    "description": "If you have created a default store after registration, that store is on a free plan. You can only create up to 2 products in this store. To create more, you need to subscribe to a paid plan. You can manage subscriptions in \"My Stores > Subscriptions\" in your dashboard."
+  },
+  "SidebarUI": {
+    "s_logo": "S",
+    "expand_sidebar": "Expand sidebar",
+    "collapse_sidebar": "Collapse sidebar",
+    "logout": "Logout",
+    "mobile_sidebar": "Mobile sidebar dialog"
+  },
+  "PaginationUI": {
+    "pagination": "pagination",
+    "go_to_previous": "Go to previous page",
+    "previous": "Previous",
+    "go_to_next": "Go to next page",
+    "next": "Next",
+    "more_pages": "More pages"
+  },
+  "BreadcrumbUI": {
+    "breadcrumb": "breadcrumb",
+    "more": "More"
+  },
+  "CarouselUI": {
+    "previous_slide": "Previous slide",
+    "next_slide": "Next slide"
+  },
+  "DialogUI": {
+    "close": "Close"
+  },
+  "SheetUI": {
+    "close": "Close"
+  },
+  "ColorPicker": {
+    "hue": "Hue",
+    "hex": "Hex",
+    "rgba": "RGBA",
+    "hsla": "HSLA",
+    "r": "R",
+    "g": "G",
+    "b": "B",
+    "a": "A",
+    "h": "H",
+    "s": "S",
+    "l": "L"
+  },
+  "CustomCombobox": {
+    "select": "Select...",
+    "search": "Search...",
+    "no_results": "No results found.",
+    "clear_selection": "Clear selection"
+  },
+  "CustomPagination": {
+    "items_per_page": "Items per page:"
+  },
+  "DataTable": {
+    "search": "Search...",
+    "no_data": "Not Found any data."
+  },
+  "DataTableDefault": {
+    "search": "Search...",
+    "no_data": "Not Found any data."
+  },
+  "ImageUpload": {
+    "uploading": "Uploading...",
+    "drop_images": "Drag & drop or click to upload images",
+    "drop_image": "Drag & drop or click to upload an image",
+    "max_reached": "Maximum number of images reached ({maxFiles})",
+    "product_image": "Product image"
+  },
+  "ImageUploadV1": {
+    "image_alt": "image",
+    "upload_image": "Upload image"
+  },
+  "StoreCard": {
+    "go_to_shop": "Go to shop",
+    "go_to_slide": "Go to slide {index}",
+    "phone_number": "Phone number:"
+  },
+  "ProductCardInfo": {
+    "go_to_shop": "Go to shop",
+    "go_to_slide": "Go to slide {index}"
+  },
+  "FiltersUI": {
+    "filters": "Filters",
+    "close": "Close"
+  },
+  "ViewToggle": {
+    "table_view": "Table view",
+    "card_view": "Card view"
+  },
+  "HeaderNavLinkUserAvatar": {
+    "user_img_alt": "User img"
+  },
+  "CommandUI": {
+    "command_palette": "Command Palette",
+    "search_command": "Search for a command to run..."
+  },
+  "ShowMoreText": {
+    "show_less": "Show Less",
+    "show_more": "Show More"
+  },
+  "Subscriptions": {
+    "billing_portal_error": "Failed to open billing portal",
+    "manage_plan": "Manage Plan",
+    "popular": "Popular",
+    "cancel_change": "Cancel Change",
+    "current_plan": "Current Plan",
+    "change_plan": "Change Plan",
+    "free_trial": "7-Day Free Trial",
+    "get_started": "Get Started",
+    "monthly": "Monthly",
+    "annual": "Annual",
+    "save_discount": "(save {discount}%)",
+    "per_month": "/monthly",
+    "per_year": "/annual",
+    "save_label": "Save {discount}%",
+    "clock_days": "Clock {days} d"
   }
 }

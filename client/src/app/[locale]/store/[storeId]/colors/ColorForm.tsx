@@ -1,3 +1,5 @@
+'use client';
+
 import { ConfirmModal } from '@/components/modals/ConfirmModal';
 import { Button } from '@/components/ui/Button';
 import {
@@ -18,19 +20,21 @@ import { Trash2 } from 'lucide-react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { AdvancedColorPicker } from '@/components/ui/ColorPicker';
 import { GetColorDto } from '@/generated/orval/types';
+import { useTranslations } from 'next-intl';
 
 interface ColorFormProps {
   color?: GetColorDto;
 }
 
 export function ColorForm({ color }: ColorFormProps) {
+  const t = useTranslations('StorePages');
   const { createColor, isLoadingCreate } = useCreateColor();
   const { updateColor, isLoadingUpdate } = useUpdateColor();
   const { deleteColor, isLoadingDelete } = useDeleteColor();
 
-  const title = color ? 'Update color' : 'Create Color';
-  const description = color ? 'Update color details' : 'Add new color to store';
-  const action = color ? 'Save' : 'Create';
+  const title = color ? t('update_color') : t('create_color');
+  const description = color ? t('update_color_details') : t('add_color');
+  const action = color ? t('save') : t('create_action');
 
   const form = useForm<IColorInput>({
     mode: 'onChange',
@@ -58,10 +62,10 @@ export function ColorForm({ color }: ColorFormProps) {
         {color && (
           <ConfirmModal
             handleConfirm={() => deleteColor()}
-            title='Delete Color'
-            description='This action cannot be undone. This will permanently delete your color from our servers.'
-            confirmText='Delete'
-            cancelText='Cancel'
+            title={t('delete_color_title')}
+            description={t('delete_color_description')}
+            confirmText={t('confirm_delete')}
+            cancelText={t('cancel')}
           >
             <Button variant='default' size='icon' disabled={isLoadingDelete}>
               <Trash2 className='size-4' />
@@ -78,13 +82,13 @@ export function ColorForm({ color }: ColorFormProps) {
             <FormField
               control={form.control}
               name='name'
-              rules={{ required: 'Color name is required' }}
+              rules={{ required: t('form_color_name_required') }}
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Color name</FormLabel>
+                  <FormLabel>{t('form_color_name')}</FormLabel>
                   <FormControl>
                     <Input
-                      placeholder='Color name'
+                      placeholder={t('form_color_name_placeholder')}
                       disabled={isLoading}
                       {...field}
                     />
@@ -97,10 +101,10 @@ export function ColorForm({ color }: ColorFormProps) {
             <FormField
               control={form.control}
               name='value'
-              rules={{ required: 'Color value is required' }}
+              rules={{ required: t('form_color_value_required') }}
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Color value</FormLabel>
+                  <FormLabel>{t('form_color_value')}</FormLabel>
                   <FormControl className='w-full'>
                     <AdvancedColorPicker
                       color={field.value}

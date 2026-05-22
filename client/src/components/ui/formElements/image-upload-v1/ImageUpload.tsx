@@ -1,9 +1,12 @@
+'use client';
+
 import Image from 'next/image';
 import { useUpload } from './useUpload';
 import { Button } from '../../Button';
 import { cn } from '@/utils/common';
 import { ImagePlus } from 'lucide-react';
 import { generateImgPath } from '@/utils/imageUtils';
+import { useTranslations } from 'next-intl';
 
 interface ImageUploadProps {
   isDisabled?: boolean;
@@ -12,6 +15,7 @@ interface ImageUploadProps {
 }
 
 export function ImageUpload({ isDisabled, onChange, value }: ImageUploadProps) {
+  const t = useTranslations('ImageUploadV1');
   const { handleButtonClick, handleFileChange, isUploading, fileInputRef } =
     useUpload({ onChange, folder: 'products' });
 
@@ -26,7 +30,7 @@ export function ImageUpload({ isDisabled, onChange, value }: ImageUploadProps) {
             >
               <Image
                 src={generateImgPath(url)}
-                alt='image'
+                alt={t('image_alt')}
                 fill
                 className='object-cover'
               />
@@ -44,7 +48,7 @@ export function ImageUpload({ isDisabled, onChange, value }: ImageUploadProps) {
         })}
       >
         <ImagePlus className='mr-2 size-4' />
-        Upload image
+        {t('upload_image')}
       </Button>
       <input
         type='file'

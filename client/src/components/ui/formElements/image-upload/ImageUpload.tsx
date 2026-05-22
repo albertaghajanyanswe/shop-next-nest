@@ -9,6 +9,7 @@ import { generateImgPath } from '@/utils/imageUtils';
 import { useImageUploadCloudinary } from './useImageUploadCloudinary';
 import { useDeleteImageCloudinary } from './useDeleteImageCloudinary';
 import { Button } from '../../Button';
+import { useTranslations } from 'next-intl';
 
 interface ImageUploadProps {
   value: string | string[];
@@ -29,7 +30,7 @@ export function ImageUpload({
   multiple = true,
   maxFiles,
 }: ImageUploadProps) {
-  // Нормализуем value к массиву для удобства
+  const t = useTranslations('ImageUpload');
   const normalizedValue = Array.isArray(value) ? value : value ? [value] : [];
 
   const { handleUpload, isUploading } = useImageUploadCloudinary({
@@ -109,10 +110,10 @@ export function ImageUpload({
               )}
             >
               {isUploading
-                ? 'Uploading...'
+                ? t('uploading')
                 : multiple
-                  ? `Drag & drop or click to upload images${maxFiles ? ` (${normalizedValue.length}/${maxFiles})` : ''}`
-                  : 'Drag & drop or click to upload an image'}
+                  ? `${t('drop_images')}${maxFiles ? ` (${normalizedValue.length}/${maxFiles})` : ''}`
+                  : t('drop_image')}
             </p>
           </div>
         </div>
@@ -121,7 +122,7 @@ export function ImageUpload({
       {isMaxReached && (
         <div className='rounded-lg border-2 border-dashed border-gray-300 p-4 text-center'>
           <p className='text-shop-muted-text-6 text-sm'>
-            Maximum number of images reached ({maxFiles})
+            {t('max_reached', { maxFiles })}
           </p>
         </div>
       )}
@@ -142,7 +143,7 @@ export function ImageUpload({
           >
             <Image
               src={generateImgPath(url)}
-              alt='Product image'
+              alt={t('product_image')}
               width={160}
               height={160}
               className='min-h-[160px] min-w-[160px] object-contain'
@@ -163,7 +164,7 @@ export function ImageUpload({
           <div className='text-darkRed animate-scale-pulse-slow flex min-h-[128px] w-fit min-w-[128px] items-center gap-1 space-x-2 rounded-md border border-neutral-200 p-4'>
             <LoaderCircle className='text-shop-orange animate-spin' />
             <span className='text-shop-orange flex flex-row items-center justify-center gap-x-1 text-xs'>
-              Uploading...
+              {t('uploading')}
             </span>
           </div>
         )}

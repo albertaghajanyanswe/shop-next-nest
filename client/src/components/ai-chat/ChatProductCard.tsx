@@ -3,6 +3,7 @@
 import { ExternalLink, ShoppingCart } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
+import { useTranslations } from 'next-intl';
 
 export interface ChatProductCardData {
   id: string;
@@ -26,6 +27,7 @@ interface ChatProductCardProps {
 }
 
 export function ChatProductCard({ product }: ChatProductCardProps) {
+  const t = useTranslations('ChatProductCard');
   const hasDiscount = product.oldPrice && product.oldPrice > product.price;
   const discountPercent = hasDiscount
     ? Math.round(
@@ -89,7 +91,7 @@ export function ChatProductCard({ product }: ChatProductCardProps) {
           )}
           {product.quantity === 0 && (
             <span className='bg-shop-red/10 text-shop-red inline-flex items-center rounded px-1.5 py-0.5 text-[10px] font-medium'>
-              Out of Stock
+              {t('out_of_stock')}
             </span>
           )}
         </div>
@@ -115,7 +117,7 @@ export function ChatProductCard({ product }: ChatProductCardProps) {
             className='bg-shop-primary hover:bg-shop-btn-primary flex items-center justify-center gap-1 rounded-md px-3 py-1.5 text-xs font-medium text-white transition-colors'
           >
             <ExternalLink className='h-3 w-3' />
-            View
+            {t('view')}
           </Link>
         </div>
       </div>

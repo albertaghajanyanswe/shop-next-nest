@@ -17,6 +17,7 @@ import {
   CommandList,
 } from '@/components/ui/Command';
 import { cn } from '@/utils/common';
+import { useTranslations } from 'next-intl';
 
 export type ComboOption = {
   id: string;
@@ -38,17 +39,17 @@ export function CustomComboBox({
   value,
   onChange,
   options,
-  placeholder = 'Select...',
+  placeholder,
   disabled,
   className,
   maxVisibleOptions = 5,
   error = '',
 }: ComboBoxProps) {
+  const t = useTranslations('CustomCombobox');
   const [open, setOpen] = React.useState(false);
 
   const selectedName = options.find((o) => o.id === value)?.name;
 
-  // Высота одного CommandItem (Radix + shadcn)
   const ITEM_HEIGHT = 36;
   const maxHeight = ITEM_HEIGHT * maxVisibleOptions;
 
@@ -66,15 +67,15 @@ export function CustomComboBox({
             className
           )}
         >
-          {selectedName || placeholder}
+          {selectedName || placeholder || t('select')}
           <ChevronsUpDown className='absolute top-1/2 right-2 h-4 w-4 -translate-y-1/2 opacity-50' />
         </Button>
       </PopoverTrigger>
 
       <PopoverContent className='w-full p-0'>
         <Command>
-          <CommandInput placeholder='Search...' className='h-9' />
-          <CommandEmpty>No results found.</CommandEmpty>
+          <CommandInput placeholder={t('search')} className='h-9' />
+          <CommandEmpty>{t('no_results')}</CommandEmpty>
 
           <CommandList style={{ maxHeight }}>
             <CommandGroup>
@@ -95,7 +96,6 @@ export function CustomComboBox({
             </CommandGroup>
           </CommandList>
 
-          {/* Clear selection — ВСЕГДА НИЗ */}
           <div className='border-t'>
             <Button
               variant='ghost'
@@ -106,7 +106,7 @@ export function CustomComboBox({
               className='text-shop-red hover:text-shop-red/80 w-full hover:bg-red-500/5'
             >
               <X className='h-4 w-4 text-red-500 hover:text-red-800' />
-              Clear selection
+              {t('clear_selection')}
             </Button>
           </div>
         </Command>

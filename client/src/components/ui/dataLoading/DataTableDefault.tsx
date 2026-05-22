@@ -23,6 +23,7 @@ import {
 import { useState } from 'react';
 import { Input } from '../formElements/Input';
 import { Button } from '../Button';
+import { useTranslations } from 'next-intl';
 
 interface DataTableDefaultProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
@@ -35,6 +36,7 @@ export function DataTableDefault<TData, TValue>({
   data,
   filterKey,
 }: DataTableDefaultProps<TData, TValue>) {
+  const t = useTranslations('DataTableDefault');
   const [sorting, setSorting] = useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
 
@@ -63,7 +65,7 @@ export function DataTableDefault<TData, TValue>({
       {filterKey && (
         <div className='flex items-center py-4'>
           <Input
-            placeholder='Search...'
+            placeholder={t('search')}
             value={
               (table.getColumn(filterKey)?.getFilterValue() as string) ?? ''
             }
@@ -118,7 +120,7 @@ export function DataTableDefault<TData, TValue>({
                   colSpan={columns.length}
                   className='h-24 text-center'
                 >
-                  Not Found any data.
+                  {t('no_data')}
                 </TableCell>
               </TableRow>
             )}

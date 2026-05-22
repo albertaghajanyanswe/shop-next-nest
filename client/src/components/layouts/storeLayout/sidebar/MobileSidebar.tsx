@@ -1,3 +1,5 @@
+'use client';
+
 import {
   Sheet,
   SheetContent,
@@ -6,10 +8,12 @@ import {
 } from '@/components/ui/Sheet';
 import { Menu } from 'lucide-react';
 import { Sidebar } from './Sidebar';
-import { VisuallyHidden } from '@radix-ui/react-visually-hidden'; // or your local VisuallyHidden component
+import { VisuallyHidden } from '@radix-ui/react-visually-hidden';
 import { DialogDescription } from '@/components/ui/Dialog';
+import { useTranslations } from 'next-intl';
 
 export function MobileSidebar() {
+  const t = useTranslations('SidebarUI');
   return (
     <Sheet>
       <SheetTrigger className='hover-opacity-75 pr-4 transition lg:hidden'>
@@ -20,7 +24,7 @@ export function MobileSidebar() {
           <SheetTitle />
         </VisuallyHidden>
         <VisuallyHidden>
-          <DialogDescription>Mobile sidebar dialog</DialogDescription>
+          <DialogDescription>{t('mobile_sidebar')}</DialogDescription>
         </VisuallyHidden>
 
         <Sidebar />

@@ -1,44 +1,11 @@
 'use client';
 
+import { useTranslations } from 'next-intl';
 import { AlertCircle, CheckCircle } from 'lucide-react';
 import { useSearchParams } from 'next/navigation';
 
-type BillingAction = 'subscribe' | 'downgrade' | 'cancel';
-
-interface BillingMessage {
-  title: string;
-  description: string;
-  icon: 'success' | 'error';
-}
-
-const BILLING_MESSAGES: Record<BillingAction, BillingMessage> = {
-  subscribe: {
-    title: 'Operation Succeeded',
-    description:
-      'You have successfully subscribed to the plan {planId}. You can close this window now.',
-    icon: 'success',
-  },
-  downgrade: {
-    title: 'Downgrade Succeeded',
-    description:
-      'You have successfully downgraded to the plan {planId}. You can close this window now.',
-    icon: 'success',
-  },
-  cancel: {
-    title: 'Cancel Succeeded',
-    description:
-      'You have successfully canceled your subscription. You can close this window now.',
-    icon: 'success',
-  },
-};
-
-const ERROR_MESSAGE: BillingMessage = {
-  title: 'Something went wrong',
-  description: 'Please try again later or contact support.',
-  icon: 'error',
-};
-
 export default function BillingResult() {
+  const t = useTranslations('Billing');
   const searchParams = useSearchParams();
 
   const isSuccess = searchParams.get('success') === 'true';
@@ -46,48 +13,55 @@ export default function BillingResult() {
   const isCancel = searchParams.get('cancel') === 'true';
   const planId = searchParams.get('planId');
 
-  const getAction = (): BillingAction | null => {
-    if (isCancel) return 'cancel';
-    if (isDowngrade) return 'downgrade';
-    return 'subscribe';
-  };
+  let title: string;
+  let description: React.ReactNode;
+  let icon: 'success' | 'error';
 
-  const action = getAction();
-  const message =
-    isSuccess && action ? BILLING_MESSAGES[action] : ERROR_MESSAGE;
+  if (!isSuccess) {
+    title = t('something_went_wrong');
+    description = t('something_went_wrong_desc');
+    icon = 'error';
+  } else if (isCancel) {
+    title = t('cancel_succeeded');
+    description = t('cancel_succeeded_desc');
+    icon = 'success';
+  } else if (isDowngrade) {
+    title = t('downgrade_succeeded');
+    description = t.rich('downgrade_succeeded_desc', {
+      planId: (chunks) => <b>{chunks}</b>,
+      planIdValue: planId,
+    });
+    icon = 'success';
+  } else {
+    title = t('operation_succeeded');
+    description = t.rich('operation_succeeded_desc', {
+      planId: (chunks) => <b>{chunks}</b>,
+      planIdValue: planId,
+    });
+    icon = 'success';
+  }
 
   return (
     <div className='xs:my-24 my-6 flex h-full w-full items-center justify-center px-4'>
       <div className='bg-shop-white w-full max-w-sm rounded-lg border border-gray-200 p-6 shadow-sm dark:border-gray-700 dark:bg-gray-800'>
-        {/* Icon */}
         <div className='mb-4 flex items-center justify-center'>
-          {message.icon === 'success' ? (
+          {icon === 'success' ? (
             <CheckCircle className='h-8 w-8 text-emerald-600' />
           ) : (
             <AlertCircle className='text-shop-red h-8 w-8' />
           )}
         </div>
 
-        {/* Title */}
         <h5
           className={`mb-4 place-self-center text-2xl font-semibold ${
-            message.icon === 'success' ? 'text-green-700' : 'text-shop-red'
+            icon === 'success' ? 'text-green-700' : 'text-shop-red'
           }`}
         >
-          {message.title}
+          {title}
         </h5>
 
-        {/* Description */}
         <p className='text-muted-foreground text-center font-normal'>
-          {message.icon === 'success' && planId ? (
-            <>
-              {message.description.split('{planId}')[0]}
-              <b>{planId}</b>
-              {message.description.split('{planId}')[1]}
-            </>
-          ) : (
-            message.description
-          )}
+          {description}
         </p>
       </div>
     </div>

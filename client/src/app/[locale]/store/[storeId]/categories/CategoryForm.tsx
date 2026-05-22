@@ -1,3 +1,5 @@
+'use client';
+
 import { ConfirmModal } from '@/components/modals/ConfirmModal';
 import { Button } from '@/components/ui/Button';
 import {
@@ -19,21 +21,23 @@ import { useUpdateCategory } from '@/hooks/queries/categories/useUpdateCategory'
 import { ICategoryInput } from '@/shared/types/category.interface';
 import { Trash2 } from 'lucide-react';
 import { SubmitHandler, useForm } from 'react-hook-form';
+import { useTranslations } from 'next-intl';
 
 interface CategoryFormProps {
   category?: GetCategoryDto | null;
 }
 
 export function CategoryForm({ category }: CategoryFormProps) {
+  const t = useTranslations('StorePages');
   const { createCategory, isLoadingCreate } = useCreateCategory();
   const { updateCategory, isLoadingUpdate } = useUpdateCategory();
   const { deleteCategory, isLoadingDelete } = useDeleteCategory();
 
-  const title = category ? 'Update category' : 'Create Category';
+  const title = category ? t('update_category') : t('create_category');
   const description = category
-    ? 'Update category details'
-    : 'Add new category to store';
-  const action = category ? 'Save' : 'Create';
+    ? t('update_category_details')
+    : t('add_category');
+  const action = category ? t('save') : t('create_action');
 
   const form = useForm<ICategoryInput>({
     mode: 'onChange',
@@ -61,10 +65,10 @@ export function CategoryForm({ category }: CategoryFormProps) {
         {category && (
           <ConfirmModal
             handleConfirm={() => deleteCategory()}
-            title='Delete Category'
-            description='This action cannot be undone. This will permanently delete your category from our servers.'
-            confirmText='Delete'
-            cancelText='Cancel'
+            title={t('delete_category_title')}
+            description={t('delete_category_description')}
+            confirmText={t('confirm_delete')}
+            cancelText={t('cancel')}
           >
             <Button variant='default' size='icon' disabled={isLoadingDelete}>
               <Trash2 className='size-4' />
@@ -81,11 +85,11 @@ export function CategoryForm({ category }: CategoryFormProps) {
             <FormField
               control={form.control}
               name='images'
-              rules={{ required: 'Upload at least one image' }}
+              rules={{ required: t('form_images_required') }}
               render={({ field }) => {
                 return (
                   <FormItem className='mt-4'>
-                    <FormLabel>Images</FormLabel>
+                    <FormLabel>{t('form_images')}</FormLabel>
                     <FormControl>
                       <ImageUpload
                         isDisabled={isLoading}
@@ -102,13 +106,13 @@ export function CategoryForm({ category }: CategoryFormProps) {
             <FormField
               control={form.control}
               name='name'
-              rules={{ required: 'Category name is required' }}
+              rules={{ required: t('form_category_name_required') }}
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Category name</FormLabel>
+                  <FormLabel>{t('form_category_name')}</FormLabel>
                   <FormControl>
                     <Input
-                      placeholder='Category name'
+                      placeholder={t('form_category_name_placeholder')}
                       disabled={isLoading}
                       {...field}
                     />
@@ -121,13 +125,13 @@ export function CategoryForm({ category }: CategoryFormProps) {
             <FormField
               control={form.control}
               name='description'
-              rules={{ required: 'Category description is required' }}
+              rules={{ required: t('form_category_description_required') }}
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Category description</FormLabel>
+                  <FormLabel>{t('form_category_description')}</FormLabel>
                   <FormControl>
                     <Textarea
-                      placeholder='Category description'
+                      placeholder={t('form_category_description_placeholder')}
                       disabled={isLoading}
                       {...field}
                     />

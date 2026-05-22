@@ -1,7 +1,8 @@
+'use client';
+
 import { CustomComboBox } from '@/components/customComponents/CustomCombobox';
 import { ConfirmModal } from '@/components/modals/ConfirmModal';
 import { Button } from '@/components/ui/Button';
-import { Combobox } from '@/components/ui/Combobox';
 import {
   Form,
   FormControl,
@@ -38,6 +39,7 @@ import { IProductInput } from '@/shared/types/product.interface';
 import { CirclePlus, Trash2 } from 'lucide-react';
 import { useMemo } from 'react';
 import { SubmitHandler, useFieldArray, useForm } from 'react-hook-form';
+import { useTranslations } from 'next-intl';
 
 interface ProductFormProps {
   product?: GetProductWithDetails;
@@ -46,33 +48,24 @@ interface ProductFormProps {
   brands: GetBrandDto[];
 }
 
-// const DEFAULT_VALUES: IProductInput = {
-//   title: '',
-//   description: '',
-//   images: [],
-//   price: 0,
-//   categoryId: '',
-//   colorId: '',
-//   brandId: '',
-//   state: EnumProductState.NEW,
-// };
 export function ProductForm({
   product,
   categories,
   colors,
   brands,
 }: ProductFormProps) {
+  const t = useTranslations('StorePages');
   const { user, isLoading: isLoadingUser, canCreateProduct } = useProfile();
 
   const { createProduct, isLoadingCreate } = useCreateProduct();
   const { updateProduct, isLoadingUpdate } = useUpdateProduct();
   const { deleteProduct, isLoadingDelete } = useDeleteProduct();
 
-  const title = product ? 'Update product' : 'Create Product';
+  const title = product ? t('update_product') : t('create_product');
   const description = product
-    ? 'Update product details'
-    : 'Add new product to store';
-  const action = product ? 'Save' : 'Create';
+    ? t('update_product_details')
+    : t('add_product');
+  const action = product ? t('save') : t('create_action');
 
   const form = useForm<IProductInput>({
     mode: 'onChange',
@@ -106,13 +99,11 @@ export function ProductForm({
 
   const isFormDirty = Object.keys(form.formState.dirtyFields).length > 0;
   const isLoading = isLoadingUpdate || isLoadingCreate;
-  console.log('PRODUCT = ', product);
 
   const onSubmit: SubmitHandler<IProductInput> = (data) => {
     data.price = Number(data.price);
     data.quantity = Number(data.quantity);
 
-    console.log('PRODUCT DATA = ', data);
     if (product) {
       updateProduct(data);
     } else if (canCreateProduct) {
@@ -120,13 +111,6 @@ export function ProductForm({
     }
   };
 
-  const categoriesList = useMemo(() => {
-    return categories.map((i) => ({ label: i.name, value: i.id }));
-  }, [categories]);
-
-  const brandsList = useMemo(() => {
-    return brands.map((i) => ({ label: i.name, value: i.id }));
-  }, [brands]);
   return (
     <div className='p-6'>
       <div className='mb-8 flex items-center justify-between'>
@@ -134,10 +118,10 @@ export function ProductForm({
         {product && (
           <ConfirmModal
             handleConfirm={() => deleteProduct()}
-            title='Delete Product'
-            description='This action cannot be undone. This will permanently delete your product from our servers.'
-            confirmText='Delete'
-            cancelText='Cancel'
+            title={t('delete_product_title')}
+            description={t('delete_product_description')}
+            confirmText={t('confirm_delete')}
+            cancelText={t('cancel')}
           >
             <Button variant='default' size='icon' disabled={isLoadingDelete}>
               <Trash2 className='size-4' />
@@ -150,32 +134,14 @@ export function ProductForm({
           onSubmit={form.handleSubmit(onSubmit)}
           className='h-full space-y-6'
         >
-          {/* <FormField
-            control={form.control}
-            name='images'
-            rules={{ required: 'Upload at least one image' }}
-            render={({ field }) => (
-              <FormItem className='mt-4'>
-                <FormLabel>Images</FormLabel>
-                <FormControl>
-                  <ImageUpload
-                    isDisabled={isLoading}
-                    onChange={field.onChange}
-                    value={field.value}
-                  />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          /> */}
           <FormField
             control={form.control}
             name='images'
-            rules={{ required: 'Upload at least one image' }}
+            rules={{ required: t('form_product_images_required') }}
             render={({ field }) => {
               return (
                 <FormItem className='mt-4'>
-                  <FormLabel>Images</FormLabel>
+                  <FormLabel>{t('form_product_images')}</FormLabel>
                   <FormControl>
                     <ImageUpload
                       isDisabled={isLoading}
@@ -192,13 +158,13 @@ export function ProductForm({
             <FormField
               control={form.control}
               name='title'
-              rules={{ required: 'Product name is required' }}
+              rules={{ required: t('form_product_name_required') }}
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Product name</FormLabel>
+                  <FormLabel>{t('form_product_name')}</FormLabel>
                   <FormControl>
                     <Input
-                      placeholder='Product name'
+                      placeholder={t('form_product_name_placeholder')}
                       disabled={isLoading}
                       {...field}
                     />
@@ -211,13 +177,13 @@ export function ProductForm({
             <FormField
               control={form.control}
               name='price'
-              rules={{ required: 'Price is required' }}
+              rules={{ required: t('form_product_price_required') }}
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Price</FormLabel>
+                  <FormLabel>{t('form_product_price')}</FormLabel>
                   <FormControl>
                     <Input
-                      placeholder='Price'
+                      placeholder={t('form_product_price_placeholder')}
                       disabled={isLoading}
                       {...field}
                     />
@@ -228,50 +194,18 @@ export function ProductForm({
             />
           </div>
           <div className='grid items-start gap-4 sm:grid-cols-3'>
-            {/* <FormField
-              control={form.control}
-              name='colorId'
-              // rules={{ required: 'Color is required' }}
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Color</FormLabel>
-                  <Select
-                    disabled={isLoading}
-                    onValueChange={field.onChange}
-                    defaultValue={field.value}
-                    // open
-                  >
-                    <FormControl>
-                      <SelectTrigger className='w-full'>
-                        <SelectValue placeholder='Select a color' />
-                      </SelectTrigger>
-                    </FormControl>
-                    <SelectContent>
-                      {colors.map((color) => (
-                        <SelectItem key={color.id} value={color.id}>
-                          {color.name}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
-                  <FormMessage />
-                </FormItem>
-              )}
-            /> */}
-
             <FormField
               control={form.control}
               name='colorId'
-              // rules={{ required: 'Color is required' }}
               render={({ field, fieldState }) => (
                 <FormItem>
-                  <FormLabel>Color</FormLabel>
+                  <FormLabel>{t('form_product_color')}</FormLabel>
                   <FormControl>
                     <CustomComboBox
                       options={colors}
                       value={field.value}
                       onChange={field.onChange}
-                      placeholder='Select a color'
+                      placeholder={t('form_product_color_placeholder')}
                       disabled={isLoading}
                       error={fieldState?.error?.message}
                     />
@@ -281,49 +215,19 @@ export function ProductForm({
               )}
             />
 
-            {/* <FormField
-              control={form.control}
-              name='categoryId'
-              rules={{ required: 'Category is required' }}
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Category</FormLabel>
-                  <Select
-                    disabled={isLoading}
-                    onValueChange={field.onChange}
-                    defaultValue={field.value}
-                  >
-                    <FormControl>
-                      <SelectTrigger className='w-full'>
-                        <SelectValue placeholder='Select a category' />
-                      </SelectTrigger>
-                    </FormControl>
-                    <SelectContent>
-                      {categories.map((category) => (
-                        <SelectItem key={category.id} value={category.id}>
-                          {category.name}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
-                  <FormMessage />
-                </FormItem>
-              )}
-            /> */}
-
             <FormField
               control={form.control}
               name='categoryId'
-              rules={{ required: 'Category is required' }}
+              rules={{ required: t('form_product_category_required') }}
               render={({ field, fieldState }) => (
                 <FormItem>
-                  <FormLabel>Category</FormLabel>
+                  <FormLabel>{t('form_product_category')}</FormLabel>
                   <FormControl>
                     <CustomComboBox
                       options={categories}
                       value={field.value}
                       onChange={field.onChange}
-                      placeholder='Select a category'
+                      placeholder={t('form_product_category_placeholder')}
                       disabled={isLoading}
                       error={fieldState?.error?.message}
                     />
@@ -333,48 +237,19 @@ export function ProductForm({
               )}
             />
 
-            {/* <FormField
-              control={form.control}
-              name='brandId'
-              rules={{ required: 'Brand is required' }}
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Brand</FormLabel>
-                  <Select
-                    disabled={isLoading}
-                    onValueChange={field.onChange}
-                    defaultValue={field.value}
-                  >
-                    <FormControl>
-                      <SelectTrigger className='w-full'>
-                        <SelectValue placeholder='Select a brand' />
-                      </SelectTrigger>
-                    </FormControl>
-                    <SelectContent>
-                      {brands.map((brand) => (
-                        <SelectItem key={brand.id} value={brand.id}>
-                          {brand.name}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
-                  <FormMessage />
-                </FormItem>
-              )}
-            /> */}
             <FormField
               control={form.control}
               name='brandId'
-              rules={{ required: 'Brand is required' }}
+              rules={{ required: t('form_product_brand_required') }}
               render={({ field, fieldState }) => (
                 <FormItem>
-                  <FormLabel>Brand</FormLabel>
+                  <FormLabel>{t('form_product_brand')}</FormLabel>
                   <FormControl>
                     <CustomComboBox
                       options={brands}
                       value={field.value}
                       onChange={field.onChange}
-                      placeholder='Select a brand'
+                      placeholder={t('form_product_brand_placeholder')}
                       disabled={isLoading}
                       error={fieldState?.error?.message}
                     />
@@ -389,10 +264,10 @@ export function ProductForm({
             <FormField
               control={form.control}
               name='intendedFor'
-              rules={{ required: 'Intended for is required' }}
+              rules={{ required: t('form_product_intended_for_required') }}
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Intended For</FormLabel>
+                  <FormLabel>{t('form_product_intended_for')}</FormLabel>
                   <Select
                     disabled={isLoading}
                     onValueChange={field.onChange}
@@ -400,14 +275,14 @@ export function ProductForm({
                   >
                     <FormControl>
                       <SelectTrigger className='w-full'>
-                        <SelectValue placeholder='Select a target' />
+                        <SelectValue placeholder={t('form_product_intended_for_placeholder')} />
                       </SelectTrigger>
                     </FormControl>
                     <SelectContent>
                       {[
-                        { id: 'FREE', title: 'FREE' },
-                        { id: 'SALE', title: 'SALE' },
-                        { id: 'RENT', title: 'RENT' },
+                        { id: 'FREE', title: t('free') },
+                        { id: 'SALE', title: t('sale') },
+                        { id: 'RENT', title: t('rent') },
                       ].map((state) => (
                         <SelectItem key={state.id} value={state.id}>
                           {state.title}
@@ -422,10 +297,10 @@ export function ProductForm({
             <FormField
               control={form.control}
               name='state'
-              rules={{ required: 'State is required' }}
+              rules={{ required: t('form_product_state_required') }}
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>State</FormLabel>
+                  <FormLabel>{t('form_product_state')}</FormLabel>
                   <Select
                     disabled={isLoading}
                     onValueChange={field.onChange}
@@ -433,13 +308,13 @@ export function ProductForm({
                   >
                     <FormControl>
                       <SelectTrigger className='w-full'>
-                        <SelectValue placeholder='Select a state' />
+                        <SelectValue placeholder={t('form_product_state_placeholder')} />
                       </SelectTrigger>
                     </FormControl>
                     <SelectContent>
                       {[
-                        { id: 'NEW', title: 'New' },
-                        { id: 'USED', title: 'Used' },
+                        { id: 'NEW', title: t('state_new') },
+                        { id: 'USED', title: t('state_used') },
                       ].map((state) => (
                         <SelectItem key={state.id} value={state.id}>
                           {state.title}
@@ -456,15 +331,15 @@ export function ProductForm({
               control={form.control}
               name='quantity'
               rules={{
-                required: 'Quantity is required',
+                required: t('form_product_quantity_required'),
               }}
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Quantity</FormLabel>
+                  <FormLabel>{t('form_product_quantity')}</FormLabel>
                   <FormControl>
                     <Input
                       type='number'
-                      placeholder='Quantity'
+                      placeholder={t('form_product_quantity_placeholder')}
                       disabled={isLoading}
                       {...field}
                     />
@@ -478,13 +353,13 @@ export function ProductForm({
           <FormField
             control={form.control}
             name='description'
-            rules={{ required: 'Description is required' }}
+            rules={{ required: t('form_product_description_required') }}
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Product description</FormLabel>
+                <FormLabel>{t('form_product_description')}</FormLabel>
                 <FormControl>
                   <Textarea
-                    placeholder='Product description'
+                    placeholder={t('form_product_description_placeholder')}
                     disabled={isLoading}
                     {...field}
                   />
@@ -499,7 +374,7 @@ export function ProductForm({
               name='isOriginal'
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Is Original</FormLabel>
+                  <FormLabel>{t('form_product_is_original')}</FormLabel>
                   <FormControl>
                     <Switch
                       id='isOriginal'
@@ -518,7 +393,7 @@ export function ProductForm({
               name='isPublished'
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Is Published</FormLabel>
+                  <FormLabel>{t('form_product_is_published')}</FormLabel>
                   <FormControl>
                     <Switch
                       id='isPublished'
@@ -536,7 +411,7 @@ export function ProductForm({
 
           <div className='space-y-4'>
             <div className='flex items-center justify-between'>
-              <p className='text-lg font-medium'>Product details</p>
+              <p className='text-lg font-medium'>{t('form_product_details')}</p>
 
               <Button
                 type='button'
@@ -545,7 +420,7 @@ export function ProductForm({
                 onClick={() => append({ key: '', value: '' })}
               >
                 <CirclePlus className='size-4' />
-                <span className='ml-2'>Add new info</span>
+                <span className='ml-2'>{t('form_product_details_add')}</span>
               </Button>
             </div>
 
@@ -555,13 +430,13 @@ export function ProductForm({
                   <FormField
                     control={form.control}
                     name={`productDetails.${index}.key`}
-                    rules={{ required: 'Key is required' }}
+                    rules={{ required: t('form_product_details_key_required') }}
                     render={({ field, fieldState }) => (
                       <FormItem>
                         <FormControl>
                           <Input
                             id={`productDetails-${index}-key`}
-                            placeholder='Key (e.g. Height)'
+                            placeholder={t('form_product_details_key_placeholder')}
                             className={`${fieldState.error ? 'border-destructive focus:border-destructive hover:border-destructive border-1' : ''}`}
                             {...field}
                           />
@@ -578,13 +453,13 @@ export function ProductForm({
                   <FormField
                     control={form.control}
                     name={`productDetails.${index}.value`}
-                    rules={{ required: 'Value is required' }}
+                    rules={{ required: t('form_product_details_value_required') }}
                     render={({ field, fieldState }) => (
                       <FormItem>
                         <FormControl>
                           <Input
                             id={`productDetails-${index}-value`}
-                            placeholder='Value (e.g. 50 sm)'
+                            placeholder={t('form_product_details_value_placeholder')}
                             className={`${fieldState.error ? 'border-destructive focus:border-destructive hover:border-destructive border-1' : ''}`}
                             {...field}
                           />

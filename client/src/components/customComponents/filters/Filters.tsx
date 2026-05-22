@@ -21,6 +21,7 @@ import { Heading } from '@/components/ui/Heading';
 import { X } from 'lucide-react';
 import { useState } from 'react';
 import { iFilter } from '@/shared/types/filter.interface';
+import { useTranslations } from 'next-intl';
 
 interface FilterProps {
   stores?: GetStoreDto[];
@@ -29,6 +30,7 @@ interface FilterProps {
 }
 
 export default function Filters({ categories, brands, stores }: FilterProps) {
+  const t = useTranslations('FiltersUI');
   const { queryParams, changeFilterObject } = useQueryParams({
     pageDefaultParams: {
       params: {
@@ -106,7 +108,7 @@ export default function Filters({ categories, brands, stores }: FilterProps) {
               variant='outline'
               className='icon-btn hoverEffect group relative w-full justify-center'
             >
-              Filters
+              {t('filters')}
             </Button>
           </SheetTrigger>
           <SheetContent
@@ -116,14 +118,14 @@ export default function Filters({ categories, brands, stores }: FilterProps) {
             <SheetHeader className='bg-shop-white/95 sticky top-0 z-20 flex w-full flex-row items-center justify-between border-b p-0 pb-4 backdrop-blur-sm'>
               <SheetTitle className='p-0'>
                 <Heading
-                  title='Filters'
+                  title={t('filters')}
                   className='text-xl'
                   showBackButton={false}
                 />
               </SheetTitle>
               <div className='flex items-center gap-2'>
                 <SheetClose asChild>
-                  <Button variant='ghost' size='icon' aria-label='Close'>
+                  <Button variant='ghost' size='icon' aria-label={t('close')}>
                     <X className='h-4 w-4' />
                   </Button>
                 </SheetClose>

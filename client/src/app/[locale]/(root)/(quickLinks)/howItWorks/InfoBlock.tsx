@@ -2,130 +2,63 @@ import { SITE_NAME } from '@/utils/constants';
 import { CheckCircle } from 'lucide-react';
 import Image from 'next/image';
 import { memo } from 'react';
-import { useLocale } from 'next-intl';
+import { useTranslations } from 'next-intl';
 
 function InfoBlock() {
-  const locale = useLocale();
-
-  if (locale === 'ru') {
-    return (
-      <div className='card-linear-grad dark:card-flame mt-3 rounded-md bg-linear-to-r p-4'>
-        <h2 className='mb-2 text-xl leading-relaxed font-semibold'>
-          Продавайте на {SITE_NAME} с уверенностью
-        </h2>
-        <Image
-          src='images/header.webp'
-          alt='Header'
-          width={2500}
-          height={80}
-          className='hoverEffect max-h-[350px] min-h-auto w-full rounded-md object-contain group-hover:scale-110 md:max-h-[450px]'
-          priority
-        />
-
-        <p className='text-shop-primary-text mt-4 leading-relaxed'>
-          <strong>MyStores</strong> — это ваша личная панель продавца. Она
-          создана для пользователей, которые хотят продавать товары, управлять
-          запасами (создавать магазины, товары, категории, бренды и цвета) и
-          отслеживать показатели продаж — все в одном месте.
-        </p>
-
-        <p className='text-shop-primary-text mt-6 mb-2 leading-relaxed'>
-          Из раздела <strong>Мои магазины</strong> в шапке сайта вы можете:
-        </p>
-
-        <ul className='text-shop-muted-text-7 grid list-inside list-disc grid-cols-1 gap-2 md:grid-cols-2'>
-          <li className='flex flex-row items-center justify-start gap-4'>
-            <CheckCircle className='h-4 w-4 text-emerald-600' />
-            Создавать и управлять несколькими магазинами
-          </li>
-          <li className='flex flex-row items-center justify-start gap-4'>
-            <CheckCircle className='h-4 w-4 text-emerald-600' />
-            Создавать, изменять и управлять товарами
-          </li>
-          <li className='flex flex-row items-center justify-start gap-4'>
-            <CheckCircle className='h-4 w-4 text-emerald-600' />
-            Управлять категориями, брендами и цветами
-          </li>
-          <li className='flex flex-row items-center justify-start gap-4'>
-            <CheckCircle className='h-4 w-4 text-emerald-600' />
-            Смотреть аналитику для каждого магазина
-          </li>
-          <li className='flex flex-row items-center justify-start gap-4'>
-            <CheckCircle className='h-4 w-4 text-emerald-600' />
-            Отслеживать доходы и проданные товары
-          </li>
-          <li className='flex flex-row items-center justify-start gap-4'>
-            <CheckCircle className='h-4 w-4 text-emerald-600' />
-            Смотреть количество доступных и проданных товаров
-          </li>
-        </ul>
-
-        <p className='text-shop-primary-text mt-6 leading-relaxed'>
-          У каждого магазина есть своя панель для мониторинга продаж и
-          управления контентом, чтобы вы могли принимать решения на основе
-          данных.
-        </p>
-      </div>
-    );
-  }
+  const t = useTranslations('HowItWorks');
 
   return (
     <>
       <div className='card-linear-grad dark:card-flame mt-3 rounded-md bg-linear-to-r p-4'>
-        <h2 className='mb-2 text-xl leading-relaxed font-semibold text-white'>
-          Sell on {SITE_NAME} with confidence
+        <h2 className='mb-2 text-xl leading-relaxed font-semibold text-shop-primary-text'>
+          {t('info_block_title', { siteName: SITE_NAME })}
         </h2>
         <Image
-          src='images/header.webp'
+          src='/images/header.webp'
           alt='Header'
           width={2500}
           height={80}
           className='hoverEffect max-h-[350px] min-h-auto w-full rounded-md object-contain group-hover:scale-110 md:max-h-[450px]'
           priority
-          // loading='lazy'
         />
 
         <p className='text-shop-primary-text mt-4 leading-relaxed'>
-          <strong>MyStores</strong> is your personal seller dashboard. It is
-          designed for users who want to sell products, manage inventory (create
-          and manage stores, products, categories, brands and colors), and track
-          store sales performance — all in one place.
+          <strong>{t('info_block_intro')}</strong>
         </p>
 
         <p className='text-shop-primary-text mt-6 mb-2 leading-relaxed'>
-          From the <strong>MyStores</strong> section in the header, you can:
+          {t('info_block_my_stores_intro')}
         </p>
 
-        <ul className='text-shop-muted-text-7 grid list-inside list-disc grid-cols-1 gap-2 md:grid-cols-2'>
-          <li className='flex flex-row items-center justify-start gap-4'>
-            <CheckCircle className='h-4 w-4 text-emerald-600' />
-            Create and manage multiple stores
+        <ul className='text-shop-primary-text grid list-inside list-disc grid-cols-1 gap-2 md:grid-cols-2'>
+          <li className='flex flex-row items-center justify-start gap-4 text-shop-primary-text font-medium'>
+            <CheckCircle className='h-4 w-4 text-emerald-200' />
+            {t('info_block_item_1')}
           </li>
-          <li className='flex flex-row items-center justify-start gap-4'>
-            <CheckCircle className='h-4 w-4 text-emerald-600' />
-            Create, edit, and manage products
+          <li className='flex flex-row items-center justify-start gap-4 text-shop-primary-text font-medium'>
+            <CheckCircle className='h-4 w-4 text-emerald-200' />
+            {t('info_block_item_2')}
           </li>
-          <li className='flex flex-row items-center justify-start gap-4'>
-            <CheckCircle className='h-4 w-4 text-emerald-600' />
-            Create product categories, brands and colors
+          <li className='flex flex-row items-center justify-start gap-4 text-shop-primary-text font-medium'>
+            <CheckCircle className='h-4 w-4 text-emerald-200' />
+            {t('info_block_item_3')}
           </li>
-          <li className='flex flex-row items-center justify-start gap-4'>
-            <CheckCircle className='h-4 w-4 text-emerald-600' />
-            View analytics for each store
+          <li className='flex flex-row items-center justify-start gap-4 text-shop-primary-text font-medium'>
+            <CheckCircle className='h-4 w-4 text-emerald-200' />
+            {t('info_block_item_4')}
           </li>
-          <li className='flex flex-row items-center justify-start gap-4'>
-            <CheckCircle className='h-4 w-4 text-emerald-600' />
-            Track revenue and sold products
+          <li className='flex flex-row items-center justify-start gap-4 text-shop-primary-text font-medium'>
+            <CheckCircle className='h-4 w-4 text-emerald-200' />
+            {t('info_block_item_5')}
           </li>
-          <li className='flex flex-row items-center justify-start gap-4'>
-            <CheckCircle className='h-4 w-4 text-emerald-600' />
-            See how many products are available and sold
+          <li className='flex flex-row items-center justify-start gap-4 text-shop-primary-text font-medium'>
+            <CheckCircle className='h-4 w-4 text-emerald-200' />
+            {t('info_block_item_6')}
           </li>
         </ul>
 
         <p className='text-shop-primary-text mt-6 leading-relaxed'>
-          Each store has its own dashboard where you can monitor sales, manage
-          content, and make data-driven decisions to grow your business.
+          {t('info_block_outro')}
         </p>
       </div>
     </>

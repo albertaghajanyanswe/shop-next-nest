@@ -15,6 +15,7 @@ import { Input } from '@/components/ui/formElements/Input';
 import { Label } from '@/components/ui/formElements/Label';
 import { Slider } from '@/components/ui/Slider';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/Tabs';
+import { useTranslations } from 'next-intl';
 
 interface ColorPickerProps {
   color?: string;
@@ -30,6 +31,7 @@ export function AdvancedColorPicker({
   onChange,
   triggerClassName = 'w-[240px] justify-start text-left font-normal',
 }: ColorPickerProps) {
+  const t = useTranslations('ColorPicker');
   const [currentColor, setCurrentColor] = useState(color);
   const [colorMode, setColorMode] = useState<ColorMode>('hex');
   const [copied, setCopied] = useState<CopyState>({
@@ -197,7 +199,7 @@ export function AdvancedColorPicker({
           </div>
 
           <div className='grid gap-2'>
-            <Label>Hue</Label>
+            <Label>{t('hue')}</Label>
             <div className='relative'>
               <Slider
                 value={[hsl.h]}
@@ -233,13 +235,13 @@ export function AdvancedColorPicker({
           >
             <TabsList className='w-full'>
               <TabsTrigger value='hex' className='flex-1'>
-                Hex
+                {t('hex')}
               </TabsTrigger>
               <TabsTrigger value='rgba' className='flex-1'>
-                RGBA
+                {t('rgba')}
               </TabsTrigger>
               <TabsTrigger value='hsla' className='flex-1'>
-                HSLA
+                {t('hsla')}
               </TabsTrigger>
             </TabsList>
 
@@ -284,7 +286,7 @@ export function AdvancedColorPicker({
                 </div>
                 <div className='grid grid-cols-4 gap-2'>
                   <div>
-                    <Label className='ml-1'>R</Label>
+                    <Label className='ml-1'>{t('r')}</Label>
                     <Input
                       value={rgb.r}
                       onChange={(e) => handleRgbChange('r', e.target.value)}
@@ -292,7 +294,7 @@ export function AdvancedColorPicker({
                     />
                   </div>
                   <div>
-                    <Label className='ml-1'>G</Label>
+                    <Label className='ml-1'>{t('g')}</Label>
                     <Input
                       value={rgb.g}
                       onChange={(e) => handleRgbChange('g', e.target.value)}
@@ -300,7 +302,7 @@ export function AdvancedColorPicker({
                     />
                   </div>
                   <div>
-                    <Label className='ml-1'>B</Label>
+                    <Label className='ml-1'>{t('b')}</Label>
                     <Input
                       value={rgb.b}
                       onChange={(e) => handleRgbChange('b', e.target.value)}
@@ -308,7 +310,7 @@ export function AdvancedColorPicker({
                     />
                   </div>
                   <div>
-                    <Label className='ml-1'>A</Label>
+                    <Label className='ml-1'>{t('a')}</Label>
                     <Input value='1' readOnly className='font-mono' />
                   </div>
                 </div>
@@ -334,7 +336,7 @@ export function AdvancedColorPicker({
                 </div>
                 <div className='grid grid-cols-4 gap-2'>
                   <div>
-                    <Label className='ml-1'>H</Label>
+                    <Label className='ml-1'>{t('h')}</Label>
                     <Input
                       value={hsl.h}
                       onChange={(e) => handleHslChange('h', e.target.value)}
@@ -342,7 +344,7 @@ export function AdvancedColorPicker({
                     />
                   </div>
                   <div>
-                    <Label className='ml-1'>S</Label>
+                    <Label className='ml-1'>{t('s')}</Label>
                     <Input
                       value={hsl.s}
                       onChange={(e) => handleHslChange('s', e.target.value)}
@@ -350,7 +352,7 @@ export function AdvancedColorPicker({
                     />
                   </div>
                   <div>
-                    <Label className='ml-1'>L</Label>
+                    <Label className='ml-1'>{t('l')}</Label>
                     <Input
                       value={hsl.l}
                       onChange={(e) => handleHslChange('l', e.target.value)}
@@ -358,7 +360,7 @@ export function AdvancedColorPicker({
                     />
                   </div>
                   <div>
-                    <Label className='ml-1'>A</Label>
+                    <Label className='ml-1'>{t('a')}</Label>
                     <Input value='1' readOnly className='font-mono' />
                   </div>
                 </div>

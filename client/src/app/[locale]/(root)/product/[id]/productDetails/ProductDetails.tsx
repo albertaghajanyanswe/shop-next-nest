@@ -1,3 +1,4 @@
+import { useTranslations } from 'next-intl';
 import { GetProductWithDetails } from '@/generated/orval/types';
 import NoDataFound from '@/components/customComponents/loading/NoDataFound';
 import { memo } from 'react';
@@ -7,14 +8,15 @@ export interface ProductDetailsProps {
 }
 
 function ProductDetails({ product }: ProductDetailsProps) {
+  const t = useTranslations('ProductDetails');
   if (!product?.productDetails?.length) {
-    return <NoDataFound entityName='product details' />;
+    return <NoDataFound entityName={t('no_data_entity')} />;
   }
 
   return (
     <div className='mt-6'>
       <h3 className='text-shop-primary-text mb-4 text-base font-semibold'>
-        Product details
+        {t('title')}
       </h3>
 
       <dl className='space-y-3'>

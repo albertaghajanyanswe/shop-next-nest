@@ -18,6 +18,7 @@ import { CustomPagination } from '@/components/customComponents/CustomPagination
 import { useTranslations } from 'next-intl';
 import { ViewToggle } from '@/components/customComponents/admin/ViewToggle';
 import { AdminColorCard } from './AdminColorCard';
+import NoDataFound from '@/components/customComponents/loading/NoDataFound';
 
 export function Colors() {
   const t = useTranslations('StorePages');
@@ -76,34 +77,40 @@ export function Colors() {
           </div>
         </div>
       )}
-      <div className='mt-3'>
-        {viewMode === 'card' ? (
-          <div className='mt-4 grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5'>
-            {formattedColors.map((color) => (
-              <AdminColorCard key={color.id} color={color} t={t} />
-            ))}
-          </div>
-        ) : (
-          <DataTable
-            columns={colorColumnList}
-            data={formattedColors}
-            filterKey='name'
-            totalCount={colorsData?.totalCount as number}
-            queryParams={queryParams}
-            onChangeSearch={changeSearch}
-            onChangeSort={changeSort}
-          />
-        )}
-        {!!colorsData?.totalCount && (
-          <CustomPagination
-            limit={queryParams?.params?.limit as number}
-            total={colorsData?.totalCount as number}
-            skip={queryParams?.params?.skip as number}
-            onPageChange={changePage}
-            onLimitChange={changeLimit}
-          />
-        )}
-      </div>
+      {!isLoadingColorsData && colorsData?.colors && colorsData?.colors?.length > 0 ? (
+        <div className='mt-3'>
+          {viewMode === 'card' ? (
+            <div className='mt-4 grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5'>
+              {formattedColors.map((color) => (
+                <AdminColorCard key={color.id} color={color} t={t} />
+              ))}
+            </div>
+          ) : (
+            <DataTable
+              columns={colorColumnList}
+              data={formattedColors}
+              filterKey='name'
+              totalCount={colorsData?.totalCount as number}
+              queryParams={queryParams}
+              onChangeSearch={changeSearch}
+              onChangeSort={changeSort}
+            />
+          )}
+          {!!colorsData?.totalCount && (
+            <CustomPagination
+              limit={queryParams?.params?.limit as number}
+              total={colorsData?.totalCount as number}
+              skip={queryParams?.params?.skip as number}
+              onPageChange={changePage}
+              onLimitChange={changeLimit}
+            />
+          )}
+        </div>
+      ) : (
+        <div className='mt-6'>
+          <NoDataFound entityName={t('colors_title')} />
+        </div>
+      )}
     </div>
   );
 }

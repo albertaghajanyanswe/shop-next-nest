@@ -2,13 +2,14 @@ import { useGetStatistics } from '@/hooks/queries/statistics/useGetStatistics';
 import { MainStatisticsItem } from './MainStatisticsItem';
 import NoDataFound from '@/components/customComponents/loading/NoDataFound';
 import { useTranslations } from 'next-intl';
+import Loading from '@/components/customComponents/loading/Loading';
 
 export function MainStatistics() {
   const t = useTranslations('StorePages');
   const { mainStatistics, isLoadingMainStatistics } = useGetStatistics();
 
   if (isLoadingMainStatistics) {
-    return <div>{t('loading')}</div>;
+    return <Loading text={t('loading')} />
   }
 
   const hasData = !!mainStatistics?.length;

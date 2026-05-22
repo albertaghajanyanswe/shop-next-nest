@@ -24,6 +24,7 @@ import { Input } from '../formElements/Input';
 import { useEffect, useMemo, useState } from 'react';
 import { useDebounce } from '@/hooks/commons/useDebounce';
 import { iFilterParams, iSort } from '@/shared/types/filter.interface';
+import { useTranslations } from 'next-intl';
 
 interface WithId {
   id: string;
@@ -64,6 +65,7 @@ export function DataTable<TData extends WithId, TValue>({
   onChangeSort,
   onRowClick,
 }: DataTableProps<TData, TValue>) {
+  const t = useTranslations('DataTable');
   const [searchValue, setSearchValue] = useState(
     queryParams.params.search?.value ?? ''
   );
@@ -186,7 +188,7 @@ export function DataTable<TData extends WithId, TValue>({
       {filterKey && (
         <div className='flex items-center py-4'>
           <Input
-            placeholder='Search...'
+            placeholder={t('search')}
             value={searchValue}
             onChange={(e) => setSearchValue(e.target.value)}
             className='max-w-sm'
@@ -246,7 +248,7 @@ export function DataTable<TData extends WithId, TValue>({
                   colSpan={columns.length}
                   className='h-24 text-center'
                 >
-                  Not Found any data.
+                  {t('no_data')}
                 </TableCell>
               </TableRow>
             )}

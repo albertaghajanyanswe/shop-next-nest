@@ -1,5 +1,8 @@
+'use client';
+
 import React, { useState } from 'react';
 import { Button } from '../ui/Button';
+import { useTranslations } from 'next-intl';
 
 export interface IShowMoreTextProps {
   text?: string;
@@ -16,6 +19,7 @@ export const ShowMoreText: React.FC<IShowMoreTextProps> = ({
   btnClass = '',
   maxLength = 250,
 }) => {
+  const t = useTranslations('ShowMoreText');
   const [showFull, setShowFull] = useState(false);
 
   const toggleShowFull = () =>
@@ -48,7 +52,7 @@ export const ShowMoreText: React.FC<IShowMoreTextProps> = ({
           className={`m-0 mt-0 cursor-pointer p-0 font-semibold no-underline hover:underline ${btnClass}`}
           onClick={toggleShowFull}
         >
-          {showFull ? 'Show Less' : 'Show More'}
+          {showFull ? t('show_less') : t('show_more')}
         </Button>
       )}
     </>

@@ -1,3 +1,4 @@
+import { useTranslations } from 'next-intl';
 import Link from 'next/link';
 import { PUBLIC_URL } from '@/config/url.config';
 import { formatPrice } from '@/utils/formatPrice';
@@ -20,6 +21,7 @@ export interface ProductInfoProps {
 }
 
 export default function ProductInfo({ product }: ProductInfoProps) {
+  const t = useTranslations('ProductInfo');
   const { user } = useProfile();
   const categoryUrl = useMemo(() => {
     if (!product.category?.id) return PUBLIC_URL.shop();
@@ -66,14 +68,14 @@ export default function ProductInfo({ product }: ProductInfoProps) {
           <div className='flex flex-row gap-2'>
             {product.isOriginal && (
               <Badge className='text-primary flex w-fit flex-row items-center rounded-full bg-emerald-700/10 px-3 py-1 text-xs font-medium shadow-none hover:bg-emerald-700/10'>
-                <Crown className='mr-1 h-4 w-4' /> Original
+                <Crown className='mr-1 h-4 w-4' /> {t('original')}
               </Badge>
             )}
             <Badge
               className='text-shop-red flex w-fit flex-row items-center rounded-full bg-red-700/10 px-3 py-1 text-xs font-medium shadow-none hover:bg-red-700/10'
               aria-label={`In stock: ${product.quantity} items`}
             >
-              <Sparkles className='mr-1 h-4 w-4' /> In Stock:
+              <Sparkles className='mr-1 h-4 w-4' /> {t('in_stock')}
               <span className='text-shop-red ml-2'>{product.quantity}</span>
             </Badge>
           </div>
@@ -102,24 +104,24 @@ export default function ProductInfo({ product }: ProductInfoProps) {
           <hr className='my-3' />
 
           <ProductInfoItem
-            leftText='Store'
-            rightText={product.store?.title || 'N/A'}
+            leftText={t('store')}
+            rightText={product.store?.title || t('na')}
             link={storeUrl}
           />
           <ProductInfoItem
-            leftText='Category'
-            rightText={product.category?.name || 'N/A'}
+            leftText={t('category')}
+            rightText={product.category?.name || t('na')}
             link={categoryUrl}
           />
           <ProductInfoItem
-            leftText='Intended For'
-            rightText={capitalizeFirstLetter(product.intendedFor) || 'N/A'}
+            leftText={t('intended_for')}
+            rightText={capitalizeFirstLetter(product.intendedFor) || t('na')}
             link={targetUrl}
           />
 
           {product.color?.name && (
             <div className='flex items-center gap-x-4'>
-              <p className='text-shop-muted-text-7 font-medium'>Color:</p>
+              <p className='text-shop-muted-text-7 font-medium'>{t('color')}</p>
               <div className='flex flex-row items-center justify-center gap-x-2'>
                 <div
                   className='size-6 rounded-full border border-neutral-300'
@@ -133,7 +135,7 @@ export default function ProductInfo({ product }: ProductInfoProps) {
           )}
           <ProductRating
             productReviews={product.reviews || []}
-            leftTitle='Average rating: '
+            leftTitle={t('average_rating')}
           />
           <div className='mt-6 flex items-start gap-x-2'>
             <ProductInfoAction product={product} />

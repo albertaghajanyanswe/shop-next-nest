@@ -19,7 +19,9 @@ class AuthService {
       data,
     });
 
-    localStorage.setItem('userId', response.data.user.id);
+    if (typeof window !== 'undefined') {
+      localStorage.setItem('userId', response.data.user.id);
+    }
     await resetStoreForNewUser();
     return response.data;
   }
@@ -41,7 +43,9 @@ class AuthService {
     // if (response.data) {
     //   removeFromStorage();
     // }
-    localStorage.removeItem('userId');
+    if (typeof window !== 'undefined') {
+      localStorage.removeItem('userId');
+    }
     await resetStoreForNewUser();
     return response;
   }
@@ -52,7 +56,9 @@ class AuthService {
       method: 'POST',
     });
     // removeFromStorage();
-    localStorage.removeItem('userId');
+    if (typeof window !== 'undefined') {
+      localStorage.removeItem('userId');
+    }
     return response;
   }
 }

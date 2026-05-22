@@ -1,5 +1,6 @@
 'use client';
 
+import { useTranslations } from 'next-intl';
 import { Catalog } from '@/components/customComponents/catalog/Catalog';
 import { productService } from '@/services/product.service';
 import { QUERY_KEYS } from '@/shared/queryConstants';
@@ -26,6 +27,7 @@ export default function Product({
   similarProducts,
   id,
 }: ProductProps) {
+  const t = useTranslations('ProductPage');
   const { data: product } = useQuery({
     queryKey: QUERY_KEYS.productId(id as string),
     queryFn: () => productService.getProductById(id as string),
@@ -37,7 +39,7 @@ export default function Product({
     <Suspense
       fallback={
         <div className='text-shop-primary-text py-4 text-center'>
-          Loading...
+          {t('loading')}
         </div>
       }
     >
@@ -49,7 +51,7 @@ export default function Product({
     return [
       {
         id: 'details',
-        label: 'Details',
+        label: t('details_tab'),
         content: (
           <LazyTabContent>
             <ProductDetails product={product} />
@@ -58,7 +60,7 @@ export default function Product({
       },
       {
         id: 'desc',
-        label: 'Description',
+        label: t('description_tab'),
         content: (
           <div className='bg-shop-light-bg rounded-md p-4'>
             {product.description}
@@ -67,7 +69,7 @@ export default function Product({
       },
       {
         id: 'review',
-        label: 'Reviews',
+        label: t('reviews_tab'),
         content: (
           <LazyTabContent>
             <ProductReviews product={product} />
@@ -87,7 +89,7 @@ export default function Product({
           <ProductInfo product={product} />
         </div>
       </div>
-      <Catalog title='Similar products' products={similarProducts} />
+      <Catalog title={t('similar_products')} products={similarProducts} />
       <div className='mt-6 mb-4 w-full max-w-3xl'>
         <CustomTabs tabs={tabs} defaultValue='details' />
       </div>

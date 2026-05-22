@@ -1,3 +1,4 @@
+import { useTranslations } from 'next-intl';
 import { Flame } from 'lucide-react';
 import { memo } from 'react';
 
@@ -10,6 +11,7 @@ function ProductSoldCount({
   leftTitle?: string;
   className?: string;
 }) {
+  const t = useTranslations('ProductSoldCount');
   return (
     <div className={`flex items-center gap-x-4 ${className}`}>
       {leftTitle && (
@@ -22,7 +24,7 @@ function ProductSoldCount({
         <Flame className='size-5 shrink-0 fill-amber-400 text-red-500' />
 
         <span className='text-muted-foreground truncate text-sm'>
-          {`${soldCount} sold`}
+          {t('sold', { soldCount })}
         </span>
       </div>
     </div>

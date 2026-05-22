@@ -24,6 +24,7 @@ import SubscriptionFeatures from './SubscriptionFeatures';
 import SubscriptionPrice from './price/SubscriptionPrice';
 import toast from 'react-hot-toast';
 import SubscriptionHeader from './SubscriptionHeader';
+import { useTranslations } from 'next-intl';
 
 interface ISubscriptionCardsProps {
   plans: GetPlansDto[];
@@ -34,6 +35,7 @@ export default function SubscriptionCards({
   plans,
   subscriptions,
 }: ISubscriptionCardsProps) {
+  const t = useTranslations('Subscriptions');
   const [period, setPeriod] = useState<GetPlansDtoPeriod>(
     GetPlansDtoPeriod.MONTHLY
   );
@@ -88,7 +90,7 @@ export default function SubscriptionCards({
       const { url } = await stripeService.getManagementLink();
       window.location.assign(url);
     } catch {
-      toast.error('Failed to open billing portal');
+      toast.error(t('billing_portal_error'));
     }
   };
 
@@ -122,21 +124,21 @@ export default function SubscriptionCards({
       planItemSubSettings.price < currentSubSettings.price;
 
     // Early returns
-    if (nextPlanId === planItem.planId) return 'Cancel Change';
+    if (nextPlanId === planItem.planId) return t('cancel_change');
     if (isFreePlan(planItem.planId) && planItem.planId === currentPlanName)
-      return 'Current Plan';
+      return t('current_plan');
 
     // No paid subscription
     if (!hasActivePaidSubscription()) {
-      return isFreePlan(planItem.planId) ? 'Change Plan' : '7-Day Free Trial';
+      return isFreePlan(planItem.planId) ? t('change_plan') : t('free_trial');
     }
 
     // Has paid subscription
     if (planItem.planId === currentPlanName) {
-      return isSamePlanAndPeriod ? 'Current Plan' : 'Get Started';
+      return isSamePlanAndPeriod ? t('current_plan') : t('get_started');
     }
 
-    return isDowngradePlan ? 'Change Plan' : 'Get Started';
+    return isDowngradePlan ? t('change_plan') : t('get_started');
   };
 
   return (
@@ -149,7 +151,7 @@ export default function SubscriptionCards({
         variant='default'
         onClick={handleManagePlan}
       >
-        Manage Plan
+        {t('manage_plan')}
       </Button>
 
       {/* Plans Grid */}
@@ -170,7 +172,7 @@ export default function SubscriptionCards({
                 {getPlanName(plan.planId)}
                 {plan.isPopular && (
                   <span className='bg-primary-800 absolute top-0 right-0 flex w-fit items-center justify-center rounded-bl-full px-[10px] py-[4px] text-xs font-semibold text-white'>
-                    Popular
+                    {t('popular')}
                   </span>
                 )}
               </CardTitle>

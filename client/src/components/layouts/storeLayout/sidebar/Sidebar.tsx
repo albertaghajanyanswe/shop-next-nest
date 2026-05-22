@@ -8,6 +8,7 @@ import { authService } from '@/services/auth/auth.service';
 import { useRouter } from 'next/navigation';
 import { PUBLIC_URL } from '@/config/url.config';
 import { cn } from '@/utils/common';
+import { useTranslations } from 'next-intl';
 
 interface SidebarProps {
   isCollapsed?: boolean;
@@ -15,6 +16,7 @@ interface SidebarProps {
 }
 
 export function Sidebar({ isCollapsed, onCollapsedChange }: SidebarProps) {
+  const t = useTranslations('SidebarUI');
   const [internalCollapsed, setInternalCollapsed] = useState(false);
   const router = useRouter();
 
@@ -41,7 +43,6 @@ export function Sidebar({ isCollapsed, onCollapsedChange }: SidebarProps) {
         collapsed ? 'w-[72px]' : 'w-full lg:w-64'
       )}
     >
-      {/* ── HEADER ── */}
       <div
         className={cn(
           'flex h-[70px] shrink-0 items-center border-b px-4',
@@ -50,17 +51,16 @@ export function Sidebar({ isCollapsed, onCollapsedChange }: SidebarProps) {
       >
         {collapsed ? (
           <div className='bg-shop-primary flex size-9 items-center justify-center rounded-lg'>
-            <span className='text-sm font-black text-white'>S</span>
+            <span className='text-sm font-black text-white'>{t('s_logo')}</span>
           </div>
         ) : (
           <Logo />
         )}
       </div>
 
-      {/* ── COLLAPSE TOGGLE — sits on the border ── */}
       <button
         onClick={() => setCollapsed(!collapsed)}
-        title={collapsed ? 'Expand sidebar' : 'Collapse sidebar'}
+        title={collapsed ? t('expand_sidebar') : t('collapse_sidebar')}
         className='bg-primary-600 hover:bg-primary-700 absolute top-14 -right-3 z-60 flex size-6 cursor-pointer items-center justify-center rounded-full border text-white shadow-sm transition-all duration-200'
       >
         <ArrowLeft
@@ -71,23 +71,21 @@ export function Sidebar({ isCollapsed, onCollapsedChange }: SidebarProps) {
         />
       </button>
 
-      {/* ── NAV ── */}
       <div className='flex flex-1 flex-col overflow-x-hidden overflow-y-auto px-3 py-4'>
         <Navigation collapsed={collapsed} />
       </div>
 
-      {/* ── FOOTER ── */}
       <div className='shrink-0 border-t px-3 py-3'>
         <button
           onClick={handleLogout}
-          title='Logout'
+          title={t('logout')}
           className={cn(
             'text-shop-muted-text-7 hover:bg-shop-primary/10 hover:text-shop-primary flex w-full cursor-pointer items-center rounded-lg bg-transparent px-3 py-2.5 text-sm font-medium transition-all duration-200',
             collapsed ? 'justify-center' : 'gap-x-3'
           )}
         >
           <LogOut className='size-5 shrink-0' />
-          {!collapsed && <span>Logout</span>}
+          {!collapsed && <span>{t('logout')}</span>}
         </button>
       </div>
     </div>

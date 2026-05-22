@@ -1,3 +1,5 @@
+'use client';
+
 import {
   FormControl,
   FormField,
@@ -8,6 +10,7 @@ import { Input } from '@/components/ui/formElements/Input';
 import { RegisterDto } from '@/generated/orval/types';
 import { validEmailRegex } from '@/shared/regex';
 import { UseFormReturn } from 'react-hook-form';
+import { useTranslations } from 'next-intl';
 
 export interface AuthFieldsProps {
   form: UseFormReturn<RegisterDto, any, RegisterDto>;
@@ -16,6 +19,7 @@ export interface AuthFieldsProps {
 }
 
 export function AuthFields({ form, isPending, isReg }: AuthFieldsProps) {
+  const t = useTranslations('Auth');
   const passwordValue = form.watch('password', '');
   const strength =
     passwordValue.length >= 8
@@ -29,17 +33,17 @@ export function AuthFields({ form, isPending, isReg }: AuthFieldsProps) {
         control={form.control}
         name='email'
         rules={{
-          required: 'Email is required',
+          required: t('email_required'),
           pattern: {
             value: validEmailRegex,
-            message: 'Invalid email address',
+            message: t('email_invalid'),
           },
         }}
         render={({ field }) => (
           <FormItem>
             <FormControl>
               <Input
-                placeholder='Email'
+                placeholder={t('email_placeholder')}
                 type='email'
                 disabled={isPending}
                 autoComplete='email'
@@ -55,17 +59,17 @@ export function AuthFields({ form, isPending, isReg }: AuthFieldsProps) {
         control={form.control}
         name='password'
         rules={{
-          required: 'Password is required',
+          required: t('password_required'),
           minLength: {
             value: 6,
-            message: 'Password must be at least 6 characters long',
+            message: t('password_min_length'),
           },
         }}
         render={({ field }) => (
           <FormItem>
             <FormControl>
               <Input
-                placeholder='Password'
+                placeholder={t('password_placeholder')}
                 type='password'
                 disabled={isPending}
                 autoComplete='current-password'
@@ -101,12 +105,12 @@ export function AuthFields({ form, isPending, isReg }: AuthFieldsProps) {
               <FormField<RegisterDto, 'name'>
                 control={form.control}
                 name='name'
-                rules={{ required: 'Name is required' }}
+                rules={{ required: t('name_required') }}
                 render={({ field }) => (
                   <FormItem>
                     <FormControl>
                       <Input
-                        placeholder='Name'
+                        placeholder={t('name_placeholder')}
                         disabled={isPending}
                         {...field}
                       />
@@ -118,12 +122,11 @@ export function AuthFields({ form, isPending, isReg }: AuthFieldsProps) {
               <FormField<RegisterDto, 'phone'>
                 control={form.control}
                 name='phone'
-                // rules={{ required: 'Phone is required' }}
                 render={({ field }) => (
                   <FormItem>
                     <FormControl>
                       <Input
-                        placeholder='Phone'
+                        placeholder={t('phone_placeholder')}
                         disabled={isPending}
                         {...field}
                       />
@@ -137,12 +140,11 @@ export function AuthFields({ form, isPending, isReg }: AuthFieldsProps) {
               <FormField<RegisterDto, 'country'>
                 control={form.control}
                 name='country'
-                // rules={{ required: 'Country is required' }}
                 render={({ field }) => (
                   <FormItem>
                     <FormControl>
                       <Input
-                        placeholder='Country'
+                        placeholder={t('country_placeholder')}
                         disabled={isPending}
                         {...field}
                       />
@@ -154,12 +156,11 @@ export function AuthFields({ form, isPending, isReg }: AuthFieldsProps) {
               <FormField<RegisterDto, 'city'>
                 control={form.control}
                 name='city'
-                // rules={{ required: 'City is required' }}
                 render={({ field }) => (
                   <FormItem>
                     <FormControl>
                       <Input
-                        placeholder='City'
+                        placeholder={t('city_placeholder')}
                         disabled={isPending}
                         {...field}
                       />
@@ -173,12 +174,11 @@ export function AuthFields({ form, isPending, isReg }: AuthFieldsProps) {
               <FormField<RegisterDto, 'address'>
                 control={form.control}
                 name='address'
-                // rules={{ required: 'Address is required' }}
                 render={({ field }) => (
                   <FormItem>
                     <FormControl>
                       <Input
-                        placeholder='Address'
+                        placeholder={t('address_placeholder')}
                         disabled={isPending}
                         {...field}
                       />
@@ -190,12 +190,11 @@ export function AuthFields({ form, isPending, isReg }: AuthFieldsProps) {
               <FormField<RegisterDto, 'postalCode'>
                 control={form.control}
                 name='postalCode'
-                // rules={{ required: 'PostalCode is required' }}
                 render={({ field }) => (
                   <FormItem>
                     <FormControl>
                       <Input
-                        placeholder='Postal code'
+                        placeholder={t('postal_code_placeholder')}
                         disabled={isPending}
                         {...field}
                       />

@@ -1,3 +1,4 @@
+import { useTranslations } from 'next-intl';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { AiFillHeart, AiOutlineHeart } from 'react-icons/ai';
 import { Button } from '@/components/ui/Button';
@@ -31,6 +32,7 @@ function FavoriteButton({
   btnVariant = 'secondary',
   onlyIcon = true,
 }: FavoriteButtonProps) {
+  const t = useTranslations('FavoriteButton');
   const { user } = useProfile();
   const queryClient = useQueryClient();
   const { mutate: toggleFavorite, isPending } = useMutation({
@@ -45,7 +47,7 @@ function FavoriteButton({
 
   const handleToggleFavorite = () => {
     if (!user) {
-      toast.error('Please login to add product in favorite');
+      toast.error(t('login_required'));
     }
     toggleFavorite();
   };
@@ -56,14 +58,14 @@ function FavoriteButton({
       onClick={handleToggleFavorite}
       disabled={isPending}
       className={className}
-      aria-label='Toggle favorite'
+      aria-label={t('toggle_favorite')}
     >
       {isExists ? (
         <>
           <AiFillHeart className='text-primary size-4' />
           {!onlyIcon && (
             <span className='text-shop-primary-text'>
-              Remove from favorites
+              {t('remove_from_favorites')}
             </span>
           )}
         </>
@@ -71,7 +73,7 @@ function FavoriteButton({
         <>
           <AiOutlineHeart className='size-4' />
           {!onlyIcon && (
-            <span className='text-shop-primary-text'>Add to favorites</span>
+            <span className='text-shop-primary-text'>{t('add_to_favorites')}</span>
           )}
         </>
       )}
@@ -80,7 +82,7 @@ function FavoriteButton({
 
   return onlyIcon ? (
     <CustomTooltip
-      text={isExists ? 'Remove from favorites' : 'Add to favorites'}
+      text={isExists ? t('remove_from_favorites') : t('add_to_favorites')}
     >
       {button}
     </CustomTooltip>

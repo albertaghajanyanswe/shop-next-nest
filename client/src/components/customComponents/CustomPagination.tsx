@@ -1,3 +1,5 @@
+'use client';
+
 import {
   Pagination,
   PaginationContent,
@@ -15,6 +17,7 @@ import {
   SelectItem,
 } from '@/components/ui/Select';
 import { useSearchParams } from 'next/navigation';
+import { useTranslations } from 'next-intl';
 
 interface CustomPaginationProps {
   total: number;
@@ -31,6 +34,7 @@ export function CustomPagination({
   onPageChange,
   onLimitChange,
 }: CustomPaginationProps) {
+  const t = useTranslations('CustomPagination');
   const page = Math.floor(skip / limit) + 1;
   const totalPages = Math.ceil(total / limit);
 
@@ -154,10 +158,10 @@ export function CustomPagination({
 
       {/* Items per page */}
       <div className='text-muted-foreground flex items-center gap-2 text-sm whitespace-nowrap'>
-        <span>Items per page:</span>
+        <span>{t('items_per_page')}</span>
 
         <Select value={String(limit)} onValueChange={handleLimitChange}>
-          <SelectTrigger className='w-20' aria-label='Items per page'>
+          <SelectTrigger className='w-20' aria-label={t('items_per_page')}>
             <SelectValue placeholder={limit} />
           </SelectTrigger>
           <SelectContent>

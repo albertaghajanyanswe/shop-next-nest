@@ -1,5 +1,6 @@
 'use client';
 
+import { useTranslations } from 'next-intl';
 import { keepPreviousData, useQuery } from '@tanstack/react-query';
 import { QUERY_KEYS } from '@/shared/queryConstants';
 import { GetStoreDto } from '@/generated/orval/types';
@@ -20,6 +21,7 @@ export default function StoresPage({
   totalCount = 0,
   stores,
 }: StoresPageProps) {
+  const t = useTranslations('StoresPage');
   const { queryParams, changePage, changeLimit } = useQueryParams({
     pageDefaultParams: {
       params: {
@@ -52,17 +54,16 @@ export default function StoresPage({
     <>
       <div className='mt-4 mb-4 md:flex md:items-center md:justify-between'>
         <div className='w-full px-0'>
-          <p className='text-2xl font-semibold'>Stores</p>
+          <p className='text-2xl font-semibold'>{t('title')}</p>
           <p className='mt-2 mb-6 line-clamp-2 text-sm font-medium text-neutral-500'>
-            You can quickly find the store you need and follow the link to view
-            available products.
+            {t('description')}
           </p>
-          <SearchInput placeholder='Search stores...' redirectToShop={false} />
+          <SearchInput placeholder={t('search_placeholder')} redirectToShop={false} />
         </div>
       </div>
       <div className='relative mt-4'>
         {loading ? (
-          <LoadingProducts entityName='Stores' />
+          <LoadingProducts entityName={t('title')} />
         ) : (
           <>
             <div className='flex w-full items-center'>
@@ -73,7 +74,7 @@ export default function StoresPage({
                   ))}
                 </div>
               ) : (
-                <NoDataFound entityName='Stores' />
+                <NoDataFound entityName={t('title')} />
               )}
             </div>
 

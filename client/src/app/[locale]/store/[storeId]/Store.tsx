@@ -24,7 +24,7 @@ export default function Store() {
 
   return (
     <div className='p-6'>
-      <Heading title='Statistics' />
+      <Heading title={t('title')} />
 
       <MainStatistics />
 

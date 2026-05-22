@@ -6,8 +6,10 @@ import { ChatProductCard } from './ChatProductCard';
 import { MessageCircle, X, Send, Loader2, Trash2 } from 'lucide-react';
 import { categoryService } from '@/services/category.service';
 import { GetCategoryDto } from '@/generated/orval/types';
+import { useTranslations } from 'next-intl';
 
 export function AiChatWidget() {
+  const t = useTranslations('AiChat');
   const [categories, setCategories] = useState<GetCategoryDto[]>([]);
 
   useEffect(() => {
@@ -70,7 +72,7 @@ export function AiChatWidget() {
         <button
           onClick={() => setIsOpen(true)}
           className='bg-shop-primary hover:bg-shop-btn-primary fixed right-6 bottom-6 z-50 flex h-14 w-14 items-center justify-center rounded-full text-white shadow-lg transition-all hover:scale-110'
-          aria-label='Open AI Chat'
+          aria-label={t('open_chat')}
         >
           <MessageCircle className='h-6 w-6' />
         </button>
@@ -83,24 +85,24 @@ export function AiChatWidget() {
           <div className='bg-shop-primary flex items-center justify-between rounded-t-lg px-4 py-3 text-white'>
             <div className='flex items-center gap-2'>
               <MessageCircle className='h-5 w-5' />
-              <h3 className='font-semibold'>AI Shopping Assistant</h3>
+              <h3 className='font-semibold'>{t('assistant_title')}</h3>
             </div>
             <div className='flex items-center gap-2'>
               {isConnected ? (
                 <div
                   className='bg-shop-light-primary h-2 w-2 rounded-full'
-                  title='Connected'
+                  title={t('connected')}
                 />
               ) : (
                 <div
                   className='bg-shop-red h-2 w-2 rounded-full'
-                  title='Disconnected'
+                  title={t('disconnected')}
                 />
               )}
               <button
                 onClick={() => setIsOpen(false)}
                 className='hover:bg-shop-btn-primary rounded-full p-1 transition-colors'
-                aria-label='Close chat'
+                aria-label={t('close_chat')}
               >
                 <X className='h-5 w-5' />
               </button>
@@ -121,10 +123,8 @@ export function AiChatWidget() {
                   <div className='absolute top-10 left-10 h-8 w-14 -rotate-45 rounded-full bg-white/60 blur-sm'></div>
                 </div>
 
-                <h2 className='text-center text-2xl leading-[1.2] font-semibold tracking-tight text-black'>
-                  What can I help you
-                  <br />
-                  with today ?
+                <h2 className='text-center text-2xl leading-[1.2] font-semibold tracking-tight text-black whitespace-pre-line'>
+                  {t('greeting')}
                 </h2>
 
                 {categories && categories.length > 0 && (
@@ -154,7 +154,7 @@ export function AiChatWidget() {
               >
                 {message.role === 'assistant' && (
                   <div className='bg-shop-light-bg flex h-[40px] w-[40px] shrink-0 items-center justify-center rounded-full text-[14px] font-semibold text-black'>
-                    AI
+                    {t('ai_label')}
                   </div>
                 )}
                 {message.type === 'product_card' && message.productCard ? (
@@ -181,10 +181,10 @@ export function AiChatWidget() {
             {isStreaming && (
               <div className='text-shop-light-color flex items-center justify-start gap-2'>
                 <div className='bg-shop-light-bg flex h-[40px] w-[40px] shrink-0 items-center justify-center rounded-full text-[14px] font-semibold text-black'>
-                  AI
+                  {t('ai_label')}
                 </div>
                 <div className='flex items-center gap-1 text-sm italic'>
-                  <span>typing the answer of your question</span>
+                  <span>{t('typing')}</span>
                   <span className='inline-flex gap-0.5'>
                     <span className='animate-bounceDot1'>.</span>
                     <span className='animate-bounceDot2'>.</span>
@@ -211,14 +211,14 @@ export function AiChatWidget() {
                 className='text-shop-light-color hover:text-shop-dark-color mb-2 flex items-center gap-1 text-xs transition-colors'
               >
                 <Trash2 className='h-3 w-3' />
-                Clear chat
+                {t('clear_chat')}
               </button>
             )}
             <div className='flex gap-2'>
               <textarea
                 ref={inputRef}
                 onKeyPress={handleKeyPress}
-                placeholder='Ask me something'
+                placeholder={t('input_placeholder')}
                 disabled={!isConnected || isStreaming}
                 className='focus:border-shop-primary flex-1 resize-none rounded-lg border border-neutral-300 px-3 py-2 text-sm text-neutral-900 focus:outline-none disabled:cursor-not-allowed disabled:bg-neutral-100'
                 rows={1}
@@ -227,7 +227,7 @@ export function AiChatWidget() {
                 onClick={isStreaming ? abortStream : handleSend}
                 disabled={!isConnected || isStreaming}
                 className='bg-shop-primary hover:bg-shop-btn-primary flex h-10 w-10 items-center justify-center self-end rounded-lg text-white transition-colors disabled:cursor-not-allowed disabled:bg-neutral-300'
-                aria-label={isStreaming ? 'Stop' : 'Send'}
+                aria-label={isStreaming ? t('stop') : t('send')}
               >
                 {isStreaming ? (
                   <Loader2 className='h-5 w-5 animate-spin' />

@@ -1,3 +1,4 @@
+import { getTranslations } from 'next-intl/server';
 import { Metadata } from 'next';
 import Shop from '../Shop';
 import { productService } from '@/services/product.service';
@@ -77,6 +78,7 @@ export default async function ShopPage({
   params: Promise<{ storeId: string }>;
 }) {
   const { storeId } = await params;
+  const t = await getTranslations('HeaderMenu');
   const [store, productsData, categoriesData, brandsData] = await Promise.all([
     getStore(storeId),
     getProducts(storeId),
@@ -87,8 +89,8 @@ export default async function ShopPage({
     <div className='global-container'>
       <Breadcrumbs
         items={[
-          { title: 'Home', href: '/' },
-          { title: 'Shop', href: PUBLIC_URL.shop() },
+          { title: t('Home'), href: '/' },
+          { title: t('Shop'), href: PUBLIC_URL.shop() },
           { title: store?.title || 'Store' },
         ]}
         classNames='mt-4'

@@ -1,3 +1,4 @@
+import { getTranslations } from 'next-intl/server';
 import { Metadata } from 'next';
 import { cache } from 'react';
 
@@ -132,6 +133,7 @@ export async function generateMetadata(): Promise<Metadata> {
  * Page with error handling
  */
 export default async function ShopPage() {
+  const t = await getTranslations('HeaderMenu');
   const [products, categories, brands, stores] = await Promise.all([
     getProductsCached({ limit: 40, skip: 0 }).catch(() => ({
       products: [],
@@ -145,7 +147,7 @@ export default async function ShopPage() {
   return (
     <div className='global-container'>
       <Breadcrumbs
-        items={[{ title: 'Home', href: '/' }, { title: 'Shop' }]}
+        items={[{ title: t('Home'), href: '/' }, { title: t('Shop') }]}
         classNames='mt-6'
       />
 

@@ -5,8 +5,10 @@ import { useGetColors } from '@/hooks/queries/colors/useGetColors';
 import { useGetProductById } from '@/hooks/queries/products/useGetProductById';
 import { ProductForm } from '../ProductForm';
 import { useGetBrands } from '@/hooks/queries/brands/useGetBrands';
+import { useTranslations } from 'next-intl';
 
 export function ProductEdit() {
+  const t = useTranslations('StorePages');
   const { product, isLoadingProduct } = useGetProductById();
   const { categoriesData, isLoadingCategoriesData } = useGetCategories();
   const { colorsData, isLoadingColorsData } = useGetColors();
@@ -17,9 +19,9 @@ export function ProductEdit() {
     isLoadingColorsData ||
     isLoadingBrandsData;
 
-  if (isLoading) return <div>Loading...</div>;
+  if (isLoading) return <div>{t('loading')}</div>;
 
-  if (!product) return <div>Product not found</div>;
+  if (!product) return <div>{t('product_not_found')}</div>;
   return (
     <ProductForm
       product={product}
