@@ -26,7 +26,7 @@ export default function AccountSettings() {
   };
 
   return (
-    <div className='flex flex-col gap-4 p-4'>
+    <div className='flex flex-col gap-4'>
       <StripeActionBlock
         title={t('register_stripe')}
         description={

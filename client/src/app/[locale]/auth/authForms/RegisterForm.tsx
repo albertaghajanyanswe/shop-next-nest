@@ -38,7 +38,7 @@ export function RegisterForm() {
           <form className='space-y-5' onSubmit={form.handleSubmit(onSubmit)}>
             <AuthFields form={form} isPending={isPending} isReg={true} />
             {!isLoadingPlans && (
-              <div className='card-linear-grad space-y-2 rounded-xl p-3'>
+              <div className='card-linear-grad space-y-2 rounded-md p-3'>
                 {free?.features.map((perk) => (
                   <div
                     key={perk}
