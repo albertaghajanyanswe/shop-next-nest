@@ -212,9 +212,9 @@ export function AdminOrderCard({
                       </span>
                     </div>
                   </div>
-                  {(showConfirm || showRefund) && (
+                  {(isShowConfirmBtn || isShowRefundBtn) && (
                     <div className='flex gap-2 pt-2'>
-                      {showConfirm && (
+                      {isShowConfirmBtn && (
                         <Button
                           disabled={
                             isLoadingDistributeFundsOrderItem ||
@@ -240,7 +240,7 @@ export function AdminOrderCard({
                             : t('order_btn_confirm')}
                         </Button>
                       )}
-                      {showRefund && (
+                      {isShowRefundBtn && (
                         <Button
                           disabled={
                             isLoadingRefundOrderItem ||

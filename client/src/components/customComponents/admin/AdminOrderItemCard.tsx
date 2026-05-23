@@ -52,11 +52,11 @@ export function AdminOrderItemCard({
   const isShowRefundBtn = showRefund && orderItem.id;
 
   return (
-    <div className='bg-card overflow-hidden rounded-xl border shadow-sm transition-all hover:shadow-md'>
+    <div className='bg-shop-bg-default overflow-hidden rounded-xl border shadow-sm transition-all hover:shadow-md'>
       {/* Header Section with Product Image */}
-      <div className='bg-shop-green-hover border-b p-4'>
+      <div className='bg-shop-bg-2 p-4'>
         <div className='flex gap-4'>
-          <div className='bg-background relative h-24 w-24 flex-shrink-0 overflow-hidden rounded-lg'>
+          <div className='bg-background relative h-24 w-24 shrink-0 overflow-hidden rounded-lg'>
             <Image
               src={generateImgPath(
                 orderItem.cachedProductImages[0],
@@ -94,7 +94,7 @@ export function AdminOrderItemCard({
       </div>
 
       {/* Order Item Info Section */}
-      <div className='bg-muted/30 border-b p-4'>
+      <div className='p-4'>
         <div className='grid grid-cols-1 gap-3 sm:grid-cols-2'>
           <div className='flex items-center gap-2'>
             <Hash className='text-muted-foreground h-4 w-4 flex-shrink-0' />
@@ -119,8 +119,10 @@ export function AdminOrderItemCard({
         </div>
       </div>
 
+      <hr className='mx-4 my-2 border-neutral-200' />
+
       {/* Customer Info Section */}
-      <div className='border-b p-4'>
+      <div className='p-4'>
         <h4 className='mb-3 text-sm font-semibold'>
           {t('order_info_customer')}
         </h4>
@@ -150,8 +152,10 @@ export function AdminOrderItemCard({
         </div>
       </div>
 
+      <hr className='mx-4 my-2 border-neutral-200' />
+
       {/* Product Details Section */}
-      <div className='bg-muted/20 border-b p-4'>
+      <div className='p-4'>
         <h4 className='mb-3 text-sm font-semibold'>Product Details</h4>
         <div className='space-y-2 text-sm'>
           <div className='flex items-center justify-between'>
@@ -170,7 +174,10 @@ export function AdminOrderItemCard({
               ${orderItem.price.toFixed(2)}
             </span>
           </div>
-          <div className='space-y-1 border-t pt-2 text-xs'>
+  
+          <hr className='mt-4 border-neutral-200' />
+
+          <div className='space-y-1 pt-2 text-xs'>
             <div className='flex justify-between'>
               <span className='text-muted-foreground'>
                 {t('order_product_id')}:
@@ -192,7 +199,7 @@ export function AdminOrderItemCard({
       </div>
 
       {/* Total and Actions Section */}
-      <div className='bg-muted/10 p-4'>
+      <div className='bg-shop-bg p-4'>
         <div className='flex flex-wrap items-center justify-between gap-4'>
           <div className='flex gap-2'>
             {isShowDistributeBtn && (

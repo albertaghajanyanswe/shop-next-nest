@@ -110,7 +110,7 @@ export default function ManageOrders() {
                 onRowClick={handleRowClick}
               />
             ) : (
-              <div className='mt-4 grid grid-cols-1 gap-3 xl:grid-cols-2'>
+              <div className='mt-4 grid grid-cols-1 gap-6 xl:grid-cols-2'>
                 {ordersData?.orders?.map((order) => (
                   <AdminOrderCard
                     key={order.id}

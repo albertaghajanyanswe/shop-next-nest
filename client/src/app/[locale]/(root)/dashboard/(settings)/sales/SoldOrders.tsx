@@ -111,7 +111,7 @@ export default function SoldOrders() {
                 onRowClick={handleRowClick}
               />
             ) : (
-              <div className='mt-4 grid grid-cols-1 gap-3 xl:grid-cols-2'>
+              <div className='mt-4 grid grid-cols-1 gap-6 xl:grid-cols-2'>
                 {orderItemsData?.orderItems?.map((orderItem) => (
                   <AdminOrderItemCard
                     key={orderItem.id}
