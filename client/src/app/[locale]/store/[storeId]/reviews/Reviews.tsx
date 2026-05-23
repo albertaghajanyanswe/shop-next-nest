@@ -56,17 +56,13 @@ export function Reviews() {
 
   return (
     <div className='p-6'>
-      {isLoadingReviewsData ? (
-        <DataTableLoading />
-      ) : (
-        <div className='flex flex-col items-start justify-between gap-4 sm:flex-row sm:items-center'>
-          <Heading
-            title={`${t('reviews_title')} (${reviewsData?.totalCount})`}
-            description={t('reviews_description')}
-          />
-          <ViewToggle viewMode={viewMode} onToggle={setViewMode} />
-        </div>
-      )}
+      <div className='flex flex-col items-start justify-between gap-4 sm:flex-row sm:items-center'>
+        <Heading
+          title={`${t('reviews_title')} (${reviewsData?.totalCount})`}
+          description={t('reviews_description')}
+        />
+        <ViewToggle viewMode={viewMode} onToggle={setViewMode} />
+      </div>
       {!isLoadingReviewsData &&
       reviewsData?.reviews &&
       reviewsData?.reviews?.length > 0 ? (
@@ -98,6 +94,8 @@ export function Reviews() {
             />
           )}
         </div>
+      ) : isLoadingReviewsData ? (
+        <DataTableLoading />
       ) : (
         <div className='mt-6'>
           <NoDataFound entityName={t('reviews_title')} />

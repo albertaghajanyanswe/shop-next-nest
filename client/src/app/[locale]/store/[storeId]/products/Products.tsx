@@ -68,25 +68,21 @@ export function Products() {
 
   return (
     <div className='p-6'>
-      {isLoadingProductsData ? (
-        <DataTableLoading />
-      ) : (
-        <div className='flex flex-col items-start justify-between gap-4 sm:flex-row sm:items-center'>
-          <Heading
-            title={`${t('products_title')} (${productsData?.totalCount})`}
-            description={t('products_description')}
-          />
-          <div className='flex items-center gap-x-3'>
-            <ViewToggle viewMode={viewMode} onToggle={setViewMode} />
-            <Link href={STORE_URL.productCreate(storeId)}>
-              <Button variant='default'>
-                <CirclePlus className='size-5' />
-                {t('create')}
-              </Button>
-            </Link>
-          </div>
+      <div className='flex flex-col items-start justify-between gap-4 sm:flex-row sm:items-center'>
+        <Heading
+          title={`${t('products_title')} (${productsData?.totalCount})`}
+          description={t('products_description')}
+        />
+        <div className='flex items-center gap-x-3'>
+          <ViewToggle viewMode={viewMode} onToggle={setViewMode} />
+          <Link href={STORE_URL.productCreate(storeId)}>
+            <Button variant='default'>
+              <CirclePlus className='size-5' />
+              {t('create')}
+            </Button>
+          </Link>
         </div>
-      )}
+      </div>
       {!isLoadingProductsData &&
       productsData?.products &&
       productsData?.products?.length > 0 ? (
@@ -118,6 +114,8 @@ export function Products() {
             />
           )}
         </div>
+      ) : isLoadingProductsData ? (
+        <DataTableLoading />
       ) : (
         <div className='mt-6'>
           <NoProductsFound />

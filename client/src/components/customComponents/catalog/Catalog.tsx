@@ -35,7 +35,7 @@ export function Catalog({
 }: ICatalog) {
   const t = useTranslations('HomePage');
   return (
-    <>
+    <div>
       <div className='mb-4 md:flex md:items-center md:justify-between'>
         <div className='w-full px-0'>
           <p className='text-2xl font-semibold'>{title}</p>
@@ -84,6 +84,6 @@ export function Catalog({
           <NoProductsFound />
         )}
       </div>
-    </>
+    </div>
   );
 }

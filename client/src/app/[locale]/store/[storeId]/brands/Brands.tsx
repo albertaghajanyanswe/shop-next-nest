@@ -64,25 +64,21 @@ export function Brands() {
 
   return (
     <div className='p-6'>
-      {isLoadingBrandsData ? (
-        <DataTableLoading />
-      ) : (
-        <div className='flex flex-col items-start justify-between gap-4 sm:flex-row sm:items-center'>
-          <Heading
-            title={`${t('brands_title')} (${brandsData?.totalCount})`}
-            description={t('brands_description')}
-          />
-          <div className='flex items-center gap-x-3'>
-            <ViewToggle viewMode={viewMode} onToggle={setViewMode} />
-            <Link href={STORE_URL.brandCreate(storeId)}>
-              <Button variant='default'>
-                <CirclePlus className='size-5' />
-                {t('create')}
-              </Button>
-            </Link>
-          </div>
+      <div className='flex flex-col items-start justify-between gap-4 sm:flex-row sm:items-center'>
+        <Heading
+          title={`${t('brands_title')} (${brandsData?.totalCount})`}
+          description={t('brands_description')}
+        />
+        <div className='flex items-center gap-x-3'>
+          <ViewToggle viewMode={viewMode} onToggle={setViewMode} />
+          <Link href={STORE_URL.brandCreate(storeId)}>
+            <Button variant='default'>
+              <CirclePlus className='size-5' />
+              {t('create')}
+            </Button>
+          </Link>
         </div>
-      )}
+      </div>
       {!isLoadingBrandsData &&
       brandsData?.brands &&
       brandsData?.brands?.length > 0 ? (
@@ -119,6 +115,8 @@ export function Brands() {
             />
           )}
         </div>
+      ) : isLoadingBrandsData ? (
+        <DataTableLoading />
       ) : (
         <div className='mt-6'>
           <NoDataFound entityName={t('brands_title')} />

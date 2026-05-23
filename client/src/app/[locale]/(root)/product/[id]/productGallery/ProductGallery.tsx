@@ -13,7 +13,7 @@ export default function ProductGallery({ product }: ProductGalleryProps) {
   const [currentIndex, setCurrentIndex] = useState(0);
   return (
     <div className='w-full space-y-2 md:space-y-4'>
-      <div className='group col-span-2 w-full place-items-center overflow-hidden rounded-none bg-neutral-100 sm:rounded-md xl:col-span-1'>
+      <div className='group bg-shop-light-bg col-span-2 w-full place-items-center overflow-hidden rounded-none sm:rounded-md xl:col-span-1'>
         <Image
           src={generateImgPath(product.images[currentIndex])}
           alt={product.title}

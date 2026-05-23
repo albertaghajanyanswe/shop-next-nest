@@ -23,7 +23,7 @@ function ProductDetails({ product }: ProductDetailsProps) {
         {product.productDetails.map((detail) => (
           <div
             key={detail.id}
-            className='dark:border-shop-bg-light flex items-baseline justify-between border-b border-neutral-300 pb-3 last:border-0'
+            className='dark:border-shop-light-bg flex items-baseline justify-between border-b border-neutral-300 pb-3 last:border-0'
           >
             <dt className='text-shop-muted-text-7 text-sm font-normal'>
               {detail.key}

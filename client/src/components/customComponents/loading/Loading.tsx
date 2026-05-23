@@ -5,7 +5,7 @@ import { memo } from 'react';
 function Loading({ text }: { text?: string }) {
   const t = useTranslations('Loading');
   return (
-    <div className='bg-shop-light-bg my-6 flex min-h-50 w-full flex-col items-center justify-center space-y-3 rounded-md py-8 text-center'>
+    <div className='bg-shop-bg my-6 flex min-h-50 w-full flex-col items-center justify-center space-y-3 rounded-md py-8 text-center'>
       <p className='text-shop-primary-text text-2xl font-semibold'>
         {t('please_wait')}
       </p>

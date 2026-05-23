@@ -64,7 +64,6 @@
   --animate-scale-pulse-fast: scale-pulse 0.6s ease-in-out infinite;
 
   /* --font-poppins: Poppins, sans-serif; */
-  --color-shop-light-pink: #fdf2e9;
   --color-shop-primary: #067a40;
   --color-shop-light-primary: #3db86b;
   --color-shop-btn-primary: #067a40;
@@ -72,7 +71,6 @@
   --color-shop-red: #d42a4a;
   --color-shop-dark-color: #1a1a14;
   --color-shop-light-color: #5c5952;
-  --color-shop-light-orange: #fde8d8;
   --color-shop-green-hover: #eaf7ef;
   --color-shop-primary-text: #1a1a14;
   --color-shop-muted-text-7: #3c3a36;
@@ -83,18 +81,6 @@
   --color-shop-bg-2: #e6dfd8;
   --color-shop-white: #fefcf9;
   --color-shop-bg-default: #fefcf9;
-  --color-shop-bg-light: var(--color-neutral-50);
-
-  /* --color-primary-50: #eafbf1;
-  --color-primary-100: #d8ebe5;
-  --color-primary-200: #c9f2da;
-  --color-primary-300: #9be5b5;
-  --color-primary-400: #33ba67;
-  --color-primary-500: #0d9e4e;
-  --color-primary-600: #05803d;
-  --color-primary-700: #066633;
-  --color-primary-800: #0a522c;
-  --color-primary-900: #094424; */
 
   --color-primary-50: #e9f9f2;
   --color-primary-100: #d8ebe5;
@@ -117,17 +103,6 @@
   --color-secondary-700: #3730a3;
   --color-secondary-800: #312e81;
   --color-secondary-900: #1e1b4b;
-
-  /* --color-neutral-50: #f9fafb;
-  --color-neutral-100: #f3f4f6;
-  --color-neutral-200: #e5e7eb;
-  --color-neutral-300: #d1d5db;
-  --color-neutral-400: #9ca3af;
-  --color-neutral-500: #6b7280;
-  --color-neutral-600: #4b5563;
-  --color-neutral-700: #374151;
-  --color-neutral-800: #1f2937;
-  --color-neutral-900: #111827; */
 
   --color-neutral-50: #f6f5f3;
   --color-neutral-100: #eceae6;
@@ -422,7 +397,6 @@
   --code-selection: var(--color-dark-5);
   --code-border: var(--color-dark-4);
 
-  --color-shop-light-pink: var(--color-dark-3);
   --color-shop-primary: var(--color-primary-700);
   --color-shop-btn-primary: var(--color-primary-700);
   --color-shop-light-bg: var(--color-dark-3);
@@ -433,7 +407,6 @@
   --color-shop-red: #ef4444;
   --color-shop-dark-color: #fafafa;
   --color-shop-light-color: var(--color-neutral-300);
-  --color-shop-light-orange: var(--color-primary-900);
   --color-shop-green-hover: var(--color-dark-3);
   --color-shop-white: var(--color-dark-2);
   --color-shop-primary-text: #ffffff;
@@ -441,7 +414,6 @@
   --color-shop-muted-text-6: var(--color-neutral-300);
   --color-shop-muted-text-5: var(--color-neutral-400);
   --color-shop-bg-default: var(--color-dark-2);
-  --color-shop-bg-light: var(--color-dark-5);
 }
 
 @layer base {

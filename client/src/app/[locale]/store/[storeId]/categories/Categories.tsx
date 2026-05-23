@@ -67,25 +67,21 @@ export function Categories() {
 
   return (
     <div className='p-6'>
-      {isLoadingCategoriesData ? (
-        <DataTableLoading />
-      ) : (
-        <div className='flex flex-col items-start justify-between gap-4 sm:flex-row sm:items-center'>
-          <Heading
-            title={`${t('categories_title')} (${categoriesData?.totalCount})`}
-            description={t('categories_description')}
-          />
-          <div className='flex items-center gap-x-3'>
-            <ViewToggle viewMode={viewMode} onToggle={setViewMode} />
-            <Link href={STORE_URL.categoryCreate(storeId)}>
-              <Button variant='default'>
-                <CirclePlus className='size-5' />
-                {t('create')}
-              </Button>
-            </Link>
-          </div>
+      <div className='flex flex-col items-start justify-between gap-4 sm:flex-row sm:items-center'>
+        <Heading
+          title={`${t('categories_title')} (${categoriesData?.totalCount})`}
+          description={t('categories_description')}
+        />
+        <div className='flex items-center gap-x-3'>
+          <ViewToggle viewMode={viewMode} onToggle={setViewMode} />
+          <Link href={STORE_URL.categoryCreate(storeId)}>
+            <Button variant='default'>
+              <CirclePlus className='size-5' />
+              {t('create')}
+            </Button>
+          </Link>
         </div>
-      )}
+      </div>
       {!isLoadingCategoriesData &&
       categoriesData?.categories &&
       categoriesData?.categories?.length > 0 ? (
@@ -122,6 +118,8 @@ export function Categories() {
             />
           )}
         </div>
+      ) : isLoadingCategoriesData ? (
+        <DataTableLoading />
       ) : (
         <div className='mt-6'>
           <NoDataFound entityName={t('categories_title')} />
