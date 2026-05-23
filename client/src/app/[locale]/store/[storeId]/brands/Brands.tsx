@@ -13,19 +13,19 @@ import { CirclePlus } from 'lucide-react';
 import Link from 'next/link';
 import { useParams } from 'next/navigation';
 import { brandColumns } from './BrandColumns';
-import { useProfile } from '@/hooks/useProfile';
 import { useQueryParams } from '@/hooks/commons/useQueryParams';
 import { CustomPagination } from '@/components/customComponents/CustomPagination';
 import { useTranslations } from 'next-intl';
 import { ViewToggle } from '@/components/customComponents/admin/ViewToggle';
 import { AdminBrandCard } from './AdminBrandCard';
 import NoDataFound from '@/components/customComponents/loading/NoDataFound';
+import { useAbility } from '@/lib/permissions';
 
 export function Brands() {
   const t = useTranslations('StorePages');
   const params = useParams<{ storeId: string }>();
   const storeId = params.storeId;
-  const { user } = useProfile();
+  const { can } = useAbility();
   const [viewMode, setViewMode] = useViewMode('brands');
 
   const { queryParams, changePage, changeLimit, changeSearch, changeSort } =
@@ -55,8 +55,7 @@ export function Brands() {
           storeId: brand.storeId,
           images: brand.images,
           image: brand?.images?.[0],
-          isCurrentUserAdmin:
-            user?.role === 'ADMIN' || user?.role === 'SUPER_ADMIN',
+          isCurrentUserAdmin: can('manage', 'brand'),
         }))
       : [];
 

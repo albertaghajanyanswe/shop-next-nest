@@ -2,7 +2,6 @@
 
 import { useCallback, useMemo, useState } from 'react';
 import { IOrderItemColumns, OrderItemColumns } from './OrderItemColumns';
-import { useProfile } from '@/hooks/useProfile';
 import { DataTable } from '@/components/ui/dataLoading/DataTable';
 import { useQueryParams } from '@/hooks/commons/useQueryParams';
 import { CustomPagination } from '@/components/customComponents/CustomPagination';
@@ -13,7 +12,9 @@ import DataTableLoading from '@/components/ui/dataLoading/DataTableLoading';
 import { useTranslations } from 'next-intl';
 import { ViewToggle } from '@/components/customComponents/admin/ViewToggle';
 import { useViewMode } from '@/components/customComponents/admin/useViewMode';
+import { useProfile } from '@/hooks/useProfile';
 import { AdminOrderItemCard } from '@/components/customComponents/admin/AdminOrderItemCard';
+import NoDataFound from '@/components/customComponents/loading/NoDataFound';
 
 export default function SoldOrders() {
   const t = useTranslations('DashboardSettings');
@@ -83,6 +84,7 @@ export default function SoldOrders() {
 
   const [isOpen, setIsOpen] = useState(false);
 
+  console.log('orderItemsData = ', orderItemsData)
   if (!user) return null;
 
   return (
@@ -112,18 +114,15 @@ export default function SoldOrders() {
               />
             ) : (
               <div className='mt-4 grid grid-cols-1 gap-6 xl:grid-cols-2'>
-                {orderItemsData?.orderItems?.map((orderItem) => (
+                {!!orderItemsData?.orderItems?.length ? orderItemsData?.orderItems?.map((orderItem) => (
                   <AdminOrderItemCard
                     key={orderItem.id}
                     orderItem={orderItem}
-                    user={user}
-                    showConfirm
-                    showRefund
                   />
-                ))}
+                )) : <NoDataFound entityName={t('sold_items_title')} />}
               </div>
             )}
-            {!!orderItemsData?.totalCount && (
+            {!!orderItemsData?.orderItems?.length && (
               <CustomPagination
                 limit={queryParams?.params?.limit as number}
                 total={orderItemsData?.totalCount as number}

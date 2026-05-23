@@ -3,7 +3,6 @@
 import React from 'react';
 import {
   GetOrderItemsDetailsDto,
-  GetUserDto,
   GetOrderItemsDetailsDtoStatus,
 } from '@/generated/orval/types';
 import { formatDateWithHour } from '@/utils/formateDate';
@@ -29,27 +28,21 @@ import {
 } from 'lucide-react';
 import { useDistributeFundsOrderItem } from '@/hooks/stripe/useDistributeFundsOrderItem';
 import { useRefundOrderItem } from '@/hooks/stripe/useRefundOrderItem';
+import { useAbility } from '@/lib/permissions';
 
 interface AdminOrderItemCardProps {
   orderItem: GetOrderItemsDetailsDto;
-  user: GetUserDto;
-  showConfirm?: boolean;
-  showRefund?: boolean;
 }
 
-export function AdminOrderItemCard({
-  orderItem,
-  user,
-  showConfirm = false,
-  showRefund = false,
-}: AdminOrderItemCardProps) {
+export function AdminOrderItemCard({ orderItem }: AdminOrderItemCardProps) {
   const t = useTranslations('Modals');
+  const { can } = useAbility();
   const { distributeFundsOrderItem, isLoadingDistributeFundsOrderItem } =
     useDistributeFundsOrderItem();
   const { refundOrderItem, isLoadingRefundOrderItem } = useRefundOrderItem();
 
-  const isShowDistributeBtn = showConfirm && orderItem.id;
-  const isShowRefundBtn = showRefund && orderItem.id;
+  const isShowDistributeBtn = can('confirm', 'order') && orderItem.id;
+  const isShowRefundBtn = can('refund', 'order') && orderItem.id;
 
   return (
     <div className='bg-shop-bg-default overflow-hidden rounded-xl border shadow-sm transition-all hover:shadow-md'>
@@ -174,7 +167,7 @@ export function AdminOrderItemCard({
               ${orderItem.price.toFixed(2)}
             </span>
           </div>
-  
+
           <hr className='mt-4 border-neutral-200' />
 
           <div className='space-y-1 pt-2 text-xs'>

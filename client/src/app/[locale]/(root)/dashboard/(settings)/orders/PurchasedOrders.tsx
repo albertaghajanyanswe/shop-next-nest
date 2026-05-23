@@ -17,6 +17,7 @@ import { useTranslations } from 'next-intl';
 import { ViewToggle } from '@/components/customComponents/admin/ViewToggle';
 import { useViewMode } from '@/components/customComponents/admin/useViewMode';
 import { AdminOrderCard } from '@/components/customComponents/admin/AdminOrderCard';
+import NoDataFound from '@/components/customComponents/loading/NoDataFound';
 
 export default function PurchasedOrders() {
   const t = useTranslations('DashboardSettings');
@@ -114,14 +115,18 @@ export default function PurchasedOrders() {
               />
             ) : (
               <div className='mt-4 grid grid-cols-1 gap-6 xl:grid-cols-2'>
-                {ordersData?.orders?.map((order) => (
-                  <AdminOrderCard
-                    key={order.id}
-                    order={order}
-                    showConfirm={order.status === GetOrderDtoStatus.SUCCEEDED}
-                    showRefund={order.status === GetOrderDtoStatus.SUCCEEDED}
-                  />
-                ))}
+                {!!ordersData?.orders?.length ? (
+                  ordersData?.orders?.map((order) => (
+                    <AdminOrderCard
+                      key={order.id}
+                      order={order}
+                      showConfirm={order.status === GetOrderDtoStatus.SUCCEEDED}
+                      showRefund={order.status === GetOrderDtoStatus.SUCCEEDED}
+                    />
+                  ))
+                ) : (
+                  <NoDataFound entityName={t('purchased_items_title')} />
+                )}
               </div>
             )}
             {!!ordersData?.totalCount && (

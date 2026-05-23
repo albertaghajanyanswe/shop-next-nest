@@ -1,17 +1,18 @@
 import { Button } from '@/components/ui/Button';
-import { GetUserDto } from '@/generated/orval/types';
 import { useDistributeFundsOrder } from '@/hooks/stripe/useDistributeFundsOrder';
 import { memo } from 'react';
 import { TotalSection } from './TotalSection';
 import { CircleDollarSignIcon, RotateCcw } from 'lucide-react';
 import { useRefundOrder } from '@/hooks/stripe/useRefundOrder';
 import { useTranslations } from 'next-intl';
+import { can as checkAbility } from '@/lib/permissions';
+import type { UserIdentity } from '@/lib/permissions';
 
 interface OrderTotalSectionProps {
   title: string;
   value: number | string;
   orderId?: string;
-  user: GetUserDto;
+  user: UserIdentity;
   showConfirm?: boolean;
   showRefund?: boolean;
 }
@@ -28,9 +29,10 @@ const OrderTotalSectionComponent = ({
 
   const { refundOrder, isLoadingRefundOrder } = useRefundOrder();
   const dashT = useTranslations('Modals');
-  const isShowRefundBtn = user?.role === 'SUPER_ADMIN' && orderId && showRefund;
+  const isShowRefundBtn =
+    checkAbility(user, 'refund', 'order') && orderId && showRefund;
   const isShowConfirmBtn =
-    user?.role === 'SUPER_ADMIN' && orderId && showConfirm;
+    checkAbility(user, 'confirm', 'order') && orderId && showConfirm;
 
   return (
     <div

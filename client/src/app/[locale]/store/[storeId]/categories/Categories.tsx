@@ -13,19 +13,19 @@ import { categoryColumns } from './CategoryColumns';
 import { formateDate } from '@/utils/formateDate';
 import { useGetCategories } from '@/hooks/queries/categories/useGetCategories';
 import { ICategoryColumn } from '@/shared/types/category.interface';
-import { useProfile } from '@/hooks/useProfile';
 import { useQueryParams } from '@/hooks/commons/useQueryParams';
 import { CustomPagination } from '@/components/customComponents/CustomPagination';
 import { useTranslations } from 'next-intl';
 import { ViewToggle } from '@/components/customComponents/admin/ViewToggle';
 import { AdminCategoryCard } from './AdminCategoryCard';
 import NoDataFound from '@/components/customComponents/loading/NoDataFound';
+import { useAbility } from '@/lib/permissions';
 
 export function Categories() {
   const t = useTranslations('StorePages');
   const params = useParams<{ storeId: string }>();
   const storeId = params.storeId;
-  const { user } = useProfile();
+  const { can } = useAbility();
   const [viewMode, setViewMode] = useViewMode('categories');
 
   const { queryParams, changePage, changeLimit, changeSearch, changeSort } =
@@ -58,8 +58,7 @@ export function Categories() {
         images: category.images || [],
         image: category?.images?.[0] || '',
         storeId: category.storeId as string,
-        isCurrentUserAdmin:
-          user?.role === 'ADMIN' || user?.role === 'SUPER_ADMIN',
+        isCurrentUserAdmin: can('manage', 'category'),
       }))
     : [];
 

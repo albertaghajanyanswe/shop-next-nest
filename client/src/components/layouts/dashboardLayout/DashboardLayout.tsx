@@ -1,7 +1,6 @@
 'use client';
 
-import { PropsWithChildren, useState } from 'react';
-import { useProfile } from '@/hooks/useProfile';
+import { PropsWithChildren, useMemo, useState } from 'react';
 import { Button } from '@/components/ui/Button';
 import {
   CreditCard,
@@ -19,78 +18,76 @@ import { Card } from '@/components/ui/Card';
 import { DASHBOARD_URL, PUBLIC_URL } from '@/config/url.config';
 import { MenuItem } from '../storeLayout/sidebar/navigation/MenuItem';
 import { useLogout } from '@/hooks/queries/user/useLogout';
-import { GetUserDto } from '@/generated/orval/types';
 import Image from 'next/image';
 import { generateImgPath } from '@/utils/imageUtils';
 import { EnvVariables } from '@/shared/envVariables';
 import { useTranslations } from 'next-intl';
-
-const menuItems = (user: GetUserDto, t: any) => {
-  return [
-    {
-      value: t('Manage Orders'),
-      icon: CircleDollarSign,
-      link: DASHBOARD_URL.manageOrders(),
-      show: user.role === 'SUPER_ADMIN',
-    },
-    {
-      value: t('My Orders'),
-      icon: ShoppingBag,
-      link: DASHBOARD_URL.orders(),
-      show: true,
-    },
-    {
-      value: t('My sales'),
-      icon: CircleDollarSign,
-      link: DASHBOARD_URL.sales(),
-      show: true,
-    },
-    {
-      value: t('Subscriptions'),
-      icon: CreditCard,
-      link: DASHBOARD_URL.subscriptions(),
-      show: true,
-    },
-    {
-      value: t('Support service'),
-      icon: HelpCircle,
-      link: PUBLIC_URL.contactUs(),
-      show: true,
-    },
-    {
-      value: t('Account Settings'),
-      icon: Settings,
-      link: DASHBOARD_URL.settings(),
-      show: EnvVariables.NEXT_PUBLIC_ALLOW_PURCHASE,
-    },
-    {
-      value: t('User profile'),
-      icon: UserRound,
-      link: DASHBOARD_URL.userProfile(),
-      show: true,
-    },
-  ];
-};
+import { useAbility } from '@/lib/permissions';
 
 export function DashboardLayout({ children }: PropsWithChildren<unknown>) {
   const [collapsed, setCollapsed] = useState(false);
   const { logout } = useLogout();
   const t = useTranslations('Dashboard');
+  const { can, user } = useAbility();
+
+  const menuItems = useMemo(
+    () => [
+      {
+        value: t('Manage Orders'),
+        icon: CircleDollarSign,
+        link: DASHBOARD_URL.manageOrders(),
+        show: can('manage', 'order'),
+      },
+      {
+        value: t('My Orders'),
+        icon: ShoppingBag,
+        link: DASHBOARD_URL.orders(),
+        show: true,
+      },
+      {
+        value: t('My sales'),
+        icon: CircleDollarSign,
+        link: DASHBOARD_URL.sales(),
+        show: true,
+      },
+      {
+        value: t('Subscriptions'),
+        icon: CreditCard,
+        link: DASHBOARD_URL.subscriptions(),
+        show: true,
+      },
+      {
+        value: t('Support service'),
+        icon: HelpCircle,
+        link: PUBLIC_URL.contactUs(),
+        show: true,
+      },
+      {
+        value: t('Account Settings'),
+        icon: Settings,
+        link: DASHBOARD_URL.settings(),
+        show: EnvVariables.NEXT_PUBLIC_ALLOW_PURCHASE,
+      },
+      {
+        value: t('User profile'),
+        icon: UserRound,
+        link: DASHBOARD_URL.userProfile(),
+        show: true,
+      },
+    ],
+    [can, t]
+  );
 
   const handleLayout = () => {
     logout();
   };
 
-  const { user } = useProfile();
-
   if (!user) return null;
 
   return (
     <div className='w-full'>
-      {/* Mobile/Tablet Horizontal Navigation (below lg) */}
       <div className='bg-shop-light-bg h-full py-4 lg:hidden'>
         <div className='global-container flex flex-col gap-4'>
-          {/* User Card */}
           <Card className='bg-shop-white flex items-center gap-3 p-3 shadow-none'>
             <Image
               src={
@@ -119,10 +116,9 @@ export function DashboardLayout({ children }: PropsWithChildren<unknown>) {
               </div>
             </div>
           )}
-          {/* Horizontal Scroll Menu */}
           <div className='overflow-x-auto'>
             <div className='mb-2 flex gap-2'>
-              {menuItems(user, t).map((route) => {
+              {menuItems.map((route) => {
                 return (
                   route.show && (
                     <MenuItem
@@ -147,7 +143,6 @@ export function DashboardLayout({ children }: PropsWithChildren<unknown>) {
         </div>
       </div>
 
-      {/* Desktop Layout (lg and above) */}
       <div className='global-container my-6 hidden w-full flex-row gap-6 lg:flex'>
         <div className='layout'>
           <div className='inset-y-0 z-50 flex h-full flex-col'>
@@ -157,7 +152,6 @@ export function DashboardLayout({ children }: PropsWithChildren<unknown>) {
                 collapsed ? 'w-20 items-center p-2' : 'w-64 p-2'
               )}
             >
-              {/* Header */}
               <div className='flex items-center justify-between'>
                 {!collapsed && (
                   <h2 className='text-lg font-semibold'>{t('Profile')}</h2>
@@ -172,7 +166,6 @@ export function DashboardLayout({ children }: PropsWithChildren<unknown>) {
                 </Button>
               </div>
 
-              {/* User card */}
               <Card
                 className={cn(
                   'card-linear-grad dark:card-flame mt-4 flex items-center gap-3 bg-linear-to-r p-3 shadow-none transition-all',
@@ -200,7 +193,6 @@ export function DashboardLayout({ children }: PropsWithChildren<unknown>) {
                 )}
               </Card>
 
-              {/* Upgrade block */}
               {!collapsed && (
                 <div className='card-instagram dark:card-flame mt-3 rounded-md bg-linear-to-r p-3 text-sm text-white'>
                   <div className='flex items-center gap-2'>
@@ -215,7 +207,7 @@ export function DashboardLayout({ children }: PropsWithChildren<unknown>) {
                 <div
                   className={`flex w-full flex-col space-y-1 ${collapsed ? 'items-center' : ''}`}
                 >
-                  {menuItems(user, t).map((route) => {
+                  {menuItems.map((route) => {
                     return (
                       route.show && (
                         <MenuItem
@@ -250,7 +242,6 @@ export function DashboardLayout({ children }: PropsWithChildren<unknown>) {
         </main>
       </div>
 
-      {/* Main content for mobile/tablet */}
       <div className='lg:hidden'>
         <main className='global-container my-8 w-full'>{children}</main>
       </div>

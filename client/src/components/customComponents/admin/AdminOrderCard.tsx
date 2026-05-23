@@ -5,7 +5,6 @@ import { GetOrderWithItemsDto } from '@/generated/orval/types';
 import { formatDateWithHour } from '@/utils/formateDate';
 import { STATUS_COLOR } from '@/utils/colorUtils';
 import { formatPrice } from '@/utils/formatPrice';
-import { useProfile } from '@/hooks/useProfile';
 import { useTranslations } from 'next-intl';
 import Image from 'next/image';
 import {
@@ -29,6 +28,7 @@ import { useRefundOrder } from '@/hooks/stripe/useRefundOrder';
 import { useDistributeFundsOrderItem } from '@/hooks/stripe/useDistributeFundsOrderItem';
 import { useRefundOrderItem } from '@/hooks/stripe/useRefundOrderItem';
 import { GetOrderItemsWithUserDtoStatus } from '@/generated/orval/types';
+import { useAbility } from '@/lib/permissions';
 
 interface AdminOrderCardProps {
   order: GetOrderWithItemsDto;
@@ -41,7 +41,7 @@ export function AdminOrderCard({
   showConfirm = false,
   showRefund = false,
 }: AdminOrderCardProps) {
-  const { user } = useProfile();
+  const { can } = useAbility();
   const t = useTranslations('Modals');
   const dashT = useTranslations('DashboardSettings');
 
@@ -52,15 +52,13 @@ export function AdminOrderCard({
     useDistributeFundsOrderItem();
   const { refundOrderItem, isLoadingRefundOrderItem } = useRefundOrderItem();
 
-  const isShowRefundBtn =
-    user?.role === 'SUPER_ADMIN' && order.id && showRefund;
-  const isShowConfirmBtn =
-    user?.role === 'SUPER_ADMIN' && order.id && showConfirm;
+  const isShowRefundBtn = can('refund', 'order') && order.id && showRefund;
+  const isShowConfirmBtn = can('confirm', 'order') && order.id && showConfirm;
 
   return (
     <div className='bg-shop-bg-default overflow-hidden rounded-md border shadow-sm transition-all hover:shadow-md'>
       {/* Header Section */}
-      <div className='bg-shop-bg-2 border-b p-4'>
+      <div className='bg-shop-bg p-4'>
         <div className='flex flex-wrap items-start justify-between gap-4'>
           <div className='min-w-0 flex-1 space-y-2'>
             <div className='flex flex-wrap items-center gap-2'>
@@ -92,6 +90,7 @@ export function AdminOrderCard({
         </div>
       </div>
 
+      <hr className='mx-4 border-neutral-200' />
       {/* Customer Info Section */}
       <div className='bg-shop-bg border-b p-4'>
         <div className='grid grid-cols-1 gap-3 sm:grid-cols-2'>

@@ -14,7 +14,7 @@ import EditProductButton from './EditProductButton';
 import { useMemo } from 'react';
 import { capitalizeFirstLetter } from '@/utils/common';
 import ProductInfoItem from './ProductInfoItem';
-import { useProfile } from '@/hooks/useProfile';
+import { useAbility } from '@/lib/permissions';
 
 export interface ProductInfoProps {
   product: GetProductWithDetails;
@@ -22,7 +22,7 @@ export interface ProductInfoProps {
 
 export default function ProductInfo({ product }: ProductInfoProps) {
   const t = useTranslations('ProductInfo');
-  const { user } = useProfile();
+  const { can, user } = useAbility();
   const categoryUrl = useMemo(() => {
     if (!product.category?.id) return PUBLIC_URL.shop();
 
@@ -63,7 +63,7 @@ export default function ProductInfo({ product }: ProductInfoProps) {
       itemType='https://schema.org/Product'
       className='relative flex w-full flex-col gap-3'
     >
-      <div className='dark:md:border-shop-light-bg dark:border-dark-3 bg-shop-bg-default relative flex w-full flex-col gap-3 rounded-md p-6 md:rounded-md border border-neutral-200'>
+      <div className='dark:md:border-shop-light-bg dark:border-dark-3 bg-shop-bg-default relative flex w-full flex-col gap-3 rounded-md border border-neutral-200 p-6 md:rounded-md'>
         <div className='space-y-2'>
           <div className='flex flex-row gap-2'>
             {product.isOriginal && (
@@ -148,7 +148,7 @@ export default function ProductInfo({ product }: ProductInfoProps) {
             btnVariant='outline'
             onlyIcon={false}
           />
-          {(product.userId === user?.id || user?.role === 'SUPER_ADMIN') && (
+          {can('update', 'product', { ownerId: product.userId }) && (
             <EditProductButton
               product={product}
               className='flex w-full'
