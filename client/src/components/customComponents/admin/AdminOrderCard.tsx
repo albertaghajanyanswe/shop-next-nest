@@ -146,7 +146,7 @@ export function AdminOrderCard({
           {order.orderItems.map((item) => (
             <div
               key={item.id}
-              className='shadow-md bg-shop-bg-default rounded-md border p-3 transition-colors'
+              className='bg-shop-bg-default rounded-md border p-3 shadow-md transition-colors'
             >
               <div className='flex gap-3'>
                 <div className='bg-background relative h-16 w-16 shrink-0 overflow-hidden rounded-md'>
