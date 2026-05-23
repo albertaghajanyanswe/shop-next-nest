@@ -1,131 +1,238 @@
-# 🛒 Marketplace Platform (**MyStore**)
+# MyStore — Full-Featured Marketplace Platform
 
-A full-featured marketplace platform that allows users to create their own stores, add products, manage own stores, products, categories and brands and sell or buy goods.
-The platform supports online payments via Stripe and subscription-based limits for sellers.
-
----
-
-## 🚀 Tech Stack
-
-### Frontend
-
-- **React**
-- **TypeScript**
-- **React Query**
-- **React Hook Form**
-- **Shadcn UI**
-- **Tailwind CSS**
-- **Orval**
-- **Stripe.js**
-
-### Backend
-
-- **NestJS**
-- **TypeScript**
-- **PostgreSQL**
-- **Prisma**
-- **Stripe API**
-- **JWT Authentication**
-- **Google Authentication**
+Multi-tenant marketplace where users create stores, manage products, and sell/buy goods with Stripe payments, subscription plans, and AI-powered product search.
 
 ---
 
-## ⚙️ Installation & Running
+## Tech Stack
+
+| Layer              | Technologies                                                                                                                                                       |
+| ------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| **Frontend**       | Next.js 15 (App Router), TypeScript, Tailwind CSS v4, Shadcn UI (Radix), Redux Toolkit, TanStack React Query v5, React Hook Form + Zod, next-intl (i18n), Recharts |
+| **Backend**        | NestJS 11, TypeScript, PostgreSQL, Prisma ORM 6, JWT + Google OAuth, Socket.IO, OpenRouter AI                                                                      |
+| **Payments**       | Stripe (primary)                                                                                                                                                   |
+| **Infrastructure** | Docker, Docker Compose, Nginx, Cloudinary                                                                                                                          |
+
+---
+
+## Quick Start
 
 ### Backend
 
 ```bash
-create postgres database with name <mystore-dev>
-create .env file based on .env.example and fill environment variables
 cd server
+cp .env.example .env        # fill in your values
 npm install
+npx prisma migrate dev
 npm run start:dev
 ```
 
 ### Frontend
 
 ```bash
-cd frontend
-create .env file based on .env.example and fill environment variables
+cd client
+cp .env.example .env
 npm install
 npm run dev
 ```
 
-## ✨ Core Features
+### Docker (full stack)
 
-### 👤 Users
+```bash
+docker compose up -d
+```
 
-- User registration and authentication
-- User profile management
-- Stores and products management
-- Roles
+---
 
-### 🏪 Stores
+## Core Features
 
-- Users can create their own stores
-- Store management (name, description, status)
-- A user can own multiple stores (depending on subscription plan)
+### 👤 Users & Auth
+
+- Registration / Login (email+password, Google OAuth)
+- JWT access + refresh tokens (httpOnly cookies)
+- Password reset via email
+- Roles: `USER`, `ADMIN`, `SUPER_ADMIN`
+- Profile management (name, picture, address, phone)
+
+### 🏪 Multi-Store System
+
+- Users create & manage multiple stores
+- Store settings: name, description, images, address, status (published/blocked)
+- Per-store management dashboard
 
 ### 📦 Products
 
-- Create / get / update / delete products
-- Product price, description, and images
-- Product limits based on subscription plan
-- Browse and buy products from other stores
+- Full CRUD with images, price, description
+- Intended for: `SALE`, `FREE`, `RENT`
+- Condition: `NEW`, `USED`
+- Product details (custom key-value attributes)
+- Quantity tracking, view counter, likes/favorites
+- Similar products & most-popular endpoints
 
-### 📦 Categories
-- Create / get / update / delete categories
+### 🏷️ Categories & Brands & Colors
 
-### 📦 Brands
-- Create / get / update / delete brands
+- CRUD for categories, brands, and colors per store
+- Each entity supports images, description, rating
 
+### ⭐ Reviews
+
+- Users can review products from stores they've purchased from
+- Text + rating
+
+### 🛒 Shopping Cart
+
+- Redux-based cart with per-user localStorage persistence
+- Add/remove/change quantity
+
+### 📋 Orders
+
+- Buyer order history and seller sold-items views
+- Order status lifecycle: pending → succeeded → confirmed → refunded
+- Admin can manage all orders
 
 ### 💳 Payments (Stripe)
 
-- Secure payments via **Stripe**
-- Supported payment methods:
-  - Credit / debit cards
-- Stripe Webhooks for handling:
-  - customer.subscription.updated
-  - checkout.session.completed
-  - checkout.session.expired
-  - invoice.payment_succeeded
-  - customer.subscription.deleted
-  - customer.subscription.paused
-  - customer.subscription.resumed
-  - invoice.payment_failed
-  - payment_intent.payment_failed
+- **Stripe Checkout** — product purchase & subscription upgrades
+- **Stripe Connect** — seller payout accounts (95% seller / 5% platform commission)
+- **Refunds** — reverse transfer to seller, then refund buyer
+- **Billing Portal** — subscription management link
+- **Webhooks** — 12+ event types handled (subscriptions, invoices, payments, transfers)
 
 ### 🔁 Subscriptions
 
-- Subscription system powered by **Stripe Subscriptions**
-- Subscription plans define:
-  - maximum number of products a seller can create
-  - access to advanced features
-- Example plans:
-  - **Free**     — up to 10 products
-  - **Advanced** — up to 150 products
-  - **Premium**  — unlimited products
+- 5 plans: Free (10 products, 1 store), Advanced (150 products, 5 stores), Premium (unlimited)
+- Monthly & annual billing
+- Auto-enforcement of product & store limits
+- Upgrade / downgrade (scheduled at period end) / cancel
 
----
+### 📊 Statistics & Analytics
 
-## 🧠 Subscription Business Logic
+- Per-store dashboard: revenue, products, categories, avg rating
+- Monthly sales, top products, category sales breakdown, sales history
+- Charts via Recharts
 
-- Product creation is restricted by subscription limits
-- Guards / middleware validate active subscriptions
+### 🤖 AI Shopping Assistant
 
----
+- WebSocket (Socket.IO) real-time chat
+- OpenRouter AI (configurable model, default: Llama 3.3 70B)
+- Product search with natural language queries
+- Streaming responses with product card suggestions
 
-## 🔐 Security
+### 📧 Email & Notifications
 
-- JWT access & refresh tokens
-- Request validation with `class-validator`
+- Nodemailer with React email templates
+- Password reset emails
+- Contact form → site owner
+- Newsletter subscribe/unsubscribe
+- New product notifications to subscribers
+
+### 🔍 Product Search & Filtering
+
+- Advanced query builder (filters: category, brand, price, color, attributes)
+- Pagination, sorting, search
+- Semantic search (embedding field ready)
+
+### 🌍 Internationalization
+
+- English & Russian (next-intl)
+- Locale prefix routing (`/[locale]/...`)
+
+### 📁 File Upload
+
+- **Local** filesystem upload
+- **Cloudinary** upload with proxy endpoint for image transformations
+
+### 🔐 Security
+
+- JWT auth with auto-refresh on 401
+- argon2 password hashing
 - Stripe webhook signature verification
-- Role-based access control
+- class-validator request validation
+- Guards: ownership, store-owner, subscription limits, role-based
+
+### 🧩 API Documentation
+
+- Swagger UI at `/api/docs`
+- OpenAPI JSON at `/api/openapi.json`
+- Orval auto-generates TypeScript API client from OpenAPI spec
 
 ---
 
-### HELPER LINKS
+## Project Structure
 
-- https://www.youtube.com/watch?v=1kcboUTW9a0o
-- https://www.youtube.com/watch?v=2Mxxe2is3goo
+```
+├── client/                    # Next.js frontend
+│   ├── src/
+│   │   ├── app/[locale]/     # Pages by locale
+│   │   ├── components/       # UI & custom components
+│   │   ├── hooks/            # React Query & custom hooks
+│   │   ├── services/         # API service classes
+│   │   ├── store/            # Redux (cart)
+│   │   └── i18n/            # Internationalization
+│   └── messages/            # Translation JSON files
+├── server/                    # NestJS backend
+│   ├── src/
+│   │   ├── auth/             # JWT + Google OAuth
+│   │   ├── payment/          # Stripe + YooKassa
+│   │   ├── product/          # Products CRUD
+│   │   ├── store/            # Stores CRUD
+│   │   ├── order/            # Orders management
+│   │   ├── statistics/       # Analytics
+│   │   ├── ai-chat/          # WebSocket AI assistant
+│   │   ├── mailer/           # Email service
+│   │   └── file/             # File upload (local + Cloudinary)
+│   ├── prisma/               # Schema & migrations
+│   └── test/                 # E2E tests
+├── docker-compose.yml        # Full stack orchestration
+└── nginx.conf                # Reverse proxy config
+```
+
+---
+
+## Environment Variables
+
+See `.env.example` in `server/` and `client/`. Key variables:
+
+- **Auth:** `JWT_SECRET`, `GOOGLE_CLIENT_ID`, `GOOGLE_CLIENT_SECRET`
+- **Stripe:** `STRIPE_SECRET_KEY`, `STRIPE_PUBLIC_KEY`, `STRIPE_WEBHOOK_SECRET`
+- **YooKassa:** `YOOKASSA_SHOP_ID`, `YOOKASSA_SECRET_KEY`
+- **Database:** `DATABASE_URL` / `DB_*`
+- **Cloudinary:** `CLOUDINARY_CLOUD_NAME`, `CLOUDINARY_API_KEY`, `CLOUDINARY_API_SECRET`
+- **Email:** `MAIL_HOST`, `MAIL_USER`, `MAIL_PASSWORD`
+- **AI:** `OPENROUTER_API_KEY`, `OPENROUTER_MODEL`
+
+---
+
+## Scripts
+
+### Server
+
+| Command                 | Description                 |
+| ----------------------- | --------------------------- |
+| `npm run start:dev`     | Development with hot-reload |
+| `npm run build`         | Production build            |
+| `npm run start:prod`    | Start production            |
+| `npm test`              | Unit tests (Jest)           |
+| `npm run test:e2e`      | E2E tests                   |
+| `npm run prisma:studio` | Prisma Studio GUI           |
+
+### Client
+
+| Command            | Description                              |
+| ------------------ | ---------------------------------------- |
+| `npm run dev`      | Development with Turbopack               |
+| `npm run build`    | Production build                         |
+| `npm run generate` | Regenerate Orval API client from OpenAPI |
+
+---
+
+## Docker Environments
+
+| File                 | Environment | Use Case                                             |
+| -------------------- | ----------- | ---------------------------------------------------- |
+| `Dockerfile.prod`    | Production  | Multi-stage, standalone Next.js output               |
+| `Dockerfile.dev`     | Staging     | Dev/staging with `.env.dev`                          |
+| `Dockerfile.local`   | Local dev   | Volume mounts, `next dev`                            |
+| `docker-compose.yml` | Full stack  | PostgreSQL + Server + Client + Nginx + Prisma Studio |
+
+---
