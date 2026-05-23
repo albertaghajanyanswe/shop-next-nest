@@ -4,6 +4,10 @@ import { Button } from '@/components/ui/Button';
 import { generateImgPath } from '@/utils/imageUtils';
 import { cn } from '@/utils/common';
 import { GetProductWithDetails } from '@/generated/orval/types';
+import {
+  PhotoProvider,
+  PhotoView,
+} from '@/components/customComponents/photoViewer';
 
 export interface ProductGalleryProps {
   product: GetProductWithDetails;
@@ -12,41 +16,47 @@ export interface ProductGalleryProps {
 export default function ProductGallery({ product }: ProductGalleryProps) {
   const [currentIndex, setCurrentIndex] = useState(0);
   return (
-    <div className='w-full space-y-2 md:space-y-4'>
-      <div className='group bg-shop-light-bg col-span-2 w-full place-items-center overflow-hidden rounded-none sm:rounded-md xl:col-span-1'>
-        <Image
-          src={generateImgPath(product.images[currentIndex])}
-          alt={product.title}
-          width={300}
-          height={300}
-          className='hoverEffect max-h-[350px] w-full rounded-md object-contain transition-transform group-hover:scale-110 md:max-h-[450px]'
-          priority
-          style={{ height: 'auto' }}
-        />
-      </div>
-      <div className='mt-6 flex gap-6'>
-        {product.images.map((image, index) => (
-          <Button
-            key={image}
-            variant='outline'
-            className={cn(
-              'group h-[100px] w-[100px] overflow-hidden rounded-lg border duration-300 hover:border-gray-200 hover:bg-inherit',
-              currentIndex === index ? 'border-gray-300' : 'border-transparent'
-            )}
-            onClick={() => setCurrentIndex(index)}
-          >
+    <PhotoProvider>
+      <PhotoView src={generateImgPath(product.images[currentIndex])}>
+        <div className='w-full space-y-2 md:space-y-4'>
+          <div className='group bg-shop-light-bg col-span-2 w-full place-items-center overflow-hidden rounded-none sm:rounded-md xl:col-span-1'>
             <Image
-              src={generateImgPath(image)}
+              src={generateImgPath(product.images[currentIndex])}
               alt={product.title}
-              width={100}
-              height={100}
-              className='hoverEffect h-[100px] w-[100px] object-contain group-hover:scale-110'
+              width={300}
+              height={300}
+              className='hoverEffect max-h-[350px] w-full rounded-md object-contain transition-transform group-hover:scale-110 md:max-h-[450px]'
               priority
               style={{ height: 'auto' }}
             />
-          </Button>
-        ))}
-      </div>
-    </div>
+          </div>
+          <div className='mt-6 flex gap-6'>
+            {product.images.map((image, index) => (
+              <Button
+                key={image}
+                variant='outline'
+                className={cn(
+                  'group h-[100px] w-[100px] overflow-hidden rounded-lg border duration-300 hover:border-gray-200 hover:bg-inherit',
+                  currentIndex === index
+                    ? 'border-gray-300'
+                    : 'border-transparent'
+                )}
+                onClick={() => setCurrentIndex(index)}
+              >
+                <Image
+                  src={generateImgPath(image)}
+                  alt={product.title}
+                  width={100}
+                  height={100}
+                  className='hoverEffect h-[100px] w-[100px] object-contain group-hover:scale-110'
+                  priority
+                  style={{ height: 'auto' }}
+                />
+              </Button>
+            ))}
+          </div>
+        </div>
+      </PhotoView>
+    </PhotoProvider>
   );
 }
