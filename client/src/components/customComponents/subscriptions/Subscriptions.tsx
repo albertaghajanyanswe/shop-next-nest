@@ -142,7 +142,7 @@ export default function SubscriptionCards({
   };
 
   return (
-    <div className='bg-shop-light-bg space-y-6 rounded-lg p-6'>
+    <div className='bg-shop-bg-default space-y-6 rounded-md'>
       {/* Period Toggle */}
       <SubscriptionHeader plans={plans} period={period} setPeriod={setPeriod} />
       {/* Manage Plan Button */}
@@ -159,7 +159,7 @@ export default function SubscriptionCards({
         {filteredPlans.map((plan) => (
           <Card
             key={plan.planId}
-            className={`bg-shop-white relative flex flex-col overflow-hidden border-none shadow-none ${
+            className={`bg-shop-bg-2 relative flex flex-col overflow-hidden border-none shadow-none ${
               plan.isPopular
                 ? 'card-linear-grad dark:card-flame bg-linear-to-r'
                 : ''

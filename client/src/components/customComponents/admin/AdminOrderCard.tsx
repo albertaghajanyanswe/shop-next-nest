@@ -58,20 +58,20 @@ export function AdminOrderCard({
     user?.role === 'SUPER_ADMIN' && order.id && showConfirm;
 
   return (
-    <div className='bg-card overflow-hidden rounded-xl border shadow-sm transition-all hover:shadow-md'>
+    <div className='bg-shop-bg-default overflow-hidden rounded-md border shadow-sm transition-all hover:shadow-md'>
       {/* Header Section */}
-      <div className='bg-shop-green-hover border-b p-4'>
+      <div className='bg-shop-bg-2 border-b p-4'>
         <div className='flex flex-wrap items-start justify-between gap-4'>
           <div className='min-w-0 flex-1 space-y-2'>
             <div className='flex flex-wrap items-center gap-2'>
-              <Hash className='text-muted-foreground h-4 w-4 flex-shrink-0' />
+              <Hash className='text-muted-foreground h-4 w-4 shrink-0' />
               <span className='text-muted-foreground text-sm font-medium'>
                 {t('order_info_id')}:
               </span>
               <span className='font-mono text-sm break-all'>{order.id}</span>
             </div>
             <div className='flex items-center gap-2'>
-              <Package className='text-muted-foreground h-4 w-4 flex-shrink-0' />
+              <Package className='text-muted-foreground h-4 w-4 shrink-0' />
               <span className='text-muted-foreground text-sm font-medium'>
                 {t('order_info_type')}:
               </span>
@@ -93,10 +93,10 @@ export function AdminOrderCard({
       </div>
 
       {/* Customer Info Section */}
-      <div className='bg-muted/30 border-b p-4'>
+      <div className='bg-shop-bg border-b p-4'>
         <div className='grid grid-cols-1 gap-3 sm:grid-cols-2'>
           <div className='flex items-center gap-2'>
-            <User className='text-muted-foreground h-4 w-4 flex-shrink-0' />
+            <User className='text-muted-foreground h-4 w-4 shrink-0' />
             <div className='min-w-0 flex-1'>
               <p className='text-muted-foreground text-xs'>
                 {t('order_info_customer')}
@@ -105,7 +105,7 @@ export function AdminOrderCard({
             </div>
           </div>
           <div className='flex items-center gap-2'>
-            <Mail className='text-muted-foreground h-4 w-4 flex-shrink-0' />
+            <Mail className='text-muted-foreground h-4 w-4 shrink-0' />
             <div className='min-w-0 flex-1'>
               <p className='text-muted-foreground text-xs'>
                 {t('order_info_email')}
@@ -114,7 +114,7 @@ export function AdminOrderCard({
             </div>
           </div>
           <div className='flex items-center gap-2'>
-            <Calendar className='text-muted-foreground h-4 w-4 flex-shrink-0' />
+            <Calendar className='text-muted-foreground h-4 w-4 shrink-0' />
             <div className='min-w-0 flex-1'>
               <p className='text-muted-foreground text-xs'>
                 {t('order_info_date')}
@@ -125,7 +125,7 @@ export function AdminOrderCard({
             </div>
           </div>
           <div className='flex items-center gap-2'>
-            <ShoppingBag className='text-muted-foreground h-4 w-4 flex-shrink-0' />
+            <ShoppingBag className='text-muted-foreground h-4 w-4 shrink-0' />
             <div className='min-w-0 flex-1'>
               <p className='text-muted-foreground text-xs'>
                 {t('order_items_title')}
@@ -146,10 +146,10 @@ export function AdminOrderCard({
           {order.orderItems.map((item) => (
             <div
               key={item.id}
-              className='bg-shop-green-hover/50 hover:bg-shop-green-hover rounded-lg border p-3 transition-colors'
+              className='shadow-md bg-shop-bg-default rounded-md border p-3 transition-colors'
             >
               <div className='flex gap-3'>
-                <div className='bg-background relative h-16 w-16 flex-shrink-0 overflow-hidden rounded-md'>
+                <div className='bg-background relative h-16 w-16 shrink-0 overflow-hidden rounded-md'>
                   <Image
                     src={generateImgPath(
                       item.cachedProductImages[0],
@@ -280,7 +280,7 @@ export function AdminOrderCard({
       </div>
 
       {/* Total Section */}
-      <div className='bg-muted/20 border-t p-4'>
+      <div className='bg-shop-bg border-t p-4'>
         <div className='flex flex-wrap items-center justify-between gap-4'>
           <div className='flex gap-2'>
             {isShowConfirmBtn && (

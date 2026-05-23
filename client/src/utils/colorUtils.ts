@@ -102,6 +102,7 @@ export const formatHsla = (hsl: HSL, a = 1): string => {
 export const STATUS_COLOR: Record<GetOrderDtoStatus, string> = {
   PENDING: 'text-yellow-600',
   SUCCEEDED: 'text-green-600',
+  CONFIRMED: 'text-green-600',
   FAILED: 'text-red-500',
   CANCELLED: 'text-yellow-600',
   REFUNDED: 'text-green-600',

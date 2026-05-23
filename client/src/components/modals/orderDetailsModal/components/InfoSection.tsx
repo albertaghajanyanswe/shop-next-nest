@@ -9,7 +9,7 @@ interface InfoSectionProps {
 export function InfoSection({ items, className = '' }: InfoSectionProps) {
   return (
     <div
-      className={`space-y-1 text-xs ${className} bg-shop-green-hover xs:max-w-none max-w-fit rounded-md p-3`}
+      className={`space-y-1 text-xs ${className} bg-shop-bg xs:max-w-none max-w-fit rounded-md p-3`}
     >
       {items.map((item, idx) => (
         <p key={idx} className={`${item.className && item.className} flex`}>

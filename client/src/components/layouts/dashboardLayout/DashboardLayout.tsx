@@ -245,7 +245,7 @@ export function DashboardLayout({ children }: PropsWithChildren<unknown>) {
             </aside>
           </div>
         </div>
-        <main className='bg-shop-bg-default w-full rounded-md shadow-md'>
+        <main className='bg-shop-bg-default w-full rounded-md p-6 shadow-md'>
           {children}
         </main>
       </div>

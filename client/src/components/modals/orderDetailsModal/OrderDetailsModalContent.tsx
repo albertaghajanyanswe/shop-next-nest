@@ -156,10 +156,7 @@ export function OrderDetailsModalContent<T extends TableSectionItem>({
   return (
     <div className='space-y-4'>
       {/* Customer Info */}
-      <InfoSection
-        items={getOrderInfoItems()}
-        className='border-b-shop-green-hover border-b'
-      />
+      <InfoSection items={getOrderInfoItems()} />
 
       {/* Items Table */}
       {getOrderTableItems().length > 0 && (
