@@ -236,3 +236,8 @@ See `.env.example` in `server/` and `client/`. Key variables:
 | `docker-compose.yml` | Full stack  | PostgreSQL + Server + Client + Nginx + Prisma Studio |
 
 ---
+
+### HELPER LINKS
+
+- https://www.youtube.com/watch?v=1kcboUTW9a0o
+- https://www.youtube.com/watch?v=2Mxxe2is3goo
