@@ -29,6 +29,14 @@ export async function middleware(request: NextRequest, response: NextResponse) {
 }
 
 export const config = {
-  // Match all pathnames except for static assets, API, etc.
-  matcher: ['/((?!api|_next|_vercel|.*\\..*).*)'],
+  matcher: [
+    /*
+     * Exclude:
+     * - api
+     * - next internals
+     * - static files
+     * - seo files
+     */
+    '/((?!api|_next|_vercel|.*\\..*|robots.txt|sitemap.xml).*)',
+  ],
 };

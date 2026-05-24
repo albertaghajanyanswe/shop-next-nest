@@ -19,6 +19,32 @@ export const metadata: Metadata = {
     template: `%s | ${SITE_NAME}`,
   },
   description: SITE_DESCRIPTION,
+  robots: {
+    index: true,
+    follow: true,
+    nocache: false,
+  },
+  openGraph: {
+    title: SITE_NAME,
+    description: SITE_DESCRIPTION,
+    type: 'website',
+    locale: 'en_US',
+    siteName: SITE_NAME,
+    images: [
+      {
+        url: '/images/myStore_logo.svg',
+        width: 1200,
+        height: 630,
+        alt: SITE_NAME,
+      },
+    ],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: SITE_NAME,
+    description: SITE_DESCRIPTION,
+    images: ['/images/myStore_logo.svg'],
+  },
   alternates: {
     canonical: `${process.env.NEXT_PUBLIC_CLIENT_URL}`,
   },
