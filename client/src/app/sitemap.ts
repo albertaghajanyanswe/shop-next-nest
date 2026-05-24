@@ -55,13 +55,24 @@ async function fetchJson<T>(url: string): Promise<T | null> {
 }
 
 async function getDynamicRoutes() {
-  const serverUrl = process.env.NEXT_PUBLIC_SERVER_SERVICE || process.env.NEXT_PUBLIC_SERVER_URL || 'http://server:4000';
+  const serverUrl =
+    process.env.NEXT_PUBLIC_SERVER_SERVICE ||
+    process.env.NEXT_PUBLIC_SERVER_URL ||
+    'http://server:4000';
 
   const [productsRes, storesRes, categoriesRes, brandsRes] = await Promise.all([
-    fetchJson<{ products: ApiProduct[] }>(`${serverUrl}/api/products?limit=1000&skip=0`),
-    fetchJson<{ stores: ApiStore[] }>(`${serverUrl}/api/store?limit=1000&skip=0`),
-    fetchJson<{ categories: ApiCategory[] }>(`${serverUrl}/api/categories?limit=1000&skip=0`),
-    fetchJson<{ brands: ApiBrand[] }>(`${serverUrl}/api/brands?limit=1000&skip=0`),
+    fetchJson<{ products: ApiProduct[] }>(
+      `${serverUrl}/api/products?limit=1000&skip=0`
+    ),
+    fetchJson<{ stores: ApiStore[] }>(
+      `${serverUrl}/api/store?limit=1000&skip=0`
+    ),
+    fetchJson<{ categories: ApiCategory[] }>(
+      `${serverUrl}/api/categories?limit=1000&skip=0`
+    ),
+    fetchJson<{ brands: ApiBrand[] }>(
+      `${serverUrl}/api/brands?limit=1000&skip=0`
+    ),
   ]);
 
   return {

@@ -1,11 +1,17 @@
-import { Role, Action, Resource, UserIdentity, PermissionContext } from './types';
+import {
+  Role,
+  Action,
+  Resource,
+  UserIdentity,
+  PermissionContext,
+} from './types';
 import { getResourceActions, canBypassOwnership } from './roles';
 
 export function can(
   user: UserIdentity | null | undefined,
   action: Action,
   resource: Resource,
-  context?: PermissionContext,
+  context?: PermissionContext
 ): boolean {
   if (!user) return false;
 
@@ -29,7 +35,7 @@ export function can(
 export function canManage(
   user: UserIdentity | null | undefined,
   resource: Resource,
-  context?: PermissionContext,
+  context?: PermissionContext
 ): boolean {
   return can(user, 'manage', resource, context);
 }

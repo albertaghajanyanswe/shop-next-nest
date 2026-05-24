@@ -4,7 +4,10 @@ import { useCallback } from 'react';
 import { useProfile } from '@/hooks/useProfile';
 import { Action, Resource, PermissionContext, UserIdentity } from '../types';
 import { can as checkAbility } from '../abilities';
-import { isAdmin as checkIsAdmin, isSuperAdmin as checkIsSuperAdmin } from '../abilities';
+import {
+  isAdmin as checkIsAdmin,
+  isSuperAdmin as checkIsSuperAdmin,
+} from '../abilities';
 
 export function useAbility() {
   const { user, isLoading } = useProfile();
@@ -17,7 +20,7 @@ export function useAbility() {
     (action: Action, resource: Resource, context?: PermissionContext) => {
       return checkAbility(userIdentity, action, resource, context);
     },
-    [userIdentity],
+    [userIdentity]
   );
 
   const isAdmin = useCallback(() => {

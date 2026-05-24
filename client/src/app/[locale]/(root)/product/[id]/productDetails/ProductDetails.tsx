@@ -14,7 +14,7 @@ function ProductDetails({ product }: ProductDetailsProps) {
   }
 
   return (
-    <div className='dark:md:border-shop-light-bg dark:border-dark-3 rounded-md bg-shop-bg-default mt-6 border border-neutral-200 p-5'>
+    <div className='dark:md:border-shop-light-bg dark:border-dark-3 bg-shop-bg-default mt-6 rounded-md border border-neutral-200 p-5'>
       <h3 className='text-shop-primary-text mb-4 text-base font-semibold'>
         {t('title')}
       </h3>

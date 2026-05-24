@@ -12,7 +12,13 @@ interface CanProps {
   children: ReactNode;
 }
 
-export function Can({ action, resource, context, fallback = null, children }: CanProps) {
+export function Can({
+  action,
+  resource,
+  context,
+  fallback = null,
+  children,
+}: CanProps) {
   const { can } = useAbility();
 
   if (can(action, resource, context)) return <>{children}</>;

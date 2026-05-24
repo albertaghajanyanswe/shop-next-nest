@@ -30,7 +30,7 @@ export function AuthLayout({ children }: AuthLayoutProps) {
         </p>
       </div>
       <div className='flex h-full flex-col items-center justify-center'>
-        <Card className='sm:bg-shop-bg p-4 sm:p-8 flex w-full flex-col items-center justify-center gap-4 border-none sm:w-[500px]'>
+        <Card className='sm:bg-shop-bg flex w-full flex-col items-center justify-center gap-4 border-none p-4 sm:w-[500px] sm:p-8'>
           <Logo classNames='sm:text-4xl' />
           {children}
         </Card>

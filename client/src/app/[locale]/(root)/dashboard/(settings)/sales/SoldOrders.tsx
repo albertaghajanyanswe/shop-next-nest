@@ -84,7 +84,7 @@ export default function SoldOrders() {
 
   const [isOpen, setIsOpen] = useState(false);
 
-  console.log('orderItemsData = ', orderItemsData)
+  console.log('orderItemsData = ', orderItemsData);
   if (!user) return null;
 
   return (
@@ -114,12 +114,16 @@ export default function SoldOrders() {
               />
             ) : (
               <div className='mt-4 grid grid-cols-1 gap-6 xl:grid-cols-2'>
-                {!!orderItemsData?.orderItems?.length ? orderItemsData?.orderItems?.map((orderItem) => (
-                  <AdminOrderItemCard
-                    key={orderItem.id}
-                    orderItem={orderItem}
-                  />
-                )) : <NoDataFound entityName={t('sold_items_title')} />}
+                {!!orderItemsData?.orderItems?.length ? (
+                  orderItemsData?.orderItems?.map((orderItem) => (
+                    <AdminOrderItemCard
+                      key={orderItem.id}
+                      orderItem={orderItem}
+                    />
+                  ))
+                ) : (
+                  <NoDataFound entityName={t('sold_items_title')} />
+                )}
               </div>
             )}
             {!!orderItemsData?.orderItems?.length && (

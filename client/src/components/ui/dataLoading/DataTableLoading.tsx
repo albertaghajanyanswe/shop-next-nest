@@ -4,9 +4,9 @@ import Loading from '@/components/customComponents/loading/Loading';
 
 const DataTableLoading: FC = () => {
   return (
-    <div className='mx-auto w-full max-w-screen-2xl mt-6'>
-      <Skeleton className='h-8 w-48   bg-shop-bg' />
-      <Skeleton className='mt-6 h-8 w-72 bg-shop-bg' />
+    <div className='mx-auto mt-6 w-full max-w-screen-2xl'>
+      <Skeleton className='bg-shop-bg h-8 w-48' />
+      <Skeleton className='bg-shop-bg mt-6 h-8 w-72' />
       <Loading text='Loading...' />
     </div>
   );
