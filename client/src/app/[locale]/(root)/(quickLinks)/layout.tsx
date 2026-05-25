@@ -2,10 +2,6 @@ import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
   robots: 'index, follow',
-  openGraph: {
-    type: 'website',
-    locale: 'en_US',
-  },
 };
 
 export default function InfoLayout({

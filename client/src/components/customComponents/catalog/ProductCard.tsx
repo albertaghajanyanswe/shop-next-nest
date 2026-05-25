@@ -59,24 +59,12 @@ function ProductCard({ product }: ProductCardProps) {
                 <Link href={PUBLIC_URL.product(product.id)}>
                   <div className='xs:h-56 relative h-44 w-full'>
                     <Image
-                      // src={image}
                       src={generateImgPath(image, productImgParams)}
                       alt={`${product.title}`}
                       className='bg-shop-light-bg xs:p-2 h-40 w-full object-contain p-1 transition-transform duration-500 group-hover:scale-105'
                       fill
-                      loading='eager'
-                      // fetchPriority='high'
-                      // priority
-                      // {...(image
-                      //   ? {
-                      //       placeholder: 'blur',
-                      //       blurDataURL: generateImgPath(
-                      //         image,
-                      //         productImgBlurParams
-                      //       ),
-                      //     }
-                      //   : {})}
-                      // sizes='(max-width: 768px) 100vw, 400px'
+                      loading='lazy'
+                      sizes='(max-width: 768px) 100vw, 400px'
                     />
                     {outOfStock && (
                       <div className='bg-primary/70 absolute top-[40%] flex h-12 w-full items-center justify-center text-lg font-semibold text-white'>

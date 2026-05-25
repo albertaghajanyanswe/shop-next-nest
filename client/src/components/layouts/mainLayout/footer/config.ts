@@ -50,7 +50,7 @@ export const FooterQuickLinks = [
 ];
 
 export const FooterSocialLinks = [
-  { title: 'Youtube', Icon: AiFillYoutube },
-  { title: 'LinkedIn', Icon: AiFillLinkedin },
-  { title: 'Facebook', Icon: AiFillFacebook },
+  { title: 'Youtube', href: 'https://youtube.com', Icon: AiFillYoutube },
+  { title: 'LinkedIn', href: 'https://linkedin.com', Icon: AiFillLinkedin },
+  { title: 'Facebook', href: 'https://facebook.com', Icon: AiFillFacebook },
 ];

@@ -274,14 +274,11 @@ export const HeaderMenuV2 = React.forwardRef<HTMLElement, HeaderMenuProps>(
             </div>
 
             {/* Logo */}
-            <button
-              onClick={(e) => e.preventDefault()}
-              className='text-primary hover:text-primary/90 order-2 flex flex-none items-center space-x-2 md:order-1'
-            >
+            <div className='order-2 flex flex-none items-center space-x-2 md:order-1'>
               <div className='text-2xl'>
                 <Logo />
               </div>
-            </button>
+            </div>
 
             {/* Search */}
             {pathName !== PUBLIC_URL.shop() && (

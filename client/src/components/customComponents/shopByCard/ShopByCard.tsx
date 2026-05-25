@@ -37,7 +37,7 @@ const ShopByCardComponent = ({
     <div className='m-auto'>
       <div className='mb-4 md:flex md:items-center md:justify-between'>
         <div className='max-w-2xl px-4 lg:max-w-full lg:px-0'>
-          <p className='text-2xl font-semibold'>{title}</p>
+          <h2 className='text-2xl font-semibold'>{title}</h2>
           {description && (
             <p className='text-muted-foreground mt-2 text-sm'>
               <span className='text-xs font-medium'>

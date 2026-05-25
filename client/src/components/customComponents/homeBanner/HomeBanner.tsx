@@ -21,7 +21,7 @@ function HomeBannerComponent() {
                 className='h-full w-full object-cover opacity-90'
                 width={2000}
                 height={350}
-                alt='Banner'
+                alt='Shop banner - featured promotion'
                 priority
                 fetchPriority='high'
               />

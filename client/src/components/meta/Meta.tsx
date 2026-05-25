@@ -9,6 +9,7 @@ interface MetaProps {
   keywords?: string[];
   author?: string;
   ogType?: 'website' | 'article';
+  locale?: string;
   other?: any;
 }
 
@@ -26,6 +27,7 @@ export function generateMeta(props: MetaProps): Metadata {
     keywords = [],
     author = '',
     ogType = 'website',
+    locale,
     other = {},
   } = props;
 
@@ -59,7 +61,7 @@ export function generateMeta(props: MetaProps): Metadata {
       description,
       url: fullUrl,
       siteName: process?.env?.NEXT_PUBLIC_SITE_NAME || 'My Store',
-      locale: 'en_US',
+      locale: locale || 'en_US',
       images: [
         {
           url: image,

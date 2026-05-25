@@ -57,11 +57,11 @@ export default async function Footer() {
         <div className='xs:grid-cols-2 container grid grid-cols-1 gap-10 py-6 md:grid-cols-4'>
           {/* Logo + Social */}
           <div>
-            <button className='text-primary hover:text-primary/90 order-2 flex flex-none items-center space-x-2 md:order-1'>
+            <div className='order-2 flex flex-none items-center space-x-2 md:order-1'>
               <div className='text-2xl'>
                 <Logo />
               </div>
-            </button>
+            </div>
 
             <p className='text-shop-muted-text-6 mt-4 max-w-xs text-sm'>
               {t('buy_sell_follow')}
@@ -69,9 +69,16 @@ export default async function Footer() {
 
             <div className='mt-6 flex items-center space-x-4'>
               {FooterSocialLinks.map((soc) => (
-                <div className='group' key={soc.title}>
+                <a
+                  key={soc.title}
+                  href={soc.href}
+                  target='_blank'
+                  rel='noopener noreferrer'
+                  className='group'
+                  aria-label={soc.title}
+                >
                   <soc.Icon className='hoverEffect text-shop-primary group-hover:border-shop-primary h-8 w-8 cursor-pointer rounded-full border p-1 group-hover:scale-110' />
-                </div>
+                </a>
               ))}
             </div>
             <div className='mt-6 flex flex-col items-center space-y-4'>

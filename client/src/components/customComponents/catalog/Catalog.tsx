@@ -38,7 +38,7 @@ export function Catalog({
     <div>
       <div className='mb-4 md:flex md:items-center md:justify-between'>
         <div className='w-full px-0'>
-          <p className='text-2xl font-semibold'>{title}</p>
+          <h2 className='text-2xl font-semibold'>{title}</h2>
           {(showSearch || showSort) && (
             <div className='mt-4 flex flex-col items-center gap-2 sm:flex-row'>
               {showSearch && (
