@@ -1,6 +1,6 @@
 import { Card, CardContent } from '@/components/ui/Card';
 import Image from 'next/image';
-import { memo } from 'react';
+import { memo, useRef, useEffect } from 'react';
 
 function HowItWorksSection({
   title,
@@ -13,13 +13,42 @@ function HowItWorksSection({
   videoSrc?: string;
   imageSrc?: string;
 }) {
+  const videoRef = useRef<HTMLVideoElement>(null);
+  const sectionRef = useRef<HTMLElement>(null);
+
+  useEffect(() => {
+    const video = videoRef.current;
+    const section = sectionRef.current;
+    if (!video || !videoSrc) return;
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          video.play().catch(() => {});
+        } else {
+          video.pause();
+        }
+      },
+      { threshold: 0.3 }
+    );
+
+    if (section) {
+      observer.observe(section);
+    }
+
+    return () => observer.disconnect();
+  }, [videoSrc]);
+
   return (
-    <section className='grid grid-cols-1 items-center gap-6 sm:gap-12 lg:grid-cols-2'>
+    <section
+      ref={sectionRef}
+      className='grid grid-cols-1 items-center gap-6 sm:gap-12 lg:grid-cols-2'
+    >
       {/* Left – instructions */}
       <div className='space-y-6'>
         <h2 className='text-xl font-semibold'>{title}</h2>
 
-        <Card>
+        <Card className='bg-shop-bg-default border border-neutral-200'>
           <CardContent className=''>
             <ol className='text-shop-muted-text-7 list-inside list-decimal space-y-2 text-xs sm:space-y-4 sm:text-sm'>
               {steps.map((step, index) => (
@@ -47,8 +76,8 @@ function HowItWorksSection({
           />
         ) : (
           <video
+            ref={videoRef}
             src={videoSrc}
-            autoPlay
             loop
             muted
             playsInline
