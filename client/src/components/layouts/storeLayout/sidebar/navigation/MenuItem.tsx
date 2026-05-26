@@ -1,4 +1,5 @@
 'use client';
+import { memo } from 'react';
 import { usePathname } from 'next/navigation';
 import { IMenuItem } from './menu.interface';
 import Link from 'next/link';
@@ -10,7 +11,7 @@ interface MenuItemProps {
   className?: string;
 }
 
-export function MenuItem({ route, showOnlyIcon, className }: MenuItemProps) {
+const MenuItem = memo(function MenuItem({ route, showOnlyIcon, className }: MenuItemProps) {
   const pathName = usePathname();
 
   const lastSegment = (p: string) => p.split('/').filter(Boolean).at(-1) ?? '';
@@ -50,4 +51,6 @@ export function MenuItem({ route, showOnlyIcon, className }: MenuItemProps) {
       )}
     </Link>
   );
-}
+});
+
+export { MenuItem };

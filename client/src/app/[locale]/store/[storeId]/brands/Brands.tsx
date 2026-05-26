@@ -8,7 +8,7 @@ import { Heading } from '@/components/ui/Heading';
 import { STORE_URL } from '@/config/url.config';
 import { useGetBrands } from '@/hooks/queries/brands/useGetBrands';
 import { IBrandColumn } from '@/shared/types/brand.interface';
-import { formateDate } from '@/utils/formateDate';
+import { formatDate } from '@/utils/formatDate';
 import { CirclePlus } from 'lucide-react';
 import Link from 'next/link';
 import { useParams } from 'next/navigation';
@@ -51,7 +51,7 @@ export function Brands() {
       ? brandsData?.brands?.map((brand) => ({
           id: brand.id,
           name: brand.name,
-          createdAt: formateDate(brand.createdAt),
+          createdAt: formatDate(brand.createdAt),
           storeId: brand.storeId,
           images: brand.images,
           image: brand?.images?.[0],

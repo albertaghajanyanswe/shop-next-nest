@@ -1,3 +1,4 @@
+import dynamic from 'next/dynamic';
 import { PropsWithChildren } from 'react';
 import { Header } from './header/Header';
 import Footer from './footer/Footer';

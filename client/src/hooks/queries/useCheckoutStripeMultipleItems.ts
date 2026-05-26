@@ -6,7 +6,7 @@ import { useRouter } from 'next/navigation';
 import { useCart } from './useCart';
 import toast from 'react-hot-toast';
 import { useMemo } from 'react';
-import { stripeService } from '@/services/stripe.service.ts';
+import { stripeService } from '@/services/stripe.service';
 
 export const useCheckoutStripeMultipleItems = () => {
   const { orderItems } = useCart();

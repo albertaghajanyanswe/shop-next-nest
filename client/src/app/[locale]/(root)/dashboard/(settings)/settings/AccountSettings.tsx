@@ -3,7 +3,7 @@
 import { useTranslations } from 'next-intl';
 
 import { useCreateConnectAccountStripe } from '@/hooks/stripe/useCreateConnectAccountStripe';
-import { stripeService } from '@/services/stripe.service.ts';
+import { stripeService } from '@/services/stripe.service';
 import { StripeActionBlock } from './StripeActionBlock';
 import { useProfile } from '@/hooks/useProfile';
 import { EnvVariables } from '@/shared/envVariables';

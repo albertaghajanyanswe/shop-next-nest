@@ -1,3 +1,4 @@
+'use client';
 import { useState, useEffect } from 'react';
 import { Slider } from '@/components/ui/Slider';
 import { Input } from '@/components/ui/formElements/Input';

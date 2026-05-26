@@ -10,7 +10,7 @@ import { CirclePlus } from 'lucide-react';
 import Link from 'next/link';
 import { useParams } from 'next/navigation';
 import { categoryColumns } from './CategoryColumns';
-import { formateDate } from '@/utils/formateDate';
+import { formatDate } from '@/utils/formatDate';
 import { useGetCategories } from '@/hooks/queries/categories/useGetCategories';
 import { ICategoryColumn } from '@/shared/types/category.interface';
 import { useQueryParams } from '@/hooks/commons/useQueryParams';
@@ -52,7 +52,7 @@ export function Categories() {
   > = categoriesData?.categories
     ? categoriesData?.categories?.map((category) => ({
         id: category.id,
-        createdAt: formateDate(category.createdAt),
+        createdAt: formatDate(category.createdAt),
         name: category.name,
         description: category.description || '',
         images: category.images || [],

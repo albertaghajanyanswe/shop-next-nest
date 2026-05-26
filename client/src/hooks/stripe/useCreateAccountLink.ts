@@ -2,7 +2,7 @@ import { useMutation } from '@tanstack/react-query';
 import toast from 'react-hot-toast';
 import { useMemo } from 'react';
 import { QUERY_KEYS } from '@/shared/queryConstants';
-import { stripeService } from '@/services/stripe.service.ts';
+import { stripeService } from '@/services/stripe.service';
 
 export function useCreateAccountLink() {
   const { mutate: createAccountLink, isPending: isLoadingCreateAccountLink } =

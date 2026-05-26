@@ -5,7 +5,7 @@ import { DataTable } from '@/components/ui/dataLoading/DataTable';
 import DataTableLoading from '@/components/ui/dataLoading/DataTableLoading';
 import { Heading } from '@/components/ui/Heading';
 import { useParams } from 'next/navigation';
-import { formateDate } from '@/utils/formateDate';
+import { formatDate } from '@/utils/formatDate';
 import { useGetReviews } from '@/hooks/queries/reviews/useGetReviews';
 import { IReviewColumn, reviewColumns } from './ReviewColumns';
 import { useQueryParams } from '@/hooks/commons/useQueryParams';
@@ -43,7 +43,7 @@ export function Reviews() {
     reviewsData?.reviews
       ? reviewsData?.reviews?.map((review) => ({
           id: review.id,
-          createdAt: formateDate(review.createdAt),
+          createdAt: formatDate(review.createdAt),
           rating: Array.from({ length: review.rating })
             .map(() => '⭐')
             .join(' '),

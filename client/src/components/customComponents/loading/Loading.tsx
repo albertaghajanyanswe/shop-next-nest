@@ -11,7 +11,7 @@ function Loading({ text }: { text?: string }) {
       </p>
       <div className='text-darkRed animate-scale-pulse-slow flex items-center space-x-2'>
         <LoaderCircle className='text-shop-orange animate-spin' />
-        <span className='text-shop-orange'>{text}</span>
+        <span className='text-shop-orange'>{text || t('loading')}</span>
       </div>
     </div>
   );

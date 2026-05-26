@@ -420,7 +420,8 @@
     "no_products_matching": "We are sorry, but there are no products matching on",
     "check_back_later": "Please check back later or explore our other product categories.",
     "loading_entity": "{entity} is loading",
-    "simple_check_later": "Please check back later."
+    "simple_check_later": "Please check back later.",
+    "loading": "Loading..."
   },
   "Sorting": {
     "trigger_label": "Sort by",

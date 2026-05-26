@@ -1,3 +1,4 @@
+'use client';
 import { Checkbox } from '@/components/ui/Checkbox';
 import {
   AccordionContent,
@@ -5,7 +6,7 @@ import {
   AccordionTrigger,
 } from '@/components/ui/Accordion';
 import { ResetFilterButton } from './ResetFilterButton';
-import { useMemo, useState } from 'react';
+import { memo, useMemo, useState } from 'react';
 import { useDebounce } from '@/hooks/commons/useDebounce';
 import { Search, X } from 'lucide-react';
 import { Input } from '@/components/ui/formElements/Input';
@@ -64,7 +65,7 @@ interface FilterAccordionItemProps<T extends FilterItem> {
   maxHeight?: string;
 }
 
-export function FilterAccordionItem<T extends FilterItem>({
+function FilterAccordionItemComponent<T extends FilterItem>({
   title,
   value,
   items,
@@ -133,3 +134,9 @@ export function FilterAccordionItem<T extends FilterItem>({
     </AccordionItem>
   );
 }
+
+export const FilterAccordionItem = memo(FilterAccordionItemComponent) as <
+  T extends FilterItem,
+>(
+  props: FilterAccordionItemProps<T>
+) => JSX.Element;

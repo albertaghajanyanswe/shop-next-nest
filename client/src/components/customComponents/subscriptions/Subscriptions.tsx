@@ -9,7 +9,7 @@ import {
   CardTitle,
 } from '@/components/ui/Card';
 import { Button } from '@/components/ui/Button';
-import { stripeService } from '@/services/stripe.service.ts';
+import { stripeService } from '@/services/stripe.service';
 import { useUpgradePlan } from '@/hooks/stripe/useUpgradePlan';
 import { useCancelUpgrade } from '@/hooks/stripe/useCancelUpgrade';
 import { EnumSubscriptionStatus } from '@/shared/types/stripe.interface';

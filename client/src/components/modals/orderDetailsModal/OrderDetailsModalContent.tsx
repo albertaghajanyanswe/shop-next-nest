@@ -6,7 +6,7 @@ import {
   GetOrderDtoStatus,
   GetOrderWithItemsDto,
 } from '@/generated/orval/types';
-import { formatDateWithHour } from '@/utils/formateDate';
+import { formatDateWithHour } from '@/utils/formatDate';
 import { STATUS_COLOR } from '@/utils/colorUtils';
 import {
   categoryImgBlurParams,

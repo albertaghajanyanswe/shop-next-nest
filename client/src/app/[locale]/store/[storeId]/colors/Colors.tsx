@@ -11,7 +11,7 @@ import { CirclePlus } from 'lucide-react';
 import Link from 'next/link';
 import { useParams } from 'next/navigation';
 import { colorColumns } from './ColorColumns';
-import { formateDate } from '@/utils/formateDate';
+import { formatDate } from '@/utils/formatDate';
 import { IColorColumn } from '@/shared/types/color.interface';
 import { useQueryParams } from '@/hooks/commons/useQueryParams';
 import { CustomPagination } from '@/components/customComponents/CustomPagination';
@@ -47,7 +47,7 @@ export function Colors() {
   const formattedColors: IColorColumn[] = colorsData?.colors
     ? colorsData?.colors?.map((color) => ({
         id: color.id,
-        createdAt: formateDate(color.createdAt),
+        createdAt: formatDate(color.createdAt),
         name: color.name,
         value: color.value,
         storeId: color.storeId as string,

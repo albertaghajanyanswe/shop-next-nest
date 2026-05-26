@@ -1,11 +1,11 @@
 'use client';
 
-import React from 'react';
+import { memo } from 'react';
 import {
   GetOrderItemsDetailsDto,
   GetOrderItemsDetailsDtoStatus,
 } from '@/generated/orval/types';
-import { formatDateWithHour } from '@/utils/formateDate';
+import { formatDateWithHour } from '@/utils/formatDate';
 import { STATUS_COLOR } from '@/utils/colorUtils';
 import { formatPrice } from '@/utils/formatPrice';
 import { useTranslations } from 'next-intl';
@@ -34,7 +34,7 @@ interface AdminOrderItemCardProps {
   orderItem: GetOrderItemsDetailsDto;
 }
 
-export function AdminOrderItemCard({ orderItem }: AdminOrderItemCardProps) {
+const AdminOrderItemCard = memo(function AdminOrderItemCard({ orderItem }: AdminOrderItemCardProps) {
   const t = useTranslations('Modals');
   const { can } = useAbility();
   const { distributeFundsOrderItem, isLoadingDistributeFundsOrderItem } =
@@ -250,7 +250,10 @@ export function AdminOrderItemCard({ orderItem }: AdminOrderItemCardProps) {
             </p>
           </div>
         </div>
-      </div>
+        </div>
     </div>
   );
-}
+});
+
+export { AdminOrderItemCard };
+

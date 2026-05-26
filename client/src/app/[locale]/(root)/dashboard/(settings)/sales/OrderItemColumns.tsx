@@ -1,6 +1,6 @@
 import { Button } from '@/components/ui/Button';
 import { ColumnSortableHeader } from '@/components/ui/dataLoading/ColumnSortableHeader';
-import { formatDateWithHour } from '@/utils/formateDate';
+import { formatDateWithHour } from '@/utils/formatDate';
 import { formatPrice } from '@/utils/formatPrice';
 import { ColumnDef } from '@tanstack/react-table';
 

@@ -4,7 +4,7 @@ import React from 'react';
 import { InfoSection } from './components/InfoSection';
 import { ItemsTable } from './components/ItemsTable';
 import { GetOrderItemsDetailsDto, GetUserDto } from '@/generated/orval/types';
-import { formatDateWithHour } from '@/utils/formateDate';
+import { formatDateWithHour } from '@/utils/formatDate';
 import { STATUS_COLOR } from '@/utils/colorUtils';
 import {
   categoryImgBlurParams,

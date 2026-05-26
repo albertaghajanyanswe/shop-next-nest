@@ -1,5 +1,4 @@
 import React from 'react';
-import '@components/ActionButton/actionButton.scss';
 
 interface ActionButtonProps {
   onClick: any;

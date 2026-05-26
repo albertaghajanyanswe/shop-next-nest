@@ -25,7 +25,6 @@ import { useTranslations } from 'next-intl';
 
 interface BrandFormProps {
   brand?: GetBrandDto;
-  categories: GetCategoryDto[];
 }
 
 export function BrandForm({ brand }: BrandFormProps) {

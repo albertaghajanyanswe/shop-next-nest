@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useMemo, useState } from 'react';
+import { memo, useEffect, useMemo, useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import {
@@ -29,7 +29,7 @@ interface StoreCardProps {
   imgClass?: string;
 }
 
-export function StoreCard({
+const StoreCard = memo(function StoreCard({
   store,
   showInfo,
   makeDark,
@@ -179,4 +179,6 @@ export function StoreCard({
       )}
     </div>
   );
-}
+});
+
+export { StoreCard };

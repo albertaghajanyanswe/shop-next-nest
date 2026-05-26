@@ -1,17 +1,17 @@
+import { memo } from 'react';
 import { PUBLIC_URL } from '@/config/url.config';
 import { ICartItem } from '@/shared/types/cart.interface';
 import { formatPrice } from '@/utils/formatPrice';
 import Image from 'next/image';
 import Link from 'next/link';
 import CartActions from './CartActions';
-import { CartBuyAction } from './CartBuyAction';
 import { generateImgPath } from '@/utils/imageUtils';
 
 interface CartItemsProps {
   orderItem: ICartItem;
 }
 
-export function CartItem({ orderItem }: CartItemsProps) {
+const CartItem = memo(function CartItem({ orderItem }: CartItemsProps) {
   return (
     <div className='d-flex flex-col'>
       <div className='mb-5 flex items-center'>
@@ -34,7 +34,8 @@ export function CartItem({ orderItem }: CartItemsProps) {
           <CartActions orderItem={orderItem} />
         </div>
       </div>
-      {/* <CartBuyAction orderItem={orderItem} /> */}
     </div>
   );
-}
+});
+
+export { CartItem };

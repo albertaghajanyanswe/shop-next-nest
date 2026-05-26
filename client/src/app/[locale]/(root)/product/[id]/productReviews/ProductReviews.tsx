@@ -9,7 +9,7 @@ import { CirclePlus, Trash2 } from 'lucide-react';
 import Image from 'next/image';
 import { Rating } from 'react-simple-star-rating';
 import { GetProductWithDetails } from '@/generated/orval/types';
-import { formatDateWithHour } from '@/utils/formateDate';
+import { formatDateWithHour } from '@/utils/formatDate';
 import NoDataFound from '@/components/customComponents/loading/NoDataFound';
 import { ShowMoreText } from '@/components/customComponents/ShowMoreText';
 import { memo } from 'react';
