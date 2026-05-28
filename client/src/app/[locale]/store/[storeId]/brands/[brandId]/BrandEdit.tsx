@@ -15,5 +15,7 @@ export function BrandEdit() {
 
   if (!brand) return <div>{t('brand_not_found')}</div>;
 
-  return <BrandForm brand={brand} categories={categoriesData?.categories || []} />;
+  return (
+    <BrandForm brand={brand} categories={categoriesData?.categories || []} />
+  );
 }

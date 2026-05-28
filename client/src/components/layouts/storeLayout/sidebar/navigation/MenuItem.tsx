@@ -11,7 +11,11 @@ interface MenuItemProps {
   className?: string;
 }
 
-const MenuItem = memo(function MenuItem({ route, showOnlyIcon, className }: MenuItemProps) {
+const MenuItem = memo(function MenuItem({
+  route,
+  showOnlyIcon,
+  className,
+}: MenuItemProps) {
   const pathName = usePathname();
 
   const lastSegment = (p: string) => p.split('/').filter(Boolean).at(-1) ?? '';

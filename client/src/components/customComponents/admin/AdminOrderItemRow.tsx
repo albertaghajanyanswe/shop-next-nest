@@ -10,7 +10,10 @@ import {
   categoryImgParams,
   generateImgPath,
 } from '@/utils/imageUtils';
-import { GetOrderItemsWithUserDto, GetOrderItemsWithUserDtoStatus } from '@/generated/orval/types';
+import {
+  GetOrderItemsWithUserDto,
+  GetOrderItemsWithUserDtoStatus,
+} from '@/generated/orval/types';
 
 interface AdminOrderItemRowProps {
   item: GetOrderItemsWithUserDto;
@@ -105,13 +108,11 @@ export function AdminOrderItemRow({
                 <Button
                   disabled={
                     isLoadingDistribute ||
-                    item.status ===
-                      GetOrderItemsWithUserDtoStatus.CONFIRMED
+                    item.status === GetOrderItemsWithUserDtoStatus.CONFIRMED
                   }
                   onClick={() => {
                     if (
-                      item.status !==
-                      GetOrderItemsWithUserDtoStatus.CONFIRMED
+                      item.status !== GetOrderItemsWithUserDtoStatus.CONFIRMED
                     ) {
                       onDistribute(item.id);
                     }
@@ -121,8 +122,7 @@ export function AdminOrderItemRow({
                   className='text-xs'
                 >
                   <CircleDollarSignIcon className='h-3 w-3' />
-                  {item.status ===
-                  GetOrderItemsWithUserDtoStatus.CONFIRMED
+                  {item.status === GetOrderItemsWithUserDtoStatus.CONFIRMED
                     ? t('order_btn_confirmed')
                     : t('order_btn_confirm')}
                 </Button>
@@ -131,17 +131,13 @@ export function AdminOrderItemRow({
                 <Button
                   disabled={
                     isLoadingRefund ||
-                    item.status ===
-                      GetOrderItemsWithUserDtoStatus.REFUNDED ||
-                    item.status ===
-                      GetOrderItemsWithUserDtoStatus.CONFIRMED
+                    item.status === GetOrderItemsWithUserDtoStatus.REFUNDED ||
+                    item.status === GetOrderItemsWithUserDtoStatus.CONFIRMED
                   }
                   onClick={() => {
                     if (
-                      item.status !==
-                        GetOrderItemsWithUserDtoStatus.REFUNDED &&
-                      item.status !==
-                        GetOrderItemsWithUserDtoStatus.CONFIRMED
+                      item.status !== GetOrderItemsWithUserDtoStatus.REFUNDED &&
+                      item.status !== GetOrderItemsWithUserDtoStatus.CONFIRMED
                     ) {
                       onRefund(item.id);
                     }
@@ -151,8 +147,7 @@ export function AdminOrderItemRow({
                   className='text-xs'
                 >
                   <RotateCcw className='h-3 w-3' />
-                  {item.status ===
-                  GetOrderItemsWithUserDtoStatus.REFUNDED
+                  {item.status === GetOrderItemsWithUserDtoStatus.REFUNDED
                     ? t('order_btn_refunded')
                     : t('order_btn_refund')}
                 </Button>

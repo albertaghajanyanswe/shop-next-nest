@@ -40,7 +40,11 @@ function PageButtons({
   getHrefForPage: (p: number) => string;
   onPageChange: (p: number) => void;
 }) {
-  const getPages = (currentPage: number, totalPages: number, siblings: number) => {
+  const getPages = (
+    currentPage: number,
+    totalPages: number,
+    siblings: number
+  ) => {
     const pages: number[] = [];
     const start = Math.max(1, currentPage - siblings);
     const end = Math.min(totalPages, currentPage + siblings);
@@ -195,4 +199,3 @@ export function CustomPagination({
     </div>
   );
 }
-

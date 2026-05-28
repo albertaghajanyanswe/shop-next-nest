@@ -34,7 +34,9 @@ interface AdminOrderItemCardProps {
   orderItem: GetOrderItemsDetailsDto;
 }
 
-const AdminOrderItemCard = memo(function AdminOrderItemCard({ orderItem }: AdminOrderItemCardProps) {
+const AdminOrderItemCard = memo(function AdminOrderItemCard({
+  orderItem,
+}: AdminOrderItemCardProps) {
   const t = useTranslations('Modals');
   const { can } = useAbility();
   const { distributeFundsOrderItem, isLoadingDistributeFundsOrderItem } =
@@ -250,10 +252,9 @@ const AdminOrderItemCard = memo(function AdminOrderItemCard({ orderItem }: Admin
             </p>
           </div>
         </div>
-        </div>
+      </div>
     </div>
   );
 });
 
 export { AdminOrderItemCard };
-
