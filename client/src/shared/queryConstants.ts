@@ -16,6 +16,7 @@ export const QUERY_KEYS = {
   updateProduct: ['update-product'],
   deleteProduct: ['delete-product'],
   getStoreProducts: ['get-store-products'],
+  getPopularProducts: ['get-popular-products'],
   getProductById: ['get-product-page'],
   createColor: ['create-color'],
   updateColor: ['update-color'],

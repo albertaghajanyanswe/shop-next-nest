@@ -25,7 +25,7 @@ function ProductReviews({ product }: ProductReviewsProps) {
 
   return (
     <div className='mt-2'>
-      <div className='flex items-center justify-between'>
+      <div className='my-2 flex items-center justify-between'>
         <p className='text-2xl font-semibold'>{t('title')}</p>
         {user && (
           <ReviewModal storeId={product.storeId as string}>
@@ -36,7 +36,7 @@ function ProductReviews({ product }: ProductReviewsProps) {
           </ReviewModal>
         )}
       </div>
-      <div className='bg-shop-white flex flex-col gap-6 rounded-xl py-3'>
+      <div className='bg-shop-bg-default dark:border-shop-light-bg flex flex-col gap-4 rounded-md border-neutral-100 p-4'>
         {!!product?.reviews?.length ? (
           product.reviews.map((review) => (
             <div key={review.id} className='flex items-start justify-between'>

@@ -62,7 +62,7 @@ export default function Product({
         id: 'desc',
         label: t('description_tab'),
         content: (
-          <div className='bg-shop-light-bg rounded-md p-4'>
+          <div className='bg-shop-bg-default dark:border-shop-light-bg rounded-md border-neutral-100 p-4'>
             {product.description}
           </div>
         ),
